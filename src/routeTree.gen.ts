@@ -10,17 +10,37 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TabsRouteImport } from './routes/_tabs'
 import { Route as McpRouteImport } from './routes/mcp'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as ParentRouteImport } from './routes/parent'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as TabsCreateRouteImport } from './routes/_tabs.create'
+import { Route as TabsSearchRouteImport } from './routes/_tabs.search'
+import { Route as TabsTrailRouteImport } from './routes/_tabs.trail'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TabsRoute = TabsRouteImport.update({
+  id: '/_tabs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const McpRoute = McpRouteImport.update({
   id: '/mcp',
   path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParentRoute = ParentRouteImport.update({
+  id: '/parent',
+  path: '/parent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
@@ -29,34 +49,94 @@ const Char91DotwellKnownChar93OauthProtectedResourceRoute =
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
+const TabsCreateRoute = TabsCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => TabsRoute,
+} as any)
+const TabsSearchRoute = TabsSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => TabsRoute,
+} as any)
+const TabsTrailRoute = TabsTrailRouteImport.update({
+  id: '/trail',
+  path: '/trail',
+  getParentRoute: () => TabsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/mcp': typeof McpRoute
+  '/onboarding': typeof OnboardingRoute
+  '/parent': typeof ParentRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/create': typeof TabsCreateRoute
+  '/search': typeof TabsSearchRoute
+  '/trail': typeof TabsTrailRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/mcp': typeof McpRoute
+  '/onboarding': typeof OnboardingRoute
+  '/parent': typeof ParentRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/create': typeof TabsCreateRoute
+  '/search': typeof TabsSearchRoute
+  '/trail': typeof TabsTrailRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_tabs': typeof TabsRouteWithChildren
   '/mcp': typeof McpRoute
+  '/onboarding': typeof OnboardingRoute
+  '/parent': typeof ParentRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/_tabs/create': typeof TabsCreateRoute
+  '/_tabs/search': typeof TabsSearchRoute
+  '/_tabs/trail': typeof TabsTrailRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mcp' | '/.well-known/oauth-protected-resource'
+  fullPaths:
+    | '/'
+    | '/mcp'
+    | '/onboarding'
+    | '/parent'
+    | '/.well-known/oauth-protected-resource'
+    | '/create'
+    | '/search'
+    | '/trail'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mcp' | '/.well-known/oauth-protected-resource'
-  id: '__root__' | '/' | '/mcp' | '/.well-known/oauth-protected-resource'
+  to:
+    | '/'
+    | '/mcp'
+    | '/onboarding'
+    | '/parent'
+    | '/.well-known/oauth-protected-resource'
+    | '/create'
+    | '/search'
+    | '/trail'
+  id:
+    | '__root__'
+    | '/'
+    | '/_tabs'
+    | '/mcp'
+    | '/onboarding'
+    | '/parent'
+    | '/.well-known/oauth-protected-resource'
+    | '/_tabs/create'
+    | '/_tabs/search'
+    | '/_tabs/trail'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TabsRoute: typeof TabsRouteWithChildren
   McpRoute: typeof McpRoute
+  OnboardingRoute: typeof OnboardingRoute
+  ParentRoute: typeof ParentRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
 }
 
@@ -69,11 +149,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_tabs': {
+      id: '/_tabs'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof TabsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mcp': {
       id: '/mcp'
       path: '/mcp'
       fullPath: '/mcp'
       preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parent': {
+      id: '/parent'
+      path: '/parent'
+      fullPath: '/parent'
+      preLoaderRoute: typeof ParentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.well-known/oauth-protected-resource': {
@@ -83,12 +184,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_tabs/create': {
+      id: '/_tabs/create'
+      path: '/create'
+      fullPath: '/create'
+      preLoaderRoute: typeof TabsCreateRouteImport
+      parentRoute: typeof TabsRoute
+    }
+    '/_tabs/search': {
+      id: '/_tabs/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof TabsSearchRouteImport
+      parentRoute: typeof TabsRoute
+    }
+    '/_tabs/trail': {
+      id: '/_tabs/trail'
+      path: '/trail'
+      fullPath: '/trail'
+      preLoaderRoute: typeof TabsTrailRouteImport
+      parentRoute: typeof TabsRoute
+    }
   }
 }
 
+interface TabsRouteChildren {
+  TabsCreateRoute: typeof TabsCreateRoute
+  TabsSearchRoute: typeof TabsSearchRoute
+  TabsTrailRoute: typeof TabsTrailRoute
+}
+
+const TabsRouteChildren: TabsRouteChildren = {
+  TabsCreateRoute: TabsCreateRoute,
+  TabsSearchRoute: TabsSearchRoute,
+  TabsTrailRoute: TabsTrailRoute,
+}
+
+const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TabsRoute: TabsRouteWithChildren,
   McpRoute: McpRoute,
+  OnboardingRoute: OnboardingRoute,
+  ParentRoute: ParentRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
 }
