@@ -35,15 +35,16 @@ function AgePage() {
     const idx = Math.round(el.scrollTop / ITEM_H);
     const clamped = Math.max(0, Math.min(AGES.length - 1, idx));
     el.scrollTo({ top: clamped * ITEM_H, behavior: "smooth" });
-    setAge(AGES[clamped]);
-    onboardingState.age = AGES[clamped];
+    const landed = AGES[clamped] ?? 7;
+    setAge(landed);
+    onboardingState.age = landed;
   };
 
   const onScroll = () => {
     const el = listRef.current;
     if (!el) return;
     const idx = Math.max(0, Math.min(AGES.length - 1, Math.round(el.scrollTop / ITEM_H)));
-    setAge(AGES[idx]);
+    setAge(AGES[idx] ?? 7);
     if (scrollTimer.current) clearTimeout(scrollTimer.current);
     scrollTimer.current = setTimeout(settle, 120);
   };
