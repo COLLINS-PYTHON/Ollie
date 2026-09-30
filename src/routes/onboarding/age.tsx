@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
@@ -19,6 +19,7 @@ const AGES = [4, 5, 6, 7, 8, 9, 10, 11, 12];
 const ITEM_H = 48;
 
 function AgePage() {
+  const navigate = useNavigate();
   const name = onboardingState.name.trim() || "your child";
   const [age, setAge] = useState(onboardingState.age);
   const listRef = useRef<HTMLDivElement>(null);
@@ -51,7 +52,12 @@ function AgePage() {
 
   return (
     <div className="bg-gradient-lilac min-h-screen">
-      <OnboardingSkeleton chapter={2} title={`What is ${name}'s age?`} cta="Continue">
+      <OnboardingSkeleton
+        chapter={2}
+        title={`What is ${name}'s age?`}
+        cta="Continue"
+        onContinue={() => navigate({ to: "/onboarding/reading" })}
+      >
         <div className="relative mx-auto w-full max-w-[220px]">
           {/* selection highlight */}
           <div
