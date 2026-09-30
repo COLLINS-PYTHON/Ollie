@@ -56,7 +56,7 @@ function AgePage() {
           {/* selection highlight */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-1/2 h-12 -translate-y-1/2 rounded-control bg-card shadow-card"
+            className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-12 -translate-y-1/2 rounded-control bg-card shadow-card"
           />
           <div
             ref={listRef}
