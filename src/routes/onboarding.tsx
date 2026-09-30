@@ -1,18 +1,14 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useRouter } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export const Route = createFileRoute("/onboarding")({
-  head: () => ({
-    meta: [
-      { title: "Get started | Ollie" },
-      { name: "description", content: "Set up Ollie for your child in a few quick steps." },
-      { property: "og:title", content: "Get started | Ollie" },
-      { property: "og:description", content: "Set up Ollie for your child in a few quick steps." },
-    ],
-  }),
-  component: OnboardingPage,
+  component: OnboardingLayout,
 });
+
+function OnboardingLayout() {
+  return <Outlet />;
+}
 
 /* Fixed onboarding skeleton: back, 4-segment chapter bar, title slot, pinned button. */
 export function OnboardingSkeleton({
@@ -32,7 +28,7 @@ export function OnboardingSkeleton({
 }) {
   const router = useRouter();
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-background">
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col">
       <header className="flex items-center gap-4 px-5 pt-4">
         <button
           type="button"
@@ -71,22 +67,5 @@ export function OnboardingSkeleton({
         </button>
       </div>
     </div>
-  );
-}
-
-function OnboardingPage() {
-  const [name, setName] = useState("");
-  return (
-    <OnboardingSkeleton chapter={1} title="What is your child's name?" cta="Continue" ctaDisabled={!name.trim()}>
-      <input
-        autoFocus
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="First name"
-        aria-label="Child's first name"
-        className="text-body h-14 w-full rounded-control border-2 border-transparent bg-card px-4 text-foreground shadow-card outline-none transition-colors duration-tap placeholder:text-muted-foreground focus:border-primary"
-      />
-      <p className="text-support mt-3 text-muted-foreground">We use this to personalize Ollie. You can change it later.</p>
-    </OnboardingSkeleton>
   );
 }

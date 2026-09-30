@@ -160,6 +160,31 @@
   -webkit-backdrop-filter: blur(20px) saturate(1.6);
 }
 
+/* Onboarding background gradients */
+@utility bg-gradient-name {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+}
+@utility bg-gradient-lilac {
+  background: linear-gradient(180deg, var(--brand) -40%, var(--periwinkle) 55%, var(--surface-2) 100%);
+}
+@utility fade-from-lilac {
+  --tw-gradient-from: #e6e9fb;
+}
+
+/* Landed wheel number: soft blue glow pulse */
+@utility age-glow {
+  animation: age-glow 1.6s ease-in-out infinite;
+}
+@keyframes age-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgb(67 97 238 / 0.35);
+  }
+  50% {
+    text-shadow: 0 0 22px rgb(67 97 238 / 0.75);
+  }
+}
+
 @utility screen-enter {
   animation: screen-enter var(--duration-element) var(--ease-enter) both;
 }
