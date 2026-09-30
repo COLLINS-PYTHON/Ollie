@@ -20,6 +20,8 @@ import { Route as TabsSearchRouteImport } from './routes/_tabs.search'
 import { Route as TabsTrailRouteImport } from './routes/_tabs.trail'
 import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as OnboardingAgeRouteImport } from './routes/onboarding/age'
+import { Route as OnboardingPreviewRouteImport } from './routes/onboarding/preview'
+import { Route as OnboardingReadingRouteImport } from './routes/onboarding/reading'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +78,16 @@ const OnboardingAgeRoute = OnboardingAgeRouteImport.update({
   path: '/age',
   getParentRoute: () => OnboardingRoute,
 } as any)
+const OnboardingPreviewRoute = OnboardingPreviewRouteImport.update({
+  id: '/preview',
+  path: '/preview',
+  getParentRoute: () => OnboardingRoute,
+} as any)
+const OnboardingReadingRoute = OnboardingReadingRouteImport.update({
+  id: '/reading',
+  path: '/reading',
+  getParentRoute: () => OnboardingRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -87,6 +99,8 @@ export interface FileRoutesByFullPath {
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
   '/onboarding/age': typeof OnboardingAgeRoute
+  '/onboarding/preview': typeof OnboardingPreviewRoute
+  '/onboarding/reading': typeof OnboardingReadingRoute
   '/onboarding/': typeof OnboardingIndexRoute
 }
 export interface FileRoutesByTo {
@@ -98,6 +112,8 @@ export interface FileRoutesByTo {
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
   '/onboarding/age': typeof OnboardingAgeRoute
+  '/onboarding/preview': typeof OnboardingPreviewRoute
+  '/onboarding/reading': typeof OnboardingReadingRoute
   '/onboarding': typeof OnboardingIndexRoute
 }
 export interface FileRoutesById {
@@ -112,6 +128,8 @@ export interface FileRoutesById {
   '/_tabs/search': typeof TabsSearchRoute
   '/_tabs/trail': typeof TabsTrailRoute
   '/onboarding/age': typeof OnboardingAgeRoute
+  '/onboarding/preview': typeof OnboardingPreviewRoute
+  '/onboarding/reading': typeof OnboardingReadingRoute
   '/onboarding/': typeof OnboardingIndexRoute
 }
 export interface FileRouteTypes {
@@ -126,6 +144,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/trail'
     | '/onboarding/age'
+    | '/onboarding/preview'
+    | '/onboarding/reading'
     | '/onboarding/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -137,6 +157,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/trail'
     | '/onboarding/age'
+    | '/onboarding/preview'
+    | '/onboarding/reading'
     | '/onboarding'
   id:
     | '__root__'
@@ -150,6 +172,8 @@ export interface FileRouteTypes {
     | '/_tabs/search'
     | '/_tabs/trail'
     | '/onboarding/age'
+    | '/onboarding/preview'
+    | '/onboarding/reading'
     | '/onboarding/'
   fileRoutesById: FileRoutesById
 }
@@ -241,6 +265,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingAgeRouteImport
       parentRoute: typeof OnboardingRoute
     }
+    '/onboarding/preview': {
+      id: '/onboarding/preview'
+      path: '/preview'
+      fullPath: '/onboarding/preview'
+      preLoaderRoute: typeof OnboardingPreviewRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/onboarding/reading': {
+      id: '/onboarding/reading'
+      path: '/reading'
+      fullPath: '/onboarding/reading'
+      preLoaderRoute: typeof OnboardingReadingRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
   }
 }
 
@@ -260,11 +298,15 @@ const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
 
 interface OnboardingRouteChildren {
   OnboardingAgeRoute: typeof OnboardingAgeRoute
+  OnboardingPreviewRoute: typeof OnboardingPreviewRoute
+  OnboardingReadingRoute: typeof OnboardingReadingRoute
   OnboardingIndexRoute: typeof OnboardingIndexRoute
 }
 
 const OnboardingRouteChildren: OnboardingRouteChildren = {
   OnboardingAgeRoute: OnboardingAgeRoute,
+  OnboardingPreviewRoute: OnboardingPreviewRoute,
+  OnboardingReadingRoute: OnboardingReadingRoute,
   OnboardingIndexRoute: OnboardingIndexRoute,
 }
 
