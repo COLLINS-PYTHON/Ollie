@@ -1,6 +1,7 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { onboardingState } from "@/lib/onboarding-store";
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({
