@@ -189,30 +189,12 @@
   animation: screen-enter var(--duration-element) var(--ease-enter) both;
 }
 
-/* Onboarding background variants */
-@utility bg-gradient-name {
-  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
-}
-@utility bg-gradient-lilac {
-  background: linear-gradient(180deg, var(--brand) -40%, var(--periwinkle) 55%, var(--surface-2) 100%);
-}
+/* Reading-level screen: calmer blue-to-ice gradient */
 @utility bg-gradient-ice {
   background: linear-gradient(180deg, var(--brand-deep) -30%, var(--brand) 45%, #dbe4fb 100%);
 }
 @utility fade-from-ice {
   --tw-gradient-from: #dbe4fb;
-}
-@utility age-glow {
-  animation: age-glow 1.6s ease-in-out infinite;
-}
-@keyframes age-glow {
-  0%,
-  100% {
-    text-shadow: 0 0 10px rgb(67 97 238 / 0.35);
-  }
-  50% {
-    text-shadow: 0 0 22px rgb(67 97 238 / 0.75);
-  }
 }
 @utility bubble-in {
   animation: bubble-in var(--duration-reveal) var(--ease-enter) both;
