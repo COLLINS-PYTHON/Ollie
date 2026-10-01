@@ -31,11 +31,37 @@
   --color-surface-2: var(--surface-2);
   --color-gold: var(--gold);
 
-  /* Parent dashboard row accents (line icons) */
+  /* Parent dashboard row accents (line icons) — dashboard only, never categories */
   --color-accent-1: var(--accent-1);
   --color-accent-2: var(--accent-2);
   --color-accent-3: var(--accent-3);
   --color-accent-4: var(--accent-4);
+
+  /* Slideshow & interest categories, one color per category */
+  --color-cat-space: var(--cat-space);
+  --color-cat-space-deep: var(--cat-space-deep);
+  --color-cat-ocean: var(--cat-ocean);
+  --color-cat-ocean-deep: var(--cat-ocean-deep);
+  --color-cat-dinos: var(--cat-dinos);
+  --color-cat-dinos-deep: var(--cat-dinos-deep);
+  --color-cat-animals: var(--cat-animals);
+  --color-cat-animals-deep: var(--cat-animals-deep);
+  --color-cat-body: var(--cat-body);
+  --color-cat-body-deep: var(--cat-body-deep);
+  --color-cat-math: var(--cat-math);
+  --color-cat-math-deep: var(--cat-math-deep);
+  --color-cat-art: var(--cat-art);
+  --color-cat-art-deep: var(--cat-art-deep);
+  --color-cat-weather: var(--cat-weather);
+  --color-cat-weather-deep: var(--cat-weather-deep);
+  --color-cat-history: var(--cat-history);
+  --color-cat-history-deep: var(--cat-history-deep);
+  --color-cat-music: var(--cat-music);
+  --color-cat-music-deep: var(--cat-music-deep);
+  --color-cat-tech: var(--cat-tech);
+  --color-cat-tech-deep: var(--cat-tech-deep);
+  --color-cat-reading: var(--cat-reading);
+  --color-cat-reading-deep: var(--cat-reading-deep);
 
   /* shadcn mapping */
   --color-background: var(--background);
@@ -85,6 +111,20 @@
   --accent-2: #1f9aa6;
   --accent-3: #d25ca8;
   --accent-4: #e0a43a;
+
+  /* Slideshow & interest categories, one color per category (separate from dashboard accents) */
+  --cat-space: #5b4bd6;   --cat-space-deep: #43349f;
+  --cat-ocean: #1f9aa6;   --cat-ocean-deep: #146e76;
+  --cat-dinos: #4e9a3a;   --cat-dinos-deep: #38702a;
+  --cat-animals: #c9803a; --cat-animals-deep: #965c27;
+  --cat-body: #e06c7a;    --cat-body-deep: #ac4b58;
+  --cat-math: #3a7bd5;    --cat-math-deep: #29589f;
+  --cat-art: #d25ca8;     --cat-art-deep: #a0437f;
+  --cat-weather: #e0a43a; --cat-weather-deep: #a9792a;
+  --cat-history: #8c6a4e; --cat-history-deep: #684d39;
+  --cat-music: #8b5cd6;   --cat-music-deep: #6a44a4;
+  --cat-tech: #5a6b8c;    --cat-tech-deep: #43506a;
+  --cat-reading: #1f7a6c; --cat-reading-deep: #165b50;
 
   --background: var(--surface);
   --foreground: var(--navy);
