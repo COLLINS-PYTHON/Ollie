@@ -40,7 +40,7 @@ const getRows = () => [
   {
     label: "Slideshow settings",
     hint: `Resets daily at ${formatClock(onboardingState.slideshowReset)}, not counted in the limit`,
-    color: "text-accent-1",
+    color: "text-accent-4",
     icon: (
       // stacked slides with a small reset arrow
       <LineIcon>
