@@ -99,7 +99,7 @@ function InterestsPage() {
                     onboardingState.struggles = next;
                   }}
                   className={`text-label h-9 rounded-pill px-4 transition-colors duration-tap ${
-                    on ? "bg-foreground text-background" : "bg-card text-foreground shadow-card"
+                    on ? "bg-navy text-primary-foreground shadow-card" : "bg-card text-foreground shadow-card"
                   }`}
                 >
                   {s}
