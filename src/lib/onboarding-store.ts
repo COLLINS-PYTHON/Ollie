@@ -5,4 +5,8 @@ export const onboardingState = {
   name: "",
   age: 7,
   readingLevel: null as ReadingLevel | null,
+  interests: [] as string[],
+  customInterest: "",
+  struggles: [] as string[],
+  customStruggle: "",
 };
