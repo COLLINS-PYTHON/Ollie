@@ -294,3 +294,15 @@
     pointer-events: none;
   }
 }
+
+/* Screen time screen: teal-tinted dawn */
+@utility bg-gradient-dawn {
+  background: linear-gradient(180deg, var(--accent-2) -50%, #cfeef0 40%, var(--surface) 100%);
+}
+/* Priorities screen: soft blue mist from the side */
+@utility bg-gradient-mist {
+  background:
+    radial-gradient(140% 70% at 100% 0%, rgb(67 97 238 / 0.28), transparent 65%),
+    radial-gradient(120% 60% at 0% 100%, rgb(139 156 247 / 0.22), transparent 60%),
+    var(--surface);
+}
