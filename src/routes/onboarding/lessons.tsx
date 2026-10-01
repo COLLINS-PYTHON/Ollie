@@ -22,6 +22,7 @@ const FAN = [
 ];
 
 function LessonsPage() {
+  const navigate = useNavigate();
   const name = onboardingState.name.trim() || "your child";
   let picks = INTERESTS.filter((i) => onboardingState.interests.includes(i.id)).slice(0, 3);
   if (picks.length === 0) picks = INTERESTS.slice(0, 3);

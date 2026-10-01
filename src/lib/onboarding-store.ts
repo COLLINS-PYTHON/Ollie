@@ -9,4 +9,5 @@ export const onboardingState = {
   customInterest: "",
   struggles: [] as string[],
   customStruggle: "",
+  worries: [] as string[],
 };
