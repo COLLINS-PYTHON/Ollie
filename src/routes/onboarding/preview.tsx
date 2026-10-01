@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Sparkles, MessageCircleHeart } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
@@ -28,6 +28,7 @@ const ANSWERS: Record<ReadingLevel, string> = {
 };
 
 function PreviewPage() {
+  const navigate = useNavigate();
   const name = onboardingState.name.trim() || "your child";
   const level = onboardingState.readingLevel ?? "stories";
   const answer = ANSWERS[level];
@@ -46,7 +47,7 @@ function PreviewPage() {
 
   return (
     <div className="bg-gradient-ice min-h-screen">
-      <OnboardingSkeleton chapter={4} title={`Here's how Ollie will answer ${name}`} cta="Continue">
+      <OnboardingSkeleton chapter={4} title={`Here's how Ollie will answer ${name}`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/interests" })}>
         <div className="rounded-card bg-card p-5 shadow-sheet">
           {/* glossy 3D-style icons, building in one at a time */}
           <div className="mb-5 flex items-center justify-center gap-3" aria-hidden>
