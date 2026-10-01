@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ShieldCheck } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/onboarding/assurance")({
 
 function AssurancePage() {
   const name = onboardingState.name.trim() || "your child";
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
 
   // Small icon builds in first, then the answer appears. Text-led, no hero art.
@@ -28,7 +29,7 @@ function AssurancePage() {
 
   return (
     <div className="bg-gradient-lilac min-h-screen">
-      <OnboardingSkeleton chapter={4} title="Here's our answer" cta="Continue">
+      <OnboardingSkeleton chapter={4} title="Here's our answer" cta="Continue" onContinue={() => navigate({ to: "/onboarding/screen-time" })}>
         {step >= 1 && (
           <div className="bubble-in mb-5 flex justify-center" aria-hidden>
             <span className="glossy flex size-12 items-center justify-center rounded-control bg-gradient-to-br from-brand to-brand-deep shadow-card">
