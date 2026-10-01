@@ -20,10 +20,12 @@ import { Route as TabsSearchRouteImport } from './routes/_tabs.search'
 import { Route as TabsTrailRouteImport } from './routes/_tabs.trail'
 import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as OnboardingAgeRouteImport } from './routes/onboarding/age'
+import { Route as OnboardingAssuranceRouteImport } from './routes/onboarding/assurance'
 import { Route as OnboardingInterestsRouteImport } from './routes/onboarding/interests'
 import { Route as OnboardingLessonsRouteImport } from './routes/onboarding/lessons'
 import { Route as OnboardingPreviewRouteImport } from './routes/onboarding/preview'
 import { Route as OnboardingReadingRouteImport } from './routes/onboarding/reading'
+import { Route as OnboardingWorriesRouteImport } from './routes/onboarding/worries'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -80,6 +82,11 @@ const OnboardingAgeRoute = OnboardingAgeRouteImport.update({
   path: '/age',
   getParentRoute: () => OnboardingRoute,
 } as any)
+const OnboardingAssuranceRoute = OnboardingAssuranceRouteImport.update({
+  id: '/assurance',
+  path: '/assurance',
+  getParentRoute: () => OnboardingRoute,
+} as any)
 const OnboardingInterestsRoute = OnboardingInterestsRouteImport.update({
   id: '/interests',
   path: '/interests',
@@ -100,6 +107,11 @@ const OnboardingReadingRoute = OnboardingReadingRouteImport.update({
   path: '/reading',
   getParentRoute: () => OnboardingRoute,
 } as any)
+const OnboardingWorriesRoute = OnboardingWorriesRouteImport.update({
+  id: '/worries',
+  path: '/worries',
+  getParentRoute: () => OnboardingRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -111,10 +123,12 @@ export interface FileRoutesByFullPath {
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
   '/onboarding/age': typeof OnboardingAgeRoute
+  '/onboarding/assurance': typeof OnboardingAssuranceRoute
   '/onboarding/interests': typeof OnboardingInterestsRoute
   '/onboarding/lessons': typeof OnboardingLessonsRoute
   '/onboarding/preview': typeof OnboardingPreviewRoute
   '/onboarding/reading': typeof OnboardingReadingRoute
+  '/onboarding/worries': typeof OnboardingWorriesRoute
   '/onboarding/': typeof OnboardingIndexRoute
 }
 export interface FileRoutesByTo {
@@ -126,10 +140,12 @@ export interface FileRoutesByTo {
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
   '/onboarding/age': typeof OnboardingAgeRoute
+  '/onboarding/assurance': typeof OnboardingAssuranceRoute
   '/onboarding/interests': typeof OnboardingInterestsRoute
   '/onboarding/lessons': typeof OnboardingLessonsRoute
   '/onboarding/preview': typeof OnboardingPreviewRoute
   '/onboarding/reading': typeof OnboardingReadingRoute
+  '/onboarding/worries': typeof OnboardingWorriesRoute
   '/onboarding': typeof OnboardingIndexRoute
 }
 export interface FileRoutesById {
@@ -144,10 +160,12 @@ export interface FileRoutesById {
   '/_tabs/search': typeof TabsSearchRoute
   '/_tabs/trail': typeof TabsTrailRoute
   '/onboarding/age': typeof OnboardingAgeRoute
+  '/onboarding/assurance': typeof OnboardingAssuranceRoute
   '/onboarding/interests': typeof OnboardingInterestsRoute
   '/onboarding/lessons': typeof OnboardingLessonsRoute
   '/onboarding/preview': typeof OnboardingPreviewRoute
   '/onboarding/reading': typeof OnboardingReadingRoute
+  '/onboarding/worries': typeof OnboardingWorriesRoute
   '/onboarding/': typeof OnboardingIndexRoute
 }
 export interface FileRouteTypes {
@@ -162,10 +180,12 @@ export interface FileRouteTypes {
     | '/search'
     | '/trail'
     | '/onboarding/age'
+    | '/onboarding/assurance'
     | '/onboarding/interests'
     | '/onboarding/lessons'
     | '/onboarding/preview'
     | '/onboarding/reading'
+    | '/onboarding/worries'
     | '/onboarding/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -177,10 +197,12 @@ export interface FileRouteTypes {
     | '/search'
     | '/trail'
     | '/onboarding/age'
+    | '/onboarding/assurance'
     | '/onboarding/interests'
     | '/onboarding/lessons'
     | '/onboarding/preview'
     | '/onboarding/reading'
+    | '/onboarding/worries'
     | '/onboarding'
   id:
     | '__root__'
@@ -194,10 +216,12 @@ export interface FileRouteTypes {
     | '/_tabs/search'
     | '/_tabs/trail'
     | '/onboarding/age'
+    | '/onboarding/assurance'
     | '/onboarding/interests'
     | '/onboarding/lessons'
     | '/onboarding/preview'
     | '/onboarding/reading'
+    | '/onboarding/worries'
     | '/onboarding/'
   fileRoutesById: FileRoutesById
 }
@@ -289,6 +313,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingAgeRouteImport
       parentRoute: typeof OnboardingRoute
     }
+    '/onboarding/assurance': {
+      id: '/onboarding/assurance'
+      path: '/assurance'
+      fullPath: '/onboarding/assurance'
+      preLoaderRoute: typeof OnboardingAssuranceRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
     '/onboarding/interests': {
       id: '/onboarding/interests'
       path: '/interests'
@@ -317,6 +348,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingReadingRouteImport
       parentRoute: typeof OnboardingRoute
     }
+    '/onboarding/worries': {
+      id: '/onboarding/worries'
+      path: '/worries'
+      fullPath: '/onboarding/worries'
+      preLoaderRoute: typeof OnboardingWorriesRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
   }
 }
 
@@ -336,19 +374,23 @@ const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
 
 interface OnboardingRouteChildren {
   OnboardingAgeRoute: typeof OnboardingAgeRoute
+  OnboardingAssuranceRoute: typeof OnboardingAssuranceRoute
   OnboardingInterestsRoute: typeof OnboardingInterestsRoute
   OnboardingLessonsRoute: typeof OnboardingLessonsRoute
   OnboardingPreviewRoute: typeof OnboardingPreviewRoute
   OnboardingReadingRoute: typeof OnboardingReadingRoute
+  OnboardingWorriesRoute: typeof OnboardingWorriesRoute
   OnboardingIndexRoute: typeof OnboardingIndexRoute
 }
 
 const OnboardingRouteChildren: OnboardingRouteChildren = {
   OnboardingAgeRoute: OnboardingAgeRoute,
+  OnboardingAssuranceRoute: OnboardingAssuranceRoute,
   OnboardingInterestsRoute: OnboardingInterestsRoute,
   OnboardingLessonsRoute: OnboardingLessonsRoute,
   OnboardingPreviewRoute: OnboardingPreviewRoute,
   OnboardingReadingRoute: OnboardingReadingRoute,
+  OnboardingWorriesRoute: OnboardingWorriesRoute,
   OnboardingIndexRoute: OnboardingIndexRoute,
 }
 

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { INTERESTS } from "@/lib/interests";
@@ -22,6 +22,7 @@ const FAN = [
 ];
 
 function LessonsPage() {
+  const navigate = useNavigate();
   const name = onboardingState.name.trim() || "your child";
   let picks = INTERESTS.filter((i) => onboardingState.interests.includes(i.id)).slice(0, 3);
   if (picks.length === 0) picks = INTERESTS.slice(0, 3);
@@ -29,7 +30,7 @@ function LessonsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <OnboardingSkeleton chapter={4} title={`${name}'s lessons will look like this`} cta="Continue">
+      <OnboardingSkeleton chapter={4} title={`${name}'s lessons will look like this`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/worries" })}>
         <div className="rounded-card bg-card p-5 shadow-sheet">
           <div className="relative flex h-80 items-center justify-center">
             {picks.map(({ id, label, icon: Icon, tile, sample }, i) => (
