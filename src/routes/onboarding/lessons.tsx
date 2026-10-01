@@ -30,7 +30,7 @@ function LessonsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <OnboardingSkeleton chapter={4} title={`${name}'s lessons will look like this`} cta="Continue">
+      <OnboardingSkeleton chapter={4} title={`${name}'s lessons will look like this`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/worries" })}>
         <div className="rounded-card bg-card p-5 shadow-sheet">
           <div className="relative flex h-80 items-center justify-center">
             {picks.map(({ id, label, icon: Icon, tile, sample }, i) => (
