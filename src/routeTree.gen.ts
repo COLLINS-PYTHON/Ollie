@@ -24,7 +24,9 @@ import { Route as OnboardingAssuranceRouteImport } from './routes/onboarding/ass
 import { Route as OnboardingInterestsRouteImport } from './routes/onboarding/interests'
 import { Route as OnboardingLessonsRouteImport } from './routes/onboarding/lessons'
 import { Route as OnboardingPreviewRouteImport } from './routes/onboarding/preview'
+import { Route as OnboardingPrioritiesRouteImport } from './routes/onboarding/priorities'
 import { Route as OnboardingReadingRouteImport } from './routes/onboarding/reading'
+import { Route as OnboardingScreenTimeRouteImport } from './routes/onboarding/screen-time'
 import { Route as OnboardingWorriesRouteImport } from './routes/onboarding/worries'
 
 const IndexRoute = IndexRouteImport.update({
@@ -102,9 +104,19 @@ const OnboardingPreviewRoute = OnboardingPreviewRouteImport.update({
   path: '/preview',
   getParentRoute: () => OnboardingRoute,
 } as any)
+const OnboardingPrioritiesRoute = OnboardingPrioritiesRouteImport.update({
+  id: '/priorities',
+  path: '/priorities',
+  getParentRoute: () => OnboardingRoute,
+} as any)
 const OnboardingReadingRoute = OnboardingReadingRouteImport.update({
   id: '/reading',
   path: '/reading',
+  getParentRoute: () => OnboardingRoute,
+} as any)
+const OnboardingScreenTimeRoute = OnboardingScreenTimeRouteImport.update({
+  id: '/screen-time',
+  path: '/screen-time',
   getParentRoute: () => OnboardingRoute,
 } as any)
 const OnboardingWorriesRoute = OnboardingWorriesRouteImport.update({
@@ -127,7 +139,9 @@ export interface FileRoutesByFullPath {
   '/onboarding/interests': typeof OnboardingInterestsRoute
   '/onboarding/lessons': typeof OnboardingLessonsRoute
   '/onboarding/preview': typeof OnboardingPreviewRoute
+  '/onboarding/priorities': typeof OnboardingPrioritiesRoute
   '/onboarding/reading': typeof OnboardingReadingRoute
+  '/onboarding/screen-time': typeof OnboardingScreenTimeRoute
   '/onboarding/worries': typeof OnboardingWorriesRoute
   '/onboarding/': typeof OnboardingIndexRoute
 }
@@ -144,7 +158,9 @@ export interface FileRoutesByTo {
   '/onboarding/interests': typeof OnboardingInterestsRoute
   '/onboarding/lessons': typeof OnboardingLessonsRoute
   '/onboarding/preview': typeof OnboardingPreviewRoute
+  '/onboarding/priorities': typeof OnboardingPrioritiesRoute
   '/onboarding/reading': typeof OnboardingReadingRoute
+  '/onboarding/screen-time': typeof OnboardingScreenTimeRoute
   '/onboarding/worries': typeof OnboardingWorriesRoute
   '/onboarding': typeof OnboardingIndexRoute
 }
@@ -164,7 +180,9 @@ export interface FileRoutesById {
   '/onboarding/interests': typeof OnboardingInterestsRoute
   '/onboarding/lessons': typeof OnboardingLessonsRoute
   '/onboarding/preview': typeof OnboardingPreviewRoute
+  '/onboarding/priorities': typeof OnboardingPrioritiesRoute
   '/onboarding/reading': typeof OnboardingReadingRoute
+  '/onboarding/screen-time': typeof OnboardingScreenTimeRoute
   '/onboarding/worries': typeof OnboardingWorriesRoute
   '/onboarding/': typeof OnboardingIndexRoute
 }
@@ -184,7 +202,9 @@ export interface FileRouteTypes {
     | '/onboarding/interests'
     | '/onboarding/lessons'
     | '/onboarding/preview'
+    | '/onboarding/priorities'
     | '/onboarding/reading'
+    | '/onboarding/screen-time'
     | '/onboarding/worries'
     | '/onboarding/'
   fileRoutesByTo: FileRoutesByTo
@@ -201,7 +221,9 @@ export interface FileRouteTypes {
     | '/onboarding/interests'
     | '/onboarding/lessons'
     | '/onboarding/preview'
+    | '/onboarding/priorities'
     | '/onboarding/reading'
+    | '/onboarding/screen-time'
     | '/onboarding/worries'
     | '/onboarding'
   id:
@@ -220,7 +242,9 @@ export interface FileRouteTypes {
     | '/onboarding/interests'
     | '/onboarding/lessons'
     | '/onboarding/preview'
+    | '/onboarding/priorities'
     | '/onboarding/reading'
+    | '/onboarding/screen-time'
     | '/onboarding/worries'
     | '/onboarding/'
   fileRoutesById: FileRoutesById
@@ -341,11 +365,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingPreviewRouteImport
       parentRoute: typeof OnboardingRoute
     }
+    '/onboarding/priorities': {
+      id: '/onboarding/priorities'
+      path: '/priorities'
+      fullPath: '/onboarding/priorities'
+      preLoaderRoute: typeof OnboardingPrioritiesRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
     '/onboarding/reading': {
       id: '/onboarding/reading'
       path: '/reading'
       fullPath: '/onboarding/reading'
       preLoaderRoute: typeof OnboardingReadingRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/onboarding/screen-time': {
+      id: '/onboarding/screen-time'
+      path: '/screen-time'
+      fullPath: '/onboarding/screen-time'
+      preLoaderRoute: typeof OnboardingScreenTimeRouteImport
       parentRoute: typeof OnboardingRoute
     }
     '/onboarding/worries': {
@@ -378,7 +416,9 @@ interface OnboardingRouteChildren {
   OnboardingInterestsRoute: typeof OnboardingInterestsRoute
   OnboardingLessonsRoute: typeof OnboardingLessonsRoute
   OnboardingPreviewRoute: typeof OnboardingPreviewRoute
+  OnboardingPrioritiesRoute: typeof OnboardingPrioritiesRoute
   OnboardingReadingRoute: typeof OnboardingReadingRoute
+  OnboardingScreenTimeRoute: typeof OnboardingScreenTimeRoute
   OnboardingWorriesRoute: typeof OnboardingWorriesRoute
   OnboardingIndexRoute: typeof OnboardingIndexRoute
 }
@@ -389,7 +429,9 @@ const OnboardingRouteChildren: OnboardingRouteChildren = {
   OnboardingInterestsRoute: OnboardingInterestsRoute,
   OnboardingLessonsRoute: OnboardingLessonsRoute,
   OnboardingPreviewRoute: OnboardingPreviewRoute,
+  OnboardingPrioritiesRoute: OnboardingPrioritiesRoute,
   OnboardingReadingRoute: OnboardingReadingRoute,
+  OnboardingScreenTimeRoute: OnboardingScreenTimeRoute,
   OnboardingWorriesRoute: OnboardingWorriesRoute,
   OnboardingIndexRoute: OnboardingIndexRoute,
 }
