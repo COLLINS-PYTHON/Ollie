@@ -22,7 +22,7 @@ export function formatMinutes(m: number) {
   return r ? `${h} hr ${r} min` : `${h} hr`;
 }
 export function formatClock(t: string) {
-  const [h, m] = t.split(":").map(Number);
+  const [h = 0, m = 0] = t.split(":").map(Number);
   const ap = h >= 12 ? "PM" : "AM";
   return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${ap}`;
 }
