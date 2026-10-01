@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
+import { onboardingState, formatMinutes, formatClock } from "@/lib/onboarding-store";
 
 export const Route = createFileRoute("/parent")({
   head: () => ({
@@ -23,16 +24,30 @@ function LineIcon({ children }: { children: ReactNode }) {
   );
 }
 
-const ROWS = [
+const getRows = () => [
   {
     label: "Screen time",
-    hint: "Search and Create only",
+    hint: `${formatMinutes(onboardingState.limitMinutes)} a day, Search and Create only (now about ${formatMinutes(onboardingState.baselineMinutes)})`,
     color: "text-accent-1",
     icon: (
       // hourglass with sand settled at the bottom
       <LineIcon>
         <path d="M7 3h10M7 21h10M8 3c0 4 8 5 8 9s-8 5-8 9M16 3c0 4-8 5-8 9s8 5 8 9" />
         <path d="M10 19h4" />
+      </LineIcon>
+    ),
+  },
+  {
+    label: "Slideshow settings",
+    hint: `Resets daily at ${formatClock(onboardingState.slideshowReset)}, not counted in the limit`,
+    color: "text-accent-1",
+    icon: (
+      // stacked slides with a small reset arrow
+      <LineIcon>
+        <rect x="3" y="7" width="13" height="11" rx="2" />
+        <path d="M7 4h11a2 2 0 0 1 2 2v8" />
+        <path d="M12 11.5a2.5 2.5 0 1 1-1-2" />
+        <path d="M11 8v1.6h1.6" />
       </LineIcon>
     ),
   },
@@ -92,7 +107,7 @@ function ParentDashboard() {
       <p className="text-support mt-1 text-muted-foreground">Settings and progress. Coming soon.</p>
 
       <ul className="mt-6 overflow-hidden rounded-card bg-card shadow-card">
-        {ROWS.map((r, i) => (
+        {getRows().map((r, i) => (
           <li key={r.label} className={i > 0 ? "border-t" : ""}>
             <div className="flex items-center gap-4 px-5 py-4">
               <span className={r.color}>{r.icon}</span>
