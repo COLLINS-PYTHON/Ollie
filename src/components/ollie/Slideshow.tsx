@@ -64,7 +64,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
     setSpeaking(false);
-    if (phase !== "play" || !narration || !parentSettings.soundOn || child.band !== "4-6") return;
+    if (phase !== "play" || !narration || !parentSettings.soundOn || child.band !== "4-6" || status === "correct") return;
     const key = `${index}:${status}:${hint ?? ""}`;
     if (spokenRef.current === key) return;
     spokenRef.current = key;
@@ -223,7 +223,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
         <div className="flex items-center justify-between px-5 pt-12">
           <p className="text-label uppercase tracking-wide text-muted-foreground">{day.label}</p>
           <div className="flex items-center gap-2">
-            {parentSettings.soundOn && typeof window !== "undefined" && "speechSynthesis" in window && (
+            {parentSettings.soundOn && (
               <button type="button" onClick={toggleNarration} aria-label={speaking ? "Stop reading" : "Read aloud"} title={speaking ? "Stop reading" : "Read aloud"} className="flex size-10 items-center justify-center rounded-pill bg-card text-primary shadow-card transition-transform duration-tap active:scale-95">
                 {speaking ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
               </button>
