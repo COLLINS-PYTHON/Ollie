@@ -24,7 +24,7 @@ function MeetPage() {
         <div className="relative mt-8 flex size-48 items-center justify-center">
           {step === 1 && (
             <div className="materialize">
-              <ThinkingOrb state="breathing" size={96} theme="light" aria-label="Ollie appearing" />
+              <ThinkingOrb state="breathing" size={64} theme="light" aria-label="Ollie appearing" />
             </div>
           )}
           {step >= 2 && <img src={ollie} alt="Ollie the puppy" className="materialize bounce-soft size-48 object-contain" />}
