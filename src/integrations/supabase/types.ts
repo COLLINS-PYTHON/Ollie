@@ -14,7 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      accounts: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          pin_hash: string | null
+          sound_enabled: boolean
+          updated_at: string
+          weekly_email_opt_in: boolean
+        }
+        Insert: {
+          created_at?: string
+          email?: string
+          id: string
+          name?: string
+          pin_hash?: string | null
+          sound_enabled?: boolean
+          updated_at?: string
+          weekly_email_opt_in?: boolean
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          pin_hash?: string | null
+          sound_enabled?: boolean
+          updated_at?: string
+          weekly_email_opt_in?: boolean
+        }
+        Relationships: []
+      }
+      children: {
+        Row: {
+          account_id: string
+          age: number
+          chat_retention_setting: number
+          created_at: string
+          id: string
+          interests: string[]
+          name: string
+          progress: Json
+          reading_level: string | null
+          reply_tone: string | null
+          screen_time_limit_minutes: number
+          setup: Json
+          slideshow_reset_time: string
+          updated_at: string
+        }
+        Insert: {
+          account_id: string
+          age?: number
+          chat_retention_setting?: number
+          created_at?: string
+          id?: string
+          interests?: string[]
+          name: string
+          progress?: Json
+          reading_level?: string | null
+          reply_tone?: string | null
+          screen_time_limit_minutes?: number
+          setup?: Json
+          slideshow_reset_time?: string
+          updated_at?: string
+        }
+        Update: {
+          account_id?: string
+          age?: number
+          chat_retention_setting?: number
+          created_at?: string
+          id?: string
+          interests?: string[]
+          name?: string
+          progress?: Json
+          reading_level?: string | null
+          reply_tone?: string | null
+          screen_time_limit_minutes?: number
+          setup?: Json
+          slideshow_reset_time?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "children_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
