@@ -2,6 +2,9 @@
    until the backend foundation adds accounts; trimmed to the parent-set retention (30 days by default). */
 export type ChatRole = "sent" | "received";
 
+/* Kid reactions to an answer. Never counted or streaked; parents only see "wow" moments. */
+export type Reaction = "wow" | "funny" | "knew";
+
 export type ChatMessage = {
   id: string;
   role: ChatRole;
@@ -9,6 +12,7 @@ export type ChatMessage = {
   createdAt: number;
   tier?: string;
   flagReason?: string;
+  reaction?: Reaction;
 };
 
 const KEY = "ollie-chat-v1";

@@ -281,6 +281,11 @@ function ParentDashboard() {
   const weekAgo = Date.now() - 7 * DAY;
   const weekLessons = completions().filter((c) => c.at >= weekAgo);
   const weekQuestions = chat.filter((m) => m.role === "sent" && m.createdAt >= weekAgo).length;
+  const wowMoments = chat.flatMap((m, i) => {
+    if (m.role !== "received" || m.reaction !== "wow" || m.createdAt < weekAgo) return [];
+    const q = [...chat.slice(0, i)].reverse().find((x) => x.role === "sent");
+    return q ? [{ id: m.id, question: q.text }] : [];
+  }).slice(-3).reverse();
   const quizAvg = weekLessons.length
     ? Math.round((weekLessons.reduce((s, c) => s + c.correct / Math.max(c.total, 1), 0) / weekLessons.length) * 100)
     : null;
@@ -356,6 +361,16 @@ function ParentDashboard() {
             </div>
           ))}
         </div>
+        {wowMoments.length > 0 && (
+          <div className="mt-3 rounded-control bg-white/80 p-3">
+            <p className="text-label uppercase tracking-wide text-muted-foreground">Wow moments</p>
+            <ul className="mt-1.5 flex flex-col gap-1">
+              {wowMoments.map((w) => (
+                <li key={w.id} className="text-support text-foreground">"{w.question}"</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <Section title="Controls">
