@@ -10,6 +10,8 @@ export const Route = createFileRoute("/onboarding/age")({
       { name: "description", content: "Tell Ollie your child's age to tune the experience." },
       { property: "og:title", content: "Your child's age | Ollie" },
       { property: "og:description", content: "Tell Ollie your child's age to tune the experience." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AgePage,

@@ -11,6 +11,8 @@ export const Route = createFileRoute("/onboarding/priorities")({
       { name: "description", content: "Choose what matters most to you so Ollie can focus on it." },
       { property: "og:title", content: "What matters most | Ollie" },
       { property: "og:description", content: "Choose what matters most to you so Ollie can focus on it." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: PrioritiesPage,

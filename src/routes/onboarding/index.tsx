@@ -10,6 +10,8 @@ export const Route = createFileRoute("/onboarding/")({
       { name: "description", content: "Set up Ollie for your child in a few quick steps." },
       { property: "og:title", content: "Get started | Ollie" },
       { property: "og:description", content: "Set up Ollie for your child in a few quick steps." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: OnboardingPage,

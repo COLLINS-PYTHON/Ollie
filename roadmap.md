@@ -5,6 +5,7 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Search: composing orb inside Ollie's reply bubble; avatar tilts while listening and nods when an answer arrives
 - Onboarding: name and answers survive navigation and refreshes in a tab-local draft; PIN excluded
 - Onboarding: introductory daily-slideshow explanation on the interests screen; subtle step transitions
 - Slideshow: browser read-aloud for the two lowest reading levels, with a manual replay control
