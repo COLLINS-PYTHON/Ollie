@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Sparkles, MessageCircleHeart } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState, type ReadingLevel } from "@/lib/onboarding-store";
+import { childName } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/preview")({
   head: () => ({
@@ -31,7 +32,7 @@ const ANSWERS: Record<ReadingLevel, string> = {
 
 function PreviewPage() {
   const navigate = useNavigate();
-  const name = onboardingState.name.trim() || "your child";
+  const name = childName(onboardingState.name);
   const level = onboardingState.readingLevel ?? "stories";
   const answer = ANSWERS[level];
   const [step, setStep] = useState(0);

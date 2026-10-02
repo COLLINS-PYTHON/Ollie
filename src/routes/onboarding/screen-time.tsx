@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState, formatMinutes } from "@/lib/onboarding-store";
+import { childName } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/screen-time")({
   head: () => ({
@@ -51,7 +52,7 @@ function Stepper({
 
 function ScreenTimePage() {
   const navigate = useNavigate();
-  const name = onboardingState.name.trim() || "your child";
+  const name = childName(onboardingState.name);
   const [baseline, setBaseline] = useState(onboardingState.baselineMinutes);
   const [limit, setLimit] = useState(onboardingState.limitMinutes);
   const [reset, setReset] = useState(onboardingState.slideshowReset);

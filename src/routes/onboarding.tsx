@@ -47,8 +47,8 @@ export function OnboardingSkeleton({
 }) {
   const router = useRouter();
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col">
-      <header className="flex items-center gap-4 px-5 pt-4">
+    <div className="mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden">
+      <header className="flex items-center gap-4 px-6 pt-5">
         <button
           type="button"
           aria-label="Back"
@@ -67,13 +67,13 @@ export function OnboardingSkeleton({
         </div>
       </header>
 
-      <main className="screen-enter flex-1 px-5 pb-32 pt-8">
-        <h1 className="text-title text-foreground">{title}</h1>
-        <div className="mt-6">{children}</div>
+      <main className="screen-enter flex min-h-0 flex-1 flex-col px-6 pb-28 pt-9">
+        <h1 className="text-title mx-auto w-full max-w-sm text-center text-foreground">{title}</h1>
+        <div className="mt-7 flex-1">{children}</div>
       </main>
 
       <div
-        className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md bg-gradient-to-t from-background via-background to-transparent px-5 pt-6"
+        className="onboarding-cta-fade fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-md px-6 pt-7"
         style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}
       >
         <button

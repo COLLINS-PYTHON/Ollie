@@ -1,7 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
+import { childName } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/age")({
   head: () => ({
@@ -18,18 +19,25 @@ export const Route = createFileRoute("/onboarding/age")({
 });
 
 const AGES = [4, 5, 6, 7, 8, 9, 10, 11, 12];
-const ITEM_H = 48;
+const ITEM_H = 56;
 
 function AgePage() {
   const navigate = useNavigate();
-  const name = onboardingState.name.trim() || "your child";
+  const name = childName(onboardingState.name);
   const [age, setAge] = useState(onboardingState.age);
   const listRef = useRef<HTMLDivElement>(null);
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const el = listRef.current;
-    if (el) el.scrollTop = AGES.indexOf(onboardingState.age) * ITEM_H;
+    if (!el) return;
+    const index = Math.max(0, AGES.indexOf(onboardingState.age));
+    requestAnimationFrame(() => {
+      el.scrollTop = index * ITEM_H;
+    });
+    return () => {
+      if (scrollTimer.current) clearTimeout(scrollTimer.current);
+    };
   }, []);
 
   const settle = () => {
@@ -41,6 +49,22 @@ function AgePage() {
     const landed = AGES[clamped] ?? 7;
     setAge(landed);
     onboardingState.age = landed;
+  };
+
+  const choose = (nextAge: number) => {
+    const index = AGES.indexOf(nextAge);
+    if (index < 0) return;
+    setAge(nextAge);
+    onboardingState.age = nextAge;
+    listRef.current?.scrollTo({ top: index * ITEM_H, behavior: "smooth" });
+  };
+
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+    event.preventDefault();
+    const direction = event.key === "ArrowDown" ? 1 : -1;
+    const current = AGES.indexOf(age);
+    choose(AGES[Math.max(0, Math.min(AGES.length - 1, current + direction))] ?? age);
   };
 
   const onScroll = () => {
@@ -60,45 +84,46 @@ function AgePage() {
         cta="Continue"
         onContinue={() => navigate({ to: "/onboarding/reading" })}
       >
-        <div className="relative mx-auto w-full max-w-[220px]">
-          {/* selection highlight */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-12 -translate-y-1/2 rounded-control bg-card shadow-card"
-          />
-          <div
-            ref={listRef}
-            onScroll={onScroll}
-            role="listbox"
-            aria-label="Age"
-            aria-activedescendant={`age-${age}`}
-            className="h-[240px] snap-y snap-mandatory overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            style={{ paddingTop: 96, paddingBottom: 96 }}
-          >
-            {AGES.map((a) => {
-              const active = a === age;
-              return (
-                <div
-                  key={a}
-                  id={`age-${a}`}
-                  role="option"
-                  aria-selected={active}
-                  className={`flex h-12 snap-center items-center justify-center text-title transition-all duration-element ${
-                    active ? "age-glow text-primary" : "text-muted-foreground/50"
-                  }`}
-                >
-                  {a}
-                </div>
-              );
-            })}
+        <div className="mx-auto flex w-full max-w-xs flex-col items-center">
+          <div className="age-wheel-shell relative h-64 w-full overflow-hidden rounded-card" aria-label="Choose age">
+            <div aria-hidden className="age-wheel-selection pointer-events-none absolute inset-x-4 top-1/2 z-10 h-14 -translate-y-1/2 rounded-control" />
+            <div
+              ref={listRef}
+              onScroll={onScroll}
+              onKeyDown={onKeyDown}
+              role="listbox"
+              tabIndex={0}
+              aria-label={`${name}'s age`}
+              aria-activedescendant={`age-${age}`}
+              className="relative z-20 h-full snap-y snap-mandatory overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              style={{ paddingTop: 100, paddingBottom: 100 }}
+            >
+              {AGES.map((a) => {
+                const active = a === age;
+                return (
+                  <button
+                    key={a}
+                    id={`age-${a}`}
+                    type="button"
+                    role="option"
+                    aria-selected={active}
+                    onClick={() => choose(a)}
+                    className={`flex h-14 w-full snap-center items-center justify-center transition-all duration-element ${
+                      active ? "age-glow text-[34px] font-extrabold text-primary" : "text-[22px] font-semibold text-muted-foreground"
+                    }`}
+                  >
+                    {a}
+                  </button>
+                );
+              })}
+            </div>
+            <div aria-hidden className="age-wheel-mask pointer-events-none absolute inset-0 z-30" />
           </div>
-          {/* fade edges */}
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-surface-2 to-transparent" />
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-surface-2 to-transparent" />
+          <p className="text-label mt-3 font-bold uppercase text-muted-foreground">Years old</p>
         </div>
 
         {age >= 4 && age <= 6 && (
-          <p className="text-support screen-enter mx-auto mt-6 max-w-xs rounded-control bg-card p-4 text-center text-muted-foreground shadow-card">
+          <p className="text-support screen-enter mx-auto mt-5 max-w-xs rounded-control border border-card/80 bg-card/80 p-4 text-center text-foreground shadow-card backdrop-blur-sm">
             For kids this age, Ollie works even better together. We'd love for you to explore
             alongside {name} sometimes, though it's completely up to you.
           </p>
