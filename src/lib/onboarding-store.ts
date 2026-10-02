@@ -38,15 +38,39 @@ export function formatClock(t: string) {
   return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${ap}`;
 }
 
-/* Profile persistence (device-only until accounts exist). Onboarding keeps
-   values in memory; the app saves them once setup ends and reloads them on a
-   fresh visit. Loaded only from effects so server and first render match. */
+/* Setup keeps values in memory and a tab-local draft; the finished profile
+   is saved separately and synced to the parent's account when signed in.
+   Load from effects so server and first render match. */
 export const parentSettings = {
   soundOn: true,
   retentionDays: 30 as 1 | 7 | 30,
 };
 
 const PROFILE_KEY = "ollie-profile-v1";
+const DRAFT_KEY = "ollie-onboarding-draft-v1";
+
+/* A tab-local setup draft keeps the name visible after a refresh without
+   turning an unfinished onboarding into the child's saved profile. Never
+   persist the PIN or its hash in this draft. */
+export function saveOnboardingDraft() {
+  try {
+    const { pin: _pin, pinHash: _pinHash, ...draft } = onboardingState;
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+export function loadOnboardingDraft() {
+  try {
+    const raw = sessionStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    const { pin: _pin, pinHash: _pinHash, ...draft } = JSON.parse(raw) as Partial<typeof onboardingState>;
+    Object.assign(onboardingState, draft);
+  } catch {
+    /* corrupted, keep current values */
+  }
+}
 
 export function saveProfile() {
   try {

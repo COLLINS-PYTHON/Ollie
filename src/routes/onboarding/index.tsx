@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { OnboardingSkeleton } from "../onboarding";
-import { onboardingState } from "@/lib/onboarding-store";
+import { onboardingState, saveOnboardingDraft } from "@/lib/onboarding-store";
 
 export const Route = createFileRoute("/onboarding/")({
   head: () => ({
@@ -27,6 +27,7 @@ function OnboardingPage() {
         ctaDisabled={!name.trim()}
         onContinue={() => {
           onboardingState.name = name.trim();
+          saveOnboardingDraft();
           navigate({ to: "/onboarding/age" });
         }}
       >

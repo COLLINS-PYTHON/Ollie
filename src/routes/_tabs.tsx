@@ -31,6 +31,7 @@ function TabsLayout() {
     name: "friend",
     band: "7-9",
     interests: [],
+    needsReadAloud: false,
   });
 
   /* The daily lesson takes over the app until it is done for the day. */
@@ -41,6 +42,7 @@ function TabsLayout() {
       name: onboardingState.name || "friend",
       band: effectiveBand(onboardingState.age || 7, onboardingState.readingLevel ?? "stories"),
       interests: onboardingState.interests,
+      needsReadAloud: onboardingState.readingLevel === "none" || onboardingState.readingLevel === "sounding",
     });
     setTakeover(slideshowDue());
   }, []);

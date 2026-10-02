@@ -7,8 +7,10 @@ import { customDay, loadCustom, markCustomDone } from "@/lib/custom-lesson-store
 import { addCookies, loadBalance, saveBalance } from "@/lib/picture-store";
 import { Rocket } from "lucide-react";
 import { quizOptions, quizText, type Band } from "@/lib/slideshow/types";
+import { parentSettings } from "@/lib/onboarding-store";
+import { Volume2, VolumeX } from "lucide-react";
 
-export type SlideshowChild = { name: string; band: Band; interests: string[] };
+export type SlideshowChild = { name: string; band: Band; interests: string[]; needsReadAloud: boolean };
 
 const PRAISE = ["Yes! Exactly right!", "That is it!", "You nailed it!", "Perfect!"];
 
@@ -36,6 +38,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
   const [praise, setPraise] = useState("");
   const [score, setScore] = useState({ correct: 0, total: 0 });
   const [rewarded, setRewarded] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const timer = useRef<number | null>(null);
 
   useEffect(() => () => { if (timer.current) window.clearTimeout(timer.current); }, []);
@@ -46,6 +49,40 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
   const CategoryIcon = day ? categoryIconId(day.categoryId) : Rocket;
   const tint = { "--slide-color": day?.categoryId === "custom" ? "var(--brand)" : `var(--cat-${day?.categoryId ?? "space"})` } as CSSProperties;
   const quizNumber = slides.slice(0, index + 1).filter((s) => s.kind === "quiz").length;
+  const narration = current?.kind === "content"
+    ? current.sub.caption[child.band]
+    : current?.kind === "quiz"
+      ? status === "reveal"
+        ? `Here is the one: ${quizOptions(current.sub.quiz, child.band)[current.sub.quiz.answer]}. ${quizText(current.sub.quiz.why, child.band)}`
+        : hint && status === "open"
+          ? `Not quite! Try again! ${hint}`
+          : `${current.sub.quiz.q[child.band]} ${quizOptions(current.sub.quiz, child.band).join(". ")}`
+      : "";
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+    if (phase !== "play" || !narration || !parentSettings.soundOn || !child.needsReadAloud || status === "correct") return;
+    const utterance = new SpeechSynthesisUtterance(narration);
+    utterance.rate = 0.88;
+    utterance.onstart = () => setSpeaking(true);
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+    return () => { window.speechSynthesis.cancel(); };
+  }, [phase, index, status, hint, narration, child.band, child.needsReadAloud]);
+
+  const toggleNarration = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window) || !parentSettings.soundOn) return;
+    if (speaking) { window.speechSynthesis.cancel(); setSpeaking(false); return; }
+    const utterance = new SpeechSynthesisUtterance(narration);
+    utterance.rate = child.needsReadAloud ? 0.88 : 1;
+    utterance.onstart = () => setSpeaking(true);
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+  };
 
   const clearSlideState = () => {
     setStatus("open");
@@ -181,13 +218,20 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
       <div className="slide-tint flex flex-1 flex-col">
         <div className="flex items-center justify-between px-5 pt-12">
           <p className="text-label uppercase tracking-wide text-muted-foreground">{day.label}</p>
-          <button
-            type="button"
-            onClick={advance}
-            className="rounded-pill bg-white/80 px-3.5 py-1.5 text-support text-muted-foreground transition-transform duration-tap active:scale-95"
-          >
-            Skip
-          </button>
+          <div className="flex items-center gap-2">
+            {parentSettings.soundOn && (
+              <button type="button" onClick={toggleNarration} aria-label={speaking ? "Stop reading" : "Read aloud"} title={speaking ? "Stop reading" : "Read aloud"} className="flex size-10 items-center justify-center rounded-pill bg-card text-primary shadow-card transition-transform duration-tap active:scale-95">
+                {speaking ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={advance}
+              className="rounded-pill bg-card/80 px-3.5 py-1.5 text-support text-muted-foreground transition-transform duration-tap active:scale-95"
+            >
+              Skip
+            </button>
+          </div>
         </div>
 
         {current.kind === "content" ? (
