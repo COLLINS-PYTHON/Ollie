@@ -99,24 +99,24 @@ function SearchChat() {
     setBusy(true);
     try {
       const res = await askOllie({
-        question,
-        child,
-        history: next.slice(-8).map((m) => ({
-          role: m.role === "sent" ? ("user" as const) : ("assistant" as const),
-          text: m.text,
-        })),
-      });
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `r-${Date.now()}`,
-          role: "received",
-          text: res.ok ? res.answer : res.error,
-          createdAt: Date.now(),
-          tier: res.ok ? res.tier : undefined,
-          flagReason: res.ok ? res.flagReason : undefined,
+        data: {
+          question,
+          child,
+          history: next.slice(-8).map((m) => ({
+            role: m.role === "sent" ? ("user" as const) : ("assistant" as const),
+            text: m.text,
+          })),
         },
-      ]);
+      });
+      const reply: ChatMessage = {
+        id: `r-${Date.now()}`,
+        role: "received",
+        text: res.ok ? res.answer : res.error,
+        createdAt: Date.now(),
+        ...(res.ok && res.tier ? { tier: res.tier } : {}),
+        ...(res.ok && res.flagReason ? { flagReason: res.flagReason } : {}),
+      };
+      setMessages((prev) => [...prev, reply]);
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -233,7 +233,7 @@ function SearchChat() {
         )}
         {busy && (
           <div className="mt-4 flex items-center justify-center gap-2">
-            <ThinkingOrb state="searching" size={40} theme="light" aria-label="Ollie thinking" />
+            <ThinkingOrb state="searching" size={64} theme="light" aria-label="Ollie thinking" />
             <span className="text-support text-muted-foreground">Ollie is thinking</span>
           </div>
         )}
