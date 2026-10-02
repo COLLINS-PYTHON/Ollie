@@ -179,8 +179,14 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
     if (next.length < 4) return;
     window.setTimeout(async () => {
       if (!creating) {
-        if (await checkPin(next)) onUnlock();
-        else { setError("That PIN didn't match. Try again."); setPin(""); }
+        const wait = lockedSeconds(PIN_LOCK);
+        if (wait) { setError(`Too many tries. Wait ${wait} seconds.`); setPin(""); return; }
+        if (await checkPin(next)) { clearFails(PIN_LOCK); onUnlock(); }
+        else {
+          const locked = recordFail(PIN_LOCK);
+          setError(locked ? `Too many tries. Wait ${locked} seconds.` : "That PIN didn't match. Try again.");
+          setPin("");
+        }
       } else if (!first) {
         setFirst(next); setPin("");
       } else if (next === first) {

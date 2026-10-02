@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import { pullAll } from "@/lib/cloud-sync";
+import { clearFails, lockedSeconds, LOGIN_LOCK, pullAll, recordFail } from "@/lib/cloud-sync";
 import { pageMeta } from "@/lib/meta";
 
 export const Route = createFileRoute("/login")({
@@ -32,10 +32,17 @@ function LoginPage() {
   }, []);
 
   async function login() {
+    const wait = lockedSeconds(LOGIN_LOCK);
+    if (wait) return setError(`Too many tries. Wait ${wait} seconds and try again.`);
     setBusy(true);
     setError("");
     const { error: err } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-    if (err) { setBusy(false); return setError("That email and password didn't match. Try again."); }
+    if (err) {
+      setBusy(false);
+      const locked = recordFail(LOGIN_LOCK);
+      return setError(locked ? `Too many tries. Wait ${locked} seconds and try again.` : "That email and password didn't match. Try again.");
+    }
+    clearFails(LOGIN_LOCK);
     await enter();
   }
 
@@ -62,6 +69,7 @@ function LoginPage() {
           <input className={field} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" aria-label="Email" />
           <input className={field} type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" aria-label="Password" />
         </div>
+        <Link to="/forgot-password" className="mt-3 self-end text-support font-medium text-primary">Forgot password?</Link>
         {error && <p role="alert" className="mt-3 text-support text-destructive">{error}</p>}
         <div className="my-5 flex items-center gap-3 text-muted-foreground"><span className="h-px flex-1 bg-border" /><span className="text-support">or</span><span className="h-px flex-1 bg-border" /></div>
         <div className="flex flex-col gap-3">
