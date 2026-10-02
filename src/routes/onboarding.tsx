@@ -26,7 +26,7 @@ function OnboardingLayout() {
     };
   }, [pathname, ready]);
 
-  return ready ? <Outlet /> : null;
+  return ready ? <div key={pathname} className="onboarding-page-enter"><Outlet /></div> : null;
 }
 
 /* Fixed onboarding skeleton: back, 4-segment chapter bar, title slot, pinned button. */

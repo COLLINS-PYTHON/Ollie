@@ -240,6 +240,14 @@
   animation: screen-enter var(--duration-element) var(--ease-enter) both;
 }
 
+@utility onboarding-page-enter {
+  animation: onboarding-page-enter var(--duration-element) var(--ease-enter) both;
+}
+@keyframes onboarding-page-enter {
+  from { opacity: 0.45; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 /* Reading-level screen: calmer blue-to-ice gradient */
 @utility bg-gradient-ice {
   background: linear-gradient(180deg, var(--brand-deep) -30%, var(--brand) 45%, #dbe4fb 100%);
