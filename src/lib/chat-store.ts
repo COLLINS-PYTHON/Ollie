@@ -1,5 +1,5 @@
 /* Search chat persistence. One conversation per child (v1), stored on-device
-   until the backend foundation adds accounts; trimmed to a rolling 30 days. */
+   until the backend foundation adds accounts; trimmed to the parent-set retention (30 days by default). */
 export type ChatRole = "sent" | "received";
 
 export type ChatMessage = {
@@ -12,10 +12,10 @@ export type ChatMessage = {
 };
 
 const KEY = "ollie-chat-v1";
-const RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
+import { parentSettings } from "./onboarding-store";
 
 function trim(messages: ChatMessage[]): ChatMessage[] {
-  const cutoff = Date.now() - RETENTION_MS;
+  const cutoff = Date.now() - parentSettings.retentionDays * 24 * 60 * 60 * 1000;
   return messages.filter((m) => m.createdAt >= cutoff);
 }
 

@@ -400,3 +400,10 @@
   from { background-position: 0 0; }
   to { background-position: 96px 96px; }
 }
+
+/* Scalloped top edge for celebratory summary cards (weekly report). */
+@utility scalloped {
+  -webkit-mask: radial-gradient(9px at 50% 0, #0000 98%, #000) 50% / 22px 100%;
+  mask: radial-gradient(9px at 50% 0, #0000 98%, #000) 50% / 22px 100%;
+  padding-top: 1.75rem;
+}
