@@ -46,7 +46,7 @@ export function pickCategoryId(interests: string[], seed = daySeed()): string {
   const pool = interests.filter((id) => PACKS[id]?.length);
   const list = pool.length > 0 ? pool : CATEGORY_IDS.filter((id) => PACKS[id]?.length);
   if (list.length === 0) return "space";
-  return list[seed % list.length];
+  return list[seed % list.length] ?? "space";
 }
 
 export function buildDay(categoryId: string): Day | null {

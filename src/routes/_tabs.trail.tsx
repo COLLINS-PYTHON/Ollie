@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Flame } from "lucide-react";
+import { Flame, Rocket } from "lucide-react";
 import { INTERESTS } from "@/lib/interests";
 import { completions, streakDays, type Completion } from "@/lib/slideshow-store";
 import { pageMeta } from "@/lib/meta";
@@ -42,7 +42,7 @@ function Trail() {
         <ul className="mt-5 flex flex-col gap-2.5">
           {log.map((c) => {
             const category = INTERESTS.find((i) => i.id === c.categoryId);
-            const Icon = category?.icon ?? INTERESTS[0].icon;
+            const Icon = category?.icon ?? Rocket;
             return (
               <li key={c.id} className="flex items-center gap-3 rounded-card bg-white p-3.5 shadow-card">
                 <div className={`glossy flex size-10 shrink-0 items-center justify-center rounded-control bg-gradient-to-b ${category?.tile ?? "from-cat-space to-cat-space-deep"}`}>
