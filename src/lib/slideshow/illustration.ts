@@ -41,3 +41,9 @@ export function findIllustration(question: string): Illustration | null {
   if (!cat) return null;
   return { sub: best.sub, tile: cat.tile, label: cat.label };
 }
+
+export function illustrationById(id: string): Illustration | null {
+  const e = ENTRIES.find((x) => x.sub.id === id);
+  const cat = e && INTERESTS.find((i) => i.id === e.categoryId);
+  return e && cat ? { sub: e.sub, tile: cat.tile, label: cat.label } : null;
+}

@@ -3,7 +3,25 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUp, Mic, Volume2 } from "lucide-react";
 import { ThinkingOrb } from "thinking-orbs";
 import { askOllie } from "@/lib/search.functions";
+import { findIllustration, illustrationById } from "@/lib/slideshow/illustration";
 import { loadChat, saveChat, type ChatMessage, type Reaction } from "@/lib/chat-store";
+
+function AnswerArt({ id }: { id: string }) {
+  const art = illustrationById(id);
+  if (!art) return null;
+  const Icon = art.sub.icon;
+  return (
+    <div className="pop-in flex items-center gap-2.5 rounded-[18px] bg-surface p-2 pr-3.5">
+      <div className={`flex size-12 shrink-0 items-center justify-center rounded-control bg-gradient-to-br ${art.tile} shadow-card`}>
+        <Icon className="size-6 text-white" strokeWidth={2} />
+      </div>
+      <div className="min-w-0">
+        <p className="text-label text-muted-foreground">{art.label}</p>
+        <p className="text-support font-bold text-foreground">{art.sub.title}</p>
+      </div>
+    </div>
+  );
+}
 
 const REACTIONS: { id: Reaction; label: string }[] = [
   { id: "wow", label: "Wow" },
@@ -131,6 +149,11 @@ function SearchChat() {
         ...(res.ok && res.tier ? { tier: res.tier } : {}),
         ...(res.ok && res.flagReason ? { flagReason: res.flagReason } : {}),
       };
+      /* Ages 4-9 see existing slideshow art beside answers on a library topic. */
+      if (res.ok && res.tier === "ok" && child.age <= 9) {
+        const art = findIllustration(question);
+        if (art) reply.illustrationId = art.sub.id;
+      }
       setMessages((prev) => [...prev, reply]);
       nodAvatar();
     } catch {
@@ -242,6 +265,7 @@ function SearchChat() {
                       <Volume2 className="size-3.5" />
                     </button>
                   </div>
+                  {m.illustrationId && <AnswerArt id={m.illustrationId} />}
                   {(!m.tier || m.tier === "ok") && (
                     <div className="mb-1 flex gap-1" role="group" aria-label="React to this answer">
                       {REACTIONS.map((r) => {
