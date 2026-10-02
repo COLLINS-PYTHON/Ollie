@@ -11,7 +11,7 @@ export const Route = createFileRoute("/onboarding/paywall")({
 });
 
 /* Prices are placeholders until the owner sets real ones. */
-const PRICES = { monthly: "$9.99 / month", yearly: "$83.99 / year" };
+const PRICES = { monthly: "$11.99 / month", yearly: "$99.99 / year" };
 const FEATURES = ["Safe search", "Daily educational slideshows", "Age-appropriate content", "Age-appropriate image generation", "Full parent dashboard", "Weekly progress reports"];
 
 function PaywallPage() {
