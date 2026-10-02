@@ -18,6 +18,7 @@ import {
   type Picture,
 } from "@/lib/picture-store";
 import { onboardingState } from "@/lib/onboarding-store";
+import { checkPin, hasPin } from "@/lib/cloud-sync";
 import { pageMeta } from "@/lib/meta";
 
 export const Route = createFileRoute("/_tabs/create")({
