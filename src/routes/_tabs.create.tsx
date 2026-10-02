@@ -18,7 +18,7 @@ import {
   type Picture,
 } from "@/lib/picture-store";
 import { onboardingState } from "@/lib/onboarding-store";
-import { checkPin, hasPin } from "@/lib/cloud-sync";
+import { checkPin, clearFails, hasPin, lockedSeconds, PIN_LOCK, recordFail, uploadPicture } from "@/lib/cloud-sync";
 import { pageMeta } from "@/lib/meta";
 
 export const Route = createFileRoute("/_tabs/create")({
@@ -153,6 +153,7 @@ function CreateScreen() {
       });
       const pic: Picture = { id: `p-${Date.now()}`, idea: text, dataUrl: finalUrl, createdAt: Date.now() };
       await savePicture(pic).catch(() => {});
+      void uploadPicture(pic).catch(() => {});
       setPictures((prev) => [pic, ...prev]);
       setIdea("");
       setPick({});
@@ -444,8 +445,10 @@ function PopupBody({
       setWrong(false);
       if (value.length === 4) {
         void (async () => {
-        if (!hasPin() || (await checkPin(value))) onPinOk(jar);
+        if (lockedSeconds(PIN_LOCK)) { setWrong(true); setPin(""); return; }
+        if (!hasPin() || (await checkPin(value))) { clearFails(PIN_LOCK); onPinOk(jar); }
         else {
+          recordFail(PIN_LOCK);
           setWrong(true);
           setPin("");
         }
