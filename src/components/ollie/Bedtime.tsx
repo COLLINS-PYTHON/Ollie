@@ -25,7 +25,7 @@ export function Bedtime({ name }: { name: string }) {
           style={{ left: `${x}%`, top: `${y}%`, width: 4, height: 4 }}
         />
       ))}
-      <span aria-hidden className="absolute rounded-pill bg-gold" style={{ right: "14%", top: "10%", width: 48, height: 48, boxShadow: "0 0 40px var(--gold)" }} />
+      <span aria-hidden className="absolute rounded-pill bg-white" style={{ right: "14%", top: "10%", width: 48, height: 48, opacity: 0.9, boxShadow: "0 0 40px white" }} />
 
       <img src={ollieSleeping} alt="Ollie asleep" width={220} height={220} className="relative w-56" />
       <p className="relative mt-6 text-title text-white">
@@ -40,7 +40,7 @@ export function Bedtime({ name }: { name: string }) {
           Goodnight, Ollie.
         </button>
       )}
-      <Link to="/parent" className="relative mt-12 text-support text-white opacity-60 underline-offset-2 hover:underline">
+      <Link to="/parent" style={{ marginTop: 40 }} className="relative text-support text-white opacity-60 underline-offset-2 hover:underline">
         Grown-ups: change the daily limit in the Parent Dashboard
       </Link>
     </div>
