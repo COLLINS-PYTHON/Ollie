@@ -28,6 +28,7 @@ import { Route as OnboardingAgeRouteImport } from './routes/onboarding/age'
 import { Route as OnboardingAssuranceRouteImport } from './routes/onboarding/assurance'
 import { Route as OnboardingBuildingRouteImport } from './routes/onboarding/building'
 import { Route as OnboardingFactRouteImport } from './routes/onboarding/fact'
+import { Route as OnboardingHandoffRouteImport } from './routes/onboarding/handoff'
 import { Route as OnboardingInterestsRouteImport } from './routes/onboarding/interests'
 import { Route as OnboardingLessonsRouteImport } from './routes/onboarding/lessons'
 import { Route as OnboardingMeetRouteImport } from './routes/onboarding/meet'
@@ -137,6 +138,11 @@ const OnboardingFactRoute = OnboardingFactRouteImport.update({
   path: '/fact',
   getParentRoute: () => OnboardingRoute,
 } as any)
+const OnboardingHandoffRoute = OnboardingHandoffRouteImport.update({
+  id: '/handoff',
+  path: '/handoff',
+  getParentRoute: () => OnboardingRoute,
+} as any)
 const OnboardingInterestsRoute = OnboardingInterestsRouteImport.update({
   id: '/interests',
   path: '/interests',
@@ -221,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/onboarding/assurance': typeof OnboardingAssuranceRoute
   '/onboarding/building': typeof OnboardingBuildingRoute
   '/onboarding/fact': typeof OnboardingFactRoute
+  '/onboarding/handoff': typeof OnboardingHandoffRoute
   '/onboarding/interests': typeof OnboardingInterestsRoute
   '/onboarding/lessons': typeof OnboardingLessonsRoute
   '/onboarding/meet': typeof OnboardingMeetRoute
@@ -253,6 +260,7 @@ export interface FileRoutesByTo {
   '/onboarding/assurance': typeof OnboardingAssuranceRoute
   '/onboarding/building': typeof OnboardingBuildingRoute
   '/onboarding/fact': typeof OnboardingFactRoute
+  '/onboarding/handoff': typeof OnboardingHandoffRoute
   '/onboarding/interests': typeof OnboardingInterestsRoute
   '/onboarding/lessons': typeof OnboardingLessonsRoute
   '/onboarding/meet': typeof OnboardingMeetRoute
@@ -288,6 +296,7 @@ export interface FileRoutesById {
   '/onboarding/assurance': typeof OnboardingAssuranceRoute
   '/onboarding/building': typeof OnboardingBuildingRoute
   '/onboarding/fact': typeof OnboardingFactRoute
+  '/onboarding/handoff': typeof OnboardingHandoffRoute
   '/onboarding/interests': typeof OnboardingInterestsRoute
   '/onboarding/lessons': typeof OnboardingLessonsRoute
   '/onboarding/meet': typeof OnboardingMeetRoute
@@ -323,6 +332,7 @@ export interface FileRouteTypes {
     | '/onboarding/assurance'
     | '/onboarding/building'
     | '/onboarding/fact'
+    | '/onboarding/handoff'
     | '/onboarding/interests'
     | '/onboarding/lessons'
     | '/onboarding/meet'
@@ -355,6 +365,7 @@ export interface FileRouteTypes {
     | '/onboarding/assurance'
     | '/onboarding/building'
     | '/onboarding/fact'
+    | '/onboarding/handoff'
     | '/onboarding/interests'
     | '/onboarding/lessons'
     | '/onboarding/meet'
@@ -389,6 +400,7 @@ export interface FileRouteTypes {
     | '/onboarding/assurance'
     | '/onboarding/building'
     | '/onboarding/fact'
+    | '/onboarding/handoff'
     | '/onboarding/interests'
     | '/onboarding/lessons'
     | '/onboarding/meet'
@@ -553,6 +565,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingFactRouteImport
       parentRoute: typeof OnboardingRoute
     }
+    '/onboarding/handoff': {
+      id: '/onboarding/handoff'
+      path: '/handoff'
+      fullPath: '/onboarding/handoff'
+      preLoaderRoute: typeof OnboardingHandoffRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
     '/onboarding/interests': {
       id: '/onboarding/interests'
       path: '/interests'
@@ -667,6 +686,7 @@ interface OnboardingRouteChildren {
   OnboardingAssuranceRoute: typeof OnboardingAssuranceRoute
   OnboardingBuildingRoute: typeof OnboardingBuildingRoute
   OnboardingFactRoute: typeof OnboardingFactRoute
+  OnboardingHandoffRoute: typeof OnboardingHandoffRoute
   OnboardingInterestsRoute: typeof OnboardingInterestsRoute
   OnboardingLessonsRoute: typeof OnboardingLessonsRoute
   OnboardingMeetRoute: typeof OnboardingMeetRoute
@@ -689,6 +709,7 @@ const OnboardingRouteChildren: OnboardingRouteChildren = {
   OnboardingAssuranceRoute: OnboardingAssuranceRoute,
   OnboardingBuildingRoute: OnboardingBuildingRoute,
   OnboardingFactRoute: OnboardingFactRoute,
+  OnboardingHandoffRoute: OnboardingHandoffRoute,
   OnboardingInterestsRoute: OnboardingInterestsRoute,
   OnboardingLessonsRoute: OnboardingLessonsRoute,
   OnboardingMeetRoute: OnboardingMeetRoute,
