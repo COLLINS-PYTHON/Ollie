@@ -15,7 +15,7 @@ import { addCookies, cookiesLeft, JARS, loadBalance, saveBalance, type Balance }
 import { completions, prefs, setPrefs, streakDays, type SlideshowPrefs } from "@/lib/slideshow-store";
 import { minutesToday } from "@/lib/usage-store";
 import { INTERESTS } from "@/lib/interests";
-import { checkPin, deleteCloudData, hasPin, pushAll, sealPin } from "@/lib/cloud-sync";
+import { checkPin, clearFails, deleteCloudData, hasPin, lockedSeconds, PIN_LOCK, pushAll, recordFail, sealPin } from "@/lib/cloud-sync";
 
 export const Route = createFileRoute("/parent")({
   head: () => ({
