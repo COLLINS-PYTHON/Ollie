@@ -12,7 +12,7 @@ export type ChatMessage = {
   createdAt: number;
   tier?: string;
   flagReason?: string;
-  reaction?: Reaction;
+  reaction?: Reaction | undefined;
 };
 
 const KEY = "ollie-chat-v1";
