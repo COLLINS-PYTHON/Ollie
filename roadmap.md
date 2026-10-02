@@ -1,10 +1,13 @@
 # Roadmap
 
 ## Now
-- Onboarding: keep the child's name and answers personalized across navigation and refreshes
-- Sound: read-aloud for younger readers on the slideshow slides
+- Onboarding proportion, polish, and broader motion pass after visual references arrive
+- Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Onboarding: name and answers survive navigation and refreshes in a tab-local draft; PIN excluded
+- Onboarding: introductory daily-slideshow explanation on the interests screen; subtle step transitions
+- Slideshow: browser read-aloud for the two lowest reading levels, with a manual replay control
 - Accounts: real sign-up and sign-in; profile and progress follow the family across devices
 - Ollie's bedtime scene at the Search + Create limit (lesson never blocked)
 - Parent picks lesson unlock: 24h after last, or daily at a set time

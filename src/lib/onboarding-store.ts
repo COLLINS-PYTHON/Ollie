@@ -38,9 +38,9 @@ export function formatClock(t: string) {
   return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${ap}`;
 }
 
-/* Profile persistence (device-only until accounts exist). Onboarding keeps
-   values in memory; the app saves them once setup ends and reloads them on a
-   fresh visit. Loaded only from effects so server and first render match. */
+/* Setup keeps values in memory and a tab-local draft; the finished profile
+   is saved separately and synced to the parent's account when signed in.
+   Load from effects so server and first render match. */
 export const parentSettings = {
   soundOn: true,
   retentionDays: 30 as 1 | 7 | 30,
