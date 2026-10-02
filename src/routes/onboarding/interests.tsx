@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { INTERESTS } from "@/lib/interests";
+import { childName } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/interests")({
   head: () => ({
@@ -27,7 +28,7 @@ function toggle(list: string[], id: string) {
 
 function InterestsPage() {
   const navigate = useNavigate();
-  const name = onboardingState.name.trim() || "your child";
+  const name = childName(onboardingState.name);
   const [interests, setInterests] = useState(onboardingState.interests);
   const [custom, setCustom] = useState(onboardingState.customInterest);
   const [struggles, setStruggles] = useState(onboardingState.struggles);
@@ -87,7 +88,7 @@ function InterestsPage() {
           Every day, {name} gets a short educational slideshow, just a few minutes long, built around what they're into and matched to their age and reading level. Just as much learning as fun.
         </p>
 
-        <section className="mt-8 rounded-card border border-dashed border-border bg-surface-2/70 p-4">
+        <section className="mt-8 rounded-card border border-card/80 bg-card/60 p-4 shadow-card backdrop-blur-sm">
           <h2 className="text-body font-semibold text-foreground">Is there a subject {name} finds tricky?</h2>
           <p className="text-support text-muted-foreground">Optional. Ollie will go gently here.</p>
           <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Tricky subjects">

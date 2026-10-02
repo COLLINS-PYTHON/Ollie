@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Check, MessageCircleQuestion, ShieldAlert, Smartphone, Eye } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
+import { childName } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/worries")({
   head: () => ({
@@ -31,7 +32,7 @@ function toggle(list: string[], id: string) {
 
 function WorriesPage() {
   const navigate = useNavigate();
-  const name = onboardingState.name.trim() || "your child";
+  const name = childName(onboardingState.name);
   const [worries, setWorries] = useState(onboardingState.worries);
 
   return (

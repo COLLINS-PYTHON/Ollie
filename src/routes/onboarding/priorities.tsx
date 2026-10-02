@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
+import { childName } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/priorities")({
   head: () => ({
@@ -28,11 +29,12 @@ const OPTIONS = [
 
 function PrioritiesPage() {
   const navigate = useNavigate();
+  const name = childName(onboardingState.name);
   const [picked, setPicked] = useState(onboardingState.priorities);
 
   return (
     <div className="bg-gradient-mist min-h-screen">
-      <OnboardingSkeleton chapter={4} title="What matters most to you?" cta="Continue" ctaDisabled={picked.length === 0} onContinue={() => navigate({ to: "/onboarding/tone" })}>
+      <OnboardingSkeleton chapter={4} title={`What matters most for ${name}?`} cta="Continue" ctaDisabled={picked.length === 0} onContinue={() => navigate({ to: "/onboarding/tone" })}>
         <div className="flex flex-col gap-3" role="group" aria-label="What matters most">
           {OPTIONS.map(({ id, label }) => {
             const on = picked.includes(id);

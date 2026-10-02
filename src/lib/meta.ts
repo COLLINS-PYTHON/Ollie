@@ -13,5 +13,5 @@ export function pageMeta(title: string, description: string) {
 }
 
 export function childName(n: string) {
-  return n.trim() || "your child";
+  return n.trim() || "Milo";
 }

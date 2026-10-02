@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ShieldCheck } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
+import { childName } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/assurance")({
   head: () => ({
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/onboarding/assurance")({
 });
 
 function AssurancePage() {
-  const name = onboardingState.name.trim() || "your child";
+  const name = childName(onboardingState.name);
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
 

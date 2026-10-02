@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState, type ReadingLevel } from "@/lib/onboarding-store";
+import { childName } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/reading")({
   head: () => ({
@@ -27,7 +28,7 @@ const OPTIONS: { id: ReadingLevel; label: string }[] = [
 
 function ReadingPage() {
   const navigate = useNavigate();
-  const name = onboardingState.name.trim() || "your child";
+  const name = childName(onboardingState.name);
   const [level, setLevel] = useState<ReadingLevel | null>(onboardingState.readingLevel);
 
   return (

@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { INTERESTS } from "@/lib/interests";
+import { childName } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/lessons")({
   head: () => ({
@@ -25,7 +26,7 @@ const FAN = [
 
 function LessonsPage() {
   const navigate = useNavigate();
-  const name = onboardingState.name.trim() || "your child";
+  const name = childName(onboardingState.name);
   let picks = INTERESTS.filter((i) => onboardingState.interests.includes(i.id)).slice(0, 3);
   if (picks.length === 0) picks = INTERESTS.slice(0, 3);
   const slots = picks.length === 1 ? [FAN[1]] : picks.length === 2 ? [FAN[0], FAN[2]] : FAN;
