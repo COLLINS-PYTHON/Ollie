@@ -1,5 +1,10 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { TabBar } from "@/components/ollie/TabBar";
+import { SlideshowTakeover, type SlideshowChild } from "@/components/ollie/Slideshow";
+import { slideshowDue } from "@/lib/slideshow-store";
+import { effectiveBand } from "@/lib/slideshow/library";
+import { onboardingState } from "@/lib/onboarding-store";
 
 export const Route = createFileRoute("/_tabs")({
   component: TabsLayout,
@@ -16,6 +21,23 @@ function ParentIcon() {
 }
 
 function TabsLayout() {
+  const [takeover, setTakeover] = useState(false);
+  const [child, setChild] = useState<SlideshowChild>({
+    name: "friend",
+    band: "7-9",
+    interests: [],
+  });
+
+  /* The daily lesson takes over the app until it is done for the day. */
+  useEffect(() => {
+    setChild({
+      name: onboardingState.name || "friend",
+      band: effectiveBand(onboardingState.age || 7, onboardingState.readingLevel ?? "stories"),
+      interests: onboardingState.interests,
+    });
+    setTakeover(slideshowDue());
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-background">
       <div className="mx-auto flex w-full max-w-md justify-end px-5 pt-4 absolute inset-x-0 top-0 z-30">
@@ -29,6 +51,7 @@ function TabsLayout() {
       </div>
       <Outlet />
       <TabBar />
+      {takeover && <SlideshowTakeover child={child} onClose={() => setTakeover(false)} />}
     </div>
   );
 }

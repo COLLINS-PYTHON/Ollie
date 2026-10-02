@@ -78,3 +78,8 @@ export function spend(b: Balance): { next: Balance; kind: "free" | "jar" } | nul
 export function refund(b: Balance, kind: "free" | "jar"): Balance {
   return kind === "free" ? { ...b, freeUsed: Math.max(0, b.freeUsed - 1) } : { ...b, jarCookies: b.jarCookies + 1 };
 }
+
+/* Slideshow completion rewards land here as extra generations. */
+export function addCookies(b: Balance, n: number): Balance {
+  return { ...b, jarCookies: b.jarCookies + n };
+}

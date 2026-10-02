@@ -164,11 +164,11 @@ function SearchChat() {
   return (
     <main className="screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-white">
       {/* iMessage-style header: centered round photo with name underneath */}
-      <header className="frosted relative z-10 flex flex-col items-center gap-1 border-b border-surface-2 pb-2.5 pt-12">
+      <header className="frosted relative z-10 flex flex-col items-center gap-1 pb-2.5 pt-12">
         <img
           src={ollie}
           alt="Ollie"
-          className="size-14 rounded-full border border-surface-2 bg-surface object-cover shadow-card"
+          className="size-14 rounded-full bg-surface object-cover"
           width={56}
           height={56}
         />
