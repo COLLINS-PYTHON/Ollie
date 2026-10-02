@@ -306,3 +306,79 @@
     radial-gradient(120% 60% at 0% 100%, rgb(139 156 247 / 0.22), transparent 60%),
     var(--surface);
 }
+
+/* Fact screen: quiet static backdrop */
+@utility bg-gradient-quiet {
+  background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%);
+}
+/* Meet Ollie: bright welcoming glow */
+@utility bg-gradient-hello {
+  background:
+    radial-gradient(90% 55% at 50% 30%, rgb(67 97 238 / 0.22), transparent 70%),
+    var(--surface);
+}
+/* Tone screen: warm pink-tinted wash */
+@utility bg-gradient-blush {
+  background: linear-gradient(180deg, rgb(210 92 168 / 0.22) -10%, #f6e6f1 35%, var(--surface) 100%);
+}
+/* Try it screen: amber-tinted morning */
+@utility bg-gradient-sunrise {
+  background: linear-gradient(180deg, rgb(224 164 58 / 0.28) -10%, #f8eedc 35%, var(--surface) 100%);
+}
+/* Trust screen: deep calm blue */
+@utility bg-gradient-trust {
+  background: linear-gradient(180deg, var(--brand-deep) -40%, #c9d3f6 45%, var(--surface) 100%);
+}
+/* PIN screen: teal-to-blue */
+@utility bg-gradient-lagoon {
+  background: linear-gradient(160deg, rgb(31 154 166 / 0.3) 0%, rgb(67 97 238 / 0.18) 50%, var(--surface) 100%);
+}
+
+@utility pop-in {
+  animation: pop-in 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@utility materialize {
+  animation: materialize 700ms var(--ease-enter) both;
+}
+@keyframes materialize {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+@utility caret {
+  animation: caret 900ms steps(1) infinite;
+}
+@keyframes caret {
+  50% { opacity: 0; }
+}
+@utility ring-pulse {
+  animation: ring-pulse 3.2s ease-out infinite;
+}
+@keyframes ring-pulse {
+  0% { transform: scale(0.6); opacity: 0.55; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+@utility sheet-up {
+  animation: sheet-up 420ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@utility glow-burst {
+  animation: glow-burst 900ms var(--ease-enter) both;
+}
+@keyframes glow-burst {
+  0% { transform: scale(0.2); opacity: 0.9; }
+  100% { transform: scale(3); opacity: 0; }
+}
+@utility bounce-soft {
+  animation: bounce-soft var(--bounce-speed, 1.6s) ease-in-out infinite;
+}
+@keyframes bounce-soft {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(var(--bounce-height, -6px)) scale(1.03); }
+}

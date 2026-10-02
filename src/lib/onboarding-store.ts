@@ -14,6 +14,16 @@ export const onboardingState = {
   limitMinutes: 45,
   slideshowReset: "07:00",
   priorities: [] as string[],
+  tone: null as string | null,
+  customTone: "",
+  triedSearch: false,
+  triedImage: false,
+  aiConsent: false,
+  pin: "",
+  plan: "yearly" as "monthly" | "yearly",
+  parentName: "",
+  email: "",
+  weeklyEmail: null as boolean | null,
 };
 
 export function formatMinutes(m: number) {
