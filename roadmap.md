@@ -1,10 +1,11 @@
 # Roadmap
 
 ## Now
-- Accounts: real sign-up and sign-in so chat, pictures and trail follow the family across devices
+- Onboarding: keep the child's name and answers personalized across navigation and refreshes
 - Sound: read-aloud for younger readers on the slideshow slides
 
 ## Done
+- Accounts: real sign-up and sign-in; profile and progress follow the family across devices
 - Ollie's bedtime scene at the Search + Create limit (lesson never blocked)
 - Parent picks lesson unlock: 24h after last, or daily at a set time
 - Parent Dashboard: PIN gate, greeting, stats, flagged log, weekly report, controls, account, privacy delete, support
