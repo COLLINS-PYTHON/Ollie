@@ -165,7 +165,7 @@ function Row({ icon, color, label, value, onClick, trailing }: { icon: ReactNode
 
 /* ---------- PIN gate ---------- */
 function PinGate({ onUnlock }: { onUnlock: () => void }) {
-  const creating = !onboardingState.pin;
+  const [creating] = useState(() => !hasPin());
   const [first, setFirst] = useState("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
@@ -176,14 +176,14 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
     setPin(next);
     setError("");
     if (next.length < 4) return;
-    window.setTimeout(() => {
+    window.setTimeout(async () => {
       if (!creating) {
-        if (next === onboardingState.pin) onUnlock();
+        if (await checkPin(next)) onUnlock();
         else { setError("That PIN didn't match. Try again."); setPin(""); }
       } else if (!first) {
         setFirst(next); setPin("");
       } else if (next === first) {
-        onboardingState.pin = next; saveProfile(); onUnlock();
+        onboardingState.pin = next; await sealPin(); void pushAll(); onUnlock();
       } else {
         setError("Those didn't match. Start again."); setFirst(""); setPin("");
       }
