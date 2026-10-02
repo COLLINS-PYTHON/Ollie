@@ -3,6 +3,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { onboardingState, parentSettings, saveProfile } from "./onboarding-store";
+import { loadPictures, savePicture, type Picture } from "./picture-store";
 
 const PROGRESS_KEYS = ["ollie-chat-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1"];
 const PROFILE_KEY = "ollie-profile-v1";
@@ -82,6 +83,7 @@ export async function pushAll() {
       ? await supabase.from("children").update(row).eq("id", existing.id)
       : await supabase.from("children").insert(row);
     if (res.error) throw res.error;
+    await pushMissingPictures(user.id);
   } catch (e) {
     console.warn("Saving to account failed", e);
   } finally {
@@ -122,13 +124,60 @@ export async function pullAll() {
   for (const k of PROGRESS_KEYS) {
     if (progress[k] !== undefined) localStorage.setItem(k, JSON.stringify(progress[k]));
   }
+  await pullPictures(user.id);
   return true;
+}
+
+/* Pictures: each one is saved as a small file in the parent's own folder. */
+export async function uploadPicture(p: Picture) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return;
+  const body = new Blob([JSON.stringify(p)], { type: "application/json" });
+  await supabase.storage.from("pictures").upload(`${session.user.id}/${p.id}.json`, body, { upsert: true });
+}
+
+async function pushMissingPictures(userId: string) {
+  const { data: files } = await supabase.storage.from("pictures").list(userId, { limit: 1000 });
+  const have = new Set((files ?? []).map((f) => f.name));
+  const local = await loadPictures().catch(() => [] as Picture[]);
+  for (const p of local) if (!have.has(`${p.id}.json`)) await uploadPicture(p);
+}
+
+async function pullPictures(userId: string) {
+  const { data: files } = await supabase.storage.from("pictures").list(userId, { limit: 1000 });
+  for (const f of files ?? []) {
+    const { data } = await supabase.storage.from("pictures").download(`${userId}/${f.name}`);
+    if (!data) continue;
+    try { await savePicture(JSON.parse(await data.text()) as Picture); } catch { /* skip */ }
+  }
 }
 
 /* "Delete my data": removes the account's saved rows too, then signs out. */
 export async function deleteCloudData() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return;
-  await supabase.from("accounts").delete().eq("id", session.user.id);
+  const uid = session.user.id;
+  const { data: files } = await supabase.storage.from("pictures").list(uid, { limit: 1000 });
+  if (files?.length) await supabase.storage.from("pictures").remove(files.map((f) => `${uid}/${f.name}`));
+  await supabase.from("accounts").delete().eq("id", uid);
   await supabase.auth.signOut();
 }
+
+/* Brute-force protection: after 5 wrong tries, wait 60 seconds. */
+const LOCK_LIMIT = 5, LOCK_MS = 60_000;
+type Lock = { fails: number; until: number };
+const readLock = (k: string): Lock => {
+  try { return JSON.parse(localStorage.getItem(k) ?? "") as Lock; } catch { return { fails: 0, until: 0 }; }
+};
+export function lockedSeconds(k: string) {
+  return Math.max(0, Math.ceil((readLock(k).until - Date.now()) / 1000));
+}
+export function recordFail(k: string) {
+  const l = readLock(k);
+  const fails = l.fails + 1;
+  const next = fails >= LOCK_LIMIT ? { fails: 0, until: Date.now() + LOCK_MS } : { fails, until: l.until };
+  localStorage.setItem(k, JSON.stringify(next));
+  return lockedSeconds(k);
+}
+export function clearFails(k: string) { localStorage.removeItem(k); }
+export const PIN_LOCK = "ollie-pin-lock", LOGIN_LOCK = "ollie-login-lock";
