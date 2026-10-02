@@ -448,6 +448,7 @@ function PopupBody({
           setWrong(true);
           setPin("");
         }
+        })();
       }
     };
     return (
