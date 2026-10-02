@@ -442,7 +442,8 @@ function PopupBody({
       setPin(value);
       setWrong(false);
       if (value.length === 4) {
-        if (!onboardingState.pin || value === onboardingState.pin) onPinOk(jar);
+        void (async () => {
+        if (!hasPin() || (await checkPin(value))) onPinOk(jar);
         else {
           setWrong(true);
           setPin("");

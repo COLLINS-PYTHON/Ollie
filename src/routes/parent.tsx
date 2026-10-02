@@ -15,6 +15,7 @@ import { addCookies, cookiesLeft, JARS, loadBalance, saveBalance, type Balance }
 import { completions, prefs, setPrefs, streakDays, type SlideshowPrefs } from "@/lib/slideshow-store";
 import { minutesToday } from "@/lib/usage-store";
 import { INTERESTS } from "@/lib/interests";
+import { checkPin, deleteCloudData, hasPin, pushAll, sealPin } from "@/lib/cloud-sync";
 
 export const Route = createFileRoute("/parent")({
   head: () => ({
@@ -589,7 +590,8 @@ function SupportSheet({ onClose }: { onClose: () => void }) {
 
 function DeleteSheet({ child, onClose }: { child: string; onClose: () => void }) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const wipe = () => {
+  const wipe = async () => {
+    await deleteCloudData().catch(() => undefined);
     ["ollie-chat-v1", "ollie-profile-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1"].forEach((k) => localStorage.removeItem(k));
     indexedDB.deleteDatabase("ollie-pictures");
     setStep(3);
