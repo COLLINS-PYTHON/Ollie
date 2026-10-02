@@ -11,6 +11,8 @@ export const Route = createFileRoute("/onboarding/worries")({
       { name: "description", content: "Tell us what worries you most so Ollie can address it directly." },
       { property: "og:title", content: "Your worries | Ollie" },
       { property: "og:description", content: "Tell us what worries you most so Ollie can address it directly." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: WorriesPage,

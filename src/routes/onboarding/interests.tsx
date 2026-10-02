@@ -12,6 +12,8 @@ export const Route = createFileRoute("/onboarding/interests")({
       { name: "description", content: "Pick what your child loves so Ollie's lessons feel personal." },
       { property: "og:title", content: "Interests | Ollie" },
       { property: "og:description", content: "Pick what your child loves so Ollie's lessons feel personal." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: InterestsPage,

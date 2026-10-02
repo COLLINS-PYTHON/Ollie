@@ -10,6 +10,8 @@ export const Route = createFileRoute("/onboarding/lessons")({
       { name: "description", content: "A preview of lessons shaped around your child's interests." },
       { property: "og:title", content: "Your child's lessons | Ollie" },
       { property: "og:description", content: "A preview of lessons shaped around your child's interests." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: LessonsPage,

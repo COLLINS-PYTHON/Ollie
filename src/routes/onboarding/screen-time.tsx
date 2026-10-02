@@ -11,6 +11,8 @@ export const Route = createFileRoute("/onboarding/screen-time")({
       { name: "description", content: "Set your child's daily Ollie time limit and slideshow reset time." },
       { property: "og:title", content: "Daily time with Ollie | Ollie" },
       { property: "og:description", content: "Set your child's daily Ollie time limit and slideshow reset time." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ScreenTimePage,

@@ -11,6 +11,8 @@ export const Route = createFileRoute("/onboarding/assurance")({
       { name: "description", content: "How Ollie keeps every search filtered, visible, and private." },
       { property: "og:title", content: "Built for exactly this | Ollie" },
       { property: "og:description", content: "How Ollie keeps every search filtered, visible, and private." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AssurancePage,

@@ -431,3 +431,22 @@
 @media (prefers-reduced-motion: reduce) {
   .wave-hello { animation: none; }
 }
+
+.ollie-avatar-listening {
+  animation: ollie-listening 700ms ease-in-out infinite alternate;
+}
+.ollie-avatar-nod {
+  animation: ollie-nod 650ms ease-in-out both;
+}
+@keyframes ollie-listening {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(7deg); }
+}
+@keyframes ollie-nod {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  38% { transform: translateY(4px) rotate(5deg); }
+  65% { transform: translateY(-2px) rotate(-3deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ollie-avatar-listening, .ollie-avatar-nod { animation: none; }
+}

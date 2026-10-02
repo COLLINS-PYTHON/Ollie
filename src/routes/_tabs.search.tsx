@@ -50,9 +50,11 @@ function SearchChat() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [listening, setListening] = useState(false);
+  const [avatarNod, setAvatarNod] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<RecognitionLike | null>(null);
+  const nodTimerRef = useRef<number | null>(null);
   const spokenRef = useRef<Set<string>>(new Set());
   const child = childProfile();
   const autoSpeak = child.readingLevel === "none" || child.readingLevel === "sounding";
@@ -61,7 +63,17 @@ function SearchChat() {
     setMessages(loadChat());
     setLoaded(true);
     setVoiceSupported(Boolean(getRecognition()));
+    return () => {
+      if (nodTimerRef.current) window.clearTimeout(nodTimerRef.current);
+    };
   }, []);
+
+  const nodAvatar = () => {
+    setAvatarNod(false);
+    window.requestAnimationFrame(() => setAvatarNod(true));
+    if (nodTimerRef.current) window.clearTimeout(nodTimerRef.current);
+    nodTimerRef.current = window.setTimeout(() => setAvatarNod(false), 750);
+  };
 
   useEffect(() => {
     if (loaded) saveChat(messages);
@@ -114,6 +126,7 @@ function SearchChat() {
         ...(res.ok && res.flagReason ? { flagReason: res.flagReason } : {}),
       };
       setMessages((prev) => [...prev, reply]);
+      nodAvatar();
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -124,6 +137,7 @@ function SearchChat() {
           createdAt: Date.now(),
         },
       ]);
+      nodAvatar();
     } finally {
       setBusy(false);
     }
@@ -168,7 +182,7 @@ function SearchChat() {
         <img
           src={ollie}
           alt="Ollie"
-          className="size-14 rounded-full bg-surface object-cover"
+          className={`size-14 rounded-full bg-surface object-cover ${listening ? "ollie-avatar-listening" : avatarNod ? "ollie-avatar-nod" : ""}`}
           width={56}
           height={56}
         />
@@ -218,9 +232,8 @@ function SearchChat() {
           </div>
         )}
         {busy && (
-          <div className="mt-3 flex items-center gap-2 self-start">
-            <ThinkingOrb state="searching" size={64} theme="light" aria-label="Ollie thinking" />
-            <span className="text-support text-muted-foreground">Ollie is thinking</span>
+          <div className="mt-3 flex self-start rounded-[18px] rounded-bl-[4px] bg-surface-2 px-3.5 py-2" role="status" aria-label="Ollie is writing an answer">
+            <ThinkingOrb state="composing" size={32} theme="light" aria-label="Ollie is writing an answer" />
           </div>
         )}
       </div>

@@ -11,6 +11,8 @@ export const Route = createFileRoute("/onboarding/reading")({
       { name: "description", content: "Tell Ollie how your child reads so answers fit just right." },
       { property: "og:title", content: "Reading level | Ollie" },
       { property: "og:description", content: "Tell Ollie how your child reads so answers fit just right." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ReadingPage,

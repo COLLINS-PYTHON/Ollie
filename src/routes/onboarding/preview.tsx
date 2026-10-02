@@ -11,6 +11,8 @@ export const Route = createFileRoute("/onboarding/preview")({
       { name: "description", content: "See how Ollie will answer your child's questions." },
       { property: "og:title", content: "A peek at Ollie | Ollie" },
       { property: "og:description", content: "See how Ollie will answer your child's questions." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: PreviewPage,
