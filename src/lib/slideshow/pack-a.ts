@@ -67,12 +67,35 @@ export const PACK_A: Packs = {
           "7-9": "Which sentence about the Sun is true?",
           "10-12": "Roughly how long does sunlight take to reach Earth?",
         },
-        options: ["About eight minutes", "About eight hours", "About eight days"],
+options: {
+          "4-6": [
+            "A big, warm star",
+            "A round planet",
+            "A lamp in the sky",
+          ],
+          "7-9": [
+            "It is the closest star to Earth",
+            "It is a planet that gives off light",
+            "It is a cloud of fire",
+          ],
+          "10-12": [
+            "About eight minutes",
+            "About eight hours",
+            "About eight days",
+          ],
+        },
         answer: 0,
-        hint: "It is closer than minutes, but not longer than an hour.",
-        why: "Light travels about 300,000 km a second, so the 150 million km gap takes around eight minutes.",
-      },
-    },
+hint: {
+          "4-6": "It lights up the daytime sky.",
+          "7-9": "The other stars are much farther away.",
+          "10-12": "It is more than a second, but less than an hour.",
+        },
+why: {
+          "4-6": "The Sun is a star. Its light gives us daylight and warmth.",
+          "7-9": "The Sun is a star, and it is the closest one to Earth by a huge margin.",
+          "10-12": "Light travels about 300,000 km a second, so the 150 million km gap takes around eight minutes.",
+        },
+      },    },
     {
       id: "eight-planets",
       title: "Eight planets, one Sun",
@@ -111,12 +134,35 @@ export const PACK_A: Packs = {
           "7-9": "How much of the ocean have people properly explored?",
           "10-12": "Why is the deepest ocean so hard to visit?",
         },
-        options: ["Dark and mostly unexplored", "Warm and shallow", "Full of sunlight"],
+options: {
+          "4-6": [
+            "Dark and quiet",
+            "Warm and shallow",
+            "Full of sunlight",
+          ],
+          "7-9": [
+            "Most of it has never been explored",
+            "All of it has been mapped",
+            "About half of it",
+          ],
+          "10-12": [
+            "The pressure would crush a person",
+            "It is too warm to stay",
+            "There is no water down there",
+          ],
+        },
         answer: 0,
-        hint: "Sunlight only reaches the very top part.",
-        why: "Light fades fast underwater, so most of the ocean stays dark and little of it has been mapped.",
-      },
-    },
+hint: {
+          "4-6": "Sunlight only reaches the very top.",
+          "7-9": "People have mapped the Moon better than the sea floor.",
+          "10-12": "Think about what happens the deeper you sink.",
+        },
+why: {
+          "4-6": "Down deep there is no sunlight, so the ocean is dark and quiet.",
+          "7-9": "More than 80 percent of the ocean has never been mapped.",
+          "10-12": "Water gets heavier the deeper you go, so the deepest zones would crush a person.",
+        },
+      },    },
     {
       id: "sea-turtles",
       title: "Sea turtles come up to breathe",
@@ -304,12 +350,35 @@ export const PACK_A: Packs = {
           "7-9": "What are two reasons a bird sings?",
           "10-12": "How do young songbirds get their songs?",
         },
-        options: ["To talk to other birds", "Because they are cold", "To fall asleep"],
+options: {
+          "4-6": [
+            "To talk to other birds",
+            "Because they are cold",
+            "To fall asleep",
+          ],
+          "7-9": [
+            "To claim a spot and find a mate",
+            "To warm up and to sleep",
+            "To scare away the Sun",
+          ],
+          "10-12": [
+            "They learn them from adult birds",
+            "They are born knowing them",
+            "They copy the wind",
+          ],
+        },
         answer: 0,
-        hint: "A song can carry a message.",
-        why: "Singing says 'this patch is mine' and 'I am here.' Young birds learn the tune from adults.",
-      },
-    },
+hint: {
+          "4-6": "A song can carry a message.",
+          "7-9": "Think about what a song says to another bird.",
+          "10-12": "It is a bit like how babies learn to talk.",
+        },
+why: {
+          "4-6": "Singing tells other birds where a bird is.",
+          "7-9": "A song says this patch is mine and I am here.",
+          "10-12": "Young songbirds learn their tune from adults, the way babies learn words.",
+        },
+      },    },
     {
       id: "busy-hive",
       title: "A hive has a job for everyone",
@@ -325,12 +394,35 @@ export const PACK_A: Packs = {
           "7-9": "About how many bees can a healthy hive hold?",
           "10-12": "Which bees fly out to collect nectar?",
         },
-        options: ["Forager bees", "The queen", "Brand new baby bees"],
+options: {
+          "4-6": [
+            "In a hive",
+            "In a river",
+            "In a cave",
+          ],
+          "7-9": [
+            "Tens of thousands",
+            "About ten",
+            "About two",
+          ],
+          "10-12": [
+            "Forager bees",
+            "The queen",
+            "Brand new baby bees",
+          ],
+        },
         answer: 0,
-        hint: "Someone has to travel for the food.",
-        why: "Older worker bees become foragers. The queen stays home to lay eggs, and young nurse bees feed the larvae.",
-      },
-    },
+hint: {
+          "4-6": "Bees live in one busy home together.",
+          "7-9": "It is far more than a hundred.",
+          "10-12": "Someone has to travel for the food.",
+        },
+why: {
+          "4-6": "A hive is one big shared home.",
+          "7-9": "A good hive can hold tens of thousands of bees, each with a job.",
+          "10-12": "Older worker bees become foragers, while the queen stays home to lay eggs.",
+        },
+      },    },
     {
       id: "snail-shell",
       title: "A snail carries its home",

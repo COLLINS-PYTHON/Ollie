@@ -21,12 +21,35 @@ export const PACK_C: Packs = {
           "7-9": "About how long ago were the great pyramids built?",
           "10-12": "Who actually built the pyramids?",
         },
-        options: ["Skilled workers", "Robots", "Giants"],
+options: {
+          "4-6": [
+            "Very old",
+            "Brand new",
+            "Built last week",
+          ],
+          "7-9": [
+            "About 4,500 years ago",
+            "About 45 years ago",
+            "About 450 years ago",
+          ],
+          "10-12": [
+            "Skilled workers",
+            "Robots",
+            "Giants",
+          ],
+        },
         answer: 0,
-        hint: "Archaeologists found their villages and their tools.",
-        why: "Worker towns with bakeries, tools and graves were found beside the pyramids. They were paid builders.",
-      },
-    },
+hint: {
+          "4-6": "They have stood there for thousands of years.",
+          "7-9": "It is thousands of years, not hundreds.",
+          "10-12": "No machines had been invented yet.",
+        },
+why: {
+          "4-6": "The pyramids were built a very long time ago.",
+          "7-9": "The great pyramids were built about 4,500 years ago as royal tombs.",
+          "10-12": "Skilled workers raised them with ramps, ropes, sledges and copper tools.",
+        },
+      },    },
     {
       id: "first-writing",
       title: "Writing was invented",
@@ -63,12 +86,35 @@ export const PACK_C: Packs = {
           "7-9": "Why did a castle need its own well?",
           "10-12": "What made a castle both a home and a fortification?",
         },
-        options: ["To keep people safe", "To store food only", "To watch the stars"],
+options: {
+          "4-6": [
+            "To keep people safe",
+            "To hold a market",
+            "To store grain",
+          ],
+          "7-9": [
+            "So it could hold out in a siege",
+            "So the king could swim",
+            "To water the gardens",
+          ],
+          "10-12": [
+            "Thick walls, a defended gate and its own water",
+            "Painted windows and carpets",
+            "Tall towers with no doors",
+          ],
+        },
         answer: 0,
-        hint: "Imagine the doors being shut for a long time.",
-        why: "A besieged castle had to hold out for weeks, so it needed water, food and workshops inside its walls.",
-      },
-    },
+hint: {
+          "4-6": "Kings wanted somewhere hard to attack.",
+          "7-9": "An army could surround a castle for months.",
+          "10-12": "Think about what an army cuts off first.",
+        },
+why: {
+          "4-6": "Castles were built to keep people safe from attack.",
+          "7-9": "A well meant the castle still had water when enemies surrounded it.",
+          "10-12": "Strong walls, a defended gate and its own water made a castle both a home and a fort.",
+        },
+      },    },
     {
       id: "old-maps",
       title: "Maps used to be guesses",
@@ -107,12 +153,35 @@ export const PACK_C: Packs = {
           "7-9": "What decides how deep a drum sounds?",
           "10-12": "How does a drummer change a drum's pitch?",
         },
-        options: ["A skin being hit", "A string being pulled", "Air blown through a tube"],
+options: {
+          "4-6": [
+            "A skin being hit",
+            "A string being pulled",
+            "Air blown through a tube",
+          ],
+          "7-9": [
+            "How tight the skin is",
+            "What colour it is",
+            "How old it is",
+          ],
+          "10-12": [
+            "By tightening or loosening the skin",
+            "By painting it",
+            "By filling it with water",
+          ],
+        },
         answer: 0,
-        hint: "It is the part you strike with your hand.",
-        why: "Hitting the skin sets it vibrating. Stretch it tighter and the vibration speeds up, so the note rises.",
-      },
-    },
+hint: {
+          "4-6": "It has a tight top like a trampoline.",
+          "7-9": "Think about a drum skin you press with a finger.",
+          "10-12": "Drummers turn the bolts around the rim.",
+        },
+why: {
+          "4-6": "Hitting the tight skin makes the air vibrate and sound.",
+          "7-9": "A tighter skin gives a higher sound, a looser one a deeper sound.",
+          "10-12": "Changing the tension of the skin changes the pitch.",
+        },
+      },    },
     {
       id: "strings-vibrate",
       title: "Strings make sound by shaking",
@@ -128,12 +197,35 @@ export const PACK_C: Packs = {
           "7-9": "Which string makes the highest note?",
           "10-12": "What three things raise a string's pitch?",
         },
-        options: ["It vibrates", "It melts", "It glows"],
+options: {
+          "4-6": [
+            "It vibrates",
+            "It melts",
+            "It glows",
+          ],
+          "7-9": [
+            "The shortest, tightest one",
+            "The longest, loosest one",
+            "The one in the middle",
+          ],
+          "10-12": [
+            "Shorter, tighter and thinner",
+            "Longer, looser and thicker",
+            "Heavier, wider and wetter",
+          ],
+        },
         answer: 0,
-        hint: "Touch a plucked string. What do you feel?",
-        why: "Sound is vibration traveling through the air. Faster vibrations mean higher notes.",
-      },
-    },
+hint: {
+          "4-6": "Pluck a rubber band and watch it.",
+          "7-9": "Short bands sing higher.",
+          "10-12": "Three changes all push the note upward.",
+        },
+why: {
+          "4-6": "A string sounds by vibrating, shaking back and forth fast.",
+          "7-9": "A short, tight string vibrates faster and makes the highest note.",
+          "10-12": "Shorter, tighter and thinner strings all vibrate faster, so the note rises.",
+        },
+      },    },
     {
       id: "piano",
       title: "Inside a piano",
@@ -149,12 +241,35 @@ export const PACK_C: Packs = {
           "7-9": "How does a piano make a sound?",
           "10-12": "What spreads the sound of a piano into the room?",
         },
-        options: ["A small hammer hits a string", "Air goes through a pipe", "A skin is tapped"],
+options: {
+          "4-6": [
+            "Strings and keys",
+            "Only buttons",
+            "A big drum",
+          ],
+          "7-9": [
+            "A small hammer hits a string",
+            "Air goes through a pipe",
+            "A skin is tapped",
+          ],
+          "10-12": [
+            "The soundboard",
+            "The pedal",
+            "The lid",
+          ],
+        },
         answer: 0,
-        hint: "It is not a wind instrument, and it has no skin to hit.",
-        why: "Inside the case, each key throws a hammer at its strings. The wooden soundboard then amplifies them.",
-      },
-    },
+hint: {
+          "4-6": "Look inside an upright piano.",
+          "7-9": "Something small strikes inside.",
+          "10-12": "It is the big wooden panel underneath the strings.",
+        },
+why: {
+          "4-6": "A piano has strings behind its keys.",
+          "7-9": "Pressing a key makes a small hammer hit a string.",
+          "10-12": "The soundboard spreads the string's vibration into the room.",
+        },
+      },    },
     {
       id: "voice",
       title: "Your voice is an instrument",
@@ -170,12 +285,35 @@ export const PACK_C: Packs = {
           "7-9": "What do your vocal cords do?",
           "10-12": "How do you sing a higher note?",
         },
-        options: ["Vocal cords vibrating", "Your teeth", "Your fingers"],
+options: {
+          "4-6": [
+            "Your vocal cords",
+            "Your teeth",
+            "Your fingers",
+          ],
+          "7-9": [
+            "They vibrate to make sound",
+            "They cool the air",
+            "They push food down",
+          ],
+          "10-12": [
+            "By tightening them so they vibrate faster",
+            "By opening your mouth wider",
+            "By breathing in more slowly",
+          ],
+        },
         answer: 0,
-        hint: "Put a hand on your throat and say ahh.",
-        why: "Cords stretch and tighten to raise pitch and loosen to lower it. You can feel them buzz.",
-      },
-    },
+hint: {
+          "4-6": "Put a hand on your throat and hum.",
+          "7-9": "Feel your throat while you talk.",
+          "10-12": "Faster vibration means a higher note.",
+        },
+why: {
+          "4-6": "Air passing over your vocal cords makes your voice.",
+          "7-9": "The cords vibrate, and that turns air into sound.",
+          "10-12": "Tightening the cords makes them vibrate faster, which raises the note.",
+        },
+      },    },
   ],
   tech: [
     {
@@ -235,12 +373,35 @@ export const PACK_C: Packs = {
           "7-9": "About how many times a second does a game redraw the screen?",
           "10-12": "Why does a game look smooth instead of flickery?",
         },
-        options: ["About 30 to 60 times", "Once", "About five times"],
+options: {
+          "4-6": [
+            "No, it can work on a slow one",
+            "Yes, always",
+            "Only on a big TV",
+          ],
+          "7-9": [
+            "About 30 to 60 times",
+            "Once",
+            "About five times",
+          ],
+          "10-12": [
+            "Because it redraws the picture many times a second",
+            "Because the colours are bright",
+            "Because the screen is glass",
+          ],
+        },
         answer: 0,
-        hint: "Flip a stack of drawings quickly and it seems to move.",
-        why: "Each frame is a brand new picture. Fast enough, your eye blends them into motion.",
-      },
-    },
+hint: {
+          "4-6": "Plenty of fun games run on old machines.",
+          "7-9": "It is far more than five.",
+          "10-12": "Think about a flipbook.",
+        },
+why: {
+          "4-6": "A game can run on a slow computer, it just looks less smooth.",
+          "7-9": "Most games redraw the screen about 30 to 60 times a second.",
+          "10-12": "So many pictures in a row blend together, which is what makes motion look smooth.",
+        },
+      },    },
     {
       id: "wifi",
       title: "How WiFi reaches your tablet",
@@ -256,12 +417,35 @@ export const PACK_C: Packs = {
           "7-9": "What does WiFi use to carry information?",
           "10-12": "What does a router actually do?",
         },
-        options: ["Radio waves", "Wires in the sky", "Mirrors"],
+options: {
+          "4-6": [
+            "No",
+            "Yes",
+            "Only at night",
+          ],
+          "7-9": [
+            "Radio waves",
+            "Wires in the sky",
+            "Mirrors",
+          ],
+          "10-12": [
+            "It sends information between the internet and your devices",
+            "It makes the internet",
+            "It charges your tablet",
+          ],
+        },
         answer: 0,
-        hint: "It is the same family of waves as a radio station.",
-        why: "Radio waves travel through walls and air. The router turns data into those waves and back again.",
-      },
-    },
+hint: {
+          "4-6": "Your tablet has no cable hanging off it.",
+          "7-9": "It is the same family as radio and TV signals.",
+          "10-12": "It sits between your devices and the cable in the wall.",
+        },
+why: {
+          "4-6": "WiFi works without a wire to your tablet.",
+          "7-9": "WiFi carries information on radio waves.",
+          "10-12": "A router passes information back and forth between the internet and everything in the house.",
+        },
+      },    },
   ],
   reading: [
     {

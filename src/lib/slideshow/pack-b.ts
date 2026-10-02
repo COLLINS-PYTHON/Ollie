@@ -21,12 +21,35 @@ export const PACK_B: Packs = {
           "7-9": "About how many times does your heart beat in a day?",
           "10-12": "Why does your heart beat faster when you exercise?",
         },
-        options: ["It pushes blood around your body", "It breaks down food", "It helps you sleep"],
+options: {
+          "4-6": [
+            "It pushes blood around your body",
+            "It breaks down food",
+            "It helps you sleep",
+          ],
+          "7-9": [
+            "About 100,000 times",
+            "About 100 times",
+            "About 10 times",
+          ],
+          "10-12": [
+            "So working muscles get more oxygen",
+            "So you can grow taller",
+            "So your bones get harder",
+          ],
+        },
         answer: 0,
-        hint: "Put a hand on your chest. What is moving?",
-        why: "The heart is a pump. Muscles that are working need more blood, so it pumps quicker.",
-      },
-    },
+hint: {
+          "4-6": "Put a hand on your chest. What is moving?",
+          "7-9": "It is far more than a hundred.",
+          "10-12": "Think about what your legs need when you run.",
+        },
+why: {
+          "4-6": "Your heart is a pump that pushes blood everywhere.",
+          "7-9": "Your heart beats about 100,000 times a day.",
+          "10-12": "Muscles that are working need more blood, so the heart pumps quicker.",
+        },
+      },    },
     {
       id: "brain-messages",
       title: "Your brain sends messages",
@@ -84,12 +107,35 @@ export const PACK_B: Packs = {
           "7-9": "How many bones does a grown-up have?",
           "10-12": "What happens to bones as a child grows?",
         },
-        options: ["A baby", "A grown-up", "They have the same number"],
+options: {
+          "4-6": [
+            "A baby",
+            "A grown-up",
+            "They have the same number",
+          ],
+          "7-9": [
+            "206",
+            "About 300",
+            "About 50",
+          ],
+          "10-12": [
+            "Many small bones join together",
+            "Bones disappear",
+            "Bones melt away",
+          ],
+        },
         answer: 0,
-        hint: "Some bones join together along the way.",
-        why: "Many small bones merge. That is why the count drops from about 300 to 206.",
-      },
-    },
+hint: {
+          "4-6": "Some bones join together along the way.",
+          "7-9": "It is more than 100 but fewer than 250.",
+          "10-12": "The total count goes down as you grow.",
+        },
+why: {
+          "4-6": "A baby starts with more bones than a grown-up has.",
+          "7-9": "A grown-up skeleton has 206 bones.",
+          "10-12": "Many small bones fuse as you grow, so the count drops from about 300 to 206.",
+        },
+      },    },
   ],
   math: [
     {
@@ -128,12 +174,35 @@ export const PACK_B: Packs = {
           "7-9": "What do the angles inside a triangle add up to?",
           "10-12": "On which surface does the 180 degree triangle rule break down?",
         },
-        options: ["Three", "Four", "One"],
+options: {
+          "4-6": [
+            "Three",
+            "Four",
+            "One",
+          ],
+          "7-9": [
+            "180 degrees",
+            "90 degrees",
+            "360 degrees",
+          ],
+          "10-12": [
+            "A curved one, like a ball",
+            "A flat table",
+            "A sheet of paper",
+          ],
+        },
         answer: 0,
-        hint: "Count the pointy bits on a slice of pizza.",
-        why: "A triangle has three corners, and its angles always total 180 degrees on a flat surface.",
-      },
-    },
+hint: {
+          "4-6": "Count the pointy bits on a slice of pizza.",
+          "7-9": "It is half of a full turn.",
+          "10-12": "Think about a surface that is not flat.",
+        },
+why: {
+          "4-6": "A triangle has three corners.",
+          "7-9": "The angles inside a triangle always add up to 180 degrees.",
+          "10-12": "The rule holds on flat surfaces, but not on a curved one like a ball.",
+        },
+      },    },
     {
       id: "no-biggest",
       title: "There is no biggest number",
@@ -214,12 +283,35 @@ export const PACK_B: Packs = {
           "7-9": "About how old are the oldest cave paintings?",
           "10-12": "What did the first painters use as paint?",
         },
-        options: ["On cave walls", "On paper", "On phones"],
+options: {
+          "4-6": [
+            "On cave walls",
+            "On paper",
+            "On phones",
+          ],
+          "7-9": [
+            "More than 40,000 years old",
+            "About 500 years old",
+            "About 50 years old",
+          ],
+          "10-12": [
+            "Crushed minerals and charcoal",
+            "Bottled paint",
+            "Ink from a printer",
+          ],
+        },
         answer: 0,
-        hint: "Paper had not been invented yet.",
-        why: "The earliest paintings are on stone. The pigments were minerals and charcoal, mixed with water or fat.",
-      },
-    },
+hint: {
+          "4-6": "Paper had not been invented yet.",
+          "7-9": "It is far older than any castle.",
+          "10-12": "The colours came from the ground.",
+        },
+why: {
+          "4-6": "The earliest pictures were painted on stone walls.",
+          "7-9": "The oldest known cave paintings are more than 40,000 years old.",
+          "10-12": "Painters used crushed minerals, charcoal and ochre mixed with water or fat.",
+        },
+      },    },
     {
       id: "how-cameras-work",
       title: "How a camera works",
@@ -279,12 +371,35 @@ export const PACK_B: Packs = {
           "7-9": "What happens to sea water before it becomes rain?",
           "10-12": "What powers the water cycle?",
         },
-        options: ["Clouds", "Rivers", "The Moon"],
+options: {
+          "4-6": [
+            "Clouds",
+            "Rivers",
+            "The Moon",
+          ],
+          "7-9": [
+            "It rises into the air and forms clouds",
+            "It freezes on the sea",
+            "It soaks into the sand",
+          ],
+          "10-12": [
+            "The Sun",
+            "The Moon",
+            "The wind",
+          ],
+        },
         answer: 0,
-        hint: "Look up on a grey day.",
-        why: "Clouds hold tiny water droplets. When they grow heavy enough, the water falls as rain.",
-      },
-    },
+hint: {
+          "4-6": "Look up on a grey day.",
+          "7-9": "Think about what happens to a puddle in the sun.",
+          "10-12": "What dries washing on a line?",
+        },
+why: {
+          "4-6": "Rain falls from clouds when they grow heavy.",
+          "7-9": "Water rises from the sea, becomes cloud, then falls as rain.",
+          "10-12": "The Sun heats the water and lifts it into the sky, which starts the whole cycle.",
+        },
+      },    },
     {
       id: "snowflakes",
       title: "Snowflakes always have six sides",
@@ -300,12 +415,35 @@ export const PACK_B: Packs = {
           "7-9": "Why do snowflakes all have six arms?",
           "10-12": "Why is no two snowflakes identical?",
         },
-        options: ["Six", "Four", "Ten"],
+options: {
+          "4-6": [
+            "Six",
+            "Four",
+            "Ten",
+          ],
+          "7-9": [
+            "Water freezes into a six-sided shape",
+            "The wind blows them flat",
+            "They grow in pairs",
+          ],
+          "10-12": [
+            "Each flake takes a different path through the cloud",
+            "They are made in different places",
+            "Some flakes never freeze",
+          ],
+        },
         answer: 0,
-        hint: "It is more than four but fewer than eight.",
-        why: "Water freezes into a hexagonal shape. Each flake also experiences a slightly different route of temperature and humidity.",
-      },
-    },
+hint: {
+          "4-6": "It is more than four but fewer than eight.",
+          "7-9": "Think about the shape water makes when it freezes.",
+          "10-12": "No two flakes fall the same way.",
+        },
+why: {
+          "4-6": "Every snowflake has six sides.",
+          "7-9": "Water freezes into a hexagonal shape, so every flake has six arms.",
+          "10-12": "Each flake travels a different route of temperature and humidity, so no two match.",
+        },
+      },    },
     {
       id: "wind",
       title: "Wind is moving air",
