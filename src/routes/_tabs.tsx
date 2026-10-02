@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { addUsage } from "@/lib/usage-store";
 import { TabBar } from "@/components/ollie/TabBar";
 import { SlideshowTakeover, type SlideshowChild } from "@/components/ollie/Slideshow";
 import { slideshowDue } from "@/lib/slideshow-store";
 import { effectiveBand } from "@/lib/slideshow/library";
-import { onboardingState } from "@/lib/onboarding-store";
+import { onboardingState, syncProfile } from "@/lib/onboarding-store";
 
 export const Route = createFileRoute("/_tabs")({
   component: TabsLayout,
@@ -30,6 +31,7 @@ function TabsLayout() {
 
   /* The daily lesson takes over the app until it is done for the day. */
   useEffect(() => {
+    syncProfile();
     setChild({
       name: onboardingState.name || "friend",
       band: effectiveBand(onboardingState.age || 7, onboardingState.readingLevel ?? "stories"),
@@ -37,6 +39,18 @@ function TabsLayout() {
     });
     setTakeover(slideshowDue());
   }, []);
+
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  /* Count Search and Create time only, never while the lesson is open. */
+  useEffect(() => {
+    const surface = pathname === "/search" ? "search" : pathname === "/create" ? "create" : null;
+    if (!surface || takeover) return;
+    const t = window.setInterval(() => {
+      if (document.visibilityState === "visible") addUsage(surface, 15);
+    }, 15_000);
+    return () => window.clearInterval(t);
+  }, [pathname, takeover]);
 
   return (
     <div className="relative min-h-screen bg-background">
