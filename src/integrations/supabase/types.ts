@@ -106,6 +106,44 @@ export type Database = {
           },
         ]
       }
+      devices: {
+        Row: {
+          account_id: string
+          created_at: string
+          device_key: string
+          id: string
+          label: string
+          last_seen: string
+          revoked: boolean
+        }
+        Insert: {
+          account_id: string
+          created_at?: string
+          device_key: string
+          id?: string
+          label?: string
+          last_seen?: string
+          revoked?: boolean
+        }
+        Update: {
+          account_id?: string
+          created_at?: string
+          device_key?: string
+          id?: string
+          label?: string
+          last_seen?: string
+          revoked?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devices_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
