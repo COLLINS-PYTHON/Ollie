@@ -136,6 +136,7 @@ function buildSystemPrompt(child: Child): string {
     stories: "Two or three clear sentences.",
     chapters: "Three or four richer sentences with some depth.",
   };
+  const guide = levelGuide[child.readingLevel] ?? levelGuide["stories"];
   const dangerExtra =
     child.age >= 10
       ? ` Append "${LOCKED.nine88}" to self-harm answers.`
