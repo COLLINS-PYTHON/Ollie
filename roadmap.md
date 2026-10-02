@@ -5,6 +5,7 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Search: answers on a lesson topic show that lesson's picture for ages 4-9
 - Search: kids react to answers (Wow, Funny, I knew that); "wow" moments show in the weekly report
 - Search: composing orb inside Ollie's reply bubble; avatar tilts while listening and nods when an answer arrives
 - Onboarding: name and answers survive navigation and refreshes in a tab-local draft; PIN excluded
