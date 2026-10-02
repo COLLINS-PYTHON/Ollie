@@ -3,7 +3,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUp, Mic, Volume2 } from "lucide-react";
 import { ThinkingOrb } from "thinking-orbs";
 import { askOllie } from "@/lib/search.functions";
-import { loadChat, saveChat, type ChatMessage } from "@/lib/chat-store";
+import { loadChat, saveChat, type ChatMessage, type Reaction } from "@/lib/chat-store";
+
+const REACTIONS: { id: Reaction; label: string }[] = [
+  { id: "wow", label: "Wow" },
+  { id: "funny", label: "Funny" },
+  { id: "knew", label: "I knew that" },
+];
 import { onboardingState } from "@/lib/onboarding-store";
 import { pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
@@ -175,6 +181,14 @@ function SearchChat() {
 
   const canSend = !busy && input.trim().length > 0;
 
+  const react = (id: string, reaction: Reaction | undefined) => {
+    setMessages((prev) => {
+      const next = prev.map((m) => (m.id === id ? { ...m, reaction } : m));
+      saveChat(next);
+      return next;
+    });
+  };
+
   return (
     <main className="screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-white">
       {/* iMessage-style header: centered round photo with name underneath */}
@@ -214,18 +228,38 @@ function SearchChat() {
                   {m.text}
                 </div>
               ) : (
-                <div key={m.id} className="flex max-w-[80%] items-end gap-1 self-start">
-                  <div className="rounded-[18px] rounded-bl-[4px] bg-surface-2 px-3.5 py-2 text-body text-foreground">
-                    {m.text}
+                <div key={m.id} className="flex max-w-[80%] flex-col items-start gap-1 self-start">
+                  <div className="flex items-end gap-1">
+                    <div className="rounded-[18px] rounded-bl-[4px] bg-surface-2 px-3.5 py-2 text-body text-foreground">
+                      {m.text}
+                    </div>
+                    <button
+                      type="button"
+                      aria-label="Hear this answer"
+                      onClick={() => speak(m.text)}
+                      className="mb-0.5 flex size-6 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
+                    >
+                      <Volume2 className="size-3.5" />
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    aria-label="Hear this answer"
-                    onClick={() => speak(m.text)}
-                    className="mb-0.5 flex size-6 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
-                  >
-                    <Volume2 className="size-3.5" />
-                  </button>
+                  {(!m.tier || m.tier === "ok") && (
+                    <div className="mb-1 flex gap-1" role="group" aria-label="React to this answer">
+                      {REACTIONS.map((r) => {
+                        const on = m.reaction === r.id;
+                        return (
+                          <button
+                            key={r.id}
+                            type="button"
+                            aria-pressed={on}
+                            onClick={() => react(m.id, on ? undefined : r.id)}
+                            className={`rounded-pill px-2.5 py-1 text-label transition-all duration-tap active:scale-95 ${on ? "pop-in bg-primary text-white" : "bg-surface text-muted-foreground hover:text-foreground"}`}
+                          >
+                            {r.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               )
             )}
