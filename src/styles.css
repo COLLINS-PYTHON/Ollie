@@ -200,6 +200,17 @@
   -webkit-backdrop-filter: blur(20px) saturate(1.6);
 }
 
+/* Daily slideshow: every category tints the screen with its own color,
+   pulled from the --cat-* tokens rather than a hardcoded value. */
+@utility slide-tint {
+  background: radial-gradient(
+    120% 85% at 50% 0%,
+    color-mix(in oklab, var(--slide-color) 18%, white) 0%,
+    color-mix(in oklab, var(--slide-color) 7%, white) 48%,
+    white 100%
+  );
+}
+
 /* Onboarding background gradients */
 @utility bg-gradient-name {
   background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
