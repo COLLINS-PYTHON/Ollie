@@ -4,7 +4,8 @@ import { INTERESTS } from "@/lib/interests";
 import { buildDay, pickCategoryId, type Day } from "@/lib/slideshow/library";
 import { recordCompletion } from "@/lib/slideshow-store";
 import { addCookies, loadBalance, saveBalance } from "@/lib/picture-store";
-import type { Band } from "@/lib/slideshow/types";
+import { Rocket } from "lucide-react";
+import { quizOptions, quizText, type Band } from "@/lib/slideshow/types";
 
 export type SlideshowChild = { name: string; band: Band; interests: string[] };
 
@@ -15,7 +16,7 @@ function tileClasses(categoryId: string): string {
 }
 
 function categoryIconId(categoryId: string) {
-  return INTERESTS.find((i) => i.id === categoryId)?.icon ?? INTERESTS[0].icon;
+  return INTERESTS.find((i) => i.id === categoryId)?.icon ?? Rocket;
 }
 
 export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; onClose: () => void }) {
@@ -36,7 +37,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
   const slides = day?.slides ?? [];
   const current = slides[index];
   const tile = day ? tileClasses(day.categoryId) : "";
-  const CategoryIcon = day ? categoryIconId(day.categoryId) : INTERESTS[0].icon;
+  const CategoryIcon = day ? categoryIconId(day.categoryId) : Rocket;
   const tint = { "--slide-color": `var(--cat-${day?.categoryId ?? "space"})` } as CSSProperties;
   const quizNumber = slides.slice(0, index + 1).filter((s) => s.kind === "quiz").length;
 
@@ -76,7 +77,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
     setPicked(option);
     if (option === quiz.answer) {
       setStatus("correct");
-      setPraise(PRAISE[index % PRAISE.length]);
+      setPraise(PRAISE[index % PRAISE.length] ?? "Yes! Exactly right!");
       setScore((s) => ({ correct: s.correct + (attempts === 0 ? 1 : 0), total: s.total + 1 }));
       timer.current = window.setTimeout(advance, 1400);
       return;
@@ -84,7 +85,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
     const nextAttempts = attempts + 1;
     setAttempts(nextAttempts);
     if (nextAttempts >= 2) setStatus("reveal");
-    else setHint(quiz.hint);
+    else setHint(quizText(quiz.hint, child.band));
   };
 
   if (!day) return null;
@@ -197,12 +198,12 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
             )}
             {status === "reveal" && (
               <p className="rounded-control bg-white px-4 py-2.5 text-body text-foreground shadow-card">
-                Here is the one: {current.sub.quiz.options[current.sub.quiz.answer]}. {current.sub.quiz.why}
+                Here is the one: {quizOptions(current.sub.quiz, child.band)[current.sub.quiz.answer]}. {quizText(current.sub.quiz.why, child.band)}
               </p>
             )}
 
             <div className="flex flex-col gap-2.5">
-              {current.sub.quiz.options.map((option, i) => {
+              {quizOptions(current.sub.quiz, child.band).map((option, i) => {
                 const isAnswer = i === current.sub.quiz.answer;
                 const chosen = picked === i;
                 const showAnswer = status === "correct" || status === "reveal";
