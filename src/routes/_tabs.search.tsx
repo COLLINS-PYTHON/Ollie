@@ -251,18 +251,20 @@ function SearchChat() {
             aria-label="Ask Ollie anything"
             className="min-w-0 flex-1 rounded-pill border border-surface-2 bg-white px-4 py-3 text-body text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
           />
-          <button
-            type="button"
-            aria-label={listening ? "Listening, release to stop" : "Hold to talk"}
-            onPointerDown={startListening}
-            onPointerUp={stopListening}
-            onPointerLeave={stopListening}
-            className={`flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-white shadow-card transition-transform duration-tap ${
-              listening ? "scale-110 ring-pulse" : "active:scale-95"
-            }`}
-          >
-            <Mic className="size-5" />
-          </button>
+          {voiceSupported && (
+            <button
+              type="button"
+              aria-label={listening ? "Listening, release to stop" : "Hold to talk"}
+              onPointerDown={startListening}
+              onPointerUp={stopListening}
+              onPointerLeave={stopListening}
+              className={`flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-white shadow-card transition-transform duration-tap ${
+                listening ? "scale-110 ring-pulse" : "active:scale-95"
+              }`}
+            >
+              <Mic className="size-5" />
+            </button>
+          )}
           <button
             type="button"
             aria-label="Send question"
@@ -285,11 +287,7 @@ function SearchChat() {
 
 export const Route = createFileRoute("/_tabs/search")({
   head: () => ({
-    meta: [
-      ...pageMeta("Search", "Ask Ollie anything and learn safely."),
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
+    meta: pageMeta("Search", "Ask Ollie anything and learn safely.").meta,
   }),
   component: SearchChat,
 });
