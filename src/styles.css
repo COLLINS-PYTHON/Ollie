@@ -382,3 +382,10 @@
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(var(--bounce-height, -6px)) scale(1.03); }
 }
+@utility paw-drift {
+  animation: paw-drift 40s linear infinite;
+}
+@keyframes paw-drift {
+  from { background-position: 0 0; }
+  to { background-position: 96px 96px; }
+}
