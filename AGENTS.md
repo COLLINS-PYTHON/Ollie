@@ -15,3 +15,5 @@
 - The slideshow takes over the screen from the `_tabs` layout until the day is marked done in `src/lib/slideshow-store.ts`; screens never render it inline. Why: the spec requires the daily lesson to be finished before anything else.
 - Setup answers and parent settings persist on-device via saveProfile/loadProfile in src/lib/onboarding-store.ts, loaded only from effects. Why: survives reloads without SSR hydration mismatches until accounts exist.
 - Screen time is tracked per surface (Search, Create) in src/lib/usage-store.ts; the slideshow is never counted. Why: spec excludes the lesson from the limit.
+- Signed-in parents' setup and child progress sync to `accounts`/`children` via src/lib/cloud-sync.ts (pushAll from the _tabs layout, pullAll on /login); localStorage stays the working copy. Why: one simple sync path until per-feature tables are needed.
+- The parent PIN is only stored as a SHA-256 hash (pinHash); check it with checkPin. Why: spec requires PINs never be stored readable.
