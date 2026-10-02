@@ -81,6 +81,9 @@ function InterestsPage() {
           aria-label="Custom interest"
           className="text-body mt-4 h-14 w-full rounded-control bg-card px-4 text-foreground shadow-card outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary"
         />
+        <p className="text-support mt-4 text-muted-foreground">
+          Every day, {name} gets a short educational slideshow, just a few minutes long, built around what they're into and matched to their age and reading level. Just as much learning as fun.
+        </p>
 
         <section className="mt-8 rounded-card border border-dashed border-border bg-surface-2/70 p-4">
           <h2 className="text-body font-semibold text-foreground">Is there a subject {name} finds tricky?</h2>
