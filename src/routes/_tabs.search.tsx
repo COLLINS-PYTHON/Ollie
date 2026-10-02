@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Mic, Send, Volume2 } from "lucide-react";
+import { ArrowUp, Mic, Volume2 } from "lucide-react";
 import { ThinkingOrb } from "thinking-orbs";
 import { askOllie } from "@/lib/search.functions";
 import { loadChat, saveChat, type ChatMessage } from "@/lib/chat-store";
 import { onboardingState } from "@/lib/onboarding-store";
 import { pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
-
-const PAW_BACKGROUND =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='%230E1538'%3E%3Cellipse cx='14' cy='16' rx='3.2' ry='4.2' transform='rotate(-18 14 16)'/%3E%3Cellipse cx='34' cy='32' rx='3.2' ry='4.2' transform='rotate(-18 34 32)'/%3E%3C/g%3E%3C/svg%3E\")";
 
 type RecognitionLike = {
   lang: string;
@@ -162,31 +159,24 @@ function SearchChat() {
     setListening(false);
   };
 
-  return (
-    <main className="screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-background">
-      <div
-        aria-hidden
-        className="paw-drift pointer-events-none absolute inset-0"
-        style={{ backgroundImage: PAW_BACKGROUND, opacity: 0.045 }}
-      />
+  const canSend = !busy && input.trim().length > 0;
 
-      <header className="frosted relative z-10 border-b border-surface-2 px-5 pb-3 pt-14">
-        <div className="flex items-center gap-3">
-          <img
-            src={ollie}
-            alt="Ollie"
-            className="size-10 rounded-full bg-surface-2 object-cover shadow-card"
-            width={40}
-            height={40}
-          />
-          <div>
-            <p className="text-body font-bold text-foreground">Ollie</p>
-            <p className="text-support text-muted-foreground">Safe for you</p>
-          </div>
-        </div>
+  return (
+    <main className="screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-white">
+      {/* iMessage-style header: centered round photo with name underneath */}
+      <header className="frosted relative z-10 flex flex-col items-center gap-1 border-b border-surface-2 pb-2.5 pt-12">
+        <img
+          src={ollie}
+          alt="Ollie"
+          className="size-14 rounded-full border border-surface-2 bg-surface object-cover shadow-card"
+          width={56}
+          height={56}
+        />
+        <p className="text-body font-bold text-foreground">Ollie</p>
+        <p className="text-support text-muted-foreground">Safe for you</p>
       </header>
 
-      <div ref={listRef} className="relative z-10 flex-1 overflow-y-auto px-5 py-4">
+      <div ref={listRef} className="relative z-10 flex-1 overflow-y-auto px-3 py-4">
         {messages.length === 0 && !busy ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
             <img
@@ -201,30 +191,27 @@ function SearchChat() {
             </p>
           </div>
         ) : (
-          <div className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-1.5">
             {messages.map((m) =>
               m.role === "sent" ? (
                 <div
                   key={m.id}
-                  className="max-w-[80%] self-end rounded-[20px] rounded-br-[6px] bg-primary px-4 py-2.5 text-body text-white"
+                  className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-3.5 py-2 text-body text-white"
                 >
                   {m.text}
                 </div>
               ) : (
-                <div
-                  key={m.id}
-                  className="flex max-w-[85%] items-end gap-1.5 self-start"
-                >
-                  <div className="rounded-[20px] rounded-bl-[6px] bg-surface-2 px-4 py-2.5 text-body text-foreground">
+                <div key={m.id} className="flex max-w-[80%] items-end gap-1 self-start">
+                  <div className="rounded-[18px] rounded-bl-[4px] bg-surface-2 px-3.5 py-2 text-body text-foreground">
                     {m.text}
                   </div>
                   <button
                     type="button"
                     aria-label="Hear this answer"
                     onClick={() => speak(m.text)}
-                    className="mb-1 flex size-7 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
+                    className="mb-0.5 flex size-6 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
                   >
-                    <Volume2 className="size-4" />
+                    <Volume2 className="size-3.5" />
                   </button>
                 </div>
               )
@@ -232,47 +219,50 @@ function SearchChat() {
           </div>
         )}
         {busy && (
-          <div className="mt-4 flex items-center justify-center gap-2">
+          <div className="mt-3 flex items-center gap-2 self-start">
             <ThinkingOrb state="searching" size={64} theme="light" aria-label="Ollie thinking" />
             <span className="text-support text-muted-foreground">Ollie is thinking</span>
           </div>
         )}
       </div>
 
-      <div className="relative z-10 px-5 pb-28 pt-2">
-        <div className="flex items-center gap-2">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") send();
-            }}
-            placeholder="Ask Ollie anything"
-            aria-label="Ask Ollie anything"
-            className="min-w-0 flex-1 rounded-pill border border-surface-2 bg-white px-4 py-3 text-body text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
-          />
-          {voiceSupported && (
+      {/* iMessage-style input bar */}
+      <div className="relative z-10 px-3 pb-28 pt-2">
+        <div className="flex items-end gap-2">
+          <div className="flex min-w-0 flex-1 items-center rounded-[22px] border border-surface-2 bg-white px-4 py-2.5">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") send();
+              }}
+              placeholder="Ask Ollie anything"
+              aria-label="Ask Ollie anything"
+              className="min-w-0 flex-1 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground"
+            />
+          </div>
+          {voiceSupported && !canSend && (
             <button
               type="button"
               aria-label={listening ? "Listening, release to stop" : "Hold to talk"}
               onPointerDown={startListening}
               onPointerUp={stopListening}
               onPointerLeave={stopListening}
-              className={`flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-white shadow-card transition-transform duration-tap ${
+              className={`flex size-9 shrink-0 items-center justify-center rounded-pill bg-surface-2 text-foreground transition-transform duration-tap ${
                 listening ? "scale-110 ring-pulse" : "active:scale-95"
               }`}
             >
-              <Mic className="size-5" />
+              <Mic className="size-4" />
             </button>
           )}
           <button
             type="button"
             aria-label="Send question"
             onClick={send}
-            disabled={busy || !input.trim()}
-            className="flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-white shadow-card transition-transform duration-tap active:scale-95 disabled:opacity-40"
+            disabled={!canSend}
+            className="flex size-9 shrink-0 items-center justify-center rounded-pill bg-primary text-white transition-all duration-tap active:scale-95 disabled:bg-surface-2 disabled:text-muted-foreground"
           >
-            <Send className="size-5" />
+            <ArrowUp className="size-4" strokeWidth={2.5} />
           </button>
         </div>
         {!voiceSupported && (
