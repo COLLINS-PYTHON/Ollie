@@ -21,11 +21,11 @@ export function Bedtime({ name }: { name: string }) {
         <span
           key={i}
           aria-hidden
-          className={`absolute size-1 rounded-pill bg-white transition-opacity duration-reveal ${said ? "opacity-30" : "opacity-80"}`}
-          style={{ left: `${x}%`, top: `${y}%` }}
+          className={`absolute rounded-pill bg-white transition-opacity duration-reveal ${said ? "opacity-30" : "opacity-80"}`}
+          style={{ left: `${x}%`, top: `${y}%`, width: 4, height: 4 }}
         />
       ))}
-      <span aria-hidden className="absolute right-[14%] top-[10%] size-12 rounded-pill bg-gold/90 shadow-[0_0_40px_var(--gold)]" />
+      <span aria-hidden className="absolute rounded-pill bg-gold" style={{ right: "14%", top: "10%", width: 48, height: 48, boxShadow: "0 0 40px var(--gold)" }} />
 
       <img src={ollieSleeping} alt="Ollie asleep" width={220} height={220} className="relative w-56" />
       <p className="relative mt-6 text-title text-white">
@@ -40,7 +40,7 @@ export function Bedtime({ name }: { name: string }) {
           Goodnight, Ollie.
         </button>
       )}
-      <Link to="/parent" className="absolute bottom-8 text-support text-white/60 underline-offset-2 hover:underline">
+      <Link to="/parent" className="relative mt-12 text-support text-white opacity-60 underline-offset-2 hover:underline">
         Grown-ups: change the daily limit in the Parent Dashboard
       </Link>
     </div>
