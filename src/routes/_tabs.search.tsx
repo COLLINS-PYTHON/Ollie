@@ -173,7 +173,6 @@ function SearchChat() {
           height={56}
         />
         <p className="text-body font-bold text-foreground">Ollie</p>
-        <p className="text-support text-muted-foreground">Safe for you</p>
       </header>
 
       <div ref={listRef} className="relative z-10 flex-1 overflow-y-auto px-3 py-4">
