@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TabsRouteImport } from './routes/_tabs'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ParentRouteImport } from './routes/parent'
@@ -46,6 +47,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const TabsRoute = TabsRouteImport.update({
   id: '/_tabs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -187,6 +193,7 @@ const OnboardingWorriesRoute = OnboardingWorriesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/mcp': typeof McpRoute
   '/onboarding': typeof OnboardingRouteWithChildren
   '/parent': typeof ParentRoute
@@ -217,6 +224,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/mcp': typeof McpRoute
   '/parent': typeof ParentRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -248,6 +256,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_tabs': typeof TabsRouteWithChildren
+  '/login': typeof LoginRoute
   '/mcp': typeof McpRoute
   '/onboarding': typeof OnboardingRouteWithChildren
   '/parent': typeof ParentRoute
@@ -280,6 +289,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
     | '/mcp'
     | '/onboarding'
     | '/parent'
@@ -310,6 +320,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/login'
     | '/mcp'
     | '/parent'
     | '/.well-known/oauth-protected-resource'
@@ -340,6 +351,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_tabs'
+    | '/login'
     | '/mcp'
     | '/onboarding'
     | '/parent'
@@ -372,6 +384,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TabsRoute: typeof TabsRouteWithChildren
+  LoginRoute: typeof LoginRoute
   McpRoute: typeof McpRoute
   OnboardingRoute: typeof OnboardingRouteWithChildren
   ParentRoute: typeof ParentRoute
@@ -393,6 +406,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof TabsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -652,6 +672,7 @@ const OnboardingRouteWithChildren = OnboardingRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TabsRoute: TabsRouteWithChildren,
+  LoginRoute: LoginRoute,
   McpRoute: McpRoute,
   OnboardingRoute: OnboardingRouteWithChildren,
   ParentRoute: ParentRoute,

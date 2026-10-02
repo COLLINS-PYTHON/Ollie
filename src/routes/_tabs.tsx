@@ -7,6 +7,8 @@ import { SlideshowTakeover, type SlideshowChild } from "@/components/ollie/Slide
 import { setPrefs, slideshowDue } from "@/lib/slideshow-store";
 import { effectiveBand } from "@/lib/slideshow/library";
 import { onboardingState, syncProfile } from "@/lib/onboarding-store";
+import { pushAll } from "@/lib/cloud-sync";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_tabs")({
   component: TabsLayout,
@@ -41,6 +43,23 @@ function TabsLayout() {
       interests: onboardingState.interests,
     });
     setTakeover(slideshowDue());
+  }, []);
+
+  /* Save the child's progress to the parent's account while signed in. */
+  useEffect(() => {
+    const save = () => { void pushAll(); };
+    save();
+    const t = window.setInterval(save, 60_000);
+    const onHide = () => { if (document.visibilityState === "hidden") save(); };
+    document.addEventListener("visibilitychange", onHide);
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") window.setTimeout(save, 0);
+    });
+    return () => {
+      window.clearInterval(t);
+      document.removeEventListener("visibilitychange", onHide);
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });

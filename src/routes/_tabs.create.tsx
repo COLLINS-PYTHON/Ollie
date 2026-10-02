@@ -18,6 +18,7 @@ import {
   type Picture,
 } from "@/lib/picture-store";
 import { onboardingState } from "@/lib/onboarding-store";
+import { checkPin, hasPin } from "@/lib/cloud-sync";
 import { pageMeta } from "@/lib/meta";
 
 export const Route = createFileRoute("/_tabs/create")({
@@ -442,11 +443,13 @@ function PopupBody({
       setPin(value);
       setWrong(false);
       if (value.length === 4) {
-        if (!onboardingState.pin || value === onboardingState.pin) onPinOk(jar);
+        void (async () => {
+        if (!hasPin() || (await checkPin(value))) onPinOk(jar);
         else {
           setWrong(true);
           setPin("");
         }
+        })();
       }
     };
     return (

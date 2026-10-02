@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { pageMeta } from "@/lib/meta";
@@ -62,6 +62,9 @@ function FactPage() {
             <ArrowRight className="relative size-6" />
           </button>
         </div>
+        <Link to="/login" className="mt-8 self-center text-support font-medium text-primary">
+          I already have an account. Log in
+        </Link>
       </main>
     </div>
   );

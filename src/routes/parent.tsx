@@ -15,6 +15,7 @@ import { addCookies, cookiesLeft, JARS, loadBalance, saveBalance, type Balance }
 import { completions, prefs, setPrefs, streakDays, type SlideshowPrefs } from "@/lib/slideshow-store";
 import { minutesToday } from "@/lib/usage-store";
 import { INTERESTS } from "@/lib/interests";
+import { checkPin, deleteCloudData, hasPin, pushAll, sealPin } from "@/lib/cloud-sync";
 
 export const Route = createFileRoute("/parent")({
   head: () => ({
@@ -165,7 +166,7 @@ function Row({ icon, color, label, value, onClick, trailing }: { icon: ReactNode
 
 /* ---------- PIN gate ---------- */
 function PinGate({ onUnlock }: { onUnlock: () => void }) {
-  const creating = !onboardingState.pin;
+  const [creating] = useState(() => !hasPin());
   const [first, setFirst] = useState("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
@@ -176,14 +177,14 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
     setPin(next);
     setError("");
     if (next.length < 4) return;
-    window.setTimeout(() => {
+    window.setTimeout(async () => {
       if (!creating) {
-        if (next === onboardingState.pin) onUnlock();
+        if (await checkPin(next)) onUnlock();
         else { setError("That PIN didn't match. Try again."); setPin(""); }
       } else if (!first) {
         setFirst(next); setPin("");
       } else if (next === first) {
-        onboardingState.pin = next; saveProfile(); onUnlock();
+        onboardingState.pin = next; await sealPin(); void pushAll(); onUnlock();
       } else {
         setError("Those didn't match. Start again."); setFirst(""); setPin("");
       }
@@ -589,7 +590,8 @@ function SupportSheet({ onClose }: { onClose: () => void }) {
 
 function DeleteSheet({ child, onClose }: { child: string; onClose: () => void }) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const wipe = () => {
+  const wipe = async () => {
+    await deleteCloudData().catch(() => undefined);
     ["ollie-chat-v1", "ollie-profile-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1"].forEach((k) => localStorage.removeItem(k));
     indexedDB.deleteDatabase("ollie-pictures");
     setStep(3);
