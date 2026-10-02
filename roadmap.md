@@ -6,6 +6,7 @@
 - Sound: read-aloud for younger readers on the slideshow slides
 
 ## Done
+- Learning Trail: glowing blue trail, 7-learning-day jar (+3 cookies), paused stops instead of resets
 - Daily Slideshow: content library (12 categories x 4 subtopics, 3 age bands)
 - Daily Slideshow: day builder + persistence (due logic, completion log, daily reset)
 - Daily Slideshow: full-screen takeover UI (content slides, quiz with retry rules, skip, progress dots, completion reward)
@@ -16,8 +17,6 @@
 - Verified end to end in the preview
 
 ## Later
-- Learning Trail: the 7-learning-day cookie jar (3 bonus cookies, "4 of 7" progress shown from the start, a missed day pauses rather than resets)
-- Learning Trail: replace the "days in a row" count with the spec's paused-count model
 - Custom-topic slideshow (struggle subject or typed interest) generated at the finale
 - Parent dashboard: slideshow enable/disable + reset time controls
 - Backend tables (children, messages, slideshow_completions) once accounts exist
