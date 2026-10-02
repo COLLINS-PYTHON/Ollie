@@ -20,8 +20,8 @@
 
 ## Later
 - Weekly report email + day-6 trial line (needs backend + email provider)
-- Custom-topic slideshow (struggle subject or typed interest) generated at the finale
-- Device list with remote log out (needs a server-side session store)
+
+
 - Real payments and Restore Purchases; real AI providers and voice files when keys arrive
 
 ## Open questions

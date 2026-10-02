@@ -5,6 +5,11 @@ import { ThinkingOrb } from "thinking-orbs";
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
+import { useServerFn } from "@tanstack/react-start";
+import { generateCustomLesson } from "@/lib/custom-lesson.functions";
+import { customTopic, loadCustom, saveCustom } from "@/lib/custom-lesson-store";
+import { effectiveBand } from "@/lib/slideshow/library";
+import { streamImage } from "@/lib/stream-image";
 
 export const Route = createFileRoute("/onboarding/building")({
   head: () => pageMeta("Building your child's Ollie", "Ollie is getting ready for your child."),
@@ -26,6 +31,26 @@ function BuildingPage() {
     const t = setTimeout(() => setStep((s) => s + 1), 1400);
     return () => clearTimeout(t);
   }, [step, answered, done]);
+
+  /* Custom-topic lesson: written during this wait so it is ready as the first slideshow. */
+  const makeLesson = useServerFn(generateCustomLesson);
+  useEffect(() => {
+    const pick = customTopic();
+    if (!pick) return;
+    const existing = loadCustom();
+    if (existing && existing.topic === pick.topic) return;
+    const band = effectiveBand(onboardingState.age || 7, onboardingState.readingLevel ?? "stories");
+    makeLesson({ data: { topic: pick.topic, age: onboardingState.age || 7, band, struggle: pick.struggle } })
+      .then((res) => {
+        if (!res.ok) return;
+        saveCustom({ topic: pick.topic, lesson: res.lesson, done: false });
+        // The picture keeps loading in the background while the child reads.
+        void streamImage("/api/generate-image", { prompt: res.lesson.picture }, (url, isFinal) => {
+          if (isFinal) { const cur = loadCustom(); if (cur && cur.topic === pick.topic) saveCustom({ ...cur, image: url }); }
+        }).catch(() => {});
+      })
+      .catch(() => {});
+  }, [makeLesson]);
 
   function answer(yes: boolean) {
     onboardingState.weeklyEmail = yes;
@@ -73,7 +98,7 @@ function BuildingPage() {
 
       {done && (
         <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
-          <button type="button" onClick={() => navigate({ to: "/search" })} className="text-button bubble-in h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card">
+          <button type="button" onClick={() => navigate({ to: "/onboarding/handoff" })} className="text-button bubble-in h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card">
             Start exploring
           </button>
         </div>

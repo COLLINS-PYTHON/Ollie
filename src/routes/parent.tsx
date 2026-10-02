@@ -15,7 +15,7 @@ import { addCookies, cookiesLeft, JARS, loadBalance, saveBalance, type Balance }
 import { completions, prefs, setPrefs, streakDays, type SlideshowPrefs } from "@/lib/slideshow-store";
 import { minutesToday } from "@/lib/usage-store";
 import { INTERESTS } from "@/lib/interests";
-import { checkPin, clearFails, deleteCloudData, hasPin, lockedSeconds, PIN_LOCK, pushAll, recordFail, sealPin } from "@/lib/cloud-sync";
+import { checkPin, clearFails, deleteCloudData, deviceKey, listDevices, revokeDevice, signOutHere, type DeviceRow, hasPin, lockedSeconds, PIN_LOCK, pushAll, recordFail, sealPin } from "@/lib/cloud-sync";
 
 export const Route = createFileRoute("/parent")({
   head: () => ({
@@ -69,6 +69,9 @@ const ICONS = {
   ),
   interests: ( // star cluster with a sparkle
     <LineIcon><path d="m9 6 1.2 2.6 2.8.3-2.1 1.9.6 2.8L9 12.2l-2.5 1.4.6-2.8L5 8.9l2.8-.3z" /><path d="m16 13 .8 1.7 1.9.2-1.4 1.3.4 1.9-1.7-.9-1.7.9.4-1.9-1.4-1.3 1.9-.2z" /><path d="M19 4v3M17.5 5.5h3" /></LineIcon>
+  ),
+  devices: ( // phone with a small signal arc
+    <LineIcon><rect x="6" y="2.5" width="10" height="19" rx="2.5" /><path d="M10 18.5h2" /><path d="M18.5 8a4 4 0 0 1 0 5" strokeDasharray="1.5 2" /></LineIcon>
   ),
   support: ( // headset
     <LineIcon><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><rect x="3" y="13" width="4" height="6" rx="1.5" /><rect x="17" y="13" width="4" height="6" rx="1.5" /><path d="M19 19c0 1.5-2 2.5-5 2.5" /></LineIcon>
@@ -233,7 +236,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
 }
 
 /* ---------- dashboard ---------- */
-type SheetId = null | "flagged" | "screen" | "slideshow" | "history" | "tone" | "jar" | "subscription" | "interests" | "support" | "delete";
+type SheetId = null | "flagged" | "screen" | "slideshow" | "history" | "tone" | "jar" | "subscription" | "interests" | "support" | "delete" | "devices";
 
 function greeting() {
   const h = new Date().getHours();
@@ -375,6 +378,10 @@ function ParentDashboard() {
         <Row icon={ICONS.interests} color="text-accent-3" label={`${child}'s interests`} value={interestLabels.join(", ") || "None picked yet"} onClick={() => setSheet("interests")} />
       </Section>
 
+      <Section title="Devices">
+        <Row icon={ICONS.devices} color="text-accent-2" label="Signed-in devices" value="See where your account is logged in" onClick={() => setSheet("devices")} />
+      </Section>
+
       <Section title="Privacy">
         <Row icon={ICONS.trash} color="text-destructive" label="Delete my data" value="Remove chats, pictures and the profile" onClick={() => setSheet("delete")} />
       </Section>
@@ -509,6 +516,8 @@ function ParentDashboard() {
         </Sheet>
       )}
 
+      {sheet === "devices" && <DevicesSheet onClose={() => setSheet(null)} />}
+
       {sheet === "subscription" && (
         <Sheet title="Subscription" onClose={() => setSheet(null)}>
           <p className="text-body text-foreground">{onboardingState.plan === "monthly" ? "Monthly, $11.99 a month" : "Yearly, $99.99 a year"}</p>
@@ -626,6 +635,40 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
         </>
       )}
       {step === 3 && <p className="text-body text-foreground">Everything has been deleted.</p>}
+    </Sheet>
+  );
+}
+
+function DevicesSheet({ onClose }: { onClose: () => void }) {
+  const [rows, setRows] = useState<DeviceRow[] | null | undefined>(undefined);
+  const here = typeof window === "undefined" ? "" : deviceKey();
+  const refresh = () => { listDevices().then(setRows).catch(() => setRows([])); };
+  useEffect(refresh, []);
+  const fmt = (iso: string) => new Date(iso).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  return (
+    <Sheet title="Signed-in devices" onClose={onClose}>
+      {rows === undefined && <p className="text-support text-muted-foreground">Loading</p>}
+      {rows === null && <p className="text-support text-muted-foreground">This device isn't signed in to an account yet. Create one or log in to see your devices here.</p>}
+      {rows && (
+        <ul className="flex flex-col gap-2.5">
+          {rows.map((d) => {
+            const mine = d.device_key === here;
+            return (
+              <li key={d.id} className="flex items-center gap-3 rounded-control bg-surface p-3.5">
+                <div className="min-w-0 flex-1">
+                  <div className="text-label font-semibold text-foreground">{d.label}{mine && " (this device)"}</div>
+                  <div className="text-support text-muted-foreground">{d.revoked ? "Logging out next time it opens" : `Last used ${fmt(d.last_seen)}`}</div>
+                </div>
+                {mine ? (
+                  <button type="button" onClick={async () => { await signOutHere(); window.location.assign("/onboarding/fact"); }} className="rounded-pill bg-white px-3.5 py-2 text-label font-semibold text-foreground">Log out</button>
+                ) : !d.revoked && (
+                  <button type="button" onClick={async () => { await revokeDevice(d.id); refresh(); }} className="rounded-pill bg-white px-3.5 py-2 text-label font-semibold text-destructive">Log out</button>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </Sheet>
   );
 }
