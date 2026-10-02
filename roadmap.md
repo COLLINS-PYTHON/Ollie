@@ -16,6 +16,8 @@
 - Verified end to end in the preview
 
 ## Later
+- Learning Trail: the 7-learning-day cookie jar (3 bonus cookies, "4 of 7" progress shown from the start, a missed day pauses rather than resets)
+- Learning Trail: replace the "days in a row" count with the spec's paused-count model
 - Custom-topic slideshow (struggle subject or typed interest) generated at the finale
 - Parent dashboard: slideshow enable/disable + reset time controls
 - Backend tables (children, messages, slideshow_completions) once accounts exist
