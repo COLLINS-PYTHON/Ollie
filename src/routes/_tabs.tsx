@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { addUsage } from "@/lib/usage-store";
+import { addUsage, minutesToday } from "@/lib/usage-store";
+import { Bedtime } from "@/components/ollie/Bedtime";
 import { TabBar } from "@/components/ollie/TabBar";
 import { SlideshowTakeover, type SlideshowChild } from "@/components/ollie/Slideshow";
-import { slideshowDue } from "@/lib/slideshow-store";
+import { setPrefs, slideshowDue } from "@/lib/slideshow-store";
 import { effectiveBand } from "@/lib/slideshow/library";
 import { onboardingState, syncProfile } from "@/lib/onboarding-store";
 
@@ -23,6 +24,7 @@ function ParentIcon() {
 
 function TabsLayout() {
   const [takeover, setTakeover] = useState(false);
+  const [bedtime, setBedtime] = useState(false);
   const [child, setChild] = useState<SlideshowChild>({
     name: "friend",
     band: "7-9",
@@ -32,6 +34,7 @@ function TabsLayout() {
   /* The daily lesson takes over the app until it is done for the day. */
   useEffect(() => {
     syncProfile();
+    setPrefs({ resetTime: onboardingState.slideshowReset });
     setChild({
       name: onboardingState.name || "friend",
       band: effectiveBand(onboardingState.age || 7, onboardingState.readingLevel ?? "stories"),
@@ -45,9 +48,12 @@ function TabsLayout() {
   /* Count Search and Create time only, never while the lesson is open. */
   useEffect(() => {
     const surface = pathname === "/search" ? "search" : pathname === "/create" ? "create" : null;
-    if (!surface || takeover) return;
+    if (!surface || takeover) { setBedtime(false); return; }
+    const check = () => setBedtime(minutesToday() >= onboardingState.limitMinutes);
+    check();
     const t = window.setInterval(() => {
       if (document.visibilityState === "visible") addUsage(surface, 15);
+      check();
     }, 15_000);
     return () => window.clearInterval(t);
   }, [pathname, takeover]);
@@ -65,6 +71,7 @@ function TabsLayout() {
       </div>
       <Outlet />
       <TabBar />
+      {bedtime && !takeover && <Bedtime name={child.name} />}
       {takeover && <SlideshowTakeover child={child} onClose={() => setTakeover(false)} />}
     </div>
   );
