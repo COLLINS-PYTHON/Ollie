@@ -18,6 +18,7 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as TabsCreateRouteImport } from './routes/_tabs.create'
 import { Route as TabsSearchRouteImport } from './routes/_tabs.search'
 import { Route as TabsTrailRouteImport } from './routes/_tabs.trail'
+import { Route as ApiGenerateImageRouteImport } from './routes/api/generate-image'
 import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as OnboardingAccountRouteImport } from './routes/onboarding/account'
 import { Route as OnboardingAgeRouteImport } from './routes/onboarding/age'
@@ -82,6 +83,11 @@ const TabsTrailRoute = TabsTrailRouteImport.update({
   id: '/trail',
   path: '/trail',
   getParentRoute: () => TabsRoute,
+} as any)
+const ApiGenerateImageRoute = ApiGenerateImageRouteImport.update({
+  id: '/api/generate-image',
+  path: '/api/generate-image',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingIndexRoute = OnboardingIndexRouteImport.update({
   id: '/',
@@ -188,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/create': typeof TabsCreateRoute
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
+  '/api/generate-image': typeof ApiGenerateImageRoute
   '/onboarding/account': typeof OnboardingAccountRoute
   '/onboarding/age': typeof OnboardingAgeRoute
   '/onboarding/assurance': typeof OnboardingAssuranceRoute
@@ -216,6 +223,7 @@ export interface FileRoutesByTo {
   '/create': typeof TabsCreateRoute
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
+  '/api/generate-image': typeof ApiGenerateImageRoute
   '/onboarding/account': typeof OnboardingAccountRoute
   '/onboarding/age': typeof OnboardingAgeRoute
   '/onboarding/assurance': typeof OnboardingAssuranceRoute
@@ -247,6 +255,7 @@ export interface FileRoutesById {
   '/_tabs/create': typeof TabsCreateRoute
   '/_tabs/search': typeof TabsSearchRoute
   '/_tabs/trail': typeof TabsTrailRoute
+  '/api/generate-image': typeof ApiGenerateImageRoute
   '/onboarding/account': typeof OnboardingAccountRoute
   '/onboarding/age': typeof OnboardingAgeRoute
   '/onboarding/assurance': typeof OnboardingAssuranceRoute
@@ -278,6 +287,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/search'
     | '/trail'
+    | '/api/generate-image'
     | '/onboarding/account'
     | '/onboarding/age'
     | '/onboarding/assurance'
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/search'
     | '/trail'
+    | '/api/generate-image'
     | '/onboarding/account'
     | '/onboarding/age'
     | '/onboarding/assurance'
@@ -336,6 +347,7 @@ export interface FileRouteTypes {
     | '/_tabs/create'
     | '/_tabs/search'
     | '/_tabs/trail'
+    | '/api/generate-image'
     | '/onboarding/account'
     | '/onboarding/age'
     | '/onboarding/assurance'
@@ -364,6 +376,7 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRouteWithChildren
   ParentRoute: typeof ParentRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiGenerateImageRoute: typeof ApiGenerateImageRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -430,6 +443,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/trail'
       preLoaderRoute: typeof TabsTrailRouteImport
       parentRoute: typeof TabsRoute
+    }
+    '/api/generate-image': {
+      id: '/api/generate-image'
+      path: '/api/generate-image'
+      fullPath: '/api/generate-image'
+      preLoaderRoute: typeof ApiGenerateImageRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/onboarding/': {
       id: '/onboarding/'
@@ -637,6 +657,7 @@ const rootRouteChildren: RootRouteChildren = {
   ParentRoute: ParentRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiGenerateImageRoute: ApiGenerateImageRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
