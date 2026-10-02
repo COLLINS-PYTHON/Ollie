@@ -3,6 +3,7 @@ import ollie from "@/assets/ollie.png";
 import { INTERESTS } from "@/lib/interests";
 import { buildDay, pickCategoryId, type Day } from "@/lib/slideshow/library";
 import { JAR_BONUS, recordCompletion } from "@/lib/slideshow-store";
+import { customDay, loadCustom, markCustomDone } from "@/lib/custom-lesson-store";
 import { addCookies, loadBalance, saveBalance } from "@/lib/picture-store";
 import { Rocket } from "lucide-react";
 import { quizOptions, quizText, type Band } from "@/lib/slideshow/types";
@@ -20,7 +21,11 @@ function categoryIconId(categoryId: string) {
 }
 
 export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; onClose: () => void }) {
-  const [day] = useState<Day | null>(() => buildDay(pickCategoryId(child.interests)));
+  const [day] = useState<(Day & { image?: string }) | null>(() => {
+    const custom = loadCustom();
+    if (custom && !custom.done) return customDay(custom);
+    return buildDay(pickCategoryId(child.interests));
+  });
   const [phase, setPhase] = useState<"intro" | "play" | "done">("intro");
   const [jarFilled, setJarFilled] = useState(false);
   const [index, setIndex] = useState(0);
@@ -39,7 +44,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
   const current = slides[index];
   const tile = day ? tileClasses(day.categoryId) : "";
   const CategoryIcon = day ? categoryIconId(day.categoryId) : Rocket;
-  const tint = { "--slide-color": `var(--cat-${day?.categoryId ?? "space"})` } as CSSProperties;
+  const tint = { "--slide-color": day?.categoryId === "custom" ? "var(--brand)" : `var(--cat-${day?.categoryId ?? "space"})` } as CSSProperties;
   const quizNumber = slides.slice(0, index + 1).filter((s) => s.kind === "quiz").length;
 
   const clearSlideState = () => {
@@ -51,6 +56,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
 
   const finish = () => {
     if (!day) return;
+    if (day.categoryId === "custom") markCustomDone();
     const { jarFilled: filled } = recordCompletion({
       categoryId: day.categoryId,
       label: day.label,
@@ -186,9 +192,13 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
 
         {current.kind === "content" ? (
           <div key={current.sub.id} className="flex flex-1 flex-col items-center justify-center gap-6 px-7 text-center">
-            <div className={`glossy flex size-28 items-center justify-center rounded-card bg-gradient-to-b ${tile} pop-in`}>
-              <current.sub.icon className="size-12 text-white" strokeWidth={2} />
-            </div>
+            {day.image && index === 0 ? (
+              <img src={day.image} alt="" className="pop-in size-56 rounded-card object-cover shadow-card" />
+            ) : (
+              <div className={`glossy flex size-28 items-center justify-center rounded-card bg-gradient-to-b ${tile} pop-in`}>
+                <current.sub.icon className="size-12 text-white" strokeWidth={2} />
+              </div>
+            )}
             <p className="text-label uppercase tracking-wide text-muted-foreground">{current.sub.title}</p>
             <p className="text-title max-w-[320px] text-foreground">{current.sub.caption[child.band]}</p>
           </div>
