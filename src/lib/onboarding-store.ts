@@ -20,6 +20,7 @@ export const onboardingState = {
   triedImage: false,
   aiConsent: false,
   pin: "",
+  pinHash: "",
   plan: "yearly" as "monthly" | "yearly",
   parentName: "",
   email: "",
