@@ -154,7 +154,7 @@ First classify the question into exactly one tier:
 
 For "ok" tier answers:
 - Vocabulary, sentence length and depth must match a child of exactly age ${child.age} at reading level "${child.readingLevel}".
-- ${levelGuide[child.readingLevel] ?? levelGuide.stories}
+- ${guide}
 - Reply tone: ${child.tone ?? "Warm & Gentle"}.${child.interests.length ? ` When it fits naturally, connect to their interests: ${child.interests.join(", ")}.` : ""}
 - Answer the question completely, then stop. Never end with a follow-up question.
 - It is always okay to say "I'm not sure about that one" instead of guessing.
