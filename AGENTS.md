@@ -13,3 +13,5 @@
 - Tab screens live under the pathless `_tabs` layout (tab bar + parent icon); `/` redirects to `/search`; onboarding screens reuse `OnboardingSkeleton` from src/routes/onboarding.tsx. Why: fixed shell and skeleton per spec.
 - Daily slideshow content lives in `src/lib/slideshow/` as hand-built per-category packs (types.ts, pack-*.ts, library.ts) and is never generated at runtime; a quiz's options/hint/why may be band-keyed when its question is. Why: marginal cost per child stays near zero and answers always match the question the child actually sees.
 - The slideshow takes over the screen from the `_tabs` layout until the day is marked done in `src/lib/slideshow-store.ts`; screens never render it inline. Why: the spec requires the daily lesson to be finished before anything else.
+- Setup answers and parent settings persist on-device via saveProfile/loadProfile in src/lib/onboarding-store.ts, loaded only from effects. Why: survives reloads without SSR hydration mismatches until accounts exist.
+- Screen time is tracked per surface (Search, Create) in src/lib/usage-store.ts; the slideshow is never counted. Why: spec excludes the lesson from the limit.
