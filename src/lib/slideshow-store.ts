@@ -76,12 +76,44 @@ export function slideshowDue(): boolean {
   return Date.now() - last.at >= DAY_MS;
 }
 
-export function recordCompletion(c: Omit<Completion, "id" | "at">): Completion {
+/* Learning Trail jar: every 7 learning days fills a jar worth 3 bonus
+   picture cookies. Missed days pause the count, they never reset it. */
+export const JAR_EVERY = 7;
+export const JAR_BONUS = 3;
+
+export function jarProgress(): number {
+  return read().completions.length % JAR_EVERY;
+}
+
+export function recordCompletion(c: Omit<Completion, "id" | "at">): { entry: Completion; jarFilled: boolean } {
   const s = read();
   const entry: Completion = { ...c, id: `c-${Date.now()}`, at: Date.now() };
   s.completions = [...s.completions, entry];
   write(s);
-  return entry;
+  return { entry, jarFilled: s.completions.length % JAR_EVERY === 0 };
+}
+
+export type TrailStop =
+  | { kind: "done"; completion: Completion; learningDay: number }
+  | { kind: "paused"; key: string; at: number };
+
+/* Oldest first: one stop per learning day, plus one soft paused stop for
+   each gap of missed calendar days between lessons. */
+export function trailStops(): TrailStop[] {
+  const list = [...read().completions].sort((a, b) => a.at - b.at);
+  const stops: TrailStop[] = [];
+  list.forEach((c, i) => {
+    const prev = list[i - 1];
+    if (prev) {
+      const a = new Date(prev.at); a.setHours(0, 0, 0, 0);
+      const b = new Date(c.at); b.setHours(0, 0, 0, 0);
+      if (Math.round((b.getTime() - a.getTime()) / DAY_MS) > 1) {
+        stops.push({ kind: "paused", key: `p-${c.id}`, at: a.getTime() + DAY_MS });
+      }
+    }
+    stops.push({ kind: "done", completion: c, learningDay: i + 1 });
+  });
+  return stops;
 }
 
 function dateKey(at: number): string {

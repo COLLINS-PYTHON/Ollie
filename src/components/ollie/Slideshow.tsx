@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import ollie from "@/assets/ollie.png";
 import { INTERESTS } from "@/lib/interests";
 import { buildDay, pickCategoryId, type Day } from "@/lib/slideshow/library";
-import { recordCompletion } from "@/lib/slideshow-store";
+import { JAR_BONUS, recordCompletion } from "@/lib/slideshow-store";
 import { addCookies, loadBalance, saveBalance } from "@/lib/picture-store";
 import { Rocket } from "lucide-react";
 import { quizOptions, quizText, type Band } from "@/lib/slideshow/types";
@@ -22,6 +22,7 @@ function categoryIconId(categoryId: string) {
 export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; onClose: () => void }) {
   const [day] = useState<Day | null>(() => buildDay(pickCategoryId(child.interests)));
   const [phase, setPhase] = useState<"intro" | "play" | "done">("intro");
+  const [jarFilled, setJarFilled] = useState(false);
   const [index, setIndex] = useState(0);
   const [status, setStatus] = useState<"open" | "correct" | "reveal">("open");
   const [picked, setPicked] = useState<number | null>(null);
@@ -50,14 +51,15 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
 
   const finish = () => {
     if (!day) return;
-    recordCompletion({
+    const { jarFilled: filled } = recordCompletion({
       categoryId: day.categoryId,
       label: day.label,
       band: child.band,
       correct: score.correct,
       total: score.total,
     });
-    saveBalance(addCookies(loadBalance(), 1));
+    saveBalance(addCookies(loadBalance(), 1 + (filled ? JAR_BONUS : 0)));
+    setJarFilled(filled);
     setRewarded(true);
     setPhase("done");
   };
@@ -136,6 +138,11 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
           <p className={`relative rounded-pill bg-white px-5 py-2.5 text-button text-foreground shadow-card ${rewarded ? "pop-in" : ""}`}>
             +1 picture cookie for the Create tab
           </p>
+          {jarFilled && (
+            <p className="pop-in relative rounded-pill bg-gold px-5 py-2.5 text-button text-foreground shadow-card">
+              Your trail jar is full! +{JAR_BONUS} bonus cookies
+            </p>
+          )}
           <button
             type="button"
             onClick={onClose}
