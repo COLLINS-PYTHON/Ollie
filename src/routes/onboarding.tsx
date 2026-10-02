@@ -1,13 +1,32 @@
-import { createFileRoute, Outlet, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useRouter, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { loadOnboardingDraft, saveOnboardingDraft } from "@/lib/onboarding-store";
 
 export const Route = createFileRoute("/onboarding")({
   component: OnboardingLayout,
 });
 
 function OnboardingLayout() {
-  return <Outlet />;
+  const [ready, setReady] = useState(false);
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+
+  useEffect(() => {
+    loadOnboardingDraft();
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+    const save = () => saveOnboardingDraft();
+    window.addEventListener("pagehide", save);
+    return () => {
+      save();
+      window.removeEventListener("pagehide", save);
+    };
+  }, [pathname, ready]);
+
+  return ready ? <Outlet /> : null;
 }
 
 /* Fixed onboarding skeleton: back, 4-segment chapter bar, title slot, pinned button. */

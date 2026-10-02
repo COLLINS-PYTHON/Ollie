@@ -47,6 +47,30 @@ export const parentSettings = {
 };
 
 const PROFILE_KEY = "ollie-profile-v1";
+const DRAFT_KEY = "ollie-onboarding-draft-v1";
+
+/* A tab-local setup draft keeps the name visible after a refresh without
+   turning an unfinished onboarding into the child's saved profile. Never
+   persist the PIN or its hash in this draft. */
+export function saveOnboardingDraft() {
+  try {
+    const { pin: _pin, pinHash: _pinHash, ...draft } = onboardingState;
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+export function loadOnboardingDraft() {
+  try {
+    const raw = sessionStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    const { pin: _pin, pinHash: _pinHash, ...draft } = JSON.parse(raw) as Partial<typeof onboardingState>;
+    Object.assign(onboardingState, draft);
+  } catch {
+    /* corrupted, keep current values */
+  }
+}
 
 export function saveProfile() {
   try {
