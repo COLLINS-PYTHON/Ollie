@@ -3,7 +3,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUp, Mic, Volume2 } from "lucide-react";
 import { ThinkingOrb } from "thinking-orbs";
 import { askOllie } from "@/lib/search.functions";
-import { loadChat, saveChat, type ChatMessage } from "@/lib/chat-store";
+import { loadChat, saveChat, type ChatMessage, type Reaction } from "@/lib/chat-store";
+
+const REACTIONS: { id: Reaction; label: string }[] = [
+  { id: "wow", label: "Wow" },
+  { id: "funny", label: "Funny" },
+  { id: "knew", label: "I knew that" },
+];
 import { onboardingState } from "@/lib/onboarding-store";
 import { pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
