@@ -5,6 +5,8 @@
 - Sound: read-aloud for younger readers on the slideshow slides
 
 ## Done
+- Ollie's bedtime scene at the Search + Create limit (lesson never blocked)
+- Parent picks lesson unlock: 24h after last, or daily at a set time
 - Parent Dashboard: PIN gate, greeting, stats, flagged log, weekly report, controls, account, privacy delete, support
 - Learning Trail: glowing blue trail, 7-learning-day jar (+3 cookies), paused stops instead of resets
 - Daily Slideshow: content library (12 categories x 4 subtopics, 3 age bands)
@@ -17,7 +19,6 @@
 - Verified end to end in the preview
 
 ## Later
-- Ollie's bedtime scene when the screen time limit is reached
 - Weekly report email + day-6 trial line (needs backend + email provider)
 - Custom-topic slideshow (struggle subject or typed interest) generated at the finale
 - Backend tables (children, messages, slideshow_completions) once accounts exist

@@ -14,7 +14,10 @@ export type Completion = {
   total: number;
 };
 
-export type SlideshowPrefs = { enabled: boolean; resetTime: string };
+/* Parent picks how a new lesson unlocks: 24 hours after the last one was
+   finished, or every day at a set clock time. */
+export type ResetMode = "24h" | "time";
+export type SlideshowPrefs = { enabled: boolean; resetTime: string; resetMode: ResetMode };
 
 const KEY = "ollie-slideshow-v1";
 const DAY_MS = 86_400_000;
@@ -23,7 +26,7 @@ type State = { completions: Completion[]; prefs: SlideshowPrefs };
 
 const DEFAULTS: State = {
   completions: [],
-  prefs: { enabled: true, resetTime: "07:00" },
+  prefs: { enabled: true, resetTime: "07:00", resetMode: "24h" },
 };
 
 function read(): State {
@@ -62,10 +65,30 @@ export function completedCount(): number {
   return read().completions.length;
 }
 
+/* Most recent moment the set clock time passed (today's, or yesterday's). */
+function lastResetMoment(resetTime: string, now = Date.now()): number {
+  const [h = 7, m = 0] = resetTime.split(":").map(Number);
+  const d = new Date(now);
+  d.setHours(h, m, 0, 0);
+  if (d.getTime() > now) d.setDate(d.getDate() - 1);
+  return d.getTime();
+}
+
+function unlockAt(s: State, lastAt: number): number {
+  if (s.prefs.resetMode === "time") {
+    const r = lastResetMoment(s.prefs.resetTime, lastAt);
+    const next = new Date(r);
+    next.setDate(next.getDate() + 1);
+    return next.getTime();
+  }
+  return lastAt + DAY_MS;
+}
+
 export function nextInMs(): number {
-  const last = read().completions.at(-1);
+  const s = read();
+  const last = s.completions.at(-1);
   if (!last) return 0;
-  return Math.max(0, last.at + DAY_MS - Date.now());
+  return Math.max(0, unlockAt(s, last.at) - Date.now());
 }
 
 export function slideshowDue(): boolean {
@@ -73,7 +96,7 @@ export function slideshowDue(): boolean {
   if (!s.prefs.enabled) return false;
   const last = s.completions.at(-1);
   if (!last) return true;
-  return Date.now() - last.at >= DAY_MS;
+  return Date.now() >= unlockAt(s, last.at);
 }
 
 /* Learning Trail jar: every 7 learning days fills a jar worth 3 bonus
