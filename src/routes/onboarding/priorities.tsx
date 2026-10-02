@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Check } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
@@ -25,11 +25,12 @@ const OPTIONS = [
 ];
 
 function PrioritiesPage() {
+  const navigate = useNavigate();
   const [picked, setPicked] = useState(onboardingState.priorities);
 
   return (
     <div className="bg-gradient-mist min-h-screen">
-      <OnboardingSkeleton chapter={4} title="What matters most to you?" cta="Continue">
+      <OnboardingSkeleton chapter={4} title="What matters most to you?" cta="Continue" ctaDisabled={picked.length === 0} onContinue={() => navigate({ to: "/onboarding/tone" })}>
         <div className="flex flex-col gap-3" role="group" aria-label="What matters most">
           {OPTIONS.map(({ id, label }) => {
             const on = picked.includes(id);
