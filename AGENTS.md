@@ -17,3 +17,5 @@
 - Screen time is tracked per surface (Search, Create) in src/lib/usage-store.ts; the slideshow is never counted. Why: spec excludes the lesson from the limit.
 - Signed-in parents' setup and child progress sync to `accounts`/`children` via src/lib/cloud-sync.ts (pushAll from the _tabs layout, pullAll on /login); localStorage stays the working copy. Why: one simple sync path until per-feature tables are needed.
 - The parent PIN is only stored as a SHA-256 hash (pinHash); check it with checkPin. Why: spec requires PINs never be stored readable.
+- The one exception to hand-built lessons is the custom-topic lesson, written once by AI during the Building finale (src/lib/custom-lesson.functions.ts) and stored in src/lib/custom-lesson-store.ts; the slideshow plays it first, then returns to the library. Why: spec makes parent-typed topics real-time.
+- Signed-in devices live in the `devices` table; remote log out sets `revoked`, and that device wipes itself on its next sync. Why: no server push in v1.
