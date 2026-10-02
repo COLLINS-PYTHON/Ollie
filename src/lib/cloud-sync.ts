@@ -50,6 +50,7 @@ export async function pushAll() {
     const { data: { session } } = await supabase.auth.getSession();
     const user = session?.user;
     if (!user) return;
+    if (await deviceRevoked(user.id)) return;
     await sealPin();
     const s = onboardingState;
     const now = new Date().toISOString();
@@ -84,6 +85,7 @@ export async function pushAll() {
       : await supabase.from("children").insert(row);
     if (res.error) throw res.error;
     await pushMissingPictures(user.id);
+    await registerDevice(user.id);
   } catch (e) {
     console.warn("Saving to account failed", e);
   } finally {
@@ -125,6 +127,7 @@ export async function pullAll() {
     if (progress[k] !== undefined) localStorage.setItem(k, JSON.stringify(progress[k]));
   }
   await pullPictures(user.id);
+  await registerDevice(user.id);
   return true;
 }
 
@@ -181,3 +184,50 @@ export function recordFail(k: string) {
 }
 export function clearFails(k: string) { localStorage.removeItem(k); }
 export const PIN_LOCK = "ollie-pin-lock", LOGIN_LOCK = "ollie-login-lock";
+
+/* Devices: each phone or browser signed in to the account gets a row, so the
+   parent can see them and log one out from the dashboard. */
+const DEVICE_KEY = "ollie-device-v1";
+export function deviceKey() {
+  let k = localStorage.getItem(DEVICE_KEY);
+  if (!k) { k = crypto.randomUUID(); localStorage.setItem(DEVICE_KEY, k); }
+  return k;
+}
+function deviceLabel() {
+  const ua = navigator.userAgent;
+  const os = /iPhone/.test(ua) ? "iPhone" : /iPad/.test(ua) ? "iPad" : /Android/.test(ua) ? "Android" : /Mac/.test(ua) ? "Mac" : /Windows/.test(ua) ? "Windows" : "Device";
+  const app = /Edg\//.test(ua) ? "Edge" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "";
+  return app ? `${os}, ${app}` : os;
+}
+async function registerDevice(userId: string) {
+  await supabase.from("devices").upsert(
+    { account_id: userId, device_key: deviceKey(), label: deviceLabel(), last_seen: new Date().toISOString() },
+    { onConflict: "account_id,device_key" },
+  );
+}
+/* Logged out remotely: clear this device and send it back to the start. */
+async function deviceRevoked(userId: string) {
+  const { data } = await supabase.from("devices").select("id, revoked").eq("account_id", userId).eq("device_key", deviceKey()).maybeSingle();
+  if (!data?.revoked) return false;
+  await supabase.from("devices").delete().eq("id", data.id);
+  await supabase.auth.signOut();
+  ["ollie-chat-v1", "ollie-profile-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-custom-lesson-v1"].forEach((k) => localStorage.removeItem(k));
+  indexedDB.deleteDatabase("ollie-pictures");
+  window.location.assign("/onboarding/fact");
+  return true;
+}
+export type DeviceRow = { id: string; label: string; last_seen: string; device_key: string; revoked: boolean };
+export async function listDevices(): Promise<DeviceRow[] | null> {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return null;
+  const { data } = await supabase.from("devices").select("id, label, last_seen, device_key, revoked").eq("account_id", session.user.id).order("last_seen", { ascending: false });
+  return data ?? [];
+}
+export async function revokeDevice(id: string) {
+  await supabase.from("devices").update({ revoked: true }).eq("id", id);
+}
+export async function signOutHere() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) await supabase.from("devices").delete().eq("account_id", session.user.id).eq("device_key", deviceKey());
+  await supabase.auth.signOut();
+}
