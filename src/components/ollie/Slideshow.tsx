@@ -10,7 +10,7 @@ import { quizOptions, quizText, type Band } from "@/lib/slideshow/types";
 import { parentSettings } from "@/lib/onboarding-store";
 import { Volume2, VolumeX } from "lucide-react";
 
-export type SlideshowChild = { name: string; band: Band; interests: string[] };
+export type SlideshowChild = { name: string; band: Band; interests: string[]; needsReadAloud: boolean };
 
 const PRAISE = ["Yes! Exactly right!", "That is it!", "You nailed it!", "Perfect!"];
 
@@ -40,7 +40,6 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
   const [rewarded, setRewarded] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const timer = useRef<number | null>(null);
-  const spokenRef = useRef<string | null>(null);
 
   useEffect(() => () => { if (timer.current) window.clearTimeout(timer.current); }, []);
 
@@ -64,10 +63,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
     setSpeaking(false);
-    if (phase !== "play" || !narration || !parentSettings.soundOn || child.band !== "4-6" || status === "correct") return;
-    const key = `${index}:${status}:${hint ?? ""}`;
-    if (spokenRef.current === key) return;
-    spokenRef.current = key;
+    if (phase !== "play" || !narration || !parentSettings.soundOn || !child.needsReadAloud || status === "correct") return;
     const utterance = new SpeechSynthesisUtterance(narration);
     utterance.rate = 0.88;
     utterance.onstart = () => setSpeaking(true);
@@ -75,13 +71,13 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
     utterance.onerror = () => setSpeaking(false);
     window.speechSynthesis.speak(utterance);
     return () => { window.speechSynthesis.cancel(); };
-  }, [phase, index, status, hint, narration, child.band]);
+  }, [phase, index, status, hint, narration, child.band, child.needsReadAloud]);
 
   const toggleNarration = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window) || !parentSettings.soundOn) return;
     if (speaking) { window.speechSynthesis.cancel(); setSpeaking(false); return; }
     const utterance = new SpeechSynthesisUtterance(narration);
-    utterance.rate = child.band === "4-6" ? 0.88 : 1;
+    utterance.rate = child.needsReadAloud ? 0.88 : 1;
     utterance.onstart = () => setSpeaking(true);
     utterance.onend = () => setSpeaking(false);
     utterance.onerror = () => setSpeaking(false);
