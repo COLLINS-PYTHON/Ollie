@@ -12,7 +12,7 @@ import {
 } from "@/lib/onboarding-store";
 import { loadChat, saveChat, type ChatMessage } from "@/lib/chat-store";
 import { addCookies, cookiesLeft, JARS, loadBalance, saveBalance, type Balance } from "@/lib/picture-store";
-import { completions, prefs, setPrefs, streakDays } from "@/lib/slideshow-store";
+import { completions, prefs, setPrefs, streakDays, type SlideshowPrefs } from "@/lib/slideshow-store";
 import { minutesToday } from "@/lib/usage-store";
 import { INTERESTS } from "@/lib/interests";
 
@@ -243,7 +243,7 @@ function ParentDashboard() {
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const [balance, setBalance] = useState<Balance | null>(null);
   const [usedMin, setUsedMin] = useState(0);
-  const [slidePrefs, setSlidePrefs] = useState({ enabled: true, resetTime: "07:00" });
+  const [slidePrefs, setSlidePrefs] = useState<SlideshowPrefs>({ enabled: true, resetTime: "07:00", resetMode: "24h" });
 
   useEffect(() => {
     if (!onboardingState.name) loadProfile();
@@ -350,7 +350,7 @@ function ParentDashboard() {
 
       <Section title="Controls">
         <Row icon={ICONS.screen} color="text-accent-1" label="Screen time" value={`${formatMinutes(onboardingState.limitMinutes)} a day, Search and Create only`} onClick={() => setSheet("screen")} />
-        <Row icon={ICONS.slideshow} color="text-accent-4" label="Slideshow settings" value={slidePrefs.enabled ? `On, resets at ${formatClock(slidePrefs.resetTime)}` : "Off"} onClick={() => setSheet("slideshow")} />
+        <Row icon={ICONS.slideshow} color="text-accent-4" label="Slideshow settings" value={!slidePrefs.enabled ? "Off" : slidePrefs.resetMode === "24h" ? "On, new lesson 24 hours after the last" : `On, new lesson every day at ${formatClock(slidePrefs.resetTime)}`} onClick={() => setSheet("slideshow")} />
         <Row icon={ICONS.history} color="text-accent-2" label="Chat history" value={`Kept for ${retentionLabel}`} onClick={() => setSheet("history")} />
         <Row icon={ICONS.tone} color="text-accent-3" label="Reply tone" value={toneValue} onClick={() => setSheet("tone")} />
         <Row
@@ -423,6 +423,12 @@ function ParentDashboard() {
             <span className="text-body text-foreground">Daily slideshow</span>
             <Toggle label="Daily slideshow" on={slidePrefs.enabled} onChange={(v) => { setPrefs({ enabled: v }); setSlidePrefs(prefs()); }} />
           </div>
+          <p className="mt-5 text-body text-foreground">When does a new lesson unlock?</p>
+          <div className="mt-2 flex flex-col gap-2.5" role="radiogroup">
+            <Choice on={slidePrefs.resetMode === "24h"} label="24 hours after the last one" hint="Counts from when the lesson was finished" onClick={() => { setPrefs({ resetMode: "24h" }); setSlidePrefs(prefs()); }} />
+            <Choice on={slidePrefs.resetMode === "time"} label="Every day at a set time" hint="Same time each day" onClick={() => { setPrefs({ resetMode: "time" }); setSlidePrefs(prefs()); }} />
+          </div>
+          {slidePrefs.resetMode === "time" && (
           <label className="mt-4 flex items-center justify-between">
             <span className="text-body text-foreground">Reset time</span>
             <input
@@ -437,6 +443,7 @@ function ParentDashboard() {
               className="rounded-control border border-surface-2 px-3 py-2 text-body text-foreground"
             />
           </label>
+          )}
         </Sheet>
       )}
 
