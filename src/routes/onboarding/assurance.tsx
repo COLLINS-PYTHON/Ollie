@@ -26,7 +26,7 @@ function AssurancePage() {
 
   // Small icon builds in first, then the answer appears. Text-led, no hero art.
   useEffect(() => {
-    const timers = [setTimeout(() => setStep(1), 350), setTimeout(() => setStep(2), 1000)];
+    const timers = [setTimeout(() => setStep(1), 100), setTimeout(() => setStep(2), 360)];
     return () => timers.forEach(clearTimeout);
   }, []);
 
@@ -35,7 +35,7 @@ function AssurancePage() {
       <OnboardingSkeleton chapter={4} title="Here's our answer" cta="Continue" onContinue={() => navigate({ to: "/onboarding/screen-time" })}>
         {step >= 1 && (
           <div className="bubble-in mb-5 flex justify-center" aria-hidden>
-            <span className="glossy flex size-12 items-center justify-center rounded-control bg-gradient-to-br from-brand to-brand-deep shadow-card">
+            <span className="flex size-12 items-center justify-center rounded-control bg-primary shadow-card">
               <ShieldCheck className="size-6 text-primary-foreground drop-shadow" />
             </span>
           </div>

@@ -172,7 +172,7 @@
   font-size: 22px;
   line-height: 28px;
   font-weight: 800;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 @utility text-body {
   font-size: 16px;
@@ -482,3 +482,69 @@
 @media (prefers-reduced-motion: reduce) {
   .ollie-avatar-listening, .ollie-avatar-nod { animation: none; }
 }
+
+/* Premium onboarding is intentionally scoped: parent controls and chat retain their palette. */
+:root {
+  --onboarding-clay: oklch(0.49 0.105 37);
+  --onboarding-clay-soft: oklch(0.9 0.035 47);
+  --onboarding-cream: oklch(0.98 0.012 83);
+  --onboarding-ink: oklch(0.26 0.025 43);
+  --onboarding-muted: oklch(0.48 0.025 43);
+  --onboarding-line: oklch(0.88 0.023 66);
+  --onboarding-wash: linear-gradient(155deg, var(--onboarding-cream) 0%, var(--card) 53%, var(--onboarding-clay-soft) 160%);
+}
+.onboarding-theme {
+  --primary: var(--onboarding-clay);
+  --primary-foreground: var(--card);
+  --background: var(--onboarding-cream);
+  --foreground: var(--onboarding-ink);
+  --muted-foreground: var(--onboarding-muted);
+  --secondary: var(--onboarding-line);
+  --surface: var(--onboarding-cream);
+  --surface-2: var(--onboarding-line);
+  --border: var(--onboarding-line);
+  --ring: var(--onboarding-clay);
+  --elev-card: 0 8px 25px -14px color-mix(in oklab, var(--onboarding-ink) 18%, transparent), 0 1px 2px color-mix(in oklab, var(--onboarding-ink) 5%, transparent);
+  --elev-sheet: 0 20px 65px -24px color-mix(in oklab, var(--onboarding-ink) 24%, transparent);
+  background: var(--background);
+  min-height: 100svh;
+}
+.onboarding-theme :is(.bg-gradient-name,.bg-gradient-lilac,.bg-gradient-ice,.bg-gradient-wash,.bg-gradient-dawn,.bg-gradient-mist,.bg-gradient-hello,.bg-gradient-blush,.bg-gradient-sunrise,.bg-gradient-lagoon,.bg-gradient-quiet,.bg-gradient-trust) { background: var(--onboarding-wash); }
+.onboarding-theme .text-title { font-size: 27px; line-height: 34px; font-weight: 750; letter-spacing: 0; text-wrap: balance; }
+.onboarding-theme .text-support { font-size: 14px; line-height: 21px; }
+.onboarding-theme .onboarding-cta-fade { background: linear-gradient(to top,var(--background) 60%,transparent); }
+.onboarding-theme .age-wheel-shell { background: transparent; border: 0; box-shadow: none; backdrop-filter: none; }
+.onboarding-theme .age-wheel-selection { background: var(--card); border: 1px solid var(--border); box-shadow: var(--elev-card); }
+.onboarding-theme .age-wheel-mask { background: linear-gradient(to bottom,var(--background),transparent 30%,transparent 70%,var(--background)); }
+.onboarding-theme .age-glow { animation: premium-age-glow 2.8s ease-in-out infinite; }
+@keyframes premium-age-glow { 50% { text-shadow: 0 0 16px color-mix(in oklab,var(--primary) 20%,transparent); } }
+.age-number { transition: color 150ms ease, font-size 150ms ease; }
+.chapter-track { box-shadow: inset 0 1px 2px color-mix(in oklab,var(--foreground) 5%,transparent); }
+.chapter-fill { transition: width 250ms var(--ease-enter); box-shadow: inset 0 1px 1px color-mix(in oklab,var(--card) 25%,transparent); }
+.onboarding-content > h1 { animation: premium-heading 250ms var(--ease-enter) both; }
+.onboarding-content > div { animation: premium-heading 320ms var(--ease-enter) 50ms both; }
+@keyframes premium-heading { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.mascot-reveal { opacity: 0; transform: scale(.78); transition: opacity 300ms ease, transform 350ms var(--ease-enter); }
+.mascot-reveal.is-visible { opacity: 1; transform: scale(1); }
+.welcome-card { opacity: 0; transform: translateY(12px) scale(.96); transition: opacity 250ms ease, transform 350ms var(--ease-spring); }
+.welcome-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+.welcome-copy { opacity: 0; transition: opacity 180ms ease; }
+.welcome-copy.is-visible { opacity: 1; }
+.lesson-preview-card { animation: preview-arrive 400ms var(--ease-enter) both; }
+@keyframes preview-arrive { from { opacity: 0; margin-top: 32px; } to { opacity: 1; margin-top: 0; } }
+.lesson-art { color: var(--lesson-ink); overflow: visible; }
+.lesson-fill { fill: var(--lesson-ink); }
+.lesson-soft { fill: var(--lesson-ink); opacity: .22; }
+.lesson-paper { fill: var(--card); }
+.lesson-line { fill: none; stroke: var(--lesson-ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.lesson-paper-line { fill: none; stroke: var(--card); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.lesson-motion { transform-box: fill-box; transform-origin: center; animation: lesson-float 4s ease-in-out infinite; }
+@keyframes lesson-float { 50% { transform: translateY(-5px) rotate(2deg); } }
+.paywall-backdrop { background: color-mix(in oklab,var(--foreground) 25%,transparent); animation: backdrop-in 250ms ease both; }
+@keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+.paywall-sheet { background: color-mix(in oklab,var(--background) 96%,transparent); backdrop-filter: blur(24px); }
+.paywall-sheet .plan-option { height: auto; white-space: normal; }
+@media (max-height: 740px) { .onboarding-content { padding-top: 24px; } .onboarding-theme .text-title { font-size: 25px; line-height: 31px; } }
+@media (prefers-reduced-motion: reduce) { .mascot-reveal,.welcome-card,.welcome-copy { transition: none; } .lesson-motion { animation: none; } }
+
+.onboarding-theme [role="listbox"]:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; border-radius: var(--radius-card); }

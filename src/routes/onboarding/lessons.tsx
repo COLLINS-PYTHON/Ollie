@@ -3,6 +3,7 @@ import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { INTERESTS } from "@/lib/interests";
 import { childName } from "@/lib/meta";
+import { LessonArt } from "@/components/ollie/LessonArt";
 
 export const Route = createFileRoute("/onboarding/lessons")({
   head: () => ({
@@ -33,28 +34,24 @@ function LessonsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <OnboardingSkeleton chapter={4} title={`${name}'s lessons will look like this`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/worries" })}>
-        <div className="rounded-card bg-card p-5 shadow-sheet">
+      <OnboardingSkeleton chapter={4} title={`Here's how ${name}'s daily lessons will look`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/worries" })}>
           <div className="relative flex h-80 items-center justify-center">
-            {picks.map(({ id, label, icon: Icon, tile, sample }, i) => (
+            {picks.map(({ id, label, sample }, i) => (
               <article
                 key={id}
                 style={{ animationDelay: `${i * 160}ms` }}
-                className={`bubble-in absolute w-44 ${slots[i]}`}
+                className={`lesson-preview-card absolute w-44 ${slots[i]}`}
               >
-                <div className={`flex aspect-[3/4] flex-col justify-between rounded-card bg-gradient-to-br ${tile} p-4 shadow-sheet ring-4 ring-card`}>
-                  <span className="glossy flex size-11 items-center justify-center rounded-control bg-card/25">
-                    <Icon className="size-6 text-primary-foreground drop-shadow" aria-hidden />
-                  </span>
-                  <div>
-                    <p className="text-label uppercase tracking-wide text-primary-foreground/80">{label}</p>
-                    <p className="text-body mt-1 font-semibold leading-snug text-primary-foreground">{sample}</p>
+                <div className="flex aspect-[3/4] flex-col overflow-hidden rounded-card bg-card shadow-sheet ring-4 ring-card">
+                  <LessonArt categoryId={id} title={label} className="w-full" />
+                  <div className="px-4 pb-4">
+                    <p className="text-label text-muted-foreground">{label}</p>
+                    <p className="text-body mt-1 font-semibold leading-snug text-foreground">{sample}</p>
                   </div>
                 </div>
               </article>
             ))}
           </div>
-        </div>
         <p className="text-support mt-4 text-center text-muted-foreground">
           Every slideshow is built around what {name} loves.
         </p>

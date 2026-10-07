@@ -1,13 +1,12 @@
 # Roadmap
 
 ## Now
-- Show the proposed onboarding proportions and flow before applying the visual polish
-- Reference-led premium polish: onboarding proportions, chapter progress, exact copy, fluid transitions and paywall sheet
-- Ollie: fast-loading artwork and a smooth entrance without competing animations
-- Daily slideshows and display cards: authored SVG illustrations with code-driven motion
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Reference-led onboarding pass: scoped warm palette, proportions, chapter progress, exact payoff copy, faster entrance and trial sheet
+- Ollie artwork reduced from 1.6 MB to 86 KB, preloaded; entrance and idle motion no longer compete
+- Daily slideshow and display cards share lightweight animated category SVG artwork
 - Onboarding: premium cool gradient pass, consistent proportions and contrast, Milo preview fallback, functional iOS-style age wheel
 - Search: answers on a lesson topic show that lesson's picture for ages 4-9
 - Search: kids react to answers (Wow, Funny, I knew that); "wow" moments show in the weekly report
