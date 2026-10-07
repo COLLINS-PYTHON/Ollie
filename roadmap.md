@@ -2,6 +2,7 @@
 
 ## Now
 - Remove orb backplates, enlarge loading orbs, repair parent setting sheets and add restrained onboarding life
+- Replace glossy blue onboarding icons with softer, theme-matched styling
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
