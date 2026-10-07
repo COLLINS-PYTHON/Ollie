@@ -18,6 +18,19 @@ const TONES = [
   { id: "custom", label: "Describe it yourself", hint: "Write your own tone", speed: "1.6s", height: "-6px" },
 ];
 
+function ToneToggle({ on }: { on: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-pill transition-colors duration-element ${on ? "bg-primary" : "bg-surface-2"}`}
+    >
+      <span
+        className={`size-6 rounded-pill bg-card shadow-card transition-transform duration-element ${on ? "translate-x-[22px]" : "translate-x-0.5"}`}
+      />
+    </span>
+  );
+}
+
 function TonePage() {
   const navigate = useNavigate();
   const name = childName(onboardingState.name);
