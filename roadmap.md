@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Correct clouds to KinderGPT-inspired bright white with light-blue surroundings, never dark clouds
 - Fix enlarged thinking/loading orbs so their drawing resolution matches their displayed size
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
