@@ -18,6 +18,19 @@ const TONES = [
   { id: "custom", label: "Describe it yourself", hint: "Write your own tone", speed: "1.6s", height: "-6px" },
 ];
 
+function ToneToggle({ on }: { on: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-pill transition-colors duration-element ${on ? "bg-primary" : "bg-surface-2"}`}
+    >
+      <span
+        className={`size-6 rounded-pill bg-card shadow-card transition-transform duration-element ${on ? "translate-x-[22px]" : "translate-x-0.5"}`}
+      />
+    </span>
+  );
+}
+
 function TonePage() {
   const navigate = useNavigate();
   const name = childName(onboardingState.name);
@@ -57,10 +70,13 @@ function TonePage() {
                   setTone(t.id);
                   onboardingState.tone = t.id;
                 }}
-                className={`rounded-card p-4 text-left transition-all duration-tap active:scale-[0.98] ${on ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/70"}`}
+                className={`flex items-center gap-4 rounded-card p-4 text-left transition-all duration-tap active:scale-[0.98] ${on ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/70"}`}
               >
-                <span className="text-body block font-semibold text-foreground">{t.label}</span>
-                <span className="text-support text-muted-foreground">{t.hint}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="text-body block font-semibold text-foreground">{t.label}</span>
+                  <span className="text-support text-muted-foreground">{t.hint}</span>
+                </span>
+                <ToneToggle on={on} />
               </button>
             );
           })}
