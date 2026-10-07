@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Make the paywall real: clarify working pop-up versus actual subscription checkout before changing payment behavior
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
