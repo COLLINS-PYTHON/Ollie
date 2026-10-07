@@ -288,8 +288,8 @@ function SearchChat() {
           </div>
         )}
         {busy && (
-          <div className="mt-3 flex self-start rounded-[18px] rounded-bl-[4px] bg-surface-2 px-3.5 py-2" role="status" aria-label="Ollie is writing an answer">
-            <ThinkingOrb state="composing" size={32} theme="light" aria-label="Ollie is writing an answer" />
+          <div className="mt-3 flex self-start px-2 py-2" role="status" aria-label="Ollie is writing an answer">
+            <ThinkingOrb state="composing" size={80} theme="light" aria-label="Ollie is writing an answer" />
           </div>
         )}
       </div>

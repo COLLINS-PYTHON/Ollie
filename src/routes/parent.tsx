@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, ChevronLeft, ChevronRight, Clock, Delete, Flame, Image as ImageIcon, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
+import { Button } from "@/components/ui/button";
+import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import {
   onboardingState,
   parentSettings,
@@ -84,22 +86,17 @@ const ICONS = {
 /* ---------- shared pieces ---------- */
 function Sheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-foreground/30" onClick={onClose}>
-      <div
-        role="dialog"
-        aria-label={title}
-        className="sheet-up max-h-[85vh] w-full max-w-md overflow-y-auto rounded-t-card bg-white p-5 pb-8 shadow-sheet"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <Drawer open onOpenChange={(open) => { if (!open) onClose(); }} shouldScaleBackground={false}>
+      <DrawerContent aria-describedby={undefined} className="mx-auto max-h-[85svh] w-full max-w-md bg-card px-5 pb-8 shadow-sheet">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-body font-bold text-foreground">{title}</h2>
-          <button type="button" aria-label="Close" onClick={onClose} className="flex size-9 items-center justify-center rounded-pill bg-surface text-muted-foreground">
+          <DrawerTitle className="text-body font-bold text-foreground">{title}</DrawerTitle>
+          <Button variant="control" size="icon" type="button" aria-label="Close" onClick={onClose} className="size-9 rounded-pill bg-surface text-muted-foreground">
             <X className="size-4" />
-          </button>
+          </Button>
         </div>
-        {children}
-      </div>
-    </div>
+        <div className="min-h-0 overflow-y-auto overscroll-contain">{children}</div>
+      </DrawerContent>
+    </Drawer>
   );
 }
 
@@ -411,9 +408,10 @@ function ParentDashboard() {
       <div className="mt-5 rounded-card border border-surface-2 bg-surface p-5 text-center">
         <p className="text-body font-bold text-foreground">Enjoying Ollie?</p>
         <p className="mt-1 text-support text-muted-foreground">If Ollie has been good for your family, a rating helps other parents find us. No pressure at all.</p>
-        <button type="button" className="mt-3 rounded-pill border border-surface-2 bg-white px-6 py-2.5 text-button text-foreground active:scale-95">
+        <Button type="button" variant="control" disabled className="mt-3 rounded-pill border border-surface-2 bg-card px-6 py-2.5 text-button text-foreground">
           Rate Ollie
-        </button>
+        </Button>
+        <p className="mt-2 text-support text-muted-foreground">Ratings will be available when Ollie launches in the app stores.</p>
       </div>
 
       {sheet === "flagged" && (
@@ -536,9 +534,9 @@ function ParentDashboard() {
       {sheet === "subscription" && (
         <Sheet title="Subscription" onClose={() => setSheet(null)}>
           <p className="text-body text-foreground">{onboardingState.plan === "monthly" ? "Monthly, $11.99 a month" : "Yearly, $99.99 a year"}</p>
-          <p className="text-support text-muted-foreground">Cancel or change your plan in your phone's subscription settings.</p>
+          <p className="text-support text-muted-foreground">Payments are not connected yet. No subscription has been started and nothing has been charged.</p>
           <div className="mt-4 flex flex-col gap-2.5">
-            <button type="button" className="rounded-pill bg-primary py-3 text-button text-white">Manage subscription</button>
+            <Button type="button" disabled className="rounded-pill bg-primary py-3 text-button text-primary-foreground">Manage subscription</Button>
             <RestoreButton />
           </div>
         </Sheet>
@@ -583,9 +581,9 @@ function RestoreButton() {
   const [msg, setMsg] = useState("");
   return (
     <>
-      <button type="button" onClick={() => setMsg("No past purchases found on this device.")} className="rounded-pill border border-surface-2 py-3 text-button text-foreground">
+      <Button type="button" variant="control" onClick={() => setMsg("Purchases cannot be checked until payments are connected.")} className="rounded-pill border border-surface-2 py-3 text-button text-foreground">
         Restore Purchases
-      </button>
+      </Button>
       {msg && <p className="text-support text-muted-foreground" role="status">{msg}</p>}
     </>
   );
