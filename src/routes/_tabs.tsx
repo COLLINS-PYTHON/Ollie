@@ -8,6 +8,7 @@ import { setPrefs, slideshowDue } from "@/lib/slideshow-store";
 import { effectiveBand } from "@/lib/slideshow/library";
 import { onboardingState, loadProfile } from "@/lib/onboarding-store";
 import { childName } from "@/lib/meta";
+import { resolveAppEntry } from "@/lib/app-entry";
 import { pushAll } from "@/lib/cloud-sync";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -38,6 +39,10 @@ function TabsLayout() {
 
   /* The daily lesson takes over the app until it is done for the day. */
   useEffect(() => {
+    let active = true;
+    const hydrate = async () => {
+    await resolveAppEntry().catch(() => undefined);
+    if (!active) return;
     loadProfile();
     setPrefs({ resetTime: onboardingState.slideshowReset });
     setChild({
@@ -48,10 +53,14 @@ function TabsLayout() {
     });
     setTakeover(slideshowDue());
     setReady(true);
+    };
+    void hydrate();
+    return () => { active = false; };
   }, []);
 
   /* Save the child's progress to the parent's account while signed in. */
   useEffect(() => {
+    if (!ready) return;
     const save = () => { void pushAll(); };
     save();
     const t = window.setInterval(save, 60_000);
@@ -65,7 +74,7 @@ function TabsLayout() {
       document.removeEventListener("visibilitychange", onHide);
       sub.subscription.unsubscribe();
     };
-  }, []);
+  }, [ready]);
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 

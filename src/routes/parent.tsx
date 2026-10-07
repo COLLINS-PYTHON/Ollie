@@ -622,7 +622,8 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const wipe = async () => {
     await deleteCloudData().catch(() => undefined);
-    ["ollie-chat-v1", "ollie-profile-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1"].forEach((k) => localStorage.removeItem(k));
+    ["ollie-chat-v1", "ollie-profile-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-custom-lesson-v1", "ollie-onboarding-draft-v1", "ollie-onboarding-step-v1"].forEach((k) => localStorage.removeItem(k));
+    sessionStorage.removeItem("ollie-onboarding-draft-v1");
     indexedDB.deleteDatabase("ollie-pictures");
     setStep(3);
   };

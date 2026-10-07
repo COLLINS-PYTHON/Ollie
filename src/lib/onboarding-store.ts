@@ -65,7 +65,8 @@ export function resumeOnboardingStep(): typeof ONBOARDING_STEPS[number] {
 export function hasCompletedProfile() {
   try {
     const profile = JSON.parse(localStorage.getItem(PROFILE_KEY) ?? "null") as Partial<typeof onboardingState> | null;
-    return Boolean(profile?.name?.trim() && (profile.onboardingComplete || (profile.readingLevel && profile.pinHash)));
+    const progress = JSON.parse(localStorage.getItem("ollie-slideshow-v1") ?? "null") as { completions?: unknown[] } | null;
+    return Boolean(profile?.name?.trim() && (profile.onboardingComplete || (profile.onboardingComplete === undefined && progress?.completions?.length)));
   } catch { return false; }
 }
 export function completeOnboarding() {

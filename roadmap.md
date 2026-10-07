@@ -1,10 +1,10 @@
 # Roadmap
 
 ## Now
-- Restore selected dark navy, personalized greetings, spec-correct Trail and returning-account onboarding entry
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Restored dark navy, personalized greetings before child screens mount, curved seven-day Trail with visible jar, and completed-family setup skipping with unfinished-setup resume
 - Reference-led onboarding pass: scoped warm palette, proportions, chapter progress, exact payoff copy, faster entrance and trial sheet
 - Ollie artwork reduced from 1.6 MB to 86 KB, preloaded; entrance and idle motion no longer compete
 - Daily slideshow and display cards share lightweight animated category SVG artwork
