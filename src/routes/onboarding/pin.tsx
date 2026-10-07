@@ -4,6 +4,7 @@ import { Delete } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { pageMeta } from "@/lib/meta";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/pin")({
   head: () => pageMeta("Set your parent PIN", "Create a PIN to open the Parent Dashboard."),
@@ -35,24 +36,25 @@ function PinPage() {
   return (
     <div className="bg-gradient-lagoon min-h-screen">
       <OnboardingSkeleton chapter={4} title={confirming ? "Enter it once more" : "Set your parent PIN"} cta="Continue" ctaDisabled={!done} onContinue={() => navigate({ to: "/onboarding/paywall" })}>
+        <p className="text-support mb-6 text-center text-muted-foreground">Their space to explore. Your place to stay in the loop.</p>
         <div className="flex justify-center gap-4" aria-label={`${pin.length} of 4 digits entered`}>
           {[0, 1, 2, 3].map((i) => (
-            <span key={i} className={`size-4 rounded-pill transition-colors duration-tap ${i < pin.length ? "bg-primary" : "bg-card shadow-card"}`} />
+            <span key={i} className={`size-4 rounded-pill transition-colors duration-tap ${i < pin.length ? "bg-primary" : "border border-border bg-surface-2"}`} />
           ))}
         </div>
         <p className="text-support mt-3 h-5 text-center text-muted-foreground">{error ? "Those didn't match. Try again." : done ? "PIN set." : ""}</p>
         <div className="mx-auto mt-3 grid max-w-64 grid-cols-3 gap-3">
           {["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "del"].map((k) =>
             k === "" ? <span key="blank" /> : (
-              <button
+              <Button variant="control"
                 key={k}
                 type="button"
                 aria-label={k === "del" ? "Delete" : k}
                 onClick={() => (k === "del" ? setPin(pin.slice(0, -1)) : press(k))}
-                className="text-title flex h-14 items-center justify-center rounded-pill bg-card text-foreground shadow-card active:scale-95"
+                className="flex h-14 items-center justify-center rounded-pill bg-card text-[24px] font-semibold text-foreground shadow-card active:scale-95"
               >
                 {k === "del" ? <Delete className="size-5" /> : k}
-              </button>
+              </Button>
             ),
           )}
         </div>

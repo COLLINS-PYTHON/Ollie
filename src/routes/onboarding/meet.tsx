@@ -29,8 +29,8 @@ function MeetPage() {
           <div className={`welcome-card mt-6 min-h-28 w-full rounded-card bg-card p-5 shadow-card ${step >= 3 ? "is-visible" : ""}`}>
             <div className={`welcome-copy ${step >= 4 ? "is-visible" : ""}`}>
               <p className="text-body leading-relaxed text-foreground">
-                Meet Ollie. Ollie's a furry little answer assistant that turns kids' curiosity into a safe, fun
-                learning experience and reports straight back to you.
+                Meet Ollie. Ollie's a furry little answer assistant that turns kids' curiosity into a <span className="onboarding-highlight">safe, fun
+                learning experience</span> and <span className="onboarding-highlight">reports straight back to you.</span>
               </p>
             </div>
           </div>

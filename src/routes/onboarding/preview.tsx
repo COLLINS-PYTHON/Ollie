@@ -40,10 +40,10 @@ function PreviewPage() {
   // Icons build in one at a time, then the bubbles appear.
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStep(1), 350),
-      setTimeout(() => setStep(2), 850),
-      setTimeout(() => setStep(3), 1450),
-      setTimeout(() => setStep(4), 2050),
+      setTimeout(() => setStep(1), 120),
+      setTimeout(() => setStep(2), 260),
+      setTimeout(() => setStep(3), 420),
+      setTimeout(() => setStep(4), 700),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -90,7 +90,7 @@ function PreviewPage() {
           </div>
         </div>
         <p className="text-support mt-4 text-center text-muted-foreground">
-          Answers grow with {name} as reading skills grow.
+          Big questions, explained at <span className="onboarding-highlight">{name}'s pace</span>. Answers grow as reading skills grow.
         </p>
       </OnboardingSkeleton>
     </div>

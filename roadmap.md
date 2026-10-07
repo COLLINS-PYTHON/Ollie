@@ -4,6 +4,8 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- KinderGPT public-page review and original onboarding refresh: quiet edge clouds/paw tracks, selective blue emphasis, faster reading preview, softer goal icons, parent reassurance and personalized child welcome; exact required copy and consent preserved
+- Kept Ollie calm and familiar rather than adding extra mascot playfulness; verified Milo setup, consent, small-screen fit and reduced-motion
 - Explicit onboarding preview link bypasses completed-family redirect and retains preview between setup screens without clearing saved data
 - Meet Ollie uses a restrained breathing/tilt motion rather than bouncing; reduced-motion respected
 - Orbs float without backplates, Search orb enlarged to 80px and loading orbs to 112px; parent setting drawers open in the viewport and changes survive reload; softer blue/teal onboarding line icons verified

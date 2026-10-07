@@ -5,6 +5,7 @@ import { loadOnboardingDraft, loadProfile, saveOnboardingStep } from "@/lib/onbo
 import { resolveAppEntry } from "@/lib/app-entry";
 import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
+import { OnboardingScenery } from "@/components/ollie/OnboardingScenery";
 
 export const Route = createFileRoute("/onboarding")({
   validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" ? { preview: true } : {}),
@@ -20,6 +21,9 @@ function OnboardingLayout() {
 
   useEffect(() => {
     let active = true;
+    const image = new Image();
+    image.src = ollie;
+    void image.decode().catch(() => {});
     if (preview) {
       loadProfile();
       loadOnboardingDraft();
@@ -32,9 +36,6 @@ function OnboardingLayout() {
       loadOnboardingDraft();
       setReady(true);
     }).catch(() => { if (active) { loadOnboardingDraft(); setReady(true); } });
-    const image = new Image();
-    image.src = ollie;
-    void image.decode().catch(() => {});
     return () => { active = false; };
   }, [navigate, preview]);
 
@@ -49,7 +50,10 @@ function OnboardingLayout() {
     };
   }, [pathname, ready, preview]);
 
-  return <div className="onboarding-theme">{ready ? <div className="onboarding-page-enter"><Outlet /></div> : <div className="min-h-[100svh] bg-background" />}</div>;
+  // Serious and already animated reveal screens stay quiet. Other steps get one ambient motif.
+  const scenery = ["/onboarding", "/onboarding/", "/onboarding/interests", "/onboarding/priorities"].includes(pathname)
+    ? "paws" : pathname === "/onboarding/age" ? "clouds" : null;
+  return <div className="onboarding-theme onboarding-shell">{ready ? <>{scenery && <OnboardingScenery variant={scenery} />}<div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 
 /* Fixed onboarding skeleton: back, 4-segment chapter bar, title slot, pinned button. */
@@ -100,7 +104,7 @@ export function OnboardingSkeleton({
 
       <main className="onboarding-content flex min-h-0 flex-1 flex-col px-6 pb-32 pt-9">
         <h1 className="text-title mx-auto w-full max-w-sm text-center text-foreground">{title}</h1>
-        <div className="mt-7 flex-1">{children}</div>
+        <div className="onboarding-step-body mt-7 flex-1">{children}</div>
       </main>
 
       <div

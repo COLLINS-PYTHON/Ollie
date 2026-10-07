@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState, type ReadingLevel } from "@/lib/onboarding-store";
 import { childName } from "@/lib/meta";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/reading")({
   head: () => ({
@@ -44,7 +45,7 @@ function ReadingPage() {
           {OPTIONS.map((opt) => {
             const selected = level === opt.id;
             return (
-              <button
+              <Button variant="control"
                 key={opt.id}
                 type="button"
                 role="radio"
@@ -59,7 +60,7 @@ function ReadingPage() {
                     : "bg-card text-foreground"
                 }`}
               >
-                {opt.label}
+                <span className="min-w-0 whitespace-normal">{opt.label}</span>
                 <span
                   className={`flex size-6 shrink-0 items-center justify-center rounded-pill transition-colors duration-tap ${
                     selected ? "bg-primary-foreground/25" : "bg-surface-2"
@@ -67,12 +68,12 @@ function ReadingPage() {
                 >
                   {selected && <Check className="size-4" aria-hidden />}
                 </span>
-              </button>
+              </Button>
             );
           })}
         </div>
         <p className="text-support mt-4 text-center text-muted-foreground">
-          Ollie tunes every answer to match. You can change this anytime.
+          A comfortable starting point for {name}, not a test. You can change this anytime.
         </p>
       </OnboardingSkeleton>
     </div>
