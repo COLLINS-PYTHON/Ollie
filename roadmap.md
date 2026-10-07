@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Now
-- Make the paywall real: clarify working pop-up versus actual subscription checkout before changing payment behavior
+- Replace the paywall overlay with an interactive Apple-style sheet; verify open, close, swipe dismissal and plan preservation
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
