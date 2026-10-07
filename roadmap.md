@@ -1,10 +1,10 @@
 # Roadmap
 
 ## Now
-- Make the paywall real: clarify working pop-up versus actual subscription checkout before changing payment behavior
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Paywall is an interactive Apple-style drawer: smooth open/close, swipe dismissal, focus restoration, saved plan selection and pinned Continue; verified at 390x600 and desktop, payments remain unconnected
 - Polish pass: faster smooth mascot reveal, blue progress/actions with navy text, stable lesson-card entrances, tighter trial-sheet timing; irregular seasonal SVG Trail with snow and Christmas, verified on small/large screens
 - Restored dark navy, personalized greetings before child screens mount, curved seven-day Trail with visible jar, and completed-family setup skipping with unfinished-setup resume
 - Reference-led onboarding pass: scoped warm palette, proportions, chapter progress, exact payoff copy, faster entrance and trial sheet

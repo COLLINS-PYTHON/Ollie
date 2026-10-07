@@ -625,3 +625,20 @@
 @keyframes lesson-step { 50% { rotate: 1.5deg; } }
 @keyframes lesson-note { 50% { rotate: -3deg; } }
 @media (prefers-reduced-motion: reduce) { .lesson-art :is(g,path) { animation: none; } }
+
+.paywall-underlay { transform-origin: 50% 0; transition: transform 400ms var(--ease-enter), filter 400ms var(--ease-enter), border-radius 400ms var(--ease-enter); }
+.paywall-underlay.is-presented { transform: translateY(10px) scale(.96); filter: blur(2px); border-radius: var(--radius-card); overflow: hidden; }
+.apple-paywall-overlay { background: color-mix(in oklab,var(--navy) 24%,transparent); }
+.apple-paywall-sheet { background: color-mix(in oklab,var(--onboarding-cream) 97%,transparent); backdrop-filter: blur(24px); min-height: 0; }
+.apple-paywall-sheet.onboarding-theme { min-height: 0; }
+.apple-paywall-sheet .plan-option { height: auto; white-space: normal; }
+.paywall-scroll { -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+.paywall-pricing { opacity: 0; transition: opacity 180ms ease; }
+.paywall-pricing.is-visible { opacity: 1; }
+.paywall-sheet-footer { padding-bottom: max(12px,env(safe-area-inset-bottom)); background: var(--background); }
+.apple-paywall-sheet [data-vaul-handle] { touch-action: none; }
+@media (max-height: 680px) {
+  .apple-paywall-sheet .paywall-sheet-footer .text-support { font-size: 12px; line-height: 16px; margin-top: 8px; }
+  .apple-paywall-sheet .paywall-sheet-footer .text-label { margin-top: 0; height: 28px; }
+}
+@media (prefers-reduced-motion: reduce) { .paywall-underlay { transition: none; } }

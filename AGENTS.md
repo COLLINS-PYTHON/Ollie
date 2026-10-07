@@ -22,3 +22,4 @@
 - Library lesson visuals share the browser-safe LessonArt SVG renderer across the slideshow, onboarding cards and Search display cards; authored content remains unchanged. Why: artwork loads instantly and stays reusable without runtime AI calls.
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
 - Trail scenery uses authored SVG with CSS motion and local-calendar seasonal selection; its irregular path is deterministic and separate from progress. Why: crisp instant artwork, no generation charges, and rewards never change with a theme.
+- The onboarding paywall uses the shared Vaul drawer with portal, focus containment, swipe dismissal and a pinned action footer. Why: a natural interactive sheet with accessible dismissal and no simulated native purchase dialog.
