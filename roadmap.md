@@ -1,11 +1,11 @@
 # Roadmap
 
 ## Now
-- Correct clouds to KinderGPT-inspired bright white with light-blue surroundings, never dark clouds
-- Fix enlarged thinking/loading orbs so their drawing resolution matches their displayed size
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Corrected clouds to bright white on a light-blue surrounding wash, with slow independent drift; verified visually on phones and large screens
+- Orbs now paint original thinking-orbs geometry at actual display size and device resolution; 112px orb verified at 336px drawing resolution on a 3x display, no backplate or blur
 - Soft dimensional SVG clouds without cartoon outlines, independent natural drift and reduced-motion support verified at small and large sizes
 - Premium adaptive presentation: wider tablet canvas, dynamic-height chat with separate navigation dock, visible quiet cloud/paw scenery, faster introductions, original feature copy and swipeable safety conversations; topic labels removed beside Ollie and retained only in parent view
 - KinderGPT public-page review and original onboarding refresh: quiet edge clouds/paw tracks, selective blue emphasis, faster reading preview, softer goal icons, parent reassurance and personalized child welcome; exact required copy and consent preserved
