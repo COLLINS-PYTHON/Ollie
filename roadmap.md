@@ -4,6 +4,7 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Explicit onboarding preview link bypasses completed-family redirect and retains preview between setup screens without clearing saved data
 - Meet Ollie uses a restrained breathing/tilt motion rather than bouncing; reduced-motion respected
 - Orbs float without backplates, Search orb enlarged to 80px and loading orbs to 112px; parent setting drawers open in the viewport and changes survive reload; softer blue/teal onboarding line icons verified
 - KinderGPT-inspired Premium soft blue selected and applied: white-first onboarding, pale-blue surfaces, subtle shadows and selective reassurance/lesson highlights; exact copy, Geist, four progress segments and trial drawer verified
