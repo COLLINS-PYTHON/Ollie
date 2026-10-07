@@ -26,7 +26,7 @@ const ENTRIES: Entry[] = Object.entries({ ...PACK_A, ...PACK_B, ...PACK_C }).fla
   subs.map((sub) => ({ sub, categoryId, keys: words(sub.title).map(stem) }))
 );
 
-export type Illustration = { sub: Subtopic; tile: string; label: string };
+export type Illustration = { sub: Subtopic; categoryId: string; tile: string; label: string };
 
 export function findIllustration(question: string): Illustration | null {
   const q = new Set(words(question).map(stem));
@@ -39,11 +39,11 @@ export function findIllustration(question: string): Illustration | null {
   if (!best) return null;
   const cat = INTERESTS.find((i) => i.id === best.categoryId);
   if (!cat) return null;
-  return { sub: best.sub, tile: cat.tile, label: cat.label };
+  return { sub: best.sub, categoryId: best.categoryId, tile: cat.tile, label: cat.label };
 }
 
 export function illustrationById(id: string): Illustration | null {
   const e = ENTRIES.find((x) => x.sub.id === id);
   const cat = e && INTERESTS.find((i) => i.id === e.categoryId);
-  return e && cat ? { sub: e.sub, tile: cat.tile, label: cat.label } : null;
+  return e && cat ? { sub: e.sub, categoryId: e.categoryId, tile: cat.tile, label: cat.label } : null;
 }

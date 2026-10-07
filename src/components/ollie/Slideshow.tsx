@@ -141,7 +141,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
     return (
       <div className="fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
         <div className="slide-tint flex flex-1 flex-col items-center justify-center gap-5 px-7 text-center">
-          <LessonArt categoryId={day.categoryId} topicId={slides[0]?.sub.id} title={day.label} className="bubble-in w-full max-w-[320px]" />
+          <LessonArt categoryId={day.categoryId} topicId={slides[0]?.sub.id ?? ""} title={day.label} className="bubble-in w-full max-w-[320px]" />
           <p className="text-label uppercase tracking-wide text-muted-foreground">Today's lesson</p>
           <h1 className="text-title max-w-[300px] text-foreground">{day.label}</h1>
           {child.band === "4-6" && (
