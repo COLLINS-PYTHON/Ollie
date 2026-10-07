@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
 
 export const Route = createFileRoute("/onboarding")({
-  validateSearch: (search: Record<string, unknown>): { preview?: boolean } => ({ preview: search.preview === true || search.preview === "true" ? true : undefined }),
+  validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" ? { preview: true } : {}),
   search: { middlewares: [retainSearchParams(["preview"])] },
   component: OnboardingLayout,
 });
