@@ -4,6 +4,7 @@ import { LockKeyhole, Pause, Rocket } from "lucide-react";
 import { INTERESTS } from "@/lib/interests";
 import { JAR_BONUS, JAR_EVERY, jarProgress, trailStops, type TrailStop } from "@/lib/slideshow-store";
 import { pageMeta } from "@/lib/meta";
+import { TrailLandscape, trailCurve, trailPositions, trailSeason, type TrailSeason } from "@/components/ollie/TrailLandscape";
 
 function Jar({ filled }: { filled: number }) {
   return <svg viewBox="0 0 130 140" role="img" aria-label={`${filled} of 7 cookies in the trail jar`} className="h-32 w-28">
@@ -21,27 +22,30 @@ function Jar({ filled }: { filled: number }) {
 function Trail() {
   const [stops, setStops] = useState<TrailStop[]>([]);
   const [filled, setFilled] = useState(0);
-  useEffect(() => { setStops(trailStops()); setFilled(jarProgress()); }, []);
+  const [season, setSeason] = useState<TrailSeason>("summer");
+  useEffect(() => { setStops(trailStops()); setFilled(jarProgress()); setSeason(trailSeason(new Date())); }, []);
   const learningDays = stops.filter((s) => s.kind === "done").length;
   const cycleStart = Math.floor(learningDays / JAR_EVERY) * JAR_EVERY;
   const first = stops.find((x) => x.kind === "done" && x.learningDay === cycleStart + 1);
   const firstAt = first?.kind === "done" ? first.completion.at : Infinity;
   const cycle = stops.filter((s) => s.kind === "paused" ? s.at >= firstAt : s.learningDay > cycleStart);
   const nodes: Array<{ stop?: TrailStop; day?: number; jar?: boolean }> = [...cycle.map((stop) => ({ stop })), ...Array.from({ length: JAR_EVERY - filled }, (_, i) => ({ day: cycleStart + filled + i + 1 })), { jar: true }];
-  const height = nodes.length * 115 + 50;
-  const xAt = (i: number) => i % 2 === 0 ? 95 : 245;
-  const path = nodes.map((_, i) => i === 0 ? `M${xAt(i)} 40` : `C${xAt(i - 1)} ${40 + (i - 1) * 115 + 65},${xAt(i)} ${40 + i * 115 - 65},${xAt(i)} ${40 + i * 115}`).join(" ");
+  const points = trailPositions(nodes.length);
+  const height = (points.at(-1)?.y ?? 0) + 190;
+  const path = trailCurve(points);
   return <main className="screen-enter mx-auto min-h-[100svh] w-full max-w-md bg-background px-6 pb-32 pt-20">
     <h1 className="text-title text-foreground">Your Learning Trail</h1>
     <div className="mt-5 flex items-center gap-3 border-b border-border pb-4">
       <Jar filled={filled} />
       <div className="min-w-0"><p className="text-body font-bold text-foreground">{filled} of {JAR_EVERY} learning days</p><p className="text-support mt-1 text-muted-foreground">{JAR_BONUS} bonus picture cookies</p></div>
     </div>
-    {learningDays === 0 && <p className="text-body mt-5 text-center text-muted-foreground">Your streak starts today! Finish a slideshow to light up your first day.</p>}
-    <div className="relative mx-auto mt-7 w-full max-w-[340px]" style={{ height }}>
+    {learningDays === 0 && <p className="text-body mt-5 text-center text-muted-foreground">Finish a slideshow to light up your first day.</p>}
+    <div className="trail-world relative mx-auto mt-7 w-full max-w-[340px]" style={{ height }} data-season={season}>
+      <TrailLandscape height={height} season={season} />
       <svg viewBox={`0 0 340 ${height}`} aria-hidden className="absolute inset-0 h-full w-full overflow-visible">
-        <path d={path} className="trail-path" opacity=".12" />
-        {cycle.length > 1 && <path d={nodes.slice(0, cycle.length).map((_, i) => i === 0 ? `M${xAt(i)} 40` : `C${xAt(i - 1)} ${40 + (i - 1) * 115 + 65},${xAt(i)} ${40 + i * 115 - 65},${xAt(i)} ${40 + i * 115}`).join(" ")} className="trail-path trail-glow" />}
+        <path d={path} className="trail-path-bed" />
+        <path d={path} className="trail-path trail-path-future" />
+        {cycle.length > 0 && <path d={trailCurve(points.slice(0, Math.min(cycle.length + 1, points.length)))} className="trail-path trail-glow" />}
       </svg>
       <ol className="relative">
         {nodes.map((node, i) => {
@@ -50,13 +54,15 @@ function Trail() {
           const paused = stop?.kind === "paused";
           const category = done ? INTERESTS.find((c) => c.id === done.completion.categoryId) : null;
           const Icon = category?.icon ?? Rocket;
-          return <li key={done?.completion.id ?? `node-${i}`} className="trail-arrive absolute flex w-36 -translate-x-1/2 flex-col items-center text-center" style={{ left: `${xAt(i) / 340 * 100}%`, top: i * 115 }}>
+          const point = points[i];
+          if (!point) return null;
+          return <li key={done?.completion.id ?? `node-${i}`} className="trail-arrive absolute flex w-32 -translate-x-1/2 flex-col items-center text-center" style={{ left: `${point.x / 340 * 100}%`, top: point.y - 32 }}>
             {node.jar ? <><Jar filled={filled} /><p className="text-support font-bold text-foreground">+{JAR_BONUS} cookies</p></> : <>
               <div className={`flex size-16 items-center justify-center rounded-pill ${done ? `glossy trail-node bg-gradient-to-b ${category?.tile ?? "from-cat-space to-cat-space-deep"}` : paused ? "border-2 border-dashed border-primary/30 bg-card" : "border-2 border-border bg-card"}`}>
                 {done ? <Icon className="size-7 text-primary-foreground" /> : paused ? <Pause className="size-5 text-muted-foreground" /> : <LockKeyhole className="size-5 text-muted-foreground/60" />}
               </div>
-              <p className="text-support mt-2 font-bold text-foreground">{paused ? "Paused" : `Day ${done?.learningDay ?? node.day}`}</p>
-              {done && <p className="text-label mt-1 text-muted-foreground">{done.completion.label}</p>}
+              <p className="trail-stop-label text-support mt-2 font-bold text-foreground">{paused ? "Paused" : `Day ${done?.learningDay ?? node.day}`}</p>
+              {done && <p className="trail-stop-label text-label mt-1 text-muted-foreground">{done.completion.label}</p>}
             </>}
           </li>;
         })}

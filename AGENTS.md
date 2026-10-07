@@ -21,3 +21,4 @@
 - Signed-in devices live in the `devices` table; remote log out sets `revoked`, and that device wipes itself on its next sync. Why: no server push in v1.
 - Library lesson visuals share the browser-safe LessonArt SVG renderer across the slideshow, onboarding cards and Search display cards; authored content remains unchanged. Why: artwork loads instantly and stays reusable without runtime AI calls.
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
+- Trail scenery uses authored SVG with CSS motion and local-calendar seasonal selection; its irregular path is deterministic and separate from progress. Why: crisp instant artwork, no generation charges, and rewards never change with a theme.
