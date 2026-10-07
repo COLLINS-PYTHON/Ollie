@@ -5,7 +5,7 @@ export function LessonArt({ categoryId, topicId = "", title, className = "", ani
 }) {
   const uid = useId().replace(/:/g, "");
   const tint = { "--lesson-ink": `var(--cat-${categoryId === "custom" ? "tech" : categoryId})` } as CSSProperties;
-  const motion = animated ? "lesson-motion" : "";
+  const motion = animated ? `lesson-motion-${categoryId}` : "";
   const star = (x: number, y: number) => <path key={`${x}-${y}`} d={`M${x} ${y - 6}v12m-6-6h12`} className="lesson-line" />;
   let scene;
   switch (categoryId) {
@@ -27,9 +27,10 @@ export function LessonArt({ categoryId, topicId = "", title, className = "", ani
         <path d="M16 168q36-25 72 0t72 0 72 0 72 0M16 196q36-25 72 0t72 0 72 0 72 0" className="lesson-line" />
         <g className={motion}>
           <ellipse cx="157" cy="108" rx="58" ry="40" className="lesson-fill" />
-          {topicId === "sea-turtles" ? <><ellipse cx="219" cy="109" rx="19" ry="16" className="lesson-fill" /><path d="m124 78-33-22 11 42m21 36-30 22 13-36m68-40 26-24-8 34m-12 30 24 25-7-36" className="lesson-line" /></> : <path d="m107 106-41-27v59Z" className="lesson-fill" />}
+          {topicId === "sea-turtles" ? <><ellipse cx="219" cy="109" rx="19" ry="16" className="lesson-fill" /><g className={animated ? "lesson-flippers" : ""}><path d="m124 78-33-22 11 42m21 36-30 22 13-36m68-40 26-24-8 34m-12 30 24 25-7-36" className="lesson-line" /></g><path d="m138 83 29-3 19 21-11 24-30 3-19-24Zm-12 21-27-3m39-18-6-12m35 9 8-10m11 31 25-1m-36 25 10 14m-40-11-6 12" className="lesson-detail" /></> : <><path d="m107 106-41-27v59Z" className={animated ? "lesson-fill lesson-tail" : "lesson-fill"} /><path d="M168 88q-14 18 0 36m-33-12 22 19-27 4" className="lesson-detail" /></>}
           <circle cx="184" cy="99" r="5" className="lesson-paper" />
-        </g><circle cx="243" cy="61" r="9" className="lesson-line" /><circle cx="265" cy="38" r="5" className="lesson-line" />
+        </g><g className={animated ? "lesson-bubbles" : ""}><circle cx="243" cy="61" r="9" className="lesson-line" /><circle cx="265" cy="38" r="5" className="lesson-line" /></g>
+        <path d="M35 209q-14-27 3-44 15 20-3 44m10 0q-2-33 17-46 9 30-17 46M278 213q-18-33-5-53 17 15 5 53" className="lesson-environment" />
       </>;
       break;
     case "dinos":
@@ -38,6 +39,7 @@ export function LessonArt({ categoryId, topicId = "", title, className = "", ani
         <path d="m142 121 16-14 16 16 13-13" className="lesson-paper-line" />
       </> : <g className={motion}>
         <path d="M58 157q43 1 61-38l20-26 37 6 22-42q8-18 35-17l24 16-3 26-28 6-13 61-28 14-4 35h-22l-8-31-28-5-18 36H86l15-48Z" className="lesson-fill" />
+        <path d="m140 100-5-15 18 5m25 11 5-17 10 5M189 132l20 6m-79-2 13 8" className="lesson-detail" />
         <circle cx="235" cy="62" r="4" className="lesson-paper" /><path d="M44 204h237" className="lesson-line" />
       </g>;
       break;
@@ -45,7 +47,7 @@ export function LessonArt({ categoryId, topicId = "", title, className = "", ani
       scene = topicId === "snail-shell" ? <>
         <path d="M65 165h173q24-5 14-26l-13-13" className="lesson-line" /><circle cx="149" cy="123" r="49" className="lesson-fill" /><path d="M150 93c-43 0-39 64 0 58 26-4 18-38 0-29" className="lesson-paper-line" />
       </> : topicId === "bird-song" ? <g className={motion}>
-        <path d="M80 117q39-64 102-24l48-18-12 35q25 70-49 64l-61-26-31 15 6-37Z" className="lesson-fill" /><path d="m223 108 33 10-34 13" className="lesson-fill" /><circle cx="207" cy="108" r="4" className="lesson-paper" /><path d="M139 186v21m37-23v23" className="lesson-line" />
+        <path d="M80 117q39-64 102-24l48-18-12 35q25 70-49 64l-61-26-31 15 6-37Z" className="lesson-fill" /><path d="M112 114q46-16 63 30-30 25-63-30Z" className={animated ? "lesson-detail lesson-bird-wing" : "lesson-detail"} /><path d="m223 108 33 10-34 13" className="lesson-fill" /><circle cx="207" cy="108" r="4" className="lesson-paper" /><path d="M139 186v21m37-23v23M50 211q100-14 231-4" className="lesson-line" />
       </g> : <>
         <ellipse cx="160" cy="123" rx="67" ry="58" className="lesson-fill" /><circle cx="111" cy="71" r="25" className="lesson-fill" /><circle cx="209" cy="71" r="25" className="lesson-fill" /><ellipse cx="160" cy="143" rx="34" ry="24" className="lesson-paper" /><circle cx="135" cy="112" r="6" className="lesson-paper" /><circle cx="185" cy="112" r="6" className="lesson-paper" /><path d="m151 136 9 10 9-10Z" className="lesson-fill" />
       </>;
@@ -103,10 +105,14 @@ export function LessonArt({ categoryId, topicId = "", title, className = "", ani
         <path d="M160 79Q98 42 53 68v124q56-20 107 15 51-35 107-15V68q-45-26-107 11Z" className="lesson-fill" /><path d="M160 79v128M80 98l53 16m-53 9 53 16m54-25 53-16m-53 41 53-16" className="lesson-paper-line" />
       </>;
   }
-  return <svg viewBox="0 0 320 240" role="img" aria-labelledby={`${uid}-title`} className={`lesson-art ${className}`} style={tint}>
+  return <svg viewBox="0 0 320 240" role="img" aria-labelledby={`${uid}-title`} className={`lesson-art lesson-category-${categoryId} ${className}`} style={tint}>
     <title id={`${uid}-title`}>{title}</title>
-    <defs><linearGradient id={`${uid}-wash`} x2="0" y2="1"><stop stopColor="var(--lesson-ink)" stopOpacity=".12" /><stop offset="1" stopColor="var(--card)" /></linearGradient></defs>
+    <defs>
+      <linearGradient id={`${uid}-wash`} x2="0" y2="1"><stop stopColor="var(--lesson-ink)" stopOpacity=".12" /><stop offset="1" stopColor="var(--card)" /></linearGradient>
+      <linearGradient id={`${uid}-subject`} x2=".4" y2="1"><stop stopColor="var(--lesson-light)" /><stop offset=".55" stopColor="var(--lesson-ink)" /><stop offset="1" stopColor="var(--lesson-deep)" /></linearGradient>
+    </defs>
     <rect width="320" height="240" rx="28" fill={`url(#${uid}-wash)`} />
-    {scene}
+    <ellipse cx="160" cy="214" rx="83" ry="7" className="lesson-ground" />
+    <g className="lesson-subject" style={{ "--lesson-paint": `url(#${uid}-subject)` } as CSSProperties}>{scene}</g>
   </svg>;
 }

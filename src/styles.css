@@ -532,7 +532,7 @@
 .lesson-preview-card { animation: preview-arrive 400ms var(--ease-enter) both; }
 @keyframes preview-arrive { from { opacity: 0; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
 .lesson-art { color: var(--lesson-ink); overflow: visible; }
-.lesson-fill { fill: var(--lesson-ink); }
+.lesson-fill { fill: var(--lesson-paint, var(--lesson-ink)); }
 .lesson-soft { fill: var(--lesson-ink); opacity: .22; }
 .lesson-paper { fill: var(--card); }
 .lesson-line { fill: none; stroke: var(--lesson-ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
@@ -601,3 +601,26 @@
 @media (prefers-reduced-motion: reduce) {
   .trail-botanical,.trail-butterfly,.trail-snowfall,.lesson-stage-enter { animation: none; }
 }
+
+.lesson-art { --lesson-light: color-mix(in oklab,var(--lesson-ink) 60%,var(--card)); --lesson-deep: color-mix(in oklab,var(--lesson-ink) 82%,var(--navy)); }
+.lesson-detail { fill: none; stroke: var(--card); stroke-opacity: .6; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.lesson-environment { fill: var(--accent-2); opacity: .45; }
+.lesson-ground { fill: var(--lesson-ink); opacity: .07; }
+.lesson-motion-ocean { animation: lesson-swim 5s ease-in-out infinite; }
+.lesson-flippers,.lesson-tail { transform-box: fill-box; transform-origin: center; animation: lesson-fin 2.4s ease-in-out infinite; }
+.lesson-bubbles { animation: lesson-rise 4s ease-in-out infinite; }
+.lesson-motion-space { transform-origin: 160px 112px; animation: lesson-orbit 24s linear infinite; }
+.lesson-motion-body { transform-box: fill-box; transform-origin: center; animation: lesson-heart 1.5s ease-in-out infinite; }
+.lesson-motion-weather { animation: lesson-rain 2s ease-in-out infinite; }
+.lesson-motion-dinos { transform-box: fill-box; transform-origin: bottom; animation: lesson-step 4s ease-in-out infinite; }
+.lesson-bird-wing { transform-box: fill-box; transform-origin: left; animation: lesson-fin 3s ease-in-out infinite; }
+.lesson-motion-music { transform-box: fill-box; transform-origin: center; animation: lesson-note 2.8s ease-in-out infinite; }
+@keyframes lesson-swim { 50% { translate: 8px -3px; } }
+@keyframes lesson-fin { 50% { rotate: -9deg; } }
+@keyframes lesson-rise { 0%,100% { translate: 0 6px; opacity: .4; } 70% { translate: 0 -12px; opacity: 1; } }
+@keyframes lesson-orbit { to { rotate: 360deg; } }
+@keyframes lesson-heart { 30% { scale: 1.025; } 45% { scale: 1; } 60% { scale: 1.025; } }
+@keyframes lesson-rain { 50% { translate: -3px 7px; } }
+@keyframes lesson-step { 50% { rotate: 1.5deg; } }
+@keyframes lesson-note { 50% { rotate: -3deg; } }
+@media (prefers-reduced-motion: reduce) { .lesson-art :is(g,path) { animation: none; } }
