@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Restore selected dark navy, personalized greetings, spec-correct Trail and returning-account onboarding entry
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
