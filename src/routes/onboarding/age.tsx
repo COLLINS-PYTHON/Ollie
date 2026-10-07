@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName } from "@/lib/meta";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/age")({
   head: () => ({
@@ -27,6 +28,7 @@ function AgePage() {
   const [age, setAge] = useState(onboardingState.age);
   const listRef = useRef<HTMLDivElement>(null);
   const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const targetAge = useRef<number | null>(null);
 
   useEffect(() => {
     const el = listRef.current;
@@ -47,6 +49,7 @@ function AgePage() {
     const clamped = Math.max(0, Math.min(AGES.length - 1, idx));
     el.scrollTo({ top: clamped * ITEM_H, behavior: "smooth" });
     const landed = AGES[clamped] ?? 7;
+    targetAge.current = null;
     setAge(landed);
     onboardingState.age = landed;
   };
@@ -55,6 +58,7 @@ function AgePage() {
     const index = AGES.indexOf(nextAge);
     if (index < 0) return;
     setAge(nextAge);
+    targetAge.current = nextAge;
     onboardingState.age = nextAge;
     listRef.current?.scrollTo({ top: index * ITEM_H, behavior: "smooth" });
   };
@@ -71,7 +75,7 @@ function AgePage() {
     const el = listRef.current;
     if (!el) return;
     const idx = Math.max(0, Math.min(AGES.length - 1, Math.round(el.scrollTop / ITEM_H)));
-    setAge(AGES[idx] ?? 7);
+    if (targetAge.current === null) setAge(AGES[idx] ?? 7);
     if (scrollTimer.current) clearTimeout(scrollTimer.current);
     scrollTimer.current = setTimeout(settle, 120);
   };
@@ -85,8 +89,8 @@ function AgePage() {
         onContinue={() => navigate({ to: "/onboarding/reading" })}
       >
         <div className="mx-auto flex w-full max-w-xs flex-col items-center">
-          <div className="age-wheel-shell relative h-64 w-full overflow-hidden rounded-card" aria-label="Choose age">
-            <div aria-hidden className="age-wheel-selection pointer-events-none absolute inset-x-4 top-1/2 z-10 h-14 -translate-y-1/2 rounded-control" />
+          <div className="age-wheel-shell relative h-[280px] w-[240px] overflow-hidden rounded-card" aria-label="Choose age">
+            <div aria-hidden className="age-wheel-selection pointer-events-none absolute inset-x-5 top-1/2 z-10 h-14 -translate-y-1/2 rounded-control" />
             <div
               ref={listRef}
               onScroll={onScroll}
@@ -96,24 +100,24 @@ function AgePage() {
               aria-label={`${name}'s age`}
               aria-activedescendant={`age-${age}`}
               className="relative z-20 h-full snap-y snap-mandatory overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              style={{ paddingTop: 100, paddingBottom: 100 }}
+              style={{ paddingTop: 112, paddingBottom: 112 }}
             >
               {AGES.map((a) => {
                 const active = a === age;
                 return (
-                  <button
+                  <Button variant="ghost"
                     key={a}
                     id={`age-${a}`}
                     type="button"
                     role="option"
                     aria-selected={active}
                     onClick={() => choose(a)}
-                    className={`flex h-14 w-full snap-center items-center justify-center transition-all duration-element ${
-                      active ? "age-glow text-[34px] font-extrabold text-primary" : "text-[22px] font-semibold text-muted-foreground"
+                    className={`age-number flex h-14 w-full snap-center items-center justify-center rounded-none hover:bg-transparent ${
+                      active ? "age-glow text-[38px] font-bold text-primary" : "text-[24px] font-medium text-muted-foreground"
                     }`}
                   >
                     {a}
-                  </button>
+                  </Button>
                 );
               })}
             </div>

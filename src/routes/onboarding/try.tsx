@@ -8,7 +8,7 @@ import { INTERESTS } from "@/lib/interests";
 import { childName, pageMeta } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/try")({
-  head: () => pageMeta("Try Ollie yourself", "Ask one question and make one picture before you subscribe."),
+  head: () => pageMeta("Try Ollie yourself", "Ask a question and make a picture with Ollie."),
   component: TryPage,
 });
 
@@ -43,7 +43,7 @@ function TryPage() {
     <div className="bg-gradient-sunrise min-h-screen">
       <OnboardingSkeleton chapter={4} title="Try it yourself" cta="Continue" onContinue={() => navigate({ to: "/onboarding/trust" })}>
         <p className="text-body text-foreground">
-          Before you subscribe, try Ollie for yourself: ask a question, generate one image, and see exactly what {name} will experience.
+          Try Ollie for yourself. Ask a question, make a picture, and see exactly what {name} will experience.
         </p>
         <div className="mt-5 grid grid-cols-2 gap-3">
           {([
