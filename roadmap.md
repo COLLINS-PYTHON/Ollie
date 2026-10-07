@@ -1,10 +1,10 @@
 # Roadmap
 
 ## Now
-- Polish onboarding motion and proportions; rebuild Trail as a varied seasonal SVG landscape and verify both
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Polish pass: faster smooth mascot reveal, blue progress/actions with navy text, stable lesson-card entrances, tighter trial-sheet timing; irregular seasonal SVG Trail with snow and Christmas, verified on small/large screens
 - Restored dark navy, personalized greetings before child screens mount, curved seven-day Trail with visible jar, and completed-family setup skipping with unfinished-setup resume
 - Reference-led onboarding pass: scoped warm palette, proportions, chapter progress, exact payoff copy, faster entrance and trial sheet
 - Ollie artwork reduced from 1.6 MB to 86 KB, preloaded; entrance and idle motion no longer compete

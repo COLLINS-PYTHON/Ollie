@@ -47,8 +47,10 @@ export function TrailLandscape({ height, season }: { height: number; season: Tra
       const y = i * 310 + 110;
       return <g key={i}>
         <path d={`M-20 ${y + 110}Q100 ${y + 25} 215 ${y + 117}T370 ${y + 86}V${y + 198}Q170 ${y + 126}-20 ${y + 195}Z`} className="trail-meadow" />
-        <Tree x={i % 2 ? 291 : 38} y={y + 38} snow={snow} christmas={season === "christmas"} />
-        <Tree x={i % 2 ? 24 : 302} y={y + 185} snow={snow} christmas={false} />
+        <g transform={`translate(0 ${i % 3 * 9})`}><Tree x={i % 2 ? 291 : 38} y={y + 38} snow={snow} christmas={season === "christmas"} /></g>
+        {i % 3 === 1 ? <g transform={`translate(${i % 2 ? 27 : 301} ${y + 175})`}>
+          {snow ? <><ellipse cy="13" rx="25" ry="6" className="trail-ground-shadow" /><circle r="18" className="trail-snow-cap" /><circle cy="-26" r="12" className="trail-snow-cap" /><path d="M-13-21h26m-9-7h8" className="trail-ribbon" /><circle cx="-4" cy="-29" r="1.5" className="fill-foreground" /><circle cx="4" cy="-29" r="1.5" className="fill-foreground" /></> : <><ellipse rx="27" ry="16" className="trail-pond" /><path d="M-16 0q15-6 30 0m-20 5h12" className="trail-stone-shine" /><path d="M-9-18q0-12 12-12-1 13-12 12" className="trail-leaf" /></>}
+        </g> : <Tree x={i % 2 ? 24 : 302} y={y + 185} snow={snow} christmas={false} />}
         <g transform={`translate(${i % 2 ? 48 : 285} ${y + 97})`}>
           <ellipse rx="22" ry="9" className="trail-stone" /><path d="M-14-2q12-9 25 0" className="trail-stone-shine" />
           {!snow && <g className="trail-botanical"><path d="M0-4q-9-24 2-37M0-15q-21-4-18-18 18 0 18 18m2-9q18-7 18-21-20 3-18 21" className="trail-leaf" />{season === "spring" && <circle cx="3" cy="-42" r="7" className="fill-accent-3" />}</g>}

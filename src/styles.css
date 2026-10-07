@@ -574,6 +574,7 @@
 .trail-snow-cap,.trail-snowfall { fill: var(--card); stroke: var(--border); stroke-width: .7; }
 .trail-ground-shadow { fill: var(--foreground); opacity: .06; }
 .trail-stone { fill: var(--trail-rock); }
+.trail-pond { fill: color-mix(in oklab,var(--accent-2) 30%,var(--card)); stroke: var(--accent-2); stroke-width: 1; stroke-opacity: .25; }
 .trail-stone-shine { fill: none; stroke: var(--card); stroke-width: 2; }
 .trail-leaf { fill: var(--accent-2); stroke: var(--accent-2); stroke-width: 1.5; }
 .trail-fine-line { stroke: var(--foreground); stroke-width: 2; stroke-linecap: round; }
