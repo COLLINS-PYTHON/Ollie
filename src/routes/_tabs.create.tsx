@@ -19,7 +19,7 @@ import {
 } from "@/lib/picture-store";
 import { onboardingState } from "@/lib/onboarding-store";
 import { checkPin, clearFails, hasPin, lockedSeconds, PIN_LOCK, recordFail, uploadPicture } from "@/lib/cloud-sync";
-import { pageMeta } from "@/lib/meta";
+import { childName, pageMeta } from "@/lib/meta";
 
 export const Route = createFileRoute("/_tabs/create")({
   head: () => ({ meta: pageMeta("Create", "Turn ideas into safe, friendly pictures with Ollie.").meta }),
@@ -89,7 +89,7 @@ function CookieJar({ className = "size-6" }: { className?: string }) {
 
 function CreateScreen() {
   const age = onboardingState.age || 7;
-  const name = onboardingState.name || "friend";
+  const name = childName(onboardingState.name);
   const useBuilderDefault = age <= 6 || onboardingState.readingLevel === "none";
   const starters = (onboardingState.interests.map((i) => STARTERS[i]).filter(Boolean) as string[]).slice(0, 3);
   const chips = starters.length === 3 ? starters : [...starters, ...DEFAULT_STARTERS.filter((s) => !starters.includes(s))].slice(0, 3);

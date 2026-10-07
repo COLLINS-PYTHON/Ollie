@@ -6,7 +6,9 @@ import { TabBar } from "@/components/ollie/TabBar";
 import { SlideshowTakeover, type SlideshowChild } from "@/components/ollie/Slideshow";
 import { setPrefs, slideshowDue } from "@/lib/slideshow-store";
 import { effectiveBand } from "@/lib/slideshow/library";
-import { onboardingState, syncProfile } from "@/lib/onboarding-store";
+import { onboardingState, loadProfile } from "@/lib/onboarding-store";
+import { childName } from "@/lib/meta";
+import { resolveAppEntry } from "@/lib/app-entry";
 import { pushAll } from "@/lib/cloud-sync";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -25,10 +27,11 @@ function ParentIcon() {
 }
 
 function TabsLayout() {
+  const [ready, setReady] = useState(false);
   const [takeover, setTakeover] = useState(false);
   const [bedtime, setBedtime] = useState(false);
   const [child, setChild] = useState<SlideshowChild>({
-    name: "friend",
+    name: "Milo",
     band: "7-9",
     interests: [],
     needsReadAloud: false,
@@ -36,19 +39,28 @@ function TabsLayout() {
 
   /* The daily lesson takes over the app until it is done for the day. */
   useEffect(() => {
-    syncProfile();
+    let active = true;
+    const hydrate = async () => {
+    await resolveAppEntry().catch(() => undefined);
+    if (!active) return;
+    loadProfile();
     setPrefs({ resetTime: onboardingState.slideshowReset });
     setChild({
-      name: onboardingState.name || "friend",
+      name: childName(onboardingState.name),
       band: effectiveBand(onboardingState.age || 7, onboardingState.readingLevel ?? "stories"),
       interests: onboardingState.interests,
       needsReadAloud: onboardingState.readingLevel === "none" || onboardingState.readingLevel === "sounding",
     });
     setTakeover(slideshowDue());
+    setReady(true);
+    };
+    void hydrate();
+    return () => { active = false; };
   }, []);
 
   /* Save the child's progress to the parent's account while signed in. */
   useEffect(() => {
+    if (!ready) return;
     const save = () => { void pushAll(); };
     save();
     const t = window.setInterval(save, 60_000);
@@ -62,14 +74,14 @@ function TabsLayout() {
       document.removeEventListener("visibilitychange", onHide);
       sub.subscription.unsubscribe();
     };
-  }, []);
+  }, [ready]);
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   /* Count Search and Create time only, never while the lesson is open. */
   useEffect(() => {
     const surface = pathname === "/search" ? "search" : pathname === "/create" ? "create" : null;
-    if (!surface || takeover) { setBedtime(false); return; }
+    if (!ready || !surface || takeover) { setBedtime(false); return; }
     const check = () => setBedtime(minutesToday() >= onboardingState.limitMinutes);
     check();
     const t = window.setInterval(() => {
@@ -77,7 +89,7 @@ function TabsLayout() {
       check();
     }, 15_000);
     return () => window.clearInterval(t);
-  }, [pathname, takeover]);
+  }, [pathname, takeover, ready]);
 
   return (
     <div className="relative min-h-screen bg-background">
@@ -90,8 +102,8 @@ function TabsLayout() {
           <ParentIcon />
         </Link>
       </div>
-      <Outlet />
-      <TabBar />
+      {ready && <Outlet />}
+      {ready && <TabBar />}
       {bedtime && !takeover && <Bedtime name={child.name} />}
       {takeover && <SlideshowTakeover child={child} onClose={() => setTakeover(false)} />}
     </div>

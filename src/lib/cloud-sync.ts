@@ -107,6 +107,7 @@ export async function pullAll() {
   const setup = (child.setup ?? {}) as Record<string, unknown>;
   const profile = {
     ...setup,
+    onboardingComplete: setup["onboardingComplete"] !== false,
     name: child.name,
     age: child.age,
     readingLevel: child.reading_level,
@@ -128,7 +129,7 @@ export async function pullAll() {
   }
   await pullPictures(user.id);
   await registerDevice(user.id);
-  return true;
+  return profile.onboardingComplete;
 }
 
 /* Pictures: each one is saved as a small file in the parent's own folder. */
@@ -211,7 +212,8 @@ async function deviceRevoked(userId: string) {
   if (!data?.revoked) return false;
   await supabase.from("devices").delete().eq("id", data.id);
   await supabase.auth.signOut();
-  ["ollie-chat-v1", "ollie-profile-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-custom-lesson-v1"].forEach((k) => localStorage.removeItem(k));
+  ["ollie-chat-v1", "ollie-profile-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-custom-lesson-v1", "ollie-onboarding-draft-v1", "ollie-onboarding-step-v1"].forEach((k) => localStorage.removeItem(k));
+  sessionStorage.removeItem("ollie-onboarding-draft-v1");
   indexedDB.deleteDatabase("ollie-pictures");
   window.location.assign("/onboarding/fact");
   return true;

@@ -27,7 +27,7 @@ const REACTIONS: { id: Reaction; label: string }[] = [
   { id: "knew", label: "I knew that" },
 ];
 import { onboardingState } from "@/lib/onboarding-store";
-import { pageMeta } from "@/lib/meta";
+import { childName, pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
 
 type RecognitionLike = {
@@ -58,7 +58,7 @@ function speak(text: string) {
 
 function childProfile() {
   return {
-    name: onboardingState.name || "friend",
+    name: childName(onboardingState.name),
     age: onboardingState.age || 7,
     readingLevel: onboardingState.readingLevel ?? ("stories" as const),
     tone: onboardingState.tone,

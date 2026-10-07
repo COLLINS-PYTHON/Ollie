@@ -1,7 +1,8 @@
-import { createFileRoute, Outlet, useRouter, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
-import { loadOnboardingDraft, saveOnboardingDraft } from "@/lib/onboarding-store";
+import { loadOnboardingDraft, saveOnboardingStep } from "@/lib/onboarding-store";
+import { resolveAppEntry } from "@/lib/app-entry";
 import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
 
@@ -10,20 +11,28 @@ export const Route = createFileRoute("/onboarding")({
 });
 
 function OnboardingLayout() {
+  const navigate = useNavigate();
   const [ready, setReady] = useState(false);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   useEffect(() => {
-    loadOnboardingDraft();
+    let active = true;
+    void resolveAppEntry().then((to) => {
+      if (!active) return;
+      if (to === "/search") { void navigate({ to, replace: true }); return; }
+      loadOnboardingDraft();
+      setReady(true);
+    }).catch(() => { if (active) { loadOnboardingDraft(); setReady(true); } });
     const image = new Image();
     image.src = ollie;
     void image.decode().catch(() => {});
-    setReady(true);
-  }, []);
+    return () => { active = false; };
+  }, [navigate]);
 
   useEffect(() => {
     if (!ready) return;
-    const save = () => saveOnboardingDraft();
+    const save = () => saveOnboardingStep(pathname);
+    save();
     window.addEventListener("pagehide", save);
     return () => {
       save();
@@ -56,7 +65,7 @@ export function OnboardingSkeleton({
     ["/onboarding/", "/onboarding/name"],
     ["/onboarding/age"],
     ["/onboarding/reading", "/onboarding/preview"],
-    ["/onboarding/interests", "/onboarding/lessons", "/onboarding/worries", "/onboarding/assurance", "/onboarding/screen-time", "/onboarding/goals", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin", "/onboarding/account"],
+    ["/onboarding/interests", "/onboarding/lessons", "/onboarding/worries", "/onboarding/assurance", "/onboarding/screen-time", "/onboarding/priorities", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin", "/onboarding/account"],
   ];
   const steps = chapterPaths[chapter - 1] ?? [];
   const progress = (Math.max(0, steps.indexOf(pathname)) + 1) / Math.max(1, steps.length);
