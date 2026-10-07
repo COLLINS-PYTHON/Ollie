@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Review KinderGPT blue/white and highlighting reference; show bounded Ollie color refinements for selection
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
