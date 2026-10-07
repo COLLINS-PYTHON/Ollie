@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Remove orb backplates, enlarge loading orbs, repair parent setting sheets and add restrained onboarding life
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
