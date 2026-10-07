@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUp, Mic, Volume2 } from "lucide-react";
-import { ThinkingOrb } from "thinking-orbs";
+import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { askOllie } from "@/lib/search.functions";
 import { LessonArt } from "@/components/ollie/LessonArt";
 import { findIllustration, illustrationById } from "@/lib/slideshow/illustration";
@@ -290,7 +290,7 @@ function SearchChat() {
         )}
         {busy && (
           <div className="mt-3 flex self-start px-2 py-2" role="status" aria-label="Ollie is writing an answer">
-            <ThinkingOrb state="composing" size={64} className="orb-chat" theme="light" aria-label="Ollie is writing an answer" />
+            <CrispOrb state="composing" size={80} aria-label="Ollie is writing an answer" />
           </div>
         )}
       </div>

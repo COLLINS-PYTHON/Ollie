@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Mic, Sparkles, X } from "lucide-react";
-import { ThinkingOrb } from "thinking-orbs";
+import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { preparePicture } from "@/lib/picture.functions";
 import { streamImage } from "@/lib/stream-image";
 import {
@@ -316,12 +316,12 @@ function CreateScreen() {
             />
           ) : busy ? (
             <div className="flex min-h-44 w-full items-center justify-center">
-              <ThinkingOrb state="shaping" size={64} className="orb-loading" theme="light" aria-label="Ollie is painting" />
+              <CrispOrb state="shaping" size={112} aria-label="Ollie is painting" />
             </div>
           ) : null}
           {busy && (
             <div className="flex items-center gap-2">
-              {preview && <ThinkingOrb state="shaping" size={64} className="orb-chat" theme="light" aria-label="Ollie is painting" />}
+              {preview && <CrispOrb state="shaping" size={80} aria-label="Ollie is painting" />}
               <span className="text-support text-muted-foreground">Ollie is painting</span>
             </div>
           )}

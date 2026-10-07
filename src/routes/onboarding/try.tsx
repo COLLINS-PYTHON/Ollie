@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Search, Wand2 } from "lucide-react";
-import { ThinkingOrb } from "thinking-orbs";
+import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { INTERESTS } from "@/lib/interests";
@@ -98,7 +98,7 @@ function TryPage() {
 
         {mode && phase === "thinking" && (
           <div className="mt-8 flex justify-center">
-            <ThinkingOrb state={mode === "search" ? "searching" : "shaping"} size={64} className="orb-loading" theme="light" aria-label="Ollie is working" />
+            <CrispOrb state={mode === "search" ? "searching" : "shaping"} size={112} aria-label="Ollie is working" />
           </div>
         )}
 
