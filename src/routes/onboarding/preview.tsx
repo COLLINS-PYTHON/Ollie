@@ -52,22 +52,22 @@ function PreviewPage() {
     <div className="bg-gradient-ice min-h-screen">
       <OnboardingSkeleton chapter={4} title={`Here's how Ollie will answer ${name}`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/interests" })}>
         <div className="rounded-card bg-card p-5 shadow-sheet">
-          {/* glossy 3D-style icons, building in one at a time */}
+          {/* Soft line icons, building in one at a time. */}
           <div className="mb-5 flex items-center justify-center gap-3" aria-hidden>
             <span
-              className={`flex size-12 items-center justify-center rounded-control bg-gradient-to-br from-periwinkle to-brand shadow-card transition-all duration-reveal ${
+              className={`onboarding-soft-icon flex size-12 items-center justify-center rounded-control transition-all duration-reveal ${
                 step >= 1 ? "scale-100 opacity-100" : "scale-50 opacity-0"
               }`}
             >
-              <Sparkles className="size-6 text-primary-foreground drop-shadow" />
+              <Sparkles className="size-6" strokeWidth={1.8} />
               <span className="absolute" />
             </span>
             <span
-              className={`flex size-12 items-center justify-center rounded-control bg-gradient-to-br from-gold to-accent-4 shadow-card transition-all duration-reveal ${
+              className={`onboarding-soft-icon onboarding-soft-icon-teal flex size-12 items-center justify-center rounded-control transition-all duration-reveal ${
                 step >= 2 ? "scale-100 opacity-100" : "scale-50 opacity-0"
               }`}
             >
-              <MessageCircleHeart className="size-6 text-primary-foreground drop-shadow" />
+              <MessageCircleHeart className="size-6" strokeWidth={1.8} />
             </span>
           </div>
 

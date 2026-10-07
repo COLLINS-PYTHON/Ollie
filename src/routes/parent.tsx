@@ -596,13 +596,13 @@ function SupportSheet({ onClose }: { onClose: () => void }) {
     <Sheet title="Ask us anything" onClose={onClose}>
       <div className="flex min-h-40 flex-col gap-2">
         <p className="max-w-[80%] self-start rounded-[18px] rounded-bl-[4px] bg-surface-2 px-4 py-2.5 text-body text-foreground">
-          Hi! This goes to the Ollie team, not to Ollie. How can we help?
+          Support chat is not connected yet. You can contact the Ollie team by email.
         </p>
         {sent.map((s, i) => (
           <p key={i} className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-4 py-2.5 text-body text-white">{s}</p>
         ))}
         {sent.length > 0 && (
-          <p className="text-label text-muted-foreground">Thanks! We reply by email, usually within a day.</p>
+          <p className="text-label text-muted-foreground">This message has not been sent. Please use the email link below.</p>
         )}
       </div>
       <form
@@ -612,6 +612,7 @@ function SupportSheet({ onClose }: { onClose: () => void }) {
         <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Type your question" className="flex-1 rounded-pill border border-surface-2 px-4 py-2.5 text-body text-foreground" />
         <button type="submit" disabled={!text.trim()} className="rounded-pill bg-primary px-5 text-button text-white disabled:bg-surface-2">Send</button>
       </form>
+      <a href={`mailto:${SUPPORT_EMAIL}`} className="mt-4 block text-support font-bold text-primary">Email {SUPPORT_EMAIL}</a>
     </Sheet>
   );
 }
