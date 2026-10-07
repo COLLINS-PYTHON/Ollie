@@ -1,10 +1,11 @@
 # Roadmap
 
 ## Now
-- Replace outlined cloud icons with soft dimensional cloud artwork and natural drifting motion
+- Fix enlarged thinking/loading orbs so their drawing resolution matches their displayed size
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Soft dimensional SVG clouds without cartoon outlines, independent natural drift and reduced-motion support verified at small and large sizes
 - Premium adaptive presentation: wider tablet canvas, dynamic-height chat with separate navigation dock, visible quiet cloud/paw scenery, faster introductions, original feature copy and swipeable safety conversations; topic labels removed beside Ollie and retained only in parent view
 - KinderGPT public-page review and original onboarding refresh: quiet edge clouds/paw tracks, selective blue emphasis, faster reading preview, softer goal icons, parent reassurance and personalized child welcome; exact required copy and consent preserved
 - Kept Ollie calm and familiar rather than adding extra mascot playfulness; verified Milo setup, consent, small-screen fit and reduced-motion
