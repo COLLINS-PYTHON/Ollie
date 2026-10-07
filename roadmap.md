@@ -1,6 +1,9 @@
 # Roadmap
 
 ## Now
+- Reference-led premium polish: onboarding proportions, chapter progress, exact copy, fluid transitions and paywall sheet
+- Ollie: fast-loading artwork and a smooth entrance without competing animations
+- Daily slideshows and display cards: authored SVG illustrations with code-driven motion
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
