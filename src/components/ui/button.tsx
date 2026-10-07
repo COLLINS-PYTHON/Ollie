@@ -9,6 +9,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        onboarding: "bg-primary text-primary-foreground rounded-pill shadow-card hover:bg-primary/90 active:scale-[0.98] transition-transform duration-tap",
+        control: "bg-card text-foreground rounded-pill border border-border shadow-sm hover:bg-secondary active:scale-95 transition-transform duration-tap",
+        option: "bg-card text-foreground rounded-control border border-border hover:bg-secondary active:scale-[0.98] transition-transform duration-tap",
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
@@ -18,6 +21,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
+        onboarding: "h-14 w-full px-5 text-button",
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
