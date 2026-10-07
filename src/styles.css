@@ -646,6 +646,8 @@
 @media (prefers-reduced-motion: reduce) { .paywall-underlay { transition: none; } }
 
 /* White-first reassurance, following the selected soft-blue study. */
+.orb-chat { width: 80px !important; height: 80px !important; }
+.orb-loading { width: 112px !important; height: 112px !important; }
 .onboarding-highlight { color: var(--brand); font-weight: 650; }
 .onboarding-assurance .onboarding-content > div { display: flex; flex-direction: column; justify-content: center; padding-block: 16px; }
 .assurance-panel { background: var(--onboarding-panel); border: 1px solid var(--onboarding-panel-border); box-shadow: var(--elev-card); }

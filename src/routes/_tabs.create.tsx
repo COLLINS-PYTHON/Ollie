@@ -316,12 +316,12 @@ function CreateScreen() {
             />
           ) : busy ? (
             <div className="flex min-h-44 w-full items-center justify-center">
-              <ThinkingOrb state="shaping" size={112} theme="light" aria-label="Ollie is painting" />
+              <ThinkingOrb state="shaping" size={64} className="orb-loading" theme="light" aria-label="Ollie is painting" />
             </div>
           ) : null}
           {busy && (
             <div className="flex items-center gap-2">
-              {preview && <ThinkingOrb state="shaping" size={80} theme="light" aria-label="Ollie is painting" />}
+              {preview && <ThinkingOrb state="shaping" size={64} className="orb-chat" theme="light" aria-label="Ollie is painting" />}
               <span className="text-support text-muted-foreground">Ollie is painting</span>
             </div>
           )}

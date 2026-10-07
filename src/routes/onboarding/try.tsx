@@ -98,7 +98,7 @@ function TryPage() {
 
         {mode && phase === "thinking" && (
           <div className="mt-8 flex justify-center">
-            <ThinkingOrb state={mode === "search" ? "searching" : "shaping"} size={96} theme="light" aria-label="Ollie is working" />
+            <ThinkingOrb state={mode === "search" ? "searching" : "shaping"} size={64} className="orb-loading" theme="light" aria-label="Ollie is working" />
           </div>
         )}
 
