@@ -2,6 +2,7 @@
 
 ## Now
 - Review KinderGPT public pages and refine onboarding wording, layout and restrained cloud/paw-print motion while preserving the spec and Ollie identity
+- Fold original creative touches into onboarding so parents feel informed and reassured, with playful child-facing personality that stays clean
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
