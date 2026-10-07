@@ -69,7 +69,7 @@ function BuildingPage() {
               <img src={ollie} alt="Ollie celebrating" className="pop-in bounce-soft relative size-40 object-contain" style={{ ["--bounce-speed" as string]: "0.8s", ["--bounce-height" as string]: "-12px" }} />
             </>
           ) : (
-            <ThinkingOrb state="composing" size={64} theme="light" aria-label="Building" />
+            <ThinkingOrb state="composing" size={64} className="orb-loading" theme="light" aria-label="Building" />
           )}
         </div>
         <ul className="mt-10 w-full space-y-3 text-left">

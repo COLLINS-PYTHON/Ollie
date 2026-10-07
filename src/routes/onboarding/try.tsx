@@ -61,8 +61,8 @@ function TryPage() {
               }}
               className={`flex flex-col items-center gap-2 rounded-card p-4 transition-all duration-tap active:scale-[0.98] ${mode === id ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/70"}`}
             >
-              <span className="glossy flex size-11 items-center justify-center rounded-control bg-gradient-to-br from-brand to-brand-deep">
-                <Icon className="size-5 text-primary-foreground" />
+              <span className="onboarding-soft-icon flex size-11 items-center justify-center rounded-control">
+                <Icon className="size-5" strokeWidth={1.8} />
               </span>
               <span className="text-label text-foreground">{label}</span>
             </button>
@@ -98,7 +98,7 @@ function TryPage() {
 
         {mode && phase === "thinking" && (
           <div className="mt-8 flex justify-center">
-            <ThinkingOrb state={mode === "search" ? "searching" : "shaping"} size={64} theme="light" aria-label="Ollie is working" />
+            <ThinkingOrb state={mode === "search" ? "searching" : "shaping"} size={64} className="orb-loading" theme="light" aria-label="Ollie is working" />
           </div>
         )}
 

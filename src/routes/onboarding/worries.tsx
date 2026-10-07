@@ -62,11 +62,11 @@ function WorriesPage() {
                 }`}
               >
                 <span
-                  className={`glossy relative flex size-12 shrink-0 items-center justify-center rounded-control bg-gradient-to-br from-brand to-brand-deep transition-all duration-tap ${
-                    on ? "scale-105" : "opacity-75 saturate-50"
+                  className={`onboarding-soft-icon relative flex size-12 shrink-0 items-center justify-center rounded-control transition-all duration-tap ${
+                    on ? "scale-105" : "opacity-80"
                   }`}
                 >
-                  <Icon className="size-6 text-primary-foreground drop-shadow" strokeWidth={2.2} aria-hidden />
+                  <Icon className="size-6" strokeWidth={1.8} aria-hidden />
                   {on && (
                     <span className="absolute -right-1.5 -top-1.5 z-10 flex size-5 items-center justify-center rounded-pill bg-primary text-primary-foreground shadow-card">
                       <Check className="size-3" aria-hidden />

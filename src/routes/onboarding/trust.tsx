@@ -22,10 +22,8 @@ function TrustPage() {
     <div className="bg-gradient-trust min-h-screen">
       <OnboardingSkeleton chapter={4} title="Your child's privacy comes first" cta="Continue" ctaDisabled={!agree} onContinue={() => navigate({ to: "/onboarding/pin" })}>
         <div className="relative mb-6 flex h-20 items-center justify-center" aria-hidden>
-          <span className="ring-pulse absolute size-16 rounded-pill bg-primary/30" />
-          <span className="ring-pulse absolute size-16 rounded-pill bg-primary/30 [animation-delay:1.6s]" />
-          <span className="glossy relative flex size-14 items-center justify-center rounded-pill bg-gradient-to-br from-brand to-brand-deep">
-            <ShieldCheck className="size-7 text-primary-foreground" />
+          <span className="onboarding-soft-icon relative flex size-14 items-center justify-center rounded-pill">
+            <ShieldCheck className="size-7" strokeWidth={1.8} />
           </span>
         </div>
         <div className="rounded-card bg-card p-5 shadow-card">

@@ -315,13 +315,13 @@ function CreateScreen() {
               className={`aspect-square w-full rounded-card object-cover shadow-card transition-[filter] duration-reveal ${preview.final ? "blur-0" : "blur-2xl"}`}
             />
           ) : busy ? (
-            <div className="flex aspect-square w-full items-center justify-center rounded-card bg-card/70 shadow-card">
-              <ThinkingOrb state="shaping" size={64} theme="light" aria-label="Ollie is painting" />
+            <div className="flex min-h-44 w-full items-center justify-center">
+              <ThinkingOrb state="shaping" size={64} className="orb-loading" theme="light" aria-label="Ollie is painting" />
             </div>
           ) : null}
           {busy && (
             <div className="flex items-center gap-2">
-              {preview && <ThinkingOrb state="shaping" size={64} theme="light" aria-label="Ollie is painting" />}
+              {preview && <ThinkingOrb state="shaping" size={64} className="orb-chat" theme="light" aria-label="Ollie is painting" />}
               <span className="text-support text-muted-foreground">Ollie is painting</span>
             </div>
           )}

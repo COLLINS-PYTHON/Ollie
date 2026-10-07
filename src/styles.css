@@ -646,6 +646,13 @@
 @media (prefers-reduced-motion: reduce) { .paywall-underlay { transition: none; } }
 
 /* White-first reassurance, following the selected soft-blue study. */
+.orb-chat { width: 80px !important; height: 80px !important; }
+.orb-loading { width: 112px !important; height: 112px !important; }
+.onboarding-soft-icon { color: var(--brand); background: color-mix(in oklab,var(--brand) 8%,var(--card)); border: 1px solid color-mix(in oklab,var(--brand) 12%,var(--card)); }
+.onboarding-soft-icon-teal { color: var(--accent-2); background: color-mix(in oklab,var(--accent-2) 8%,var(--card)); border-color: color-mix(in oklab,var(--accent-2) 12%,var(--card)); }
+.ollie-gentle-idle { transform-origin: center bottom; animation: ollie-gentle-idle 4.5s ease-in-out infinite; }
+@keyframes ollie-gentle-idle { 50% { transform: translateY(-4px) rotate(1deg) scale(1.015); } }
+@media (prefers-reduced-motion: reduce) { .ollie-gentle-idle { animation: none; } }
 .onboarding-highlight { color: var(--brand); font-weight: 650; }
 .onboarding-assurance .onboarding-content > div { display: flex; flex-direction: column; justify-content: center; padding-block: 16px; }
 .assurance-panel { background: var(--onboarding-panel); border: 1px solid var(--onboarding-panel-border); box-shadow: var(--elev-card); }

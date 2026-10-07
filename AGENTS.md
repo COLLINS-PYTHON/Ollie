@@ -23,3 +23,4 @@
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
 - Trail scenery uses authored SVG with CSS motion and local-calendar seasonal selection; its irregular path is deterministic and separate from progress. Why: crisp instant artwork, no generation charges, and rewards never change with a theme.
 - The onboarding paywall uses the shared Vaul drawer with portal, focus containment, swipe dismissal and a pinned action footer. Why: a natural interactive sheet with accessible dismissal and no simulated native purchase dialog.
+- Parent setting sheets use the shared portalled Vaul drawer outside the animated page. Why: a transformed page must not trap fixed dialogs below the viewport.
