@@ -78,6 +78,19 @@ function TabsLayout() {
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    const update = () => document.documentElement.style.setProperty("--app-viewport-height", `${viewport?.height ?? window.innerHeight}px`);
+    update();
+    viewport?.addEventListener("resize", update);
+    window.addEventListener("resize", update);
+    return () => {
+      viewport?.removeEventListener("resize", update);
+      window.removeEventListener("resize", update);
+      document.documentElement.style.removeProperty("--app-viewport-height");
+    };
+  }, []);
+
   /* Count Search and Create time only, never while the lesson is open. */
   useEffect(() => {
     const surface = pathname === "/search" ? "search" : pathname === "/create" ? "create" : null;
@@ -92,8 +105,8 @@ function TabsLayout() {
   }, [pathname, takeover, ready]);
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <div className="mx-auto flex w-full max-w-md justify-end px-5 pt-4 absolute inset-x-0 top-0 z-30">
+    <div className={`tabs-shell relative min-h-screen bg-background ${pathname === "/search" ? "tabs-search" : ""}`}>
+      <div className="parent-access mx-auto flex w-full max-w-md justify-end px-5 pt-4 absolute inset-x-0 top-0 z-30">
         <Link
           to="/parent"
           aria-label="Parent Dashboard"

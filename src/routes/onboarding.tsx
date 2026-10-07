@@ -50,9 +50,9 @@ function OnboardingLayout() {
     };
   }, [pathname, ready, preview]);
 
-  // Serious and already animated reveal screens stay quiet. Other steps get one ambient motif.
-  const scenery = ["/onboarding", "/onboarding/", "/onboarding/interests", "/onboarding/priorities"].includes(pathname)
-    ? "paws" : pathname === "/onboarding/age" ? "clouds" : null;
+  // Privacy and safety retain a quiet background. Light discovery steps share visible edge scenery.
+  const scenery = ["/onboarding", "/onboarding/", "/onboarding/interests", "/onboarding/priorities", "/onboarding/tone"].includes(pathname)
+    ? "paws" : ["/onboarding/fact", "/onboarding/meet", "/onboarding/age", "/onboarding/reading", "/onboarding/preview", "/onboarding/lessons", "/onboarding/try"].includes(pathname) ? "clouds" : null;
   return <div className="onboarding-theme onboarding-shell">{ready ? <>{scenery && <OnboardingScenery variant={scenery} />}<div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 
@@ -83,8 +83,8 @@ export function OnboardingSkeleton({
   const steps = chapterPaths[chapter - 1] ?? [];
   const progress = (Math.max(0, steps.indexOf(pathname)) + 1) / Math.max(1, steps.length);
   return (
-    <div className="mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden">
-      <header className="flex items-center gap-4 px-6 pt-5">
+    <div className="onboarding-frame mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden">
+      <header className="onboarding-header flex items-center gap-4 px-6 pt-5">
         <Button variant="control" size="icon"
           type="button"
           aria-label="Back"
@@ -108,7 +108,7 @@ export function OnboardingSkeleton({
       </main>
 
       <div
-        className="onboarding-cta-fade fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-md px-6 pt-7"
+        className="onboarding-action onboarding-cta-fade fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-md px-6 pt-7"
         style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}
       >
         <Button variant="onboarding" size="onboarding"

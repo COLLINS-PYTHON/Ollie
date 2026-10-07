@@ -14,4 +14,10 @@ export default defineConfig({
     server: { entry: "server" },
   },
   plugins: [mcpPlugin()],
+  vite: {
+    optimizeDeps: {
+      // Avoid replacing React's dependency graph while lazy onboarding routes are open.
+      include: ["thinking-orbs/engine"],
+    },
+  },
 });

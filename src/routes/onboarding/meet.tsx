@@ -13,7 +13,7 @@ function MeetPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   useEffect(() => {
-    const t = [450, 460, 810, 910, 1050].map((ms, i) => setTimeout(() => setStep(i + 1), ms));
+    const t = [0, 40, 120, 160, 220].map((ms, i) => setTimeout(() => setStep(i + 1), ms));
     return () => t.forEach(clearTimeout);
   }, []);
 
@@ -29,13 +29,13 @@ function MeetPage() {
           <div className={`welcome-card mt-6 min-h-28 w-full rounded-card bg-card p-5 shadow-card ${step >= 3 ? "is-visible" : ""}`}>
             <div className={`welcome-copy ${step >= 4 ? "is-visible" : ""}`}>
               <p className="text-body leading-relaxed text-foreground">
-                Meet Ollie. Ollie's a furry little answer assistant that turns kids' curiosity into a <span className="onboarding-highlight">safe, fun
-                learning experience</span> and <span className="onboarding-highlight">reports straight back to you.</span>
+                Little questions can lead to big discoveries. With Ollie, {"kids get "}<span className="onboarding-highlight">answers they understand</span>, a daily lesson to explore and a place to bring their picture ideas to life.
               </p>
+              <p className="text-support mt-3 text-muted-foreground">Their space to explore. Your place to stay in the loop.</p>
             </div>
           </div>
       </main>
-      <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
+      <div className="onboarding-action onboarding-cta-fade fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-md px-6 pt-7" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
         <Button variant="onboarding" size="onboarding"
           type="button"
           disabled={step < 5}

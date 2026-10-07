@@ -4,6 +4,10 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Corrected clouds to bright white on a light-blue surrounding wash, with slow independent drift; verified visually on phones and large screens
+- Orbs now paint original thinking-orbs geometry at actual display size and device resolution; 112px orb verified at 336px drawing resolution on a 3x display, no backplate or blur
+- Soft dimensional SVG clouds without cartoon outlines, independent natural drift and reduced-motion support verified at small and large sizes
+- Premium adaptive presentation: wider tablet canvas, dynamic-height chat with separate navigation dock, visible quiet cloud/paw scenery, faster introductions, original feature copy and swipeable safety conversations; topic labels removed beside Ollie and retained only in parent view
 - KinderGPT public-page review and original onboarding refresh: quiet edge clouds/paw tracks, selective blue emphasis, faster reading preview, softer goal icons, parent reassurance and personalized child welcome; exact required copy and consent preserved
 - Kept Ollie calm and familiar rather than adding extra mascot playfulness; verified Milo setup, consent, small-screen fit and reduced-motion
 - Explicit onboarding preview link bypasses completed-family redirect and retains preview between setup screens without clearing saved data

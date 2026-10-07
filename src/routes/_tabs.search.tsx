@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUp, Mic, Volume2 } from "lucide-react";
-import { ThinkingOrb } from "thinking-orbs";
+import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { askOllie } from "@/lib/search.functions";
 import { LessonArt } from "@/components/ollie/LessonArt";
 import { findIllustration, illustrationById } from "@/lib/slideshow/illustration";
@@ -29,6 +29,7 @@ const REACTIONS: { id: Reaction; label: string }[] = [
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
+import { Button } from "@/components/ui/button";
 
 type RecognitionLike = {
   lang: string;
@@ -211,9 +212,9 @@ function SearchChat() {
   };
 
   return (
-    <main className="screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-white">
+    <main className="search-screen screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-card">
       {/* iMessage-style header: centered round photo with name underneath */}
-      <header className="frosted relative z-10 flex flex-col items-center gap-1 pb-2.5 pt-12">
+      <header className="search-header frosted relative z-10 flex flex-col items-center gap-1 pb-2.5 pt-12">
         <img
           src={ollie}
           alt="Ollie"
@@ -224,13 +225,13 @@ function SearchChat() {
         <p className="text-body font-bold text-foreground">Ollie</p>
       </header>
 
-      <div ref={listRef} className="relative z-10 flex-1 overflow-y-auto px-3 py-4">
+      <div ref={listRef} className="search-transcript relative z-10 min-h-0 flex-1 overflow-y-auto px-3 py-4">
         {messages.length === 0 && !busy ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
             <img
               src={ollie}
               alt="Ollie the puppy"
-              className="bounce-soft w-36"
+              className="ollie-gentle-idle w-36"
               width={144}
               height={144}
             />
@@ -244,7 +245,7 @@ function SearchChat() {
               m.role === "sent" ? (
                 <div
                   key={m.id}
-                  className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-3.5 py-2 text-body text-white"
+                  className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-3.5 py-2 text-body text-primary-foreground"
                 >
                   {m.text}
                 </div>
@@ -254,14 +255,14 @@ function SearchChat() {
                     <div className="rounded-[18px] rounded-bl-[4px] bg-surface-2 px-3.5 py-2 text-body text-foreground">
                       {m.text}
                     </div>
-                    <button
+                    <Button variant="ghost" size="icon"
                       type="button"
                       aria-label="Hear this answer"
                       onClick={() => speak(m.text)}
-                      className="mb-0.5 flex size-6 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
+                      className="mb-0.5 flex size-9 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
                     >
                       <Volume2 className="size-3.5" />
-                    </button>
+                    </Button>
                   </div>
                   {m.illustrationId && <AnswerArt id={m.illustrationId} />}
                   {(!m.tier || m.tier === "ok") && (
@@ -269,15 +270,15 @@ function SearchChat() {
                       {REACTIONS.map((r) => {
                         const on = m.reaction === r.id;
                         return (
-                          <button
+                          <Button variant="ghost" size="sm"
                             key={r.id}
                             type="button"
                             aria-pressed={on}
                             onClick={() => react(m.id, on ? undefined : r.id)}
-                            className={`rounded-pill px-2.5 py-1 text-label transition-all duration-tap active:scale-95 ${on ? "pop-in bg-primary text-white" : "bg-surface text-muted-foreground hover:text-foreground"}`}
+                            className={`rounded-pill px-2.5 py-1 text-label transition-all duration-tap active:scale-95 ${on ? "bg-primary text-primary-foreground" : "bg-surface text-muted-foreground hover:text-foreground"}`}
                           >
                             {r.label}
-                          </button>
+                          </Button>
                         );
                       })}
                     </div>
@@ -289,15 +290,15 @@ function SearchChat() {
         )}
         {busy && (
           <div className="mt-3 flex self-start px-2 py-2" role="status" aria-label="Ollie is writing an answer">
-            <ThinkingOrb state="composing" size={64} className="orb-chat" theme="light" aria-label="Ollie is writing an answer" />
+            <CrispOrb state="composing" size={80} aria-label="Ollie is writing an answer" />
           </div>
         )}
       </div>
 
       {/* iMessage-style input bar */}
-      <div className="relative z-10 px-3 pb-28 pt-2">
+      <div className="search-composer relative z-10 px-3 pt-2">
         <div className="flex items-end gap-2">
-          <div className="flex min-w-0 flex-1 items-center rounded-[22px] border border-surface-2 bg-white px-4 py-2.5">
+          <div className="flex min-w-0 flex-1 items-center rounded-[22px] border border-surface-2 bg-card px-4 py-2.5">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -310,7 +311,7 @@ function SearchChat() {
             />
           </div>
           {voiceSupported && !canSend && (
-            <button
+            <Button variant="secondary" size="icon"
               type="button"
               aria-label={listening ? "Listening, release to stop" : "Hold to talk"}
               onPointerDown={startListening}
@@ -321,17 +322,17 @@ function SearchChat() {
               }`}
             >
               <Mic className="size-4" />
-            </button>
+            </Button>
           )}
-          <button
+          <Button size="icon"
             type="button"
             aria-label="Send question"
             onClick={send}
             disabled={!canSend}
-            className="flex size-9 shrink-0 items-center justify-center rounded-pill bg-primary text-white transition-all duration-tap active:scale-95 disabled:bg-surface-2 disabled:text-muted-foreground"
+            className="flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-primary-foreground transition-all duration-tap active:scale-95 disabled:bg-surface-2 disabled:text-muted-foreground"
           >
             <ArrowUp className="size-4" strokeWidth={2.5} />
-          </button>
+          </Button>
         </div>
         {!voiceSupported && (
           <p className="mt-2 text-center text-support text-muted-foreground">

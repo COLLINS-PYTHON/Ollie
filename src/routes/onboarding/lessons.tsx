@@ -53,7 +53,7 @@ function LessonsPage() {
             ))}
           </div>
         <p className="text-support mt-4 text-center text-muted-foreground">
-          A little discovery each day, built around <span className="onboarding-highlight">what {name} loves</span>.
+          A fresh discovery, a quick quiz and a little moment of “I know that!” Built around <span className="onboarding-highlight">what {name} loves</span>.
         </p>
       </OnboardingSkeleton>
     </div>
