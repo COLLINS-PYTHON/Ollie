@@ -703,6 +703,9 @@
   --app-dock-height: calc(84px + env(safe-area-inset-bottom, 0px));
   --onboarding-cloud-fill: color-mix(in oklab, var(--brand) 9%, var(--card));
   --onboarding-cloud-stroke: color-mix(in oklab, var(--brand) 22%, var(--card));
+  --onboarding-cloud-light: var(--card);
+  --onboarding-cloud-mid: color-mix(in oklab, var(--brand) 7%, var(--card));
+  --onboarding-cloud-shade: color-mix(in oklab, var(--brand) 19%, var(--card));
   --onboarding-track-fill: color-mix(in oklab, var(--brand) 13%, var(--card));
   --onboarding-wash: linear-gradient(180deg, var(--card) 0%, color-mix(in oklab, var(--brand) 3%, var(--card)) 55%, color-mix(in oklab, var(--brand) 9%, var(--card)) 100%);
 }
@@ -733,9 +736,14 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .mascot-reveal.is-visible { transform: translateY(0) scale(1); }
 .welcome-card { transform: translateY(6px); transition: opacity 180ms ease, transform 250ms var(--ease-enter); }
 .onboarding-scenery { max-width: 1120px; }
-.onboarding-cloud { width: 190px; height: 90px; animation-duration: 9s; }
-.onboarding-cloud-left { left: -80px; top: 24%; }
-.onboarding-cloud-right { right: -80px; top: 74%; width: 220px; animation-delay: -4.5s; }
+.onboarding-cloud { width: 230px; height: 115px; stroke: none; fill: none; animation: cloud-natural-drift 28s linear infinite; will-change: transform; }
+.onboarding-cloud-left { left: -105px; top: 24%; }
+.onboarding-cloud-right { right: -110px; top: 74%; width: 260px; animation-duration: 36s; animation-delay: -18s; animation-direction: reverse; }
+.cloud-light { stop-color: var(--onboarding-cloud-light); }
+.cloud-mid { stop-color: var(--onboarding-cloud-mid); }
+.cloud-shade { stop-color: var(--onboarding-cloud-shade); }
+.cloud-ground { fill: var(--onboarding-cloud-shade); opacity: .25; }
+@keyframes cloud-natural-drift { 0% { transform: translate3d(-18px,3px,0); } 25% { transform: translate3d(0,-1px,0); } 50% { transform: translate3d(22px,-3px,0); } 75% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-18px,3px,0); } }
 .onboarding-paw-pair { width: 42px; height: 64px; animation-duration: 12s; }
 .onboarding-paw-pair-0 { left: -12px; top: 28%; }
 .onboarding-paw-pair-1 { right: -14px; top: 71%; animation-delay: -5s; }

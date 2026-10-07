@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Replace outlined cloud icons with soft dimensional cloud artwork and natural drifting motion
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
