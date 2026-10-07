@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { onboardingState, saveProfile } from "@/lib/onboarding-store";
+import { onboardingState, completeOnboarding } from "@/lib/onboarding-store";
 import { loadCustom } from "@/lib/custom-lesson-store";
 import { childName, pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
@@ -14,7 +14,7 @@ function HandoffPage() {
   const name = childName(onboardingState.name);
 
   function start() {
-    saveProfile();
+    completeOnboarding();
     // Pre-readers hear Ollie say hello before their first lesson opens.
     const lvl = onboardingState.readingLevel;
     if ((lvl === "none" || lvl === "sounding") && "speechSynthesis" in window) {

@@ -25,6 +25,7 @@ export const onboardingState = {
   parentName: "",
   email: "",
   weeklyEmail: null as boolean | null,
+  onboardingComplete: false,
 };
 
 export function formatMinutes(m: number) {
@@ -48,6 +49,32 @@ export const parentSettings = {
 
 const PROFILE_KEY = "ollie-profile-v1";
 const DRAFT_KEY = "ollie-onboarding-draft-v1";
+const STEP_KEY = "ollie-onboarding-step-v1";
+export const ONBOARDING_STEPS = ["/onboarding/fact", "/onboarding/meet", "/onboarding", "/onboarding/age", "/onboarding/reading", "/onboarding/preview", "/onboarding/interests", "/onboarding/lessons", "/onboarding/worries", "/onboarding/assurance", "/onboarding/screen-time", "/onboarding/goals", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin", "/onboarding/paywall", "/onboarding/account", "/onboarding/building", "/onboarding/handoff"] as const;
+export function saveOnboardingStep(path: string) {
+  if (!ONBOARDING_STEPS.some((s) => s === path)) return;
+  localStorage.setItem(STEP_KEY, path);
+  saveOnboardingDraft();
+}
+export function resumeOnboardingStep(): typeof ONBOARDING_STEPS[number] {
+  const saved = localStorage.getItem(STEP_KEY);
+  const step = ONBOARDING_STEPS.find((s) => s === saved);
+  if (!step) return "/onboarding/fact";
+  return ONBOARDING_STEPS.indexOf(step) >= 16 ? "/onboarding/trust" : step;
+}
+export function hasCompletedProfile() {
+  try {
+    const profile = JSON.parse(localStorage.getItem(PROFILE_KEY) ?? "null") as Partial<typeof onboardingState> | null;
+    return Boolean(profile?.name?.trim() && (profile.onboardingComplete || (profile.readingLevel && profile.pinHash)));
+  } catch { return false; }
+}
+export function completeOnboarding() {
+  onboardingState.onboardingComplete = true;
+  saveProfile();
+  localStorage.removeItem(DRAFT_KEY);
+  localStorage.removeItem(STEP_KEY);
+  sessionStorage.removeItem(DRAFT_KEY);
+}
 
 /* A tab-local setup draft keeps the name visible after a refresh without
    turning an unfinished onboarding into the child's saved profile. Never
@@ -55,7 +82,7 @@ const DRAFT_KEY = "ollie-onboarding-draft-v1";
 export function saveOnboardingDraft() {
   try {
     const { pin: _pin, pinHash: _pinHash, ...draft } = onboardingState;
-    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
   } catch {
     /* storage unavailable */
   }
@@ -63,7 +90,7 @@ export function saveOnboardingDraft() {
 
 export function loadOnboardingDraft() {
   try {
-    const raw = sessionStorage.getItem(DRAFT_KEY);
+    const raw = localStorage.getItem(DRAFT_KEY) ?? sessionStorage.getItem(DRAFT_KEY);
     if (!raw) return;
     const { pin: _pin, pinHash: _pinHash, ...draft } = JSON.parse(raw) as Partial<typeof onboardingState>;
     Object.assign(onboardingState, draft);

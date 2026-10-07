@@ -485,12 +485,12 @@
 
 /* Premium onboarding is intentionally scoped: parent controls and chat retain their palette. */
 :root {
-  --onboarding-clay: oklch(0.49 0.105 37);
-  --onboarding-clay-soft: oklch(0.9 0.035 47);
-  --onboarding-cream: oklch(0.98 0.012 83);
-  --onboarding-ink: oklch(0.26 0.025 43);
-  --onboarding-muted: oklch(0.48 0.025 43);
-  --onboarding-line: oklch(0.88 0.023 66);
+  --onboarding-clay: var(--navy);
+  --onboarding-clay-soft: oklch(0.92 0.025 270);
+  --onboarding-cream: oklch(0.985 0.005 270);
+  --onboarding-ink: var(--navy);
+  --onboarding-muted: var(--muted-text);
+  --onboarding-line: oklch(0.91 0.018 270);
   --onboarding-wash: linear-gradient(155deg, var(--onboarding-cream) 0%, var(--card) 53%, var(--onboarding-clay-soft) 160%);
 }
 .onboarding-theme {
@@ -548,3 +548,11 @@
 @media (prefers-reduced-motion: reduce) { .mascot-reveal,.welcome-card,.welcome-copy { transition: none; } .lesson-motion { animation: none; } }
 
 .onboarding-theme [role="listbox"]:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; border-radius: var(--radius-card); }
+
+.trail-path { fill: none; stroke: var(--primary); stroke-width: 7; stroke-linecap: round; }
+.trail-glow { filter: drop-shadow(0 0 7px color-mix(in oklab,var(--primary) 32%,transparent)); }
+.trail-node { box-shadow: var(--elev-card), 0 0 18px color-mix(in oklab,var(--primary) 22%,transparent); }
+.trail-jar-glass { fill: color-mix(in oklab,var(--card) 76%,transparent); stroke: var(--gold); stroke-width: 3; }
+.trail-cookie { fill: var(--gold); stroke: var(--foreground); stroke-width: 1.2; }
+.trail-jar-shine { fill: none; stroke: var(--card); stroke-width: 5; stroke-linecap: round; opacity: .9; }
+.trail-arrive { animation: premium-heading 350ms var(--ease-enter) both; }

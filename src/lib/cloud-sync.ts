@@ -107,6 +107,7 @@ export async function pullAll() {
   const setup = (child.setup ?? {}) as Record<string, unknown>;
   const profile = {
     ...setup,
+    onboardingComplete: true,
     name: child.name,
     age: child.age,
     readingLevel: child.reading_level,
