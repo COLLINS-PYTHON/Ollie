@@ -70,10 +70,13 @@ function TonePage() {
                   setTone(t.id);
                   onboardingState.tone = t.id;
                 }}
-                className={`rounded-card p-4 text-left transition-all duration-tap active:scale-[0.98] ${on ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/70"}`}
+                className={`flex items-center gap-4 rounded-card p-4 text-left transition-all duration-tap active:scale-[0.98] ${on ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/70"}`}
               >
-                <span className="text-body block font-semibold text-foreground">{t.label}</span>
-                <span className="text-support text-muted-foreground">{t.hint}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="text-body block font-semibold text-foreground">{t.label}</span>
+                  <span className="text-support text-muted-foreground">{t.hint}</span>
+                </span>
+                <ToneToggle on={on} />
               </button>
             );
           })}
