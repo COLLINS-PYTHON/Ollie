@@ -90,7 +90,7 @@ function PreviewPage() {
           </div>
         </div>
         <p className="text-support mt-4 text-center text-muted-foreground">
-          Big questions, explained at <span className="onboarding-highlight">{name}'s pace</span>. Answers grow as reading skills grow.
+          Not a grown-up answer made smaller. An explanation at <span className="onboarding-highlight">{name}'s pace</span>, with words that fit their reading level.
         </p>
       </OnboardingSkeleton>
     </div>

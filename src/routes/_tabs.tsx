@@ -92,8 +92,8 @@ function TabsLayout() {
   }, [pathname, takeover, ready]);
 
   return (
-    <div className="relative min-h-screen bg-background">
-      <div className="mx-auto flex w-full max-w-md justify-end px-5 pt-4 absolute inset-x-0 top-0 z-30">
+    <div className={`tabs-shell relative min-h-screen bg-background ${pathname === "/search" ? "tabs-search" : ""}`}>
+      <div className="parent-access mx-auto flex w-full max-w-md justify-end px-5 pt-4 absolute inset-x-0 top-0 z-30">
         <Link
           to="/parent"
           aria-label="Parent Dashboard"

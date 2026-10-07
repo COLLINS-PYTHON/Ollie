@@ -13,7 +13,7 @@ function MeetPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   useEffect(() => {
-    const t = [450, 460, 810, 910, 1050].map((ms, i) => setTimeout(() => setStep(i + 1), ms));
+    const t = [0, 40, 120, 160, 220].map((ms, i) => setTimeout(() => setStep(i + 1), ms));
     return () => t.forEach(clearTimeout);
   }, []);
 
@@ -29,9 +29,9 @@ function MeetPage() {
           <div className={`welcome-card mt-6 min-h-28 w-full rounded-card bg-card p-5 shadow-card ${step >= 3 ? "is-visible" : ""}`}>
             <div className={`welcome-copy ${step >= 4 ? "is-visible" : ""}`}>
               <p className="text-body leading-relaxed text-foreground">
-                Meet Ollie. Ollie's a furry little answer assistant that turns kids' curiosity into a <span className="onboarding-highlight">safe, fun
-                learning experience</span> and <span className="onboarding-highlight">reports straight back to you.</span>
+                A world of questions. A companion made for kids. Ollie turns curiosity into <span className="onboarding-highlight">answers they understand</span>, daily discoveries and pictures from their imagination.
               </p>
+              <p className="text-support mt-3 text-muted-foreground">Their space to explore. Your place to stay in the loop.</p>
             </div>
           </div>
       </main>

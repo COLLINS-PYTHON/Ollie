@@ -211,9 +211,9 @@ function SearchChat() {
   };
 
   return (
-    <main className="screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-white">
+    <main className="search-screen screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-card">
       {/* iMessage-style header: centered round photo with name underneath */}
-      <header className="frosted relative z-10 flex flex-col items-center gap-1 pb-2.5 pt-12">
+      <header className="search-header frosted relative z-10 flex flex-col items-center gap-1 pb-2.5 pt-12">
         <img
           src={ollie}
           alt="Ollie"
@@ -224,13 +224,13 @@ function SearchChat() {
         <p className="text-body font-bold text-foreground">Ollie</p>
       </header>
 
-      <div ref={listRef} className="relative z-10 flex-1 overflow-y-auto px-3 py-4">
+      <div ref={listRef} className="search-transcript relative z-10 min-h-0 flex-1 overflow-y-auto px-3 py-4">
         {messages.length === 0 && !busy ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
             <img
               src={ollie}
               alt="Ollie the puppy"
-              className="bounce-soft w-36"
+              className="ollie-gentle-idle w-36"
               width={144}
               height={144}
             />
@@ -244,7 +244,7 @@ function SearchChat() {
               m.role === "sent" ? (
                 <div
                   key={m.id}
-                  className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-3.5 py-2 text-body text-white"
+                  className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-3.5 py-2 text-body text-primary-foreground"
                 >
                   {m.text}
                 </div>
@@ -295,9 +295,9 @@ function SearchChat() {
       </div>
 
       {/* iMessage-style input bar */}
-      <div className="relative z-10 px-3 pb-28 pt-2">
+      <div className="search-composer relative z-10 px-3 pt-2">
         <div className="flex items-end gap-2">
-          <div className="flex min-w-0 flex-1 items-center rounded-[22px] border border-surface-2 bg-white px-4 py-2.5">
+          <div className="flex min-w-0 flex-1 items-center rounded-[22px] border border-surface-2 bg-card px-4 py-2.5">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}

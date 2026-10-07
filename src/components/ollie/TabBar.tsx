@@ -15,10 +15,9 @@ export function TabBar() {
   return (
     <nav
       aria-label="Main"
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-6"
-      style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}
+      className="app-tabbar pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-6"
     >
-      <div className="frosted pointer-events-auto flex items-center gap-1 rounded-pill border border-white/60 p-1.5 shadow-sheet">
+      <div className="frosted pointer-events-auto flex items-center gap-1 rounded-pill border border-border p-1.5 shadow-sheet">
         {TABS.map(({ to, label, icon: Icon }) => {
           const active = pathname.startsWith(to);
           return (
