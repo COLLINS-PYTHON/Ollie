@@ -29,4 +29,4 @@
 - Parent-facing safety illustrations use the shared Embla carousel in SafetyExamples, with literal locked responses and clearly labelled example flags. Why: parents can inspect multiple sensitive-topic outcomes without live searches or fabricated progress.
 - Search reserves a separate navigation dock beneath its composer; the app uses dynamic viewport sizing and a wider shared tablet frame. Why: tabs never cover messages or typing, and available screen space stays useful across devices.
 - Keep Search's iMessage transcript and transport when polishing layout. Why: presentation fixes must preserve conversations.
-- Processing orbs use CrispOrb with the thinking-orbs engine at actual size and device resolution, capped at four. Why: raster enlargement blurs dots; direct engine painting stays crisp and transparent.
+- Orbs use CrispOrb at actual size and device resolution (max 4x); pre-optimize thinking-orbs/engine in Vite. Why: crisp dots and stable React identity during lazy navigation.
