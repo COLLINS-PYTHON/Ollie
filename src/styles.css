@@ -486,12 +486,14 @@
 /* Premium onboarding is intentionally scoped: parent controls and chat retain their palette. */
 :root {
   --onboarding-clay: var(--navy);
-  --onboarding-clay-soft: oklch(0.92 0.025 270);
-  --onboarding-cream: oklch(0.985 0.005 270);
+  --onboarding-clay-soft: color-mix(in oklab, var(--brand) 5%, var(--card));
+  --onboarding-cream: var(--card);
   --onboarding-ink: var(--navy);
   --onboarding-muted: var(--muted-text);
-  --onboarding-line: oklch(0.91 0.018 270);
-  --onboarding-wash: linear-gradient(155deg, var(--onboarding-cream) 0%, var(--card) 53%, var(--onboarding-clay-soft) 160%);
+  --onboarding-line: color-mix(in oklab, var(--brand) 13%, var(--card));
+  --onboarding-wash: linear-gradient(180deg, var(--card) 0%, var(--card) 56%, var(--onboarding-clay-soft) 100%);
+  --onboarding-panel: color-mix(in oklab, var(--brand) 4%, var(--card));
+  --onboarding-panel-border: color-mix(in oklab, var(--brand) 16%, var(--card));
 }
 .onboarding-theme {
   --primary: var(--brand);
@@ -500,12 +502,12 @@
   --foreground: var(--onboarding-ink);
   --muted-foreground: var(--onboarding-muted);
   --secondary: var(--onboarding-line);
-  --surface: var(--onboarding-cream);
+  --surface: var(--onboarding-panel);
   --surface-2: var(--onboarding-line);
   --border: var(--onboarding-line);
-  --ring: var(--onboarding-clay);
-  --elev-card: 0 8px 25px -14px color-mix(in oklab, var(--onboarding-ink) 18%, transparent), 0 1px 2px color-mix(in oklab, var(--onboarding-ink) 5%, transparent);
-  --elev-sheet: 0 20px 65px -24px color-mix(in oklab, var(--onboarding-ink) 24%, transparent);
+  --ring: var(--brand);
+  --elev-card: 0 8px 24px -14px color-mix(in oklab, var(--brand) 18%, transparent), 0 1px 2px color-mix(in oklab, var(--onboarding-ink) 4%, transparent);
+  --elev-sheet: 0 20px 65px -24px color-mix(in oklab, var(--brand) 20%, transparent);
   background: var(--background);
   min-height: 100svh;
 }
@@ -642,3 +644,12 @@
   .apple-paywall-sheet .paywall-sheet-footer .text-label { margin-top: 0; height: 28px; }
 }
 @media (prefers-reduced-motion: reduce) { .paywall-underlay { transition: none; } }
+
+/* White-first reassurance, following the selected soft-blue study. */
+.onboarding-highlight { color: var(--brand); font-weight: 650; }
+.onboarding-assurance .onboarding-content > div { display: flex; flex-direction: column; justify-content: center; padding-block: 16px; }
+.assurance-panel { background: var(--onboarding-panel); border: 1px solid var(--onboarding-panel-border); box-shadow: var(--elev-card); }
+.assurance-panel p { text-wrap: pretty; }
+.onboarding-assurance .onboarding-content > h1 { font-size: 25px; line-height: 32px; }
+.onboarding-assurance .chapter-current { box-shadow: none; }
+@media (max-height: 650px) { .onboarding-assurance .onboarding-content { padding-bottom: 112px; } .assurance-panel { padding: 24px; } }

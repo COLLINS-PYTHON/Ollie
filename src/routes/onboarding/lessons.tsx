@@ -53,7 +53,7 @@ function LessonsPage() {
             ))}
           </div>
         <p className="text-support mt-4 text-center text-muted-foreground">
-          Every slideshow is built around what {name} loves.
+          Every slideshow is built around <span className="onboarding-highlight">what {name} loves</span>.
         </p>
       </OnboardingSkeleton>
     </div>

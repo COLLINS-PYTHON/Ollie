@@ -31,24 +31,20 @@ function AssurancePage() {
   }, []);
 
   return (
-    <div className="bg-gradient-lilac min-h-screen">
+    <div className="onboarding-assurance bg-gradient-lilac min-h-screen">
       <OnboardingSkeleton chapter={4} title="Here's our answer" cta="Continue" onContinue={() => navigate({ to: "/onboarding/screen-time" })}>
-        {step >= 1 && (
-          <div className="bubble-in mb-5 flex justify-center" aria-hidden>
+          <div className={`welcome-copy mb-6 flex justify-center ${step >= 1 ? "is-visible" : ""}`} aria-hidden>
             <span className="flex size-12 items-center justify-center rounded-control bg-primary shadow-card">
-              <ShieldCheck className="size-6 text-primary-foreground drop-shadow" />
+              <ShieldCheck className="size-6 text-primary-foreground" />
             </span>
           </div>
-        )}
-        {step >= 2 && (
-          <div className="bubble-in rounded-card bg-card p-5 shadow-sheet ring-2 ring-primary/25">
-            <p className="text-body leading-relaxed text-foreground">
-              That's exactly what Ollie is built for. Every search is filtered before {name} sees it, anything
-              concerning lands straight in your dashboard, and nothing here trains on your data. Not hidden. Not
-              guessed at. Visible.
+          <div className={`assurance-panel welcome-copy rounded-card p-8 text-center ${step >= 2 ? "is-visible" : ""}`}>
+            <p className="text-body text-foreground">
+              That's exactly what Ollie is built for. Every search is filtered before {name} sees it, <span className="onboarding-highlight">anything
+              concerning lands straight in your dashboard</span>, and nothing here <span className="onboarding-highlight">trains on your data</span>.
             </p>
+            <p className="text-body mt-4 font-medium text-foreground">Not hidden. Not guessed at. <span className="onboarding-highlight">Visible.</span></p>
           </div>
-        )}
       </OnboardingSkeleton>
     </div>
   );
