@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Remove sensitive-topic labels beside Ollie in example chats; keep topic detail in the parent view only
 - Premium cross-screen presentation: fluid transitions, visible quiet onboarding scenery, original parent-focused copy, swipeable sensitive-topic examples and chat-safe navigation at small and large sizes
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
