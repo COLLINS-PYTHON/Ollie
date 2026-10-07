@@ -1,10 +1,10 @@
 # Roadmap
 
 ## Now
-- Review KinderGPT blue/white and highlighting reference; show bounded Ollie color refinements for selection
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- KinderGPT-inspired Premium soft blue selected and applied: white-first onboarding, pale-blue surfaces, subtle shadows and selective reassurance/lesson highlights; exact copy, Geist, four progress segments and trial drawer verified
 - Paywall is an interactive Apple-style drawer: smooth open/close, swipe dismissal, focus restoration, saved plan selection and pinned Continue; verified at 390x600 and desktop, payments remain unconnected
 - Polish pass: faster smooth mascot reveal, blue progress/actions with navy text, stable lesson-card entrances, tighter trial-sheet timing; irregular seasonal SVG Trail with snow and Christmas, verified on small/large screens
 - Restored dark navy, personalized greetings before child screens mount, curved seven-day Trail with visible jar, and completed-family setup skipping with unfinished-setup resume
