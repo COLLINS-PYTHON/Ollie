@@ -6,6 +6,7 @@ import { INTERESTS } from "@/lib/interests";
 import { childName, pageMeta } from "@/lib/meta";
 import { Button } from "@/components/ui/button";
 import { LessonArt } from "@/components/ollie/LessonArt";
+import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 
 export const Route = createFileRoute("/onboarding/paywall")({
   head: () => pageMeta("Try Ollie free for 7 days", "Start a free 7-day trial. No payment due now."),
@@ -26,9 +27,10 @@ function PaywallPage() {
   const [values, setValues] = useState(0);
 
   useEffect(() => {
+    if (sheet) return;
     const t = setInterval(() => setSlide((s) => (s + 1) % 4), 2600);
     return () => clearInterval(t);
-  }, []);
+  }, [sheet]);
   useEffect(() => {
     if (!sheet) return setValues(0);
     const t = [80, 180, 280, 360].map((ms, i) => setTimeout(() => setValues(i + 1), ms));
@@ -39,8 +41,9 @@ function PaywallPage() {
   const valueLines = [`Every answer matched to ${name}'s age`, "Every unsafe search caught, not hidden", "Full visibility, always"];
 
   return (
+    <Drawer open={sheet} onOpenChange={setSheet} shouldScaleBackground={false} autoFocus>
     <div className="relative min-h-screen bg-background">
-      <div className={`mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-32 pt-4 transition-all duration-element ${sheet ? "scale-[0.98] blur-[2px]" : ""}`}>
+      <div className={`paywall-underlay mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-32 pt-4 ${sheet ? "is-presented" : ""}`}>
         <Button variant="control" size="icon" type="button" aria-label="Back" onClick={() => router.history.back()} className="flex size-10 items-center justify-center rounded-pill bg-card shadow-card">
           <ChevronLeft className="size-5" />
         </Button>
@@ -70,12 +73,10 @@ function PaywallPage() {
         </div>
       )}
 
-      {sheet && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center" role="dialog" aria-label="Choose a plan">
-          <Button type="button" aria-label="Close" variant="ghost" className="paywall-backdrop absolute inset-0 h-full w-full rounded-none" onClick={() => setSheet(false)} />
-          <div className="paywall-sheet sheet-up relative max-h-[92svh] w-full max-w-md overflow-y-auto rounded-t-card px-6 pb-6 pt-4 shadow-sheet" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
-            <div className="mx-auto mb-3 h-1 w-9 rounded-pill bg-border" />
-            <div className="mb-4 flex items-center justify-between"><h2 className="text-body font-bold text-foreground">Start {name}'s safe trial</h2><Button variant="ghost" size="icon" aria-label="Close plan picker" onClick={() => setSheet(false)}><X /></Button></div>
+      <DrawerContent className="onboarding-theme apple-paywall-sheet mx-auto max-h-[94svh] min-h-0 w-full max-w-md overflow-hidden border-0 shadow-sheet" overlayClassName="apple-paywall-overlay">
+            <div className="flex shrink-0 items-center justify-between px-6 pb-3"><DrawerTitle className="text-body font-bold text-foreground">Start {name}'s safe trial</DrawerTitle><Button variant="control" size="icon" aria-label="Close plan picker" onClick={() => setSheet(false)} className="size-8 rounded-pill bg-secondary"><X className="size-4" /></Button></div>
+            <DrawerDescription className="sr-only">Choose monthly or yearly billing for your seven-day trial.</DrawerDescription>
+            <div className="paywall-scroll min-h-0 overflow-y-auto overscroll-contain px-6 pb-4">
             <div className="flex items-center justify-between rounded-control bg-card p-3">
               <div><p className="text-label text-foreground">Today</p><p className="text-support text-muted-foreground">Free access starts</p></div>
               <div className="mx-3 h-0.5 flex-1 bg-primary/30" />
@@ -84,8 +85,7 @@ function PaywallPage() {
             <ul className="mt-4 min-h-[84px] space-y-2">
               {valueLines.map((l, i) => <li key={l} className={`paywall-value text-body font-medium text-foreground ${values > i ? "is-visible" : ""}`}>{l}</li>)}
             </ul>
-            {values >= 4 && (
-              <div className="bubble-in">
+              <div className={`paywall-pricing ${values >= 4 ? "is-visible" : ""}`}>
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   {(["monthly", "yearly"] as const).map((p) => (
                     <Button key={p} type="button" aria-pressed={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }}
@@ -101,16 +101,17 @@ function PaywallPage() {
                     <li key={f} className="text-support flex items-center gap-2 text-foreground"><Check className="size-4 text-primary" />{f}</li>
                   ))}
                 </ul>
-                <Button variant="onboarding" size="onboarding" type="button" onClick={() => navigate({ to: "/onboarding/account" })} className="text-button mt-5 h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
+              </div>
+            </div>
+            <div className="paywall-sheet-footer shrink-0 border-t border-border px-6 pt-3">
+                <Button variant="onboarding" size="onboarding" type="button" onClick={() => { setSheet(false); void navigate({ to: "/onboarding/account" }); }} className="text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
                   Start {name}'s Safe Trial
                 </Button>
                 <p className="text-support mt-3 text-center text-muted-foreground">Payment is handled securely by Apple/Google. Ollie never sees or stores your card details.</p>
                 <Button variant="link" type="button" className="text-label mt-2 w-full text-center text-muted-foreground underline">Restore Purchases</Button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+            </div>
+      </DrawerContent>
     </div>
+    </Drawer>
   );
 }
