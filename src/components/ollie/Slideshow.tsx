@@ -149,14 +149,14 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
               This is even better together! Grab a grown-up if one is around.
             </p>
           )}
-          <Button
+          <Button variant="ghost"
             type="button"
             onClick={() => setPhase("play")}
-            className="rounded-pill bg-primary px-10 py-3.5 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
+            className="h-12 rounded-pill bg-primary px-10 py-3.5 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
           >
             Start
           </Button>
-          <Button
+          <Button variant="ghost"
             type="button"
             onClick={onClose}
             className="text-support text-muted-foreground underline-offset-4 hover:underline"
@@ -186,10 +186,10 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
               Your trail jar is full! +{JAR_BONUS} bonus cookies
             </p>
           )}
-          <Button
+          <Button variant="ghost"
             type="button"
             onClick={onClose}
-            className="relative rounded-pill bg-primary px-10 py-3.5 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
+            className="relative h-12 rounded-pill bg-primary px-10 py-3.5 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
           >
             Continue
           </Button>
@@ -220,11 +220,11 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
           <p className="text-label uppercase tracking-wide text-muted-foreground">{day.label}</p>
           <div className="flex items-center gap-2">
             {parentSettings.soundOn && (
-              <Button type="button" onClick={toggleNarration} aria-label={speaking ? "Stop reading" : "Read aloud"} title={speaking ? "Stop reading" : "Read aloud"} className="flex size-10 items-center justify-center rounded-pill bg-card text-primary shadow-card transition-transform duration-tap active:scale-95">
+              <Button variant="ghost" type="button" onClick={toggleNarration} aria-label={speaking ? "Stop reading" : "Read aloud"} title={speaking ? "Stop reading" : "Read aloud"} className="flex size-10 items-center justify-center rounded-pill bg-card text-primary shadow-card transition-transform duration-tap active:scale-95">
                 {speaking ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
               </Button>
             )}
-            <Button
+            <Button variant="ghost"
               type="button"
               onClick={advance}
               className="rounded-pill bg-card/80 px-3.5 py-1.5 text-support text-muted-foreground transition-transform duration-tap active:scale-95"
@@ -267,12 +267,12 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
                 const chosen = picked === i;
                 const showAnswer = status === "correct" || status === "reveal";
                 return (
-                  <Button
+                  <Button variant="ghost"
                     key={option}
                     type="button"
                     disabled={status !== "open"}
                     onClick={() => answer(i)}
-                    className={`rounded-control px-4 py-3 text-body transition-all duration-tap ${
+                    className={`h-auto min-h-12 justify-start whitespace-normal rounded-control px-4 py-3 text-left text-body transition-all duration-tap ${
                       showAnswer && isAnswer
                         ? "bg-primary text-primary-foreground ring-4 ring-primary/20"
                         : chosen
@@ -287,7 +287,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
             </div>
 
             {status === "reveal" && (
-              <Button
+              <Button variant="ghost"
                 type="button"
                 onClick={advance}
                 className="mt-1 rounded-pill bg-primary px-8 py-3 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
@@ -301,10 +301,10 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
         <div className="flex flex-col gap-4 px-6 pb-10 pt-3">
           {dots}
           {current.kind === "content" && (
-            <Button
+            <Button variant="ghost"
               type="button"
               onClick={advance}
-              className="rounded-pill bg-primary px-10 py-3.5 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
+              className="h-12 rounded-pill bg-primary px-10 py-3.5 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
             >
               Next
             </Button>

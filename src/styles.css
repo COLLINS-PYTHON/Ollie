@@ -546,3 +546,5 @@
 .paywall-sheet .plan-option { height: auto; white-space: normal; }
 @media (max-height: 740px) { .onboarding-content { padding-top: 24px; } .onboarding-theme .text-title { font-size: 25px; line-height: 31px; } }
 @media (prefers-reduced-motion: reduce) { .mascot-reveal,.welcome-card,.welcome-copy { transition: none; } .lesson-motion { animation: none; } }
+
+.onboarding-theme [role="listbox"]:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; border-radius: var(--radius-card); }

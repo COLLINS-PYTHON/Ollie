@@ -41,7 +41,7 @@ function PaywallPage() {
   return (
     <div className="relative min-h-screen bg-background">
       <div className={`mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-32 pt-4 transition-all duration-element ${sheet ? "scale-[0.98] blur-[2px]" : ""}`}>
-        <Button type="button" aria-label="Back" onClick={() => router.history.back()} className="flex size-10 items-center justify-center rounded-pill bg-card shadow-card">
+        <Button variant="control" size="icon" type="button" aria-label="Back" onClick={() => router.history.back()} className="flex size-10 items-center justify-center rounded-pill bg-card shadow-card">
           <ChevronLeft className="size-5" />
         </Button>
         <div className="relative mt-8 aspect-[4/3] overflow-hidden">
