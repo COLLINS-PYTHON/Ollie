@@ -1,11 +1,10 @@
 # Roadmap
 
 ## Now
-- Remove sensitive-topic labels beside Ollie in example chats; keep topic detail in the parent view only
-- Premium cross-screen presentation: fluid transitions, visible quiet onboarding scenery, original parent-focused copy, swipeable sensitive-topic examples and chat-safe navigation at small and large sizes
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Premium adaptive presentation: wider tablet canvas, dynamic-height chat with separate navigation dock, visible quiet cloud/paw scenery, faster introductions, original feature copy and swipeable safety conversations; topic labels removed beside Ollie and retained only in parent view
 - KinderGPT public-page review and original onboarding refresh: quiet edge clouds/paw tracks, selective blue emphasis, faster reading preview, softer goal icons, parent reassurance and personalized child welcome; exact required copy and consent preserved
 - Kept Ollie calm and familiar rather than adding extra mascot playfulness; verified Milo setup, consent, small-screen fit and reduced-motion
 - Explicit onboarding preview link bypasses completed-family redirect and retains preview between setup screens without clearing saved data
