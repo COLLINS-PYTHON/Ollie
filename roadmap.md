@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Polish onboarding motion and proportions; rebuild Trail as a varied seasonal SVG landscape and verify both
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
