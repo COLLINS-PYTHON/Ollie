@@ -78,6 +78,19 @@ function TabsLayout() {
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    const update = () => document.documentElement.style.setProperty("--app-viewport-height", `${viewport?.height ?? window.innerHeight}px`);
+    update();
+    viewport?.addEventListener("resize", update);
+    window.addEventListener("resize", update);
+    return () => {
+      viewport?.removeEventListener("resize", update);
+      window.removeEventListener("resize", update);
+      document.documentElement.style.removeProperty("--app-viewport-height");
+    };
+  }, []);
+
   /* Count Search and Create time only, never while the lesson is open. */
   useEffect(() => {
     const surface = pathname === "/search" ? "search" : pathname === "/create" ? "create" : null;
