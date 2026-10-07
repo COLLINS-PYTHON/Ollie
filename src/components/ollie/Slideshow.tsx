@@ -235,17 +235,17 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
         </div>
 
         {current.kind === "content" ? (
-          <div key={current.sub.id} className="screen-enter flex flex-1 flex-col items-center justify-center gap-6 px-7 text-center">
+          <div key={current.sub.id} className="lesson-stage-enter flex flex-1 flex-col items-center justify-center gap-6 px-7 text-center">
             {day.image && index === 0 ? (
               <img src={day.image} alt="" className="pop-in size-56 rounded-card object-cover shadow-card" />
             ) : (
-              <LessonArt categoryId={day.categoryId} topicId={current.sub.id} title={current.sub.title} className="bubble-in w-full max-w-[360px]" />
+              <LessonArt categoryId={day.categoryId} topicId={current.sub.id} title={current.sub.title} className="w-full max-w-[360px]" />
             )}
             <p className="text-label uppercase tracking-wide text-muted-foreground">{current.sub.title}</p>
             <p className="text-title max-w-[320px] text-foreground">{current.sub.caption[child.band]}</p>
           </div>
         ) : (
-          <div key={current.sub.id} className="flex flex-1 flex-col justify-center gap-4 px-6 py-4">
+          <div key={`quiz-${current.sub.id}`} className="lesson-stage-enter flex flex-1 flex-col justify-center gap-4 px-6 py-4">
             <p className="text-label uppercase tracking-wide text-muted-foreground">Question {quizNumber}</p>
             <p className="text-title max-w-[330px] text-foreground">{current.sub.quiz.q[child.band]}</p>
 
