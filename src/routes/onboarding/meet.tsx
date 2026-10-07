@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ThinkingOrb } from "thinking-orbs";
 import { pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
 import { Button } from "@/components/ui/button";
@@ -14,27 +13,22 @@ function MeetPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   useEffect(() => {
-    const t = [450, 700, 1000, 1120, 1280].map((ms, i) => setTimeout(() => setStep(i + 1), ms));
+    const t = [450, 460, 810, 910, 1050].map((ms, i) => setTimeout(() => setStep(i + 1), ms));
     return () => t.forEach(clearTimeout);
   }, []);
 
   return (
     <div className="bg-gradient-hello min-h-screen">
-      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-5 pb-32 pt-20 text-center">
+      <main className="meet-content mx-auto flex min-h-[100svh] w-full max-w-md flex-col items-center px-6 pb-32 pt-20 text-center">
         <h1 className="text-title text-foreground">Meet Ollie</h1>
         <div className="relative mt-8 flex size-52 items-center justify-center">
-          {step >= 1 && step < 3 && (
-            <div className="absolute materialize">
-              <ThinkingOrb state="breathing" size={64} theme="light" aria-label="Ollie appearing" />
-            </div>
-          )}
           <div className={`mascot-reveal absolute inset-0 ${step >= 2 ? "is-visible" : ""}`}>
             <img src={ollie} width={208} height={208} fetchPriority="high" loading="eager" alt="Ollie the puppy" className={`size-52 object-contain ${step >= 3 ? "bounce-soft" : ""}`} />
           </div>
         </div>
           <div className={`welcome-card mt-6 min-h-28 w-full rounded-card bg-card p-5 shadow-card ${step >= 3 ? "is-visible" : ""}`}>
             <div className={`welcome-copy ${step >= 4 ? "is-visible" : ""}`}>
-              <p className="bubble-in text-body leading-relaxed text-foreground">
+              <p className="text-body leading-relaxed text-foreground">
                 Meet Ollie. Ollie's a furry little answer assistant that turns kids' curiosity into a safe, fun
                 learning experience and reports straight back to you.
               </p>

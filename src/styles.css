@@ -494,7 +494,7 @@
   --onboarding-wash: linear-gradient(155deg, var(--onboarding-cream) 0%, var(--card) 53%, var(--onboarding-clay-soft) 160%);
 }
 .onboarding-theme {
-  --primary: var(--onboarding-clay);
+  --primary: var(--brand);
   --primary-foreground: var(--card);
   --background: var(--onboarding-cream);
   --foreground: var(--onboarding-ink);
@@ -521,8 +521,7 @@
 .age-number { transition: color 150ms ease, font-size 150ms ease; }
 .chapter-track { box-shadow: inset 0 1px 2px color-mix(in oklab,var(--foreground) 5%,transparent); }
 .chapter-fill { transition: width 250ms var(--ease-enter); box-shadow: inset 0 1px 1px color-mix(in oklab,var(--card) 25%,transparent); }
-.onboarding-content > h1 { animation: premium-heading 250ms var(--ease-enter) both; }
-.onboarding-content > div { animation: premium-heading 320ms var(--ease-enter) 50ms both; }
+.onboarding-content { animation: onboarding-page-enter 250ms var(--ease-enter) both; }
 @keyframes premium-heading { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .mascot-reveal { opacity: 0; transform: scale(.78); transition: opacity 300ms ease, transform 350ms var(--ease-enter); }
 .mascot-reveal.is-visible { opacity: 1; transform: scale(1); }
@@ -531,9 +530,9 @@
 .welcome-copy { opacity: 0; transition: opacity 180ms ease; }
 .welcome-copy.is-visible { opacity: 1; }
 .lesson-preview-card { animation: preview-arrive 400ms var(--ease-enter) both; }
-@keyframes preview-arrive { from { opacity: 0; margin-top: 32px; } to { opacity: 1; margin-top: 0; } }
+@keyframes preview-arrive { from { opacity: 0; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
 .lesson-art { color: var(--lesson-ink); overflow: visible; }
-.lesson-fill { fill: var(--lesson-ink); }
+.lesson-fill { fill: var(--lesson-paint, var(--lesson-ink)); }
 .lesson-soft { fill: var(--lesson-ink); opacity: .22; }
 .lesson-paper { fill: var(--card); }
 .lesson-line { fill: none; stroke: var(--lesson-ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
@@ -556,3 +555,73 @@
 .trail-cookie { fill: var(--gold); stroke: var(--foreground); stroke-width: 1.2; }
 .trail-jar-shine { fill: none; stroke: var(--card); stroke-width: 5; stroke-linecap: round; opacity: .9; }
 .trail-arrive { animation: premium-heading 350ms var(--ease-enter) both; }
+
+/* Composed seasonal world: semantic color roles, no bitmap/video downloads. */
+:root {
+  --trail-meadow: color-mix(in oklab, var(--accent-2) 9%, var(--background));
+  --trail-tree: var(--accent-2);
+  --trail-tree-light: color-mix(in oklab, var(--accent-2) 55%, var(--card));
+  --trail-rock: color-mix(in oklab, var(--muted-text) 22%, var(--card));
+  --trail-path-bed: color-mix(in oklab, var(--brand) 7%, var(--card));
+}
+.trail-world { isolation: isolate; }
+.trail-landscape { pointer-events: none; overflow: hidden; }
+.trail-season-autumn { --trail-tree: var(--accent-4); --trail-tree-light: color-mix(in oklab,var(--accent-4) 42%,var(--card)); }
+.trail-season-winter,.trail-season-christmas { --trail-meadow: var(--surface-2); }
+.trail-meadow { fill: var(--trail-meadow); }
+.trail-tree { fill: var(--trail-tree); stroke: var(--foreground); stroke-width: .6; stroke-opacity: .12; }
+.trail-tree-highlight { fill: var(--trail-tree-light); }
+.trail-snow-cap,.trail-snowfall { fill: var(--card); stroke: var(--border); stroke-width: .7; }
+.trail-ground-shadow { fill: var(--foreground); opacity: .06; }
+.trail-stone { fill: var(--trail-rock); }
+.trail-pond { fill: color-mix(in oklab,var(--accent-2) 30%,var(--card)); stroke: var(--accent-2); stroke-width: 1; stroke-opacity: .25; }
+.trail-stone-shine { fill: none; stroke: var(--card); stroke-width: 2; }
+.trail-leaf { fill: var(--accent-2); stroke: var(--accent-2); stroke-width: 1.5; }
+.trail-fine-line { stroke: var(--foreground); stroke-width: 2; stroke-linecap: round; }
+.trail-ribbon { stroke: var(--accent-3); stroke-width: 2; fill: none; }
+.trail-botanical { transform-box: fill-box; transform-origin: bottom; animation: trail-sway 5s ease-in-out infinite; }
+.trail-butterfly { transform-box: fill-box; transform-origin: center; animation: trail-wing 2.4s ease-in-out infinite; }
+.trail-snowfall { animation: trail-snow 7s linear infinite; }
+.trail-snow-1 { animation-delay: -2s; }
+.trail-snow-2 { animation-delay: -4s; }
+@keyframes trail-sway { 50% { rotate: 5deg; } }
+@keyframes trail-wing { 50% { scale: .5 1; translate: 0 -5px; } }
+@keyframes trail-snow { from { translate: -4px -15px; opacity: 0; } 20%,80% { opacity: .8; } to { translate: 8px 80px; opacity: 0; } }
+.trail-path-bed { fill: none; stroke: var(--trail-path-bed); stroke-width: 23; stroke-linecap: round; }
+.trail-path-future { stroke: var(--border); stroke-width: 4; stroke-dasharray: 3 10; }
+.trail-stop-label { background: color-mix(in oklab,var(--background) 92%,transparent); border-radius: var(--radius-sm); padding-inline: 5px; }
+.chapter-current { box-shadow: 0 0 0 3px color-mix(in oklab,var(--brand) 7%,transparent); }
+.chapter-fill { background: var(--brand); }
+.meet-content { justify-content: center; }
+.meet-content .welcome-card { max-width: 360px; }
+.paywall-value { opacity: 0; translate: 0 5px; transition: opacity 180ms ease,translate 250ms var(--ease-enter); }
+.paywall-value.is-visible { opacity: 1; translate: 0 0; }
+.lesson-stage-enter { animation: lesson-stage 250ms var(--ease-enter) both; }
+@keyframes lesson-stage { from { opacity: .35; translate: 24px 0; } to { opacity: 1; translate: 0 0; } }
+@media (max-height: 740px) { .meet-content { padding-top: 36px; justify-content: flex-start; } .meet-content > .relative { margin-top: 16px; } .meet-content .welcome-card { margin-top: 12px; } }
+@media (prefers-reduced-motion: reduce) {
+  .trail-botanical,.trail-butterfly,.trail-snowfall,.lesson-stage-enter { animation: none; }
+}
+
+.lesson-art { --lesson-light: color-mix(in oklab,var(--lesson-ink) 60%,var(--card)); --lesson-deep: color-mix(in oklab,var(--lesson-ink) 82%,var(--navy)); }
+.lesson-detail { fill: none; stroke: var(--card); stroke-opacity: .6; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.lesson-environment { fill: var(--accent-2); opacity: .45; }
+.lesson-ground { fill: var(--lesson-ink); opacity: .07; }
+.lesson-motion-ocean { animation: lesson-swim 5s ease-in-out infinite; }
+.lesson-flippers,.lesson-tail { transform-box: fill-box; transform-origin: center; animation: lesson-fin 2.4s ease-in-out infinite; }
+.lesson-bubbles { animation: lesson-rise 4s ease-in-out infinite; }
+.lesson-motion-space { transform-origin: 160px 112px; animation: lesson-orbit 24s linear infinite; }
+.lesson-motion-body { transform-box: fill-box; transform-origin: center; animation: lesson-heart 1.5s ease-in-out infinite; }
+.lesson-motion-weather { animation: lesson-rain 2s ease-in-out infinite; }
+.lesson-motion-dinos { transform-box: fill-box; transform-origin: bottom; animation: lesson-step 4s ease-in-out infinite; }
+.lesson-bird-wing { transform-box: fill-box; transform-origin: left; animation: lesson-fin 3s ease-in-out infinite; }
+.lesson-motion-music { transform-box: fill-box; transform-origin: center; animation: lesson-note 2.8s ease-in-out infinite; }
+@keyframes lesson-swim { 50% { translate: 8px -3px; } }
+@keyframes lesson-fin { 50% { rotate: -9deg; } }
+@keyframes lesson-rise { 0%,100% { translate: 0 6px; opacity: .4; } 70% { translate: 0 -12px; opacity: 1; } }
+@keyframes lesson-orbit { to { rotate: 360deg; } }
+@keyframes lesson-heart { 30% { scale: 1.025; } 45% { scale: 1; } 60% { scale: 1.025; } }
+@keyframes lesson-rain { 50% { translate: -3px 7px; } }
+@keyframes lesson-step { 50% { rotate: 1.5deg; } }
+@keyframes lesson-note { 50% { rotate: -3deg; } }
+@media (prefers-reduced-motion: reduce) { .lesson-art :is(g,path) { animation: none; } }

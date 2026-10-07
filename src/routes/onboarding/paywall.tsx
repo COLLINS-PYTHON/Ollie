@@ -31,7 +31,7 @@ function PaywallPage() {
   }, []);
   useEffect(() => {
     if (!sheet) return setValues(0);
-    const t = [150, 300, 450, 600].map((ms, i) => setTimeout(() => setValues(i + 1), ms));
+    const t = [80, 180, 280, 360].map((ms, i) => setTimeout(() => setValues(i + 1), ms));
     return () => t.forEach(clearTimeout);
   }, [sheet]);
 
@@ -82,7 +82,7 @@ function PaywallPage() {
               <div className="text-right"><p className="text-label text-foreground">Day 7</p><p className="text-support text-muted-foreground">Billing starts</p></div>
             </div>
             <ul className="mt-4 min-h-[84px] space-y-2">
-              {valueLines.map((l, i) => values > i && <li key={l} className="bubble-in text-body font-medium text-foreground">{l}</li>)}
+              {valueLines.map((l, i) => <li key={l} className={`paywall-value text-body font-medium text-foreground ${values > i ? "is-visible" : ""}`}>{l}</li>)}
             </ul>
             {values >= 4 && (
               <div className="bubble-in">
@@ -90,7 +90,7 @@ function PaywallPage() {
                   {(["monthly", "yearly"] as const).map((p) => (
                     <Button key={p} type="button" aria-pressed={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }}
                       variant="option" className={`plan-option relative flex flex-col items-start gap-1 rounded-control bg-card p-4 text-left ${plan === p ? "ring-2 ring-primary" : ""}`}>
-                      {p === "yearly" && <span className="text-label absolute -top-2.5 right-3 rounded-pill bg-primary px-2 py-0.5 text-primary-foreground">30% off</span>}
+                      {p === "yearly" && <span className="text-label absolute -top-2.5 right-3 rounded-pill bg-gold px-2 py-0.5 text-foreground">30% off</span>}
                       <span className="text-button block capitalize text-foreground">{p}</span>
                       <span className="text-support text-muted-foreground">{PRICES[p]}</span>
                     </Button>

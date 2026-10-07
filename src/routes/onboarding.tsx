@@ -40,7 +40,7 @@ function OnboardingLayout() {
     };
   }, [pathname, ready]);
 
-  return <div className="onboarding-theme">{ready ? <div key={pathname} className="onboarding-page-enter"><Outlet /></div> : <div className="min-h-[100svh] bg-background" />}</div>;
+  return <div className="onboarding-theme">{ready ? <div className="onboarding-page-enter"><Outlet /></div> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 
 /* Fixed onboarding skeleton: back, 4-segment chapter bar, title slot, pinned button. */
@@ -62,10 +62,10 @@ export function OnboardingSkeleton({
   const router = useRouter();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const chapterPaths = [
-    ["/onboarding/", "/onboarding/name"],
+    ["/onboarding", "/onboarding/"],
     ["/onboarding/age"],
-    ["/onboarding/reading", "/onboarding/preview"],
-    ["/onboarding/interests", "/onboarding/lessons", "/onboarding/worries", "/onboarding/assurance", "/onboarding/screen-time", "/onboarding/priorities", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin", "/onboarding/account"],
+    ["/onboarding/reading"],
+    ["/onboarding/preview", "/onboarding/interests", "/onboarding/lessons", "/onboarding/worries", "/onboarding/assurance", "/onboarding/screen-time", "/onboarding/priorities", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin", "/onboarding/account"],
   ];
   const steps = chapterPaths[chapter - 1] ?? [];
   const progress = (Math.max(0, steps.indexOf(pathname)) + 1) / Math.max(1, steps.length);
@@ -82,7 +82,7 @@ export function OnboardingSkeleton({
         </Button>
         <div className="chapter-progress flex flex-1 gap-2" role="progressbar" aria-label="Onboarding progress" aria-valuemin={0} aria-valuemax={4} aria-valuenow={chapter - 1 + progress}>
           {[1, 2, 3, 4].map((n) => (
-            <span key={n} className="chapter-track h-2 flex-1 overflow-hidden rounded-pill bg-secondary">
+            <span key={n} className={`chapter-track h-1.5 flex-1 overflow-hidden rounded-pill bg-secondary ${n === chapter ? "chapter-current" : ""}`}>
               <span className="chapter-fill block h-full rounded-pill bg-primary" style={{ width: `${n < chapter ? 100 : n === chapter ? progress * 100 : 0}%` }} />
             </span>
           ))}
