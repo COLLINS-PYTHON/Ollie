@@ -23,7 +23,7 @@ function MeetPage() {
         <h1 className="text-title text-foreground">Meet Ollie</h1>
         <div className="relative mt-8 flex size-52 items-center justify-center">
           <div className={`mascot-reveal absolute inset-0 ${step >= 2 ? "is-visible" : ""}`}>
-            <img src={ollie} width={208} height={208} fetchPriority="high" loading="eager" alt="Ollie the puppy" className={`size-52 object-contain ${step >= 3 ? "bounce-soft" : ""}`} />
+              <img src={ollie} width={208} height={208} fetchPriority="high" loading="eager" alt="Ollie the puppy" className={`size-52 object-contain ${step >= 3 ? "ollie-gentle-idle" : ""}`} />
           </div>
         </div>
           <div className={`welcome-card mt-6 min-h-28 w-full rounded-card bg-card p-5 shadow-card ${step >= 3 ? "is-visible" : ""}`}>

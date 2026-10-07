@@ -1,10 +1,10 @@
 # Roadmap
 
 ## Now
-- Add restrained onboarding life after the user picks a motion direction
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Meet Ollie uses a restrained breathing/tilt motion rather than bouncing; reduced-motion respected
 - Orbs float without backplates, Search orb enlarged to 80px and loading orbs to 112px; parent setting drawers open in the viewport and changes survive reload; softer blue/teal onboarding line icons verified
 - KinderGPT-inspired Premium soft blue selected and applied: white-first onboarding, pale-blue surfaces, subtle shadows and selective reassurance/lesson highlights; exact copy, Geist, four progress segments and trial drawer verified
 - Paywall is an interactive Apple-style drawer: smooth open/close, swipe dismissal, focus restoration, saved plan selection and pinned Continue; verified at 390x600 and desktop, payments remain unconnected
