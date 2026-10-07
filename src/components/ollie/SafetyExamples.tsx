@@ -35,7 +35,7 @@ export function SafetyExamples({ name }: { name: string }) {
               <article className="safety-preview overflow-hidden rounded-card border border-border bg-card shadow-card">
                 <header className="flex items-center justify-center gap-2 border-b border-border px-4 py-3">
                   <img src={ollie} alt="" width={34} height={34} className="size-9 rounded-pill bg-surface object-cover" />
-                  <div><p className="text-support font-bold text-foreground">Ollie</p><p className="text-label text-muted-foreground">{example.title}</p></div>
+                  <p className="text-support font-bold text-foreground">Ollie</p>
                 </header>
                 <div className="safety-conversation flex flex-col gap-3 p-4">
                   <p className="max-w-[86%] self-end rounded-control rounded-br-sm bg-primary px-3.5 py-2.5 text-support text-primary-foreground">{example.question}</p>
