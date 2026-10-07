@@ -24,7 +24,9 @@ function Trail() {
   useEffect(() => { setStops(trailStops()); setFilled(jarProgress()); }, []);
   const learningDays = stops.filter((s) => s.kind === "done").length;
   const cycleStart = Math.floor(learningDays / JAR_EVERY) * JAR_EVERY;
-  const cycle = stops.filter((s) => s.kind === "paused" ? s.at >= (stops.find((x) => x.kind === "done" && x.learningDay === cycleStart + 1)?.completion.at ?? 0) : s.learningDay > cycleStart);
+  const first = stops.find((x) => x.kind === "done" && x.learningDay === cycleStart + 1);
+  const firstAt = first?.kind === "done" ? first.completion.at : Infinity;
+  const cycle = stops.filter((s) => s.kind === "paused" ? s.at >= firstAt : s.learningDay > cycleStart);
   const nodes: Array<{ stop?: TrailStop; day?: number; jar?: boolean }> = [...cycle.map((stop) => ({ stop })), ...Array.from({ length: JAR_EVERY - filled }, (_, i) => ({ day: cycleStart + filled + i + 1 })), { jar: true }];
   const height = nodes.length * 115 + 50;
   const xAt = (i: number) => i % 2 === 0 ? 95 : 245;
