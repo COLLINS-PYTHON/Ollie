@@ -7,10 +7,8 @@ function Cloud({ className, wide = false }: { className: string; wide?: boolean 
     <defs>
       <linearGradient id={`${id}-base`} x1="140" y1="36" x2="150" y2="128" gradientUnits="userSpaceOnUse"><stop className="cloud-light" /><stop offset=".55" className="cloud-mid" /><stop offset="1" className="cloud-shade" /></linearGradient>
       <radialGradient id={`${id}-light`} cx=".4" cy=".2" r=".8"><stop className="cloud-light" stopOpacity=".95" /><stop offset="1" className="cloud-light" stopOpacity="0" /></radialGradient>
-      <filter id={`${id}-soft`} x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation="2.8" /></filter>
-      <filter id={`${id}-haze`} x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="7" /></filter>
+      <filter id={`${id}-soft`} x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation=".6" /></filter>
     </defs>
-    <ellipse cx="153" cy="119" rx="105" ry="12" className="cloud-ground" filter={`url(#${id}-haze)`} />
     <g filter={`url(#${id}-soft)`}>
       <path d={wide ? "M32 114C13 111 14 88 34 82C36 59 58 50 76 59C80 32 108 26 126 41C142 15 181 23 185 52C211 41 234 56 235 78C263 72 286 95 270 110C250 131 65 133 32 114Z" : "M35 114C16 109 19 84 42 80C44 54 70 46 89 61C87 31 118 18 140 35C160 16 188 29 191 54C218 43 242 59 240 82C266 76 282 100 269 112C243 132 65 132 35 114Z"} fill={`url(#${id}-base)`} />
       <ellipse cx="119" cy="63" rx="35" ry="35" fill={`url(#${id}-light)`} />
