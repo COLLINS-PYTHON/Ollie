@@ -1,22 +1,31 @@
-import { createFileRoute, Outlet, useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Outlet, retainSearchParams, useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
-import { loadOnboardingDraft, saveOnboardingStep } from "@/lib/onboarding-store";
+import { loadOnboardingDraft, loadProfile, saveOnboardingStep } from "@/lib/onboarding-store";
 import { resolveAppEntry } from "@/lib/app-entry";
 import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
 
 export const Route = createFileRoute("/onboarding")({
+  validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" ? { preview: true } : {}),
+  search: { middlewares: [retainSearchParams(["preview"])] },
   component: OnboardingLayout,
 });
 
 function OnboardingLayout() {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
+  const { preview } = Route.useSearch();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   useEffect(() => {
     let active = true;
+    if (preview) {
+      loadProfile();
+      loadOnboardingDraft();
+      setReady(true);
+      return () => { active = false; };
+    }
     void resolveAppEntry().then((to) => {
       if (!active) return;
       if (to === "/search") { void navigate({ to, replace: true }); return; }
@@ -27,10 +36,10 @@ function OnboardingLayout() {
     image.src = ollie;
     void image.decode().catch(() => {});
     return () => { active = false; };
-  }, [navigate]);
+  }, [navigate, preview]);
 
   useEffect(() => {
-    if (!ready) return;
+    if (!ready || preview) return;
     const save = () => saveOnboardingStep(pathname);
     save();
     window.addEventListener("pagehide", save);
@@ -38,7 +47,7 @@ function OnboardingLayout() {
       save();
       window.removeEventListener("pagehide", save);
     };
-  }, [pathname, ready]);
+  }, [pathname, ready, preview]);
 
   return <div className="onboarding-theme">{ready ? <div className="onboarding-page-enter"><Outlet /></div> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
