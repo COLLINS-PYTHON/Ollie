@@ -3,18 +3,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUp, Mic, Volume2 } from "lucide-react";
 import { ThinkingOrb } from "thinking-orbs";
 import { askOllie } from "@/lib/search.functions";
+import { LessonArt } from "@/components/ollie/LessonArt";
 import { findIllustration, illustrationById } from "@/lib/slideshow/illustration";
 import { loadChat, saveChat, type ChatMessage, type Reaction } from "@/lib/chat-store";
 
 function AnswerArt({ id }: { id: string }) {
   const art = illustrationById(id);
   if (!art) return null;
-  const Icon = art.sub.icon;
   return (
     <div className="pop-in flex items-center gap-2.5 rounded-[18px] bg-surface p-2 pr-3.5">
-      <div className={`flex size-12 shrink-0 items-center justify-center rounded-control bg-gradient-to-br ${art.tile} shadow-card`}>
-        <Icon className="size-6 text-white" strokeWidth={2} />
-      </div>
+      <LessonArt categoryId={art.categoryId} topicId={art.sub.id} title={art.sub.title} animated={false} className="w-20 shrink-0" />
       <div className="min-w-0">
         <p className="text-label text-muted-foreground">{art.label}</p>
         <p className="text-support font-bold text-foreground">{art.sub.title}</p>
