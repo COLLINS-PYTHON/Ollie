@@ -50,7 +50,7 @@ function PrioritiesPage() {
                   setPicked(next);
                   onboardingState.priorities = next;
                 }}
-                className={`flex items-center gap-3.5 rounded-card p-4 text-left transition-all duration-tap active:scale-[0.98] ${
+                className={`flex h-auto min-h-20 items-center gap-3.5 whitespace-normal rounded-control p-4 text-left transition-all duration-tap active:scale-[0.98] ${
                   on ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/70"
                 }`}
               >

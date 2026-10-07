@@ -39,7 +39,7 @@ function PinPage() {
         <p className="text-support mb-6 text-center text-muted-foreground">Their space to explore. Your place to stay in the loop.</p>
         <div className="flex justify-center gap-4" aria-label={`${pin.length} of 4 digits entered`}>
           {[0, 1, 2, 3].map((i) => (
-            <span key={i} className={`size-4 rounded-pill transition-colors duration-tap ${i < pin.length ? "bg-primary" : "bg-card shadow-card"}`} />
+            <span key={i} className={`size-4 rounded-pill transition-colors duration-tap ${i < pin.length ? "bg-primary" : "border border-border bg-surface-2"}`} />
           ))}
         </div>
         <p className="text-support mt-3 h-5 text-center text-muted-foreground">{error ? "Those didn't match. Try again." : done ? "PIN set." : ""}</p>
@@ -51,7 +51,7 @@ function PinPage() {
                 type="button"
                 aria-label={k === "del" ? "Delete" : k}
                 onClick={() => (k === "del" ? setPin(pin.slice(0, -1)) : press(k))}
-                className="text-title flex h-14 items-center justify-center rounded-pill bg-card text-foreground shadow-card active:scale-95"
+                className="flex h-14 items-center justify-center rounded-pill bg-card text-[24px] font-semibold text-foreground shadow-card active:scale-95"
               >
                 {k === "del" ? <Delete className="size-5" /> : k}
               </Button>
