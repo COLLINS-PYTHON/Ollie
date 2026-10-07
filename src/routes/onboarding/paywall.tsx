@@ -6,7 +6,7 @@ import { INTERESTS } from "@/lib/interests";
 import { childName, pageMeta } from "@/lib/meta";
 import { Button } from "@/components/ui/button";
 import { LessonArt } from "@/components/ollie/LessonArt";
-import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
+import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 
 export const Route = createFileRoute("/onboarding/paywall")({
   head: () => pageMeta("Try Ollie free for 7 days", "Start a free 7-day trial. No payment due now."),
@@ -65,15 +65,13 @@ function PaywallPage() {
         </div>
         <p className="text-support mt-5 text-center text-muted-foreground">You'll be able to see {name}'s weekly report during your trial.</p>
       </div>
-      {!sheet && (
         <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
-          <Button variant="onboarding" size="onboarding" type="button" onClick={() => setSheet(true)} className="text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
+          <DrawerTrigger asChild><Button variant="onboarding" size="onboarding" type="button" className="text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
             Try Now
-          </Button>
+          </Button></DrawerTrigger>
         </div>
-      )}
 
-      <DrawerContent className="onboarding-theme apple-paywall-sheet mx-auto max-h-[94svh] min-h-0 w-full max-w-md overflow-hidden border-0 shadow-sheet" overlayClassName="apple-paywall-overlay">
+      <DrawerContent aria-modal="true" className="onboarding-theme apple-paywall-sheet mx-auto max-h-[94svh] min-h-0 w-full max-w-md overflow-hidden border-0 shadow-sheet" overlayClassName="apple-paywall-overlay">
             <div className="flex shrink-0 items-center justify-between px-6 pb-3"><DrawerTitle className="text-body font-bold text-foreground">Start {name}'s safe trial</DrawerTitle><Button variant="control" size="icon" aria-label="Close plan picker" onClick={() => setSheet(false)} className="size-8 rounded-pill bg-secondary"><X className="size-4" /></Button></div>
             <DrawerDescription className="sr-only">Choose monthly or yearly billing for your seven-day trial.</DrawerDescription>
             <div className="paywall-scroll min-h-0 overflow-y-auto overscroll-contain px-6 pb-4">
