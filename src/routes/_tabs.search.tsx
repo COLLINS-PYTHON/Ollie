@@ -29,6 +29,7 @@ const REACTIONS: { id: Reaction; label: string }[] = [
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
+import { Button } from "@/components/ui/button";
 
 type RecognitionLike = {
   lang: string;
@@ -254,14 +255,14 @@ function SearchChat() {
                     <div className="rounded-[18px] rounded-bl-[4px] bg-surface-2 px-3.5 py-2 text-body text-foreground">
                       {m.text}
                     </div>
-                    <button
+                    <Button variant="ghost" size="icon"
                       type="button"
                       aria-label="Hear this answer"
                       onClick={() => speak(m.text)}
-                      className="mb-0.5 flex size-6 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
+                      className="mb-0.5 flex size-9 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
                     >
                       <Volume2 className="size-3.5" />
-                    </button>
+                    </Button>
                   </div>
                   {m.illustrationId && <AnswerArt id={m.illustrationId} />}
                   {(!m.tier || m.tier === "ok") && (
@@ -269,15 +270,15 @@ function SearchChat() {
                       {REACTIONS.map((r) => {
                         const on = m.reaction === r.id;
                         return (
-                          <button
+                          <Button variant="ghost" size="sm"
                             key={r.id}
                             type="button"
                             aria-pressed={on}
                             onClick={() => react(m.id, on ? undefined : r.id)}
-                            className={`rounded-pill px-2.5 py-1 text-label transition-all duration-tap active:scale-95 ${on ? "pop-in bg-primary text-white" : "bg-surface text-muted-foreground hover:text-foreground"}`}
+                            className={`rounded-pill px-2.5 py-1 text-label transition-all duration-tap active:scale-95 ${on ? "bg-primary text-primary-foreground" : "bg-surface text-muted-foreground hover:text-foreground"}`}
                           >
                             {r.label}
-                          </button>
+                          </Button>
                         );
                       })}
                     </div>
@@ -310,7 +311,7 @@ function SearchChat() {
             />
           </div>
           {voiceSupported && !canSend && (
-            <button
+            <Button variant="secondary" size="icon"
               type="button"
               aria-label={listening ? "Listening, release to stop" : "Hold to talk"}
               onPointerDown={startListening}
@@ -321,17 +322,17 @@ function SearchChat() {
               }`}
             >
               <Mic className="size-4" />
-            </button>
+            </Button>
           )}
-          <button
+          <Button size="icon"
             type="button"
             aria-label="Send question"
             onClick={send}
             disabled={!canSend}
-            className="flex size-9 shrink-0 items-center justify-center rounded-pill bg-primary text-white transition-all duration-tap active:scale-95 disabled:bg-surface-2 disabled:text-muted-foreground"
+            className="flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-primary-foreground transition-all duration-tap active:scale-95 disabled:bg-surface-2 disabled:text-muted-foreground"
           >
             <ArrowUp className="size-4" strokeWidth={2.5} />
-          </button>
+          </Button>
         </div>
         {!voiceSupported && (
           <p className="mt-2 text-center text-support text-muted-foreground">

@@ -200,7 +200,7 @@ function CreateScreen() {
 
   return (
     <main className="screen-enter relative mx-auto min-h-screen w-full max-w-md bg-gradient-wash px-5 pb-32 pt-16">
-      <div className="flex items-center justify-between pr-12">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
         <h1 className="text-title text-foreground">Create</h1>
         <button
           type="button"
@@ -213,7 +213,7 @@ function CreateScreen() {
         </button>
       </div>
 
-      <section className="mt-5 rounded-card bg-card p-4 shadow-card">
+      <section className="mt-5 border-b border-border pb-6">
         <div className="mb-3 flex gap-1 rounded-pill bg-surface p-1">
           {(["builder", "type"] as const).map((m) => (
             <button
@@ -334,7 +334,7 @@ function CreateScreen() {
         {pictures.length === 0 ? (
           <p className="mt-2 text-support text-muted-foreground">Your pictures will hang here.</p>
         ) : (
-          <div className="mt-3 grid grid-cols-2 gap-4 rounded-card bg-surface-2/70 p-4">
+          <div className="mt-3 grid grid-cols-2 gap-4 py-4 sm:grid-cols-3">
             {pictures.map((p, i) => (
               <button key={p.id} type="button" onClick={() => setOpen(p)} className={`relative rounded-control bg-card p-1.5 pb-3 shadow-card ${TILTS[i % TILTS.length]}`}>
                 <span className={`glossy absolute -top-2 left-1/2 size-4 -translate-x-1/2 rounded-full ${MAGNETS[i % MAGNETS.length]}`} />

@@ -29,13 +29,13 @@ function MeetPage() {
           <div className={`welcome-card mt-6 min-h-28 w-full rounded-card bg-card p-5 shadow-card ${step >= 3 ? "is-visible" : ""}`}>
             <div className={`welcome-copy ${step >= 4 ? "is-visible" : ""}`}>
               <p className="text-body leading-relaxed text-foreground">
-                A world of questions. A companion made for kids. Ollie turns curiosity into <span className="onboarding-highlight">answers they understand</span>, daily discoveries and pictures from their imagination.
+                Little questions can lead to big discoveries. With Ollie, {"kids get "}<span className="onboarding-highlight">answers they understand</span>, a daily lesson to explore and a place to bring their picture ideas to life.
               </p>
               <p className="text-support mt-3 text-muted-foreground">Their space to explore. Your place to stay in the loop.</p>
             </div>
           </div>
       </main>
-      <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
+      <div className="onboarding-action onboarding-cta-fade fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-md px-6 pt-7" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
         <Button variant="onboarding" size="onboarding"
           type="button"
           disabled={step < 5}

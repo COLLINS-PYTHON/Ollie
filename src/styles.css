@@ -727,6 +727,7 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .onboarding-assurance .onboarding-step-body { margin-top: 18px; }
 .safety-conversation { min-height: 184px; }
 .safety-parent-note { min-height: 84px; }
+.safety-examples [aria-roledescription="slide"] { visibility: visible; }
 .safety-preview { transform: translateZ(0); }
 .mascot-reveal { transform: translateY(6px) scale(.97); transition: opacity 180ms ease, transform 250ms var(--ease-enter); }
 .mascot-reveal.is-visible { transform: translateY(0) scale(1); }
@@ -771,6 +772,13 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
   .onboarding-content { padding-top: 24px; }
   .search-header img { width: 44px; height: 44px; }
   .onboarding-theme .meet-content { padding-top: 32px; }
+}
+@media (max-width: 767px) and (max-height: 700px) {
+  .onboarding-assurance .onboarding-content > h1 { font-size: 22px; line-height: 28px; }
+  .onboarding-assurance .onboarding-content { padding-top: 16px; }
+  .onboarding-assurance .onboarding-step-body { margin-top: 12px; }
+  .onboarding-assurance .safety-examples { margin-top: 20px; }
+  .safety-conversation { min-height: 160px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .search-transcript { scroll-behavior: auto; }
