@@ -19,7 +19,8 @@
 - The parent PIN is only stored as a SHA-256 hash (pinHash); check it with checkPin. Why: spec requires PINs never be stored readable.
 - The one exception to hand-built lessons is the custom-topic lesson, written once by AI during the Building finale (src/lib/custom-lesson.functions.ts) and stored in src/lib/custom-lesson-store.ts; the slideshow plays it first, then returns to the library. Why: spec makes parent-typed topics real-time.
 - Signed-in devices live in the `devices` table; remote log out sets `revoked`, and that device wipes itself on its next sync. Why: no server push in v1.
-- LessonArt keeps SVG lesson playback; LessonCover maps reusable topical pictures for onboarding/Search display only, with SVG fallbacks. Why: authored lessons stay unchanged without runtime generation.
+- LessonArt keeps SVG playback; LessonCover uses topic covers, shared interest-art pictures, then SVG. Interests reuse category pictures. Why: matching art without generation costs.
+- Prices derive from subscription-prices, yearly equivalent divides by 12. Why: consistent labels.
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
 - Onboarding uses step-selected storybook image clouds, balloon and companions (tap to bounce) in reserved unframed space; safety/privacy remain quiet and motion respects reduced-motion. Why: instant warmth without obstructing controls or per-view generation costs.
 - Trail scenery uses authored SVG with CSS motion and local-calendar seasonal selection; its irregular path is deterministic and separate from progress. Why: crisp instant artwork, no generation charges, and rewards never change with a theme.
