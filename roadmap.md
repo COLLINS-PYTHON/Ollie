@@ -52,5 +52,5 @@
 
 ## Open questions
 - None outstanding
-- [ ] Richer onboarding background colours (keep blue/white identity)
-- [ ] Storybook clouds + tappable background objects in onboarding
+- [x] Richer onboarding background colours (keep blue/white identity)
+- [x] Storybook clouds + tappable background objects in onboarding
