@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Refine the Math & numbers picture to feel kid-friendly but not preschool-like
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
