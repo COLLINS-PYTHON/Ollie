@@ -2,7 +2,7 @@
 
 ## Now
 - Include green paywall checks and tasteful green confirmations in the onboarding polish plan
-- Plan reference-led onboarding polish: original wording, softer icons, bullying/violent/sexual safety sequence, reusable topical storybook art and defined restrained companions
+- Verify reference-led onboarding polish: original wording, softer icons, bullying/violent/sexual safety sequence, three topical display covers and defined restrained companions
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
