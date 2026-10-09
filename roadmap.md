@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Personalize privacy, disclose actual AI providers, add original animated onboarding companions and a themed paywall picture with “We want you to try Ollie for free”
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
