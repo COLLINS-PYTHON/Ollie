@@ -1,11 +1,10 @@
 # Roadmap
 
 ## Now
-- Include green paywall checks and tasteful green confirmations in the onboarding polish plan
-- Plan reference-led onboarding polish: original wording, softer icons, bullying/violent/sexual safety sequence, reusable topical storybook art and defined restrained companions
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Reference-led onboarding polish: green paywall checks, softer category icons, bullying/violent/sexual safety examples, three reusable topical display covers, warmer copy and restrained companions; name persistence, swipes, consent, plan selection and reduced motion checked on phone/tablet layouts
 - Entered-name privacy heading and actual provider list verified through consent; original owl/turtle/butterfly motion and themed paywall picture with exact requested heading verified on phones and large screens, including reduced motion
 - Corrected clouds to bright white on a light-blue surrounding wash, with slow independent drift; verified visually on phones and large screens
 - Orbs now paint original thinking-orbs geometry at actual display size and device resolution; 112px orb verified at 336px drawing resolution on a 3x display, no backplate or blur

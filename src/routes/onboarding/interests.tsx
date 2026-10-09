@@ -5,6 +5,8 @@ import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { INTERESTS } from "@/lib/interests";
 import { childName } from "@/lib/meta";
+import { Button } from "@/components/ui/button";
+import type { CSSProperties } from "react";
 
 export const Route = createFileRoute("/onboarding/interests")({
   head: () => ({
@@ -44,10 +46,10 @@ function InterestsPage() {
         onContinue={() => navigate({ to: "/onboarding/lessons" })}
       >
         <div className="grid grid-cols-3 gap-3" role="group" aria-label="Interests">
-          {INTERESTS.map(({ id, label, icon: Icon, tile }) => {
+          {INTERESTS.map(({ id, label, icon: Icon }) => {
             const on = interests.includes(id);
             return (
-              <button
+              <Button variant="option"
                 key={id}
                 type="button"
                 aria-pressed={on}
@@ -56,12 +58,12 @@ function InterestsPage() {
                   setInterests(next);
                   onboardingState.interests = next;
                 }}
-                className={`flex flex-col items-center gap-2 rounded-card p-2.5 transition-all duration-tap active:scale-95 ${
+                className={`flex h-auto min-w-0 flex-col items-center gap-2 whitespace-normal rounded-card p-2.5 transition-all duration-tap active:scale-95 ${
                   on ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/60"
                 }`}
               >
-                <span className={`glossy relative flex size-14 items-center justify-center rounded-control bg-gradient-to-br ${tile} transition-all duration-tap ${on ? "scale-105" : "opacity-80 saturate-50"}`}>
-                  <Icon className="size-7 text-primary-foreground drop-shadow" strokeWidth={2.2} aria-hidden />
+                <span style={{ "--lesson-ink": `var(--cat-${id})` } as CSSProperties} className="onboarding-interest-icon relative flex size-14 shrink-0 items-center justify-center transition-transform duration-tap">
+                  <Icon className="size-7" strokeWidth={1.8} aria-hidden />
                   {on && (
                     <span className="absolute -right-1.5 -top-1.5 z-10 flex size-5 items-center justify-center rounded-pill bg-primary text-primary-foreground shadow-card">
                       <Check className="size-3" aria-hidden />
@@ -69,7 +71,7 @@ function InterestsPage() {
                   )}
                 </span>
                 <span className="text-label text-center leading-tight text-foreground">{label}</span>
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -85,17 +87,17 @@ function InterestsPage() {
           className="text-body mt-4 h-14 w-full rounded-control bg-card px-4 text-foreground shadow-card outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary"
         />
         <p className="text-support mt-4 text-muted-foreground">
-          Every day, {name} gets a short educational slideshow, just a few minutes long, built around what they're into and matched to their age and reading level. Just as much learning as fun.
+          A little discovery, every day. Short daily lessons built around <span className="onboarding-highlight">what {name} loves</span>, with a quick quiz to make it stick.
         </p>
 
-        <section className="mt-8 rounded-card border border-card/80 bg-card/60 p-4 shadow-card backdrop-blur-sm">
+        <section className="mt-8 border-t border-border pt-5">
           <h2 className="text-body font-semibold text-foreground">Is there a subject {name} finds tricky?</h2>
           <p className="text-support text-muted-foreground">Optional. Ollie will go gently here.</p>
           <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Tricky subjects">
             {STRUGGLES.map((s) => {
               const on = struggles.includes(s);
               return (
-                <button
+                <Button variant="control"
                   key={s}
                   type="button"
                   aria-pressed={on}
@@ -109,7 +111,7 @@ function InterestsPage() {
                   }`}
                 >
                   {s}
-                </button>
+                </Button>
               );
             })}
           </div>

@@ -32,7 +32,7 @@ function TrustPage() {
             {name}'s questions are for learning, not for training AI. Ollie's AI requests are sent with model training disabled. COPPA is the U.S. law that protects children's privacy.
           </p>
           <p className="text-body mt-4 font-medium text-foreground">
-            Every answer is checked. Then checked again. Then checked once more, before {name} ever sees it.
+            Safety checks come before the answer. If a question needs a grown-up, Ollie keeps the reply gentle and brings you into the loop.
           </p>
         </div>
         <div className="mt-4 rounded-card bg-card p-5 shadow-card">
