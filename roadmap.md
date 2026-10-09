@@ -52,3 +52,4 @@
 
 ## Open questions
 - None outstanding
+- [ ] Richer onboarding background colours (keep blue/white identity)
