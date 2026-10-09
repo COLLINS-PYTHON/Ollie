@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Remove visible backdrop/highlight around the paywall chase so it blends naturally with the screen
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
