@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
 import { OnboardingScenery } from "@/components/ollie/OnboardingScenery";
 import { OnboardingCompanions, OLLIE_POSES } from "@/components/ollie/OnboardingCompanions";
+import chaseClip from "@/assets/ollie-chase-compatible.mp4.asset.json";
 
 export const Route = createFileRoute("/onboarding")({
   validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" ? { preview: true } : {}),
@@ -30,6 +31,8 @@ function OnboardingLayout() {
       pose.src = src;
       void pose.decode().catch(() => {});
     });
+    // Warm the paywall chase clip early so it plays instantly when reached.
+    const warm = window.setTimeout(() => { void fetch(chaseClip.url, { priority: "low" } as RequestInit).catch(() => {}); }, 1500);
     if (preview) {
       loadProfile();
       loadOnboardingDraft();
