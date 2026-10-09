@@ -1,10 +1,10 @@
 # Roadmap
 
 ## Now
-- Refine the Math & numbers picture to feel kid-friendly but not preschool-like
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Math & numbers now uses a school-age geometric discovery scene instead of preschool counting blocks, verified in interest selection and lesson preview
 - Annual paywall shows $99.99/year and $8.33/month equivalent; all 12 interest/display covers use immersive dimensional themed scenes, with clean selection and reference-style blue highlights/icons
 - Research-informed opening replaces unsupported statistic; Meet Ollie clarifies learning-assistant role, trusted adults, shared use and AI limitations without changing setup order
 - Reference-led onboarding polish: green paywall checks, softer category icons, bullying/violent/sexual safety examples, three reusable topical display covers, warmer copy and restrained companions; name persistence, swipes, consent, plan selection and reduced motion checked on phone/tablet layouts
