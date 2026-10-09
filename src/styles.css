@@ -654,11 +654,13 @@
 .orb-loading { width: 112px; height: 112px; }
 .crisp-orb { display: block; flex-shrink: 0; background: transparent; filter: none; }
 .onboarding-soft-icon { color: var(--brand); background: var(--card); border: 1px solid var(--onboarding-line); border-radius: var(--radius-pill); box-shadow: var(--elev-card); }
+.onboarding-theme .onboarding-soft-icon { color: var(--brand); border: 0; box-shadow: none; }
+.onboarding-theme .onboarding-soft-icon svg { stroke-width: 1.8; filter: none; }
 .onboarding-soft-icon-teal { color: var(--accent-2); }
 .ollie-gentle-idle { transform-origin: center bottom; animation: ollie-gentle-idle 4.5s ease-in-out infinite; }
 @keyframes ollie-gentle-idle { 50% { transform: translateY(-4px) rotate(1deg) scale(1.015); } }
 @media (prefers-reduced-motion: reduce) { .ollie-gentle-idle { animation: none; } }
-.onboarding-highlight { color: var(--brand); font-weight: 650; background: var(--onboarding-panel); border-radius: var(--radius-pill); padding: .08em .4em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.onboarding-highlight { color: var(--brand); font-weight: 650; background: var(--onboarding-highlight-fill); border-radius: var(--radius-pill); padding: .08em .4em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .onboarding-assurance .onboarding-content > div { display: flex; flex-direction: column; justify-content: center; padding-block: 16px; }
 .assurance-panel { background: var(--onboarding-panel); border: 1px solid var(--onboarding-panel-border); box-shadow: var(--elev-card); }
 .assurance-panel p { text-wrap: pretty; }
@@ -669,6 +671,7 @@
 /* KinderGPT-inspired warmth, expressed in Ollie's own quiet visual language. */
 :root {
   --onboarding-cloud-fill: color-mix(in oklab, var(--brand) 4%, var(--card));
+  --onboarding-highlight-fill: color-mix(in oklab, var(--brand) 12%, var(--card));
   --onboarding-cloud-stroke: color-mix(in oklab, var(--brand) 14%, var(--card));
   --onboarding-track-fill: color-mix(in oklab, var(--brand) 7%, var(--card));
 }
@@ -827,6 +830,10 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 
 /* Reference-led display polish, separate from the SVG lesson player. */
 .lesson-cover { display: block; aspect-ratio: 3 / 2; object-fit: cover; }
+.interest-topic-picture { aspect-ratio: 4 / 3; }
+.interest-art-option { overflow: hidden; }
+.interest-topic-label { display: flex; align-items: center; justify-content: center; min-height: 34px; width: 100%; border-radius: var(--radius-pill); padding: 3px 4px; transition: background-color var(--duration-tap); }
+.interest-art-option[aria-pressed="true"] .interest-topic-label { background: var(--onboarding-highlight-fill); }
 .onboarding-interest-icon { color: var(--lesson-ink); background: var(--card); border: 1px solid var(--onboarding-line); border-radius: var(--radius-pill); }
 .onboarding-theme [aria-pressed="true"] .onboarding-interest-icon { animation: icon-confirm var(--duration-element) var(--ease-spring); }
 @keyframes icon-confirm { 0% { scale: .94; } 60% { scale: 1.08; } 100% { scale: 1; } }
