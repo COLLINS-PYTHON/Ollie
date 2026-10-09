@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Research and refine the onboarding opening and subtle learning-assistant, not companion explanation
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
