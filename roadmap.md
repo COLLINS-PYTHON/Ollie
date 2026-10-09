@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Plan reference-led onboarding polish: original wording, softer icons, bullying/violent/sexual safety sequence, reusable topical storybook art and defined restrained companions
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
