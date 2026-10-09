@@ -30,3 +30,4 @@
 - Search reserves a separate navigation dock beneath its composer; the app uses dynamic viewport sizing and a wider shared tablet frame. Why: tabs never cover messages or typing, and available screen space stays useful across devices.
 - Keep Search's iMessage transcript and transport when polishing layout. Why: presentation fixes must preserve conversations.
 - Orbs use CrispOrb at actual size and device resolution (max 4x); pre-optimize thinking-orbs/engine in Vite. Why: crisp dots and stable React identity during lazy navigation.
+- Failed module loads refresh once per cooldown; retry refreshes. Why: discard stale chunks without loops or data loss.
