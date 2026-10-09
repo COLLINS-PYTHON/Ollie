@@ -21,7 +21,7 @@
 - Signed-in devices live in the `devices` table; remote log out sets `revoked`, and that device wipes itself on its next sync. Why: no server push in v1.
 - LessonArt keeps SVG lesson playback; LessonCover maps reusable topical pictures for onboarding/Search display only, with SVG fallbacks. Why: authored lessons stay unchanged without runtime generation.
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
-- Onboarding uses step-selected SVG clouds and original companions in reserved unframed space; safety/privacy remain quiet and motion respects reduced-motion. Why: instant warmth without obstructing controls or per-view generation costs.
+- Onboarding uses step-selected storybook image clouds, balloon and companions (tap to bounce) in reserved unframed space; safety/privacy remain quiet and motion respects reduced-motion. Why: instant warmth without obstructing controls or per-view generation costs.
 - Trail scenery uses authored SVG with CSS motion and local-calendar seasonal selection; its irregular path is deterministic and separate from progress. Why: crisp instant artwork, no generation charges, and rewards never change with a theme.
 - The onboarding paywall uses the shared Vaul drawer with portal, focus containment, swipe dismissal and a pinned action footer. Why: a natural interactive sheet with accessible dismissal and no simulated native purchase dialog.
 - Parent setting sheets use the shared portalled Vaul drawer outside the animated page. Why: a transformed page must not trap fixed dialogs below the viewport.
