@@ -863,3 +863,13 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .onboarding-theme .onboarding-interest-icon svg { filter: none !important; color: var(--lesson-ink, var(--brand)); }
 .onboarding-theme [aria-pressed="true"] .onboarding-interest-icon { animation: icon-pop var(--duration-element, 320ms) cubic-bezier(.34,1.56,.64,1); background: color-mix(in oklab,var(--lesson-ink, var(--brand)) 10%,var(--card)) !important; }
 @keyframes icon-pop { 0% { transform: scale(1); } 45% { transform: scale(1.14); } 100% { transform: scale(1); } }
+
+/* Layered sky wash: calm blue for trust, a soft sunlit warmth, a hint of teal mist */
+.onboarding-theme :is(.bg-gradient-name,.bg-gradient-lilac,.bg-gradient-ice,.bg-gradient-wash,.bg-gradient-dawn,.bg-gradient-mist,.bg-gradient-hello,.bg-gradient-blush,.bg-gradient-sunrise,.bg-gradient-lagoon,.bg-gradient-quiet,.bg-gradient-trust) {
+  background:
+    radial-gradient(120% 55% at 50% -8%, color-mix(in oklab,var(--brand) 22%,var(--card)) 0%, transparent 62%),
+    radial-gradient(70% 40% at 100% 18%, color-mix(in oklab,var(--accent-4) 16%,var(--card)) 0%, transparent 70%),
+    radial-gradient(80% 45% at 0% 92%, color-mix(in oklab,var(--accent-2) 12%,var(--card)) 0%, transparent 70%),
+    linear-gradient(180deg, color-mix(in oklab,var(--brand) 7%,var(--card)) 0%, var(--card) 70%);
+  background-attachment: fixed;
+}
