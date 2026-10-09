@@ -6,6 +6,7 @@ import { resolveAppEntry } from "@/lib/app-entry";
 import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
 import { OnboardingScenery } from "@/components/ollie/OnboardingScenery";
+import { OnboardingCompanions } from "@/components/ollie/OnboardingCompanions";
 
 export const Route = createFileRoute("/onboarding")({
   validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" ? { preview: true } : {}),
@@ -82,6 +83,8 @@ export function OnboardingSkeleton({
   ];
   const steps = chapterPaths[chapter - 1] ?? [];
   const progress = (Math.max(0, steps.indexOf(pathname)) + 1) / Math.max(1, steps.length);
+  const companion = ["/onboarding", "/onboarding/", "/onboarding/reading", "/onboarding/tone"].includes(pathname)
+    ? "reader" : ["/onboarding/age", "/onboarding/priorities"].includes(pathname) ? "garden" : null;
   return (
     <div className="onboarding-frame mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden">
       <header className="onboarding-header flex items-center gap-4 px-6 pt-5">
@@ -105,6 +108,7 @@ export function OnboardingSkeleton({
       <main className="onboarding-content flex min-h-0 flex-1 flex-col px-6 pb-32 pt-9">
         <h1 className="text-title mx-auto w-full max-w-sm text-center text-foreground">{title}</h1>
         <div className="onboarding-step-body mt-7 flex-1">{children}</div>
+        {companion && <OnboardingCompanions scene={companion} />}
       </main>
 
       <div

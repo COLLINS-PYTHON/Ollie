@@ -2,14 +2,13 @@ import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router"
 import { useEffect, useState } from "react";
 import { Check, ChevronLeft, X } from "lucide-react";
 import { onboardingState } from "@/lib/onboarding-store";
-import { INTERESTS } from "@/lib/interests";
 import { childName, pageMeta } from "@/lib/meta";
 import { Button } from "@/components/ui/button";
-import { LessonArt } from "@/components/ollie/LessonArt";
+import learningWorld from "@/assets/learning-world.jpg";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 
 export const Route = createFileRoute("/onboarding/paywall")({
-  head: () => pageMeta("Try Ollie free for 7 days", "Start a free 7-day trial. No payment due now."),
+  head: () => pageMeta("We want you to try Ollie for free", "Explore safe answers, daily lessons and creativity with Ollie's 7-day trial."),
   component: PaywallPage,
 });
 
@@ -22,22 +21,15 @@ function PaywallPage() {
   const router = useRouter();
   const name = childName(onboardingState.name);
   const [sheet, setSheet] = useState(false);
-  const [slide, setSlide] = useState(0);
   const [plan, setPlan] = useState(onboardingState.plan);
   const [values, setValues] = useState(0);
 
-  useEffect(() => {
-    if (sheet) return;
-    const t = setInterval(() => setSlide((s) => (s + 1) % 4), 2600);
-    return () => clearInterval(t);
-  }, [sheet]);
   useEffect(() => {
     if (!sheet) return setValues(0);
     const t = [80, 180, 280, 360].map((ms, i) => setTimeout(() => setValues(i + 1), ms));
     return () => t.forEach(clearTimeout);
   }, [sheet]);
 
-  const themes = INTERESTS.slice(0, 4);
   const valueLines = [`Every answer matched to ${name}'s age`, "Every unsafe search caught, not hidden", "Full visibility, always"];
 
   return (
@@ -47,17 +39,9 @@ function PaywallPage() {
         <Button variant="control" size="icon" type="button" aria-label="Back" onClick={() => router.history.back()} className="flex size-10 items-center justify-center rounded-pill bg-card shadow-card">
           <ChevronLeft className="size-5" />
         </Button>
-        <div className="relative mt-8 aspect-[4/3] overflow-hidden">
-          {themes.map((t, i) => {
-            return (
-              <div key={t.id} className={`absolute inset-0 flex flex-col items-center justify-center gap-3 transition-opacity duration-reveal ${i === slide ? "opacity-100" : "opacity-0"}`}>
-                <LessonArt categoryId={t.id} title={t.label} className="w-full max-w-xs" />
-                <span className="text-support text-muted-foreground">{t.label}</span>
-              </div>
-            );
-          })}
-        </div>
-        <h1 className="text-title mt-8 text-center text-foreground">Try Ollie free for 7 days</h1>
+        <img src={learningWorld} width={1280} height={720} alt="An open book becomes a world of discovery, with an owl, a turtle and a rocket" className="paywall-world mt-8 w-full object-contain" />
+        <h1 className="text-title mt-8 text-center text-foreground">We want you to try Ollie for free</h1>
+        <p className="text-support mt-3 text-center text-muted-foreground">7 days of questions, discoveries and creativity, made for {name}.</p>
         <div className="relative mx-auto mt-5 flex items-center gap-2 rounded-pill bg-card px-5 py-3 shadow-card">
           <span className="ring-pulse absolute inset-0 rounded-pill bg-primary/20" aria-hidden />
           <Check className="relative size-5 text-primary" />
@@ -75,6 +59,7 @@ function PaywallPage() {
             <div className="flex shrink-0 items-center justify-between px-6 pb-3"><DrawerTitle className="text-body font-bold text-foreground">Start {name}'s safe trial</DrawerTitle><Button variant="control" size="icon" aria-label="Close plan picker" onClick={() => setSheet(false)} className="size-8 rounded-pill bg-secondary"><X className="size-4" /></Button></div>
             <DrawerDescription className="sr-only">Choose monthly or yearly billing for your seven-day trial.</DrawerDescription>
             <div className="paywall-scroll min-h-0 overflow-y-auto overscroll-contain px-6 pb-4">
+             <img src={learningWorld} width={1280} height={720} loading="lazy" alt="A book opening into a world of learning" className="mb-4 w-full object-contain" />
             <div className="flex items-center justify-between rounded-control bg-card p-3">
               <div><p className="text-label text-foreground">Today</p><p className="text-support text-muted-foreground">Free access starts</p></div>
               <div className="mx-3 h-0.5 flex-1 bg-primary/30" />

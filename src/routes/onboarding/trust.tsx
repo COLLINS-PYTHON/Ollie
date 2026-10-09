@@ -4,13 +4,14 @@ import { Check, ShieldCheck } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/trust")({
   head: () => pageMeta("Privacy and safety", "How Ollie protects your child's privacy."),
   component: TrustPage,
 });
 
-const PROVIDERS = ["Groq (answers)", "Together AI (pictures)", "OpenAI (safety checks)", "Read-aloud voice provider"];
+const PROVIDERS = ["Lovable AI service: securely connects Ollie's AI requests", "OpenAI: provides answers, safety checks and pictures", "Your device's speech service: reads answers aloud when enabled"];
 
 function TrustPage() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function TrustPage() {
 
   return (
     <div className="bg-gradient-trust min-h-screen">
-      <OnboardingSkeleton chapter={4} title="Your child's privacy comes first" cta="Continue" ctaDisabled={!agree} onContinue={() => navigate({ to: "/onboarding/pin" })}>
+      <OnboardingSkeleton chapter={4} title={`${name}'s privacy comes first`} cta="Continue" ctaDisabled={!agree} onContinue={() => navigate({ to: "/onboarding/pin" })}>
         <div className="relative mb-6 flex h-20 items-center justify-center" aria-hidden>
           <span className="onboarding-soft-icon relative flex size-14 items-center justify-center rounded-pill">
             <ShieldCheck className="size-7" strokeWidth={1.8} />
@@ -28,7 +29,7 @@ function TrustPage() {
         </div>
         <div className="rounded-card bg-card p-5 shadow-card">
           <p className="text-body text-foreground">
-            Ollie is built to meet COPPA, the U.S. law that protects children's privacy. {name}'s information and conversations are never used to train AI models, and never will be. Not now, not ever!
+            {name}'s questions are for learning, not for training AI. Ollie's AI requests are sent with model training disabled. COPPA is the U.S. law that protects children's privacy.
           </p>
           <p className="text-body mt-4 font-medium text-foreground">
             Every answer is checked. Then checked again. Then checked once more, before {name} ever sees it.
@@ -36,28 +37,28 @@ function TrustPage() {
         </div>
         <div className="mt-4 rounded-card bg-card p-5 shadow-card">
           <p className="text-body text-foreground">
-            To answer {name}'s questions, Ollie securely sends them to trusted service providers who use them only to give an answer. They never use it to train AI.
+            To answer {name}'s questions and make pictures, Ollie sends the request to the AI services listed below. Read-aloud uses your device's speech service.
           </p>
-          <button type="button" onClick={() => setShowWho((v) => !v)} className="text-label mt-2 text-primary underline">
+          <Button variant="link" type="button" aria-expanded={showWho} aria-controls="privacy-providers" onClick={() => setShowWho((v) => !v)} className="text-label mt-2 h-auto p-0 text-primary underline">
             See who
-          </button>
+          </Button>
           {showWho && (
-            <ul className="text-support bubble-in mt-2 list-disc pl-5 text-muted-foreground">
+            <ul id="privacy-providers" className="text-support bubble-in mt-2 list-disc pl-5 text-muted-foreground">
               {PROVIDERS.map((p) => <li key={p}>{p}</li>)}
             </ul>
           )}
-          <button
+          <Button variant="control"
             type="button"
             role="checkbox"
             aria-checked={agree}
             onClick={() => { setAgree(!agree); onboardingState.aiConsent = !agree; }}
-            className="mt-4 flex w-full items-center gap-3 rounded-control bg-surface p-3 text-left"
+            className="mt-4 flex h-auto w-full justify-start items-center gap-3 rounded-control bg-surface p-3 text-left"
           >
             <span className={`flex size-6 shrink-0 items-center justify-center rounded-control border-2 ${agree ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card"}`}>
               {agree && <Check className="size-3.5" />}
             </span>
             <span className="text-body font-medium text-foreground">I agree</span>
-          </button>
+          </Button>
         </div>
       </OnboardingSkeleton>
     </div>

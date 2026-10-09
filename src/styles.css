@@ -745,6 +745,32 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .cloud-mid { stop-color: var(--onboarding-cloud-mid); }
 .cloud-shade { stop-color: var(--onboarding-cloud-shade); }
 .cloud-ground { fill: var(--onboarding-cloud-shade); opacity: .25; }
+.onboarding-companions { width: 260px; max-width: 100%; height: 112px; margin: 22px auto 0; flex-shrink: 0; pointer-events: none; }
+.companion-scene { width: 100%; height: 100%; overflow: visible; }
+.companion-blue { fill: color-mix(in oklab,var(--brand) 70%,var(--card)); }
+.companion-soft { fill: color-mix(in oklab,var(--accent-2) 22%,var(--card)); }
+.companion-teal { fill: var(--accent-2); }
+.companion-pink { fill: color-mix(in oklab,var(--accent-3) 65%,var(--card)); }
+.companion-paper { fill: var(--card); }
+.companion-ink { fill: var(--navy); }
+.companion-shadow { fill: var(--onboarding-track-fill); }
+.companion-detail { stroke: var(--navy); stroke-width: 2; stroke-linecap: round; }
+.companion-book-line { stroke: var(--onboarding-cloud-stroke); stroke-width: 2; stroke-linecap: round; }
+.companion-shell-line { stroke: color-mix(in oklab,var(--accent-2) 50%,var(--card)); stroke-width: 2; stroke-linejoin: round; }
+.companion-reader { animation: companion-read 7s ease-in-out infinite; transform-origin: 150px 105px; }
+.companion-eyes { animation: companion-blink 7s linear infinite; transform-box: fill-box; transform-origin: center; }
+.companion-page { animation: companion-page 7s ease-in-out infinite; transform-origin: 150px 118px; }
+.companion-garden { animation: companion-stroll 9s ease-in-out infinite; }
+.companion-sprout { animation: companion-leaf 9s ease-in-out infinite; transform-origin: 147px 52px; }
+.companion-butterfly { animation: companion-flight 9s ease-in-out infinite; transform-origin: 226px 51px; }
+@keyframes companion-read { 0%,35%,100% { rotate: 0deg; } 50%,65% { rotate: -3deg; } }
+@keyframes companion-blink { 0%,43%,47%,100% { scale: 1 1; } 45% { scale: 1 .08; } }
+@keyframes companion-page { 0%,35%,100% { transform: none; } 50%,65% { transform: skewY(-2deg); } }
+@keyframes companion-stroll { 50% { translate: 9px 0; } }
+@keyframes companion-leaf { 50% { rotate: 7deg; } }
+@keyframes companion-flight { 25% { transform: translate(7px,-8px) rotate(8deg) scaleX(.8); } 70% { transform: translate(-6px,4px) rotate(-6deg) scaleX(.92); } }
+@media (max-height: 700px) { .onboarding-companions { height: 88px; margin-top: 14px; } }
+@media (prefers-reduced-motion: reduce) { .companion-scene * { animation: none; } }
 @keyframes cloud-natural-drift { 0% { transform: translate3d(-18px,3px,0); } 25% { transform: translate3d(0,-1px,0); } 50% { transform: translate3d(22px,-3px,0); } 75% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-18px,3px,0); } }
 .onboarding-paw-pair { width: 42px; height: 64px; animation-duration: 12s; }
 .onboarding-paw-pair-0 { left: -12px; top: 28%; }
