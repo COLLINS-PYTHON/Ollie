@@ -1,10 +1,10 @@
 # Roadmap
 
 ## Now
-- Finish yearly monthly-equivalent pricing, immersive themed topic scenes (not isolated objects), clean interest selection states and reference-style blue highlights/icons
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Annual paywall shows $99.99/year and $8.33/month equivalent; all 12 interest/display covers use immersive dimensional themed scenes, with clean selection and reference-style blue highlights/icons
 - Research-informed opening replaces unsupported statistic; Meet Ollie clarifies learning-assistant role, trusted adults, shared use and AI limitations without changing setup order
 - Reference-led onboarding polish: green paywall checks, softer category icons, bullying/violent/sexual safety examples, three reusable topical display covers, warmer copy and restrained companions; name persistence, swipes, consent, plan selection and reduced motion checked on phone/tablet layouts
 - Entered-name privacy heading and actual provider list verified through consent; original owl/turtle/butterfly motion and themed paywall picture with exact requested heading verified on phones and large screens, including reduced motion
