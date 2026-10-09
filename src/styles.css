@@ -658,7 +658,7 @@
 .ollie-gentle-idle { transform-origin: center bottom; animation: ollie-gentle-idle 4.5s ease-in-out infinite; }
 @keyframes ollie-gentle-idle { 50% { transform: translateY(-4px) rotate(1deg) scale(1.015); } }
 @media (prefers-reduced-motion: reduce) { .ollie-gentle-idle { animation: none; } }
-.onboarding-highlight { color: var(--brand); font-weight: 650; }
+.onboarding-highlight { color: var(--brand); font-weight: 650; background: var(--onboarding-panel); border-radius: var(--radius-pill); padding: .08em .4em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .onboarding-assurance .onboarding-content > div { display: flex; flex-direction: column; justify-content: center; padding-block: 16px; }
 .assurance-panel { background: var(--onboarding-panel); border: 1px solid var(--onboarding-panel-border); box-shadow: var(--elev-card); }
 .assurance-panel p { text-wrap: pretty; }

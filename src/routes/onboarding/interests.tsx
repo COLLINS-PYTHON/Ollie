@@ -1,12 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Check } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { INTERESTS } from "@/lib/interests";
 import { childName } from "@/lib/meta";
 import { Button } from "@/components/ui/button";
-import type { CSSProperties } from "react";
+import { INTEREST_ART } from "@/lib/interest-art";
 
 export const Route = createFileRoute("/onboarding/interests")({
   head: () => ({
@@ -46,7 +45,7 @@ function InterestsPage() {
         onContinue={() => navigate({ to: "/onboarding/lessons" })}
       >
         <div className="grid grid-cols-3 gap-3" role="group" aria-label="Interests">
-          {INTERESTS.map(({ id, label, icon: Icon }) => {
+          {INTERESTS.map(({ id, label }) => {
             const on = interests.includes(id);
             return (
               <Button variant="option"
@@ -58,19 +57,12 @@ function InterestsPage() {
                   setInterests(next);
                   onboardingState.interests = next;
                 }}
-                className={`flex h-auto min-w-0 flex-col items-center gap-2 whitespace-normal rounded-card p-2.5 transition-all duration-tap active:scale-95 ${
+                className={`interest-art-option flex h-auto min-w-0 flex-col items-center gap-2 whitespace-normal rounded-control p-2 transition-all duration-tap active:scale-95 ${
                   on ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/60"
                 }`}
               >
-                <span style={{ "--lesson-ink": `var(--cat-${id})` } as CSSProperties} className="onboarding-interest-icon relative flex size-14 shrink-0 items-center justify-center transition-transform duration-tap">
-                  <Icon className="size-7" strokeWidth={1.8} aria-hidden />
-                  {on && (
-                    <span className="absolute -right-1.5 -top-1.5 z-10 flex size-5 items-center justify-center rounded-pill bg-primary text-primary-foreground shadow-card">
-                      <Check className="size-3" aria-hidden />
-                    </span>
-                  )}
-                </span>
-                <span className="text-label text-center leading-tight text-foreground">{label}</span>
+                <img src={INTEREST_ART[id]} alt="" width={512} height={384} loading="lazy" decoding="async" className="interest-topic-picture w-full rounded-control object-cover" />
+                <span className={`interest-topic-label text-label text-center leading-tight ${on ? "text-primary" : "text-foreground"}`}>{label}</span>
               </Button>
             );
           })}

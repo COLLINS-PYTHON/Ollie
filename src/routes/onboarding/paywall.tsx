@@ -6,6 +6,7 @@ import { childName, pageMeta } from "@/lib/meta";
 import { Button } from "@/components/ui/button";
 import learningWorld from "@/assets/learning-world.jpg";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
+import { SUBSCRIPTION_PRICES, yearlyMonthlyEquivalent } from "@/lib/subscription-prices";
 
 export const Route = createFileRoute("/onboarding/paywall")({
   head: () => pageMeta("We want you to try Ollie for free", "Explore safe answers, daily lessons and creativity with Ollie's 7-day trial."),
@@ -13,7 +14,7 @@ export const Route = createFileRoute("/onboarding/paywall")({
 });
 
 /* Owner-approved subscription prices. */
-const PRICES = { monthly: "$11.99 / month", yearly: "$99.99 / year" };
+const PRICES = { monthly: `$${SUBSCRIPTION_PRICES.monthly.toFixed(2)} / month`, yearly: `$${SUBSCRIPTION_PRICES.yearly.toFixed(2)} / year` };
 const FEATURES = ["Safe search", "Daily educational slideshows", "Age-appropriate content", "Age-appropriate image generation", "Full parent dashboard", "Weekly progress reports"];
 
 function PaywallPage() {
@@ -75,6 +76,7 @@ function PaywallPage() {
                       {p === "yearly" && <span className="text-label absolute -top-2.5 right-3 rounded-pill bg-gold px-2 py-0.5 text-foreground">30% off</span>}
                       <span className="text-button block capitalize text-foreground">{p}</span>
                       <span className="text-support text-muted-foreground">{PRICES[p]}</span>
+                      {p === "yearly" && <span className="text-label text-primary">${yearlyMonthlyEquivalent()} / month equivalent</span>}
                     </Button>
                   ))}
                 </div>
