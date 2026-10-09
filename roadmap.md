@@ -1,10 +1,10 @@
 # Roadmap
 
 ## Now
-- Remove visible backdrop/highlight around the paywall chase so it blends naturally with the screen
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Removed the paywall chase's grey studio backdrop and isolated panel; verified natural screen blending and playback on phone/tablet sizes
 - Contextual Ollie poses and expressive actions replace repeated companions; paywall uses an eight-second articulated butterfly-chasing clip with reaching jumps, inline phone/tablet playback, reduced-motion pause and faster 22s/28s cloud drift
 - Math & numbers now uses a school-age geometric discovery scene instead of preschool counting blocks, verified in interest selection and lesson preview
 - Annual paywall shows $99.99/year and $8.33/month equivalent; all 12 interest/display covers use immersive dimensional themed scenes, with clean selection and reference-style blue highlights/icons
