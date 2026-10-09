@@ -49,7 +49,7 @@ function LessonsPage() {
                 className={`lesson-preview-card absolute w-44 ${slots[i]}`}
               >
                 <div className="flex aspect-[3/4] flex-col overflow-hidden rounded-card bg-card shadow-sheet ring-4 ring-card">
-                  <LessonCover categoryId={id} topicId={PREVIEW_TOPICS[id]?.id} title={label} className="w-full" />
+                  <LessonCover categoryId={id} topicId={PREVIEW_TOPICS[id]?.id ?? ""} title={label} className="w-full" />
                   <div className="px-4 pb-4">
                     <p className="text-label text-muted-foreground">{label}</p>
                     <p className="text-body mt-1 font-semibold leading-snug text-foreground">{PREVIEW_TOPICS[id]?.question ?? sample}</p>
