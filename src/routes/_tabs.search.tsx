@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUp, Mic, Volume2 } from "lucide-react";
 import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { askOllie } from "@/lib/search.functions";
-import { LessonArt } from "@/components/ollie/LessonArt";
+import { LessonCover } from "@/components/ollie/LessonCover";
 import { findIllustration, illustrationById } from "@/lib/slideshow/illustration";
 import { loadChat, saveChat, type ChatMessage, type Reaction } from "@/lib/chat-store";
 
@@ -12,7 +12,7 @@ function AnswerArt({ id }: { id: string }) {
   if (!art) return null;
   return (
     <div className="pop-in flex items-center gap-2.5 rounded-[18px] bg-surface p-2 pr-3.5">
-      <LessonArt categoryId={art.categoryId} topicId={art.sub.id} title={art.sub.title} animated={false} className="w-20 shrink-0" />
+      <LessonCover categoryId={art.categoryId} topicId={art.sub.id} title={art.sub.title} className="w-20 shrink-0 rounded-sm" />
       <div className="min-w-0">
         <p className="text-label text-muted-foreground">{art.label}</p>
         <p className="text-support font-bold text-foreground">{art.sub.title}</p>

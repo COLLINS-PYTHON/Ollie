@@ -14,6 +14,7 @@ export function OnboardingCompanions({ scene }: { scene: "reader" | "garden" }) 
           <g className="companion-eyes"><ellipse className="companion-ink" cx="135" cy="56" rx="5" ry="7" /><ellipse className="companion-ink" cx="166" cy="56" rx="5" ry="7" /><circle className="companion-paper" cx="137" cy="53" r="2" /><circle className="companion-paper" cx="168" cy="53" r="2" /></g>
           <path className="companion-teal" d="M144 67Q150 63 156 67L150 75Z" />
           <path className="companion-detail" d="M130 86L133 89M148 85L151 89M168 86L165 89" />
+          <path className="companion-feather" d="M116 41q5-5 11-3m47 0q6-2 10 3M117 80q3 9 9 12m58-12q-3 9-9 12M137 94l3 3m21-3-3 3" />
         </g>
         <path className="companion-blue" d="M78 99Q115 93 150 108Q185 93 222 99L221 118Q184 111 150 124Q116 111 79 118Z" />
         <g className="companion-page"><path className="companion-paper" d="M81 93Q114 89 150 105Q186 89 219 93L216 112Q183 107 150 120Q116 107 84 112Z" /><path className="companion-book-line" d="M150 105V120M94 100Q119 100 138 109M94 106Q114 106 130 111M164 109Q185 100 207 100M174 111Q191 106 207 106" /></g>
@@ -23,6 +24,7 @@ export function OnboardingCompanions({ scene }: { scene: "reader" | "garden" }) 
           <path className="companion-teal" d="M113 80Q77 64 74 87Q75 104 117 102L181 101Q198 97 193 86L180 83Z" />
           <path className="companion-soft" d="M106 94Q107 51 146 51Q184 52 185 94Z" />
           <path className="companion-shell-line" d="M110 89L130 77L145 88L165 76L181 89M130 77L126 58M145 88V94M165 76L169 60" />
+          <path className="companion-feather" d="M120 67q11-14 25-12M81 78q3-3 7-2" />
           <g className="companion-eyes"><circle className="companion-ink" cx="86" cy="83" r="3" /></g>
           <path className="companion-detail" d="M78 92Q85 97 91 92" />
           <path className="companion-blue" d="M135 51H159L155 67H139Z" />

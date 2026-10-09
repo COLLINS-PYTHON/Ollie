@@ -43,8 +43,7 @@ function PaywallPage() {
         <h1 className="text-title mt-8 text-center text-foreground">We want you to try Ollie for free</h1>
         <p className="text-support mt-3 text-center text-muted-foreground">7 days of questions, discoveries and creativity, made for {name}.</p>
         <div className="relative mx-auto mt-5 flex items-center gap-2 rounded-pill bg-card px-5 py-3 shadow-card">
-          <span className="ring-pulse absolute inset-0 rounded-pill bg-primary/20" aria-hidden />
-          <Check className="relative size-5 text-primary" />
+          <Check className="relative size-5 text-success" strokeWidth={2.2} />
           <span className="text-button relative text-foreground">No Payment Due Now</span>
         </div>
         <p className="text-support mt-5 text-center text-muted-foreground">You'll be able to see {name}'s weekly report during your trial.</p>
@@ -66,7 +65,7 @@ function PaywallPage() {
               <div className="text-right"><p className="text-label text-foreground">Day 7</p><p className="text-support text-muted-foreground">Billing starts</p></div>
             </div>
             <ul className="mt-4 min-h-[84px] space-y-2">
-              {valueLines.map((l, i) => <li key={l} className={`paywall-value text-body font-medium text-foreground ${values > i ? "is-visible" : ""}`}>{l}</li>)}
+              {valueLines.map((l, i) => <li key={l} className={`paywall-value grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2.5 text-body font-medium text-foreground ${values > i ? "is-visible" : ""}`}><Check className="mt-1 size-4 shrink-0 text-success" strokeWidth={2.2} /><span className="min-w-0">{l}</span></li>)}
             </ul>
               <div className={`paywall-pricing ${values >= 4 ? "is-visible" : ""}`}>
                 <div className="mt-4 grid grid-cols-2 gap-3">
@@ -81,7 +80,7 @@ function PaywallPage() {
                 </div>
                 <ul className="mt-4 grid grid-cols-1 gap-1.5">
                   {FEATURES.map((f) => (
-                    <li key={f} className="text-support flex items-center gap-2 text-foreground"><Check className="size-4 text-primary" />{f}</li>
+                    <li key={f} className="text-support grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 text-foreground"><Check className="size-4 shrink-0 text-success" /><span className="min-w-0">{f}</span></li>
                   ))}
                 </ul>
               </div>

@@ -6,9 +6,9 @@ import ollie from "@/assets/ollie.png";
 
 // Parent-facing illustrations, not live conversations or flags. Responses match locked safety copy.
 const EXAMPLES = [
-  { title: "Adult topics", question: "What does sex mean?", answer: "That's a question for a grown-up you trust. They can explain it best.", reason: "Adult topic", note: "A gentle handoff to you, without adult details." },
-  { title: "Explicit content", question: "Show me sexual pictures", answer: "Sorry, I'm not able to answer that one. What else are you curious about today?", reason: "Sexual content request", note: "The request is declined. No pictures or explicit details." },
-  { title: "When a child needs help", question: "I want to hurt myself", answer: "Please tell a grown-up you trust right now. You matter, and you don't have to handle this alone.", reason: "Self-harm concern", note: "A caring response that points them to a trusted grown-up." },
+  { title: "Bullying", question: "Someone at school keeps calling me names.", answer: "That sounds hurtful, and it isn't your fault. Tell a grown-up you trust, like a parent or teacher. They can help you feel safe.", reason: "Bullying concern", note: "Support for them. A clear picture for you." },
+  { title: "Violent search", question: "How do I make a bomb?", answer: "Sorry, I'm not able to answer that one. What else are you curious about today?", reason: "Violent content request", note: "A firm boundary, with no dangerous instructions." },
+  { title: "Sexual topic", question: "What does sex mean?", answer: "That's a question for a grown-up you trust. They can explain it best.", reason: "Sexual topic", note: "A gentle handoff to you, without adult details." },
 ];
 
 export function SafetyExamples({ name }: { name: string }) {

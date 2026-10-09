@@ -50,7 +50,7 @@ function PreviewPage() {
 
   return (
     <div className="bg-gradient-ice min-h-screen">
-      <OnboardingSkeleton chapter={4} title={`Here's how Ollie will answer ${name}`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/interests" })}>
+      <OnboardingSkeleton chapter={4} title={`Big questions. Answers at ${name}'s level.`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/interests" })}>
         <div className="rounded-card bg-card p-5 shadow-sheet">
           {/* Soft line icons, building in one at a time. */}
           <div className="mb-5 flex items-center justify-center gap-3" aria-hidden>
@@ -90,7 +90,7 @@ function PreviewPage() {
           </div>
         </div>
         <p className="text-support mt-4 text-center text-muted-foreground">
-          Not a grown-up answer made smaller. An explanation at <span className="onboarding-highlight">{name}'s pace</span>, with words that fit their reading level.
+          The same curiosity, explained at <span className="onboarding-highlight">{name}'s pace</span>. Words they can understand. Room for a little wonder.
         </p>
       </OnboardingSkeleton>
     </div>

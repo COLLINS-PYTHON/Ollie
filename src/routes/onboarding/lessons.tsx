@@ -3,7 +3,7 @@ import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { INTERESTS } from "@/lib/interests";
 import { childName } from "@/lib/meta";
-import { LessonArt } from "@/components/ollie/LessonArt";
+import { LessonCover } from "@/components/ollie/LessonCover";
 
 export const Route = createFileRoute("/onboarding/lessons")({
   head: () => ({
@@ -25,6 +25,12 @@ const FAN = [
   "rotate-[11deg] translate-x-16 translate-y-6",
 ];
 
+const PREVIEW_TOPICS: Record<string, { id: string; question: string }> = {
+  space: { id: "moon-phases", question: "Why does the Moon change shape?" },
+  ocean: { id: "sea-turtles", question: "How do sea turtles breathe?" },
+  dinos: { id: "dino-eggs", question: "Did dinosaurs hatch from eggs?" },
+};
+
 function LessonsPage() {
   const navigate = useNavigate();
   const name = childName(onboardingState.name);
@@ -43,10 +49,10 @@ function LessonsPage() {
                 className={`lesson-preview-card absolute w-44 ${slots[i]}`}
               >
                 <div className="flex aspect-[3/4] flex-col overflow-hidden rounded-card bg-card shadow-sheet ring-4 ring-card">
-                  <LessonArt categoryId={id} title={label} className="w-full" />
+                  <LessonCover categoryId={id} topicId={PREVIEW_TOPICS[id]?.id} title={label} className="w-full" />
                   <div className="px-4 pb-4">
                     <p className="text-label text-muted-foreground">{label}</p>
-                    <p className="text-body mt-1 font-semibold leading-snug text-foreground">{sample}</p>
+                    <p className="text-body mt-1 font-semibold leading-snug text-foreground">{PREVIEW_TOPICS[id]?.question ?? sample}</p>
                   </div>
                 </div>
               </article>
