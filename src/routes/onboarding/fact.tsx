@@ -4,16 +4,9 @@ import { pageMeta } from "@/lib/meta";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/fact")({
-  head: () => pageMeta("Why Ollie exists", "Most kids already use AI they didn't choose."),
+  head: () => pageMeta("Big questions, age-appropriate answers", "Meet Ollie, a learning assistant designed around your child's age and your guidance."),
   component: FactPage,
 });
-
-const LINES = [
-  "Most kids already use AI they didn't choose.",
-  "75% of kids aged 9 to 17 already use AI-generated search answers.",
-  "It's already normal. That doesn't mean it's safe.",
-  "But it doesn't have to be this way.",
-];
 
 function FactPage() {
   const navigate = useNavigate();
@@ -21,16 +14,11 @@ function FactPage() {
     <div className="bg-gradient-quiet min-h-screen">
       <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5 py-16">
         <div className="onboarding-content px-1">
-          {LINES.map((line, i) => {
-            return (
-              <p
-                key={i}
-                className={`${i === 0 ? "text-title" : i === 1 ? "text-support text-muted-foreground" : "text-body font-medium"} ${i > 0 ? "mt-4" : ""} text-foreground`}
-              >
-                {line}
-              </p>
-            );
-          })}
+          <p className="text-label mb-4 font-bold text-primary">Ollie</p>
+          <h1 className="text-title text-foreground">Big questions.<br /><span className="onboarding-highlight">Answers made for their age.</span></h1>
+          <p className="text-body mt-6 text-foreground">Children are curious. AI isn't always built with them in mind.</p>
+          <p className="text-body mt-4 text-foreground">Ollie takes a different approach: explanations at their level, boundaries for sensitive questions, and you in the loop.</p>
+          <p className="text-support mt-5 text-muted-foreground">A little discovery for them. More clarity for you.</p>
         </div>
         <div className="mt-10 flex justify-center">
           <Button variant="onboarding" size="icon"

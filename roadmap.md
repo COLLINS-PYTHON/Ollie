@@ -4,6 +4,7 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Research-informed opening replaces unsupported statistic; Meet Ollie clarifies learning-assistant role, trusted adults, shared use and AI limitations without changing setup order
 - Reference-led onboarding polish: green paywall checks, softer category icons, bullying/violent/sexual safety examples, three reusable topical display covers, warmer copy and restrained companions; name persistence, swipes, consent, plan selection and reduced motion checked on phone/tablet layouts
 - Entered-name privacy heading and actual provider list verified through consent; original owl/turtle/butterfly motion and themed paywall picture with exact requested heading verified on phones and large screens, including reduced motion
 - Corrected clouds to bright white on a light-blue surrounding wash, with slow independent drift; verified visually on phones and large screens

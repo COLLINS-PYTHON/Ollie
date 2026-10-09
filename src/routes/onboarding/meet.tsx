@@ -5,7 +5,7 @@ import ollie from "@/assets/ollie.png";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/meet")({
-  head: () => pageMeta("Meet Ollie", "Ollie turns kids' curiosity into a safe, fun learning experience."),
+  head: () => pageMeta("Meet Ollie", "An age-appropriate learning assistant, not a replacement for friends, family or trusted grown-ups."),
   component: MeetPage,
 });
 
@@ -31,7 +31,9 @@ function MeetPage() {
               <p className="text-body leading-relaxed text-foreground">
                 Little questions can lead to big discoveries. With Ollie, {"kids get "}<span className="onboarding-highlight">answers they understand</span>, a daily lesson to explore and a place to bring their picture ideas to life.
               </p>
-              <p className="text-support mt-3 text-muted-foreground">Their space to explore. Your place to stay in the loop.</p>
+              <p className="text-support mt-4 font-semibold text-foreground">A learning assistant, not a digital friend.</p>
+              <p className="text-support mt-2 text-muted-foreground">Ollie is here to explain, not to take the place of real people. For feelings, worries or personal advice, a trusted grown-up comes first.</p>
+              <p className="text-support mt-3 text-muted-foreground">Explore together, especially with younger children. AI can make mistakes, so important answers deserve a second look.</p>
             </div>
           </div>
       </main>
