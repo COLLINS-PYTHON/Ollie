@@ -1,23 +1,14 @@
-import { Tappable } from "./OnboardingScenery";
-import owl from "@/assets/char-owl.png";
-import turtle from "@/assets/char-turtle.png";
-import butterfly from "@/assets/char-butterfly.png";
+import reading from "@/assets/ollie-reading.png";
+import curious from "@/assets/ollie-curious.png";
+import resting from "@/assets/ollie-resting.png";
 
-/** Dimensional storybook companions with gentle, reduced-motion-aware movement. */
-export function OnboardingCompanions({ scene }: { scene: "reader" | "garden" }) {
+export const OLLIE_POSES = { reading, curious, resting };
+
+/** Contextual versions of the canonical mascot, never extra recurring characters. */
+export function OnboardingCompanions({ scene }: { scene: keyof typeof OLLIE_POSES }) {
   return (
-    <div className="onboarding-companions" aria-hidden="true">
-      {scene === "reader" ? (
-        <>
-          <Tappable src={owl} className="char char-main char-owl" />
-          <Tappable src={butterfly} className="char char-side char-flutter" />
-        </>
-      ) : (
-        <>
-          <Tappable src={turtle} className="char char-main char-turtle" />
-          <Tappable src={butterfly} className="char char-side char-flutter" />
-        </>
-      )}
+    <div className={`onboarding-companions onboarding-ollie-pose pose-${scene}`} aria-hidden="true">
+      <img src={OLLIE_POSES[scene]} alt="" width={420} height={420} decoding="async" draggable={false} className="contextual-ollie" />
     </div>
   );
 }

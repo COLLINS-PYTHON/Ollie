@@ -4,6 +4,7 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Contextual Ollie poses and expressive actions replace repeated companions; paywall uses an eight-second articulated butterfly-chasing clip with reaching jumps, inline phone/tablet playback, reduced-motion pause and faster 22s/28s cloud drift
 - Math & numbers now uses a school-age geometric discovery scene instead of preschool counting blocks, verified in interest selection and lesson preview
 - Annual paywall shows $99.99/year and $8.33/month equivalent; all 12 interest/display covers use immersive dimensional themed scenes, with clean selection and reference-style blue highlights/icons
 - Research-informed opening replaces unsupported statistic; Meet Ollie clarifies learning-assistant role, trusted adults, shared use and AI limitations without changing setup order

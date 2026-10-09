@@ -6,7 +6,7 @@ import { resolveAppEntry } from "@/lib/app-entry";
 import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
 import { OnboardingScenery } from "@/components/ollie/OnboardingScenery";
-import { OnboardingCompanions } from "@/components/ollie/OnboardingCompanions";
+import { OnboardingCompanions, OLLIE_POSES } from "@/components/ollie/OnboardingCompanions";
 
 export const Route = createFileRoute("/onboarding")({
   validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" ? { preview: true } : {}),
@@ -25,6 +25,11 @@ function OnboardingLayout() {
     const image = new Image();
     image.src = ollie;
     void image.decode().catch(() => {});
+    Object.values(OLLIE_POSES).forEach((src) => {
+      const pose = new Image();
+      pose.src = src;
+      void pose.decode().catch(() => {});
+    });
     if (preview) {
       loadProfile();
       loadOnboardingDraft();
@@ -52,8 +57,9 @@ function OnboardingLayout() {
   }, [pathname, ready, preview]);
 
   // Privacy and safety retain a quiet background. Light discovery steps share visible edge scenery.
-  const scenery = ["/onboarding", "/onboarding/", "/onboarding/interests", "/onboarding/priorities", "/onboarding/tone"].includes(pathname)
-    ? "paws" : ["/onboarding/fact", "/onboarding/meet", "/onboarding/age", "/onboarding/reading", "/onboarding/preview", "/onboarding/lessons", "/onboarding/try"].includes(pathname) ? "clouds" : null;
+  const scenery = ["/onboarding/fact", "/onboarding/age"].includes(pathname) ? "clouds"
+    : pathname === "/onboarding/preview" ? "flight"
+    : pathname === "/onboarding/priorities" ? "leaves" : null;
   return <div className="onboarding-theme onboarding-shell">{ready ? <>{scenery && <OnboardingScenery variant={scenery} />}<div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 
@@ -83,8 +89,9 @@ export function OnboardingSkeleton({
   ];
   const steps = chapterPaths[chapter - 1] ?? [];
   const progress = (Math.max(0, steps.indexOf(pathname)) + 1) / Math.max(1, steps.length);
-  const companion = ["/onboarding", "/onboarding/", "/onboarding/reading", "/onboarding/tone"].includes(pathname)
-    ? "reader" : ["/onboarding/age", "/onboarding/priorities", "/onboarding/screen-time"].includes(pathname) ? "garden" : null;
+  const companion = pathname === "/onboarding/reading" ? "reading"
+    : pathname === "/onboarding/age" ? "curious"
+    : pathname === "/onboarding/screen-time" ? "resting" : null;
   return (
     <div className="onboarding-frame mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden">
       <header className="onboarding-header flex items-center gap-4 px-6 pt-5">
