@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import chase from "@/assets/ollie-butterfly-chase.mp4.asset.json";
-import webm from "@/assets/ollie-butterfly-chase.webm.asset.json";
+import chase from "@/assets/ollie-chase-natural.mp4.asset.json";
+import webm from "@/assets/ollie-chase-natural.webm.asset.json";
 import poster from "@/assets/ollie-chase-frame.jpg";
 
 /** Decorative chase stays inside reserved space, above all plan controls. */
