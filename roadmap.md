@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Now
-- Finish yearly monthly-equivalent pricing, topic-matched interest artwork, clean selection states and reference-style blue highlights/icons
+- Finish yearly monthly-equivalent pricing, immersive themed topic scenes (not isolated objects), clean interest selection states and reference-style blue highlights/icons
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
