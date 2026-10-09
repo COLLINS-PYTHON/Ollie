@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Fix Ollie's resting/curious pose crops and paywall leg visibility and playback
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
