@@ -1,43 +1,27 @@
-import { useState } from "react";
 import cloud from "@/assets/char-cloud.png";
-import balloon from "@/assets/char-balloon.png";
-
-/** Storybook cloud picture; gently bounces when tapped. */
-function Cloud({ className }: { className: string; wide?: boolean }) {
-  return <Tappable src={cloud} className={className} />;
-}
-
-export function Tappable({ src, className }: { src: string; className: string }) {
-  const [pop, setPop] = useState(0);
-  return <img src={src} alt="" decoding="async" draggable={false} key={pop}
-    onClick={() => setPop((n) => n + 1)}
-    className={`${className} scenery-tap ${pop ? "scenery-pop" : ""}`} />;
-}
 
 /** Decorative, browser-safe artwork. Never sits over copy or interactive controls. */
-export function OnboardingScenery({ variant }: { variant: "clouds" | "paws" }) {
+export function OnboardingScenery({ variant }: { variant: "clouds" | "flight" | "leaves" }) {
   return (
     <div className={`onboarding-scenery onboarding-scenery-${variant}`} aria-hidden="true">
       {variant === "clouds" ? (
         <>
-          <Cloud className="onboarding-cloud onboarding-cloud-left" />
-          <Cloud className="onboarding-cloud onboarding-cloud-right" wide />
-          <Tappable src={balloon} className="onboarding-balloon" />
+          <img src={cloud} alt="" className="onboarding-cloud onboarding-cloud-left" />
+          <img src={cloud} alt="" className="onboarding-cloud onboarding-cloud-right" />
         </>
       ) : (
-        [0, 1, 2].map((n) => (
-          <svg key={n} className={`onboarding-paw-pair onboarding-paw-pair-${n}`} viewBox="0 0 70 100">
-            {["translate(3 4) rotate(-15 15 20)", "translate(31 52) rotate(12 15 20)"].map((transform) => (
-              <g key={transform} transform={transform}>
-                <ellipse cx="5" cy="12" rx="4" ry="5" />
-                <ellipse cx="13" cy="6" rx="4" ry="5" />
-                <ellipse cx="22" cy="7" rx="4" ry="5" />
-                <ellipse cx="29" cy="14" rx="4" ry="5" />
-                <path d="M7 26C7 21 13 16 17 16S28 22 28 27C28 32 22 31 18 29C14 31 7 32 7 26Z" />
-              </g>
-            ))}
+        variant === "flight" ? (
+          <svg className="onboarding-paper-flight" viewBox="0 0 96 80">
+            <path className="paper-fold-light" d="M7 42 88 8 58 70 42 49Z" />
+            <path className="paper-fold-blue" d="m7 42 35 7 46-41-33 47 3 15-16-21Z" />
+            <path className="paper-fold-line" d="m42 49 46-41" />
           </svg>
-        ))
+        ) : (
+          <svg className="onboarding-leaf-sprig" viewBox="0 0 96 140">
+            <path className="sprig-stem" d="M46 135C58 97 35 66 52 12" />
+            <path className="sprig-leaf" d="M48 88C12 86 10 57 14 50 39 49 54 67 48 88ZM48 62C76 63 87 42 82 31 59 29 48 42 48 62ZM49 34C28 27 32 8 40 3 57 12 59 23 49 34Z" />
+          </svg>
+        )
       )}
     </div>
   );

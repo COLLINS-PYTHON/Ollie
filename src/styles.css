@@ -902,3 +902,36 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 @keyframes char-flutter { 0%,100% { transform: translate(0,0) rotate(-6deg); } 20% { transform: translate(-40px,-18px) rotate(5deg) scaleX(.85); } 45% { transform: translate(-110px,-4px) rotate(-4deg); } 70% { transform: translate(-60px,-26px) rotate(6deg) scaleX(.88); } }
 @media (max-height: 700px) { .char-main { width: 84px; height: 84px; margin-left: -42px; } .onboarding-companions::before { width: 84px; margin-left: -42px; } }
 @media (prefers-reduced-motion: reduce) { .onboarding-companions::before { animation: none; } }
+
+/* Contextual mascot moments. Decorative objects do not intercept the setup flow. */
+.onboarding-ollie-pose { width: 200px; height: 142px; margin-top: 22px; }
+.onboarding-ollie-pose::before { width: 110px; height: 10px; margin-left: -55px; animation: none; opacity: .5; }
+.onboarding-ollie-pose::after { content: none; }
+.contextual-ollie { display: block; width: 100%; height: 100%; object-fit: contain; transform-origin: center bottom; animation: contextual-breathe 7s ease-in-out infinite; }
+.pose-reading .contextual-ollie { animation: ollie-reading-nod 8s ease-in-out infinite; }
+.pose-curious .contextual-ollie { animation: ollie-curious-tilt 9s ease-in-out infinite; }
+.pose-resting .contextual-ollie { animation-duration: 9s; }
+.onboarding-content:has(.onboarding-ollie-pose) { flex-shrink: 0; }
+.onboarding-paper-flight { position: absolute; right: 2%; top: 58%; width: 54px; height: 45px; animation: paper-sail 18s ease-in-out infinite; }
+.paper-fold-light { fill: var(--onboarding-cloud-stroke); }
+.paper-fold-blue { fill: var(--brand); fill-opacity: .45; }
+.paper-fold-line { fill: none; stroke: var(--card); stroke-width: 1.5; }
+.onboarding-leaf-sprig { position: absolute; left: -12px; bottom: 18%; width: 58px; height: 86px; transform-origin: bottom center; animation: sprig-sway 12s ease-in-out infinite; }
+.sprig-stem { fill: none; stroke: var(--accent-2); stroke-width: 2; opacity: .4; }
+.sprig-leaf { fill: var(--accent-2); fill-opacity: .17; }
+.onboarding-scenery .onboarding-cloud { width: 160px; height: 90px; filter: none; animation-duration: 22s; }
+.onboarding-scenery .onboarding-cloud-right { animation-duration: 28s; }
+.onboarding-scenery .onboarding-cloud-left { left: -88px; top: 36%; }
+.onboarding-scenery .onboarding-cloud-right { right: -100px; top: 78%; }
+@keyframes contextual-breathe { 50% { scale: 1.012; } }
+@keyframes ollie-reading-nod { 0%,35%,75%,100% { transform: none; } 48%,62% { transform: rotate(1.5deg) translateY(2px); } }
+@keyframes ollie-curious-tilt { 0%,30%,80%,100% { transform: none; } 48%,62% { transform: rotate(-3deg); } }
+@keyframes paper-sail { 50% { transform: translate(-12px,-9px) rotate(-6deg); } }
+@keyframes sprig-sway { 50% { rotate: 4deg; } }
+@media (min-width: 768px) { .onboarding-paper-flight { right: 15%; } .onboarding-leaf-sprig { left: 14%; } .onboarding-scenery .onboarding-cloud-left { left: 5%; } .onboarding-scenery .onboarding-cloud-right { right: 5%; } }
+@media (max-height: 700px) { .onboarding-ollie-pose { height: 112px; margin-top: 16px; } }
+@media (prefers-reduced-motion: reduce) { .onboarding-ollie-pose .contextual-ollie, .onboarding-paper-flight, .onboarding-leaf-sprig, .onboarding-scenery img { animation: none; } }
+.ollie-chase-stage { position: relative; height: 212px; margin-top: 24px; overflow: hidden; pointer-events: none; }
+.ollie-chase-stage.is-compact { height: 144px; margin: 0 0 16px; }
+.ollie-chase-video { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; mask-image: radial-gradient(ellipse at center, var(--navy) 52%, transparent 78%); }
+@media (max-height: 700px) { .ollie-chase-stage { height: 176px; margin-top: 18px; } .ollie-chase-stage.is-compact { height: 128px; } }

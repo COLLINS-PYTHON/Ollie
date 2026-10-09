@@ -4,7 +4,7 @@ import { Check, ChevronLeft, X } from "lucide-react";
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
 import { Button } from "@/components/ui/button";
-import learningWorld from "@/assets/learning-world.jpg";
+import { OllieChase } from "@/components/ollie/OllieChase";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 import { SUBSCRIPTION_PRICES, yearlyMonthlyEquivalent } from "@/lib/subscription-prices";
 
@@ -40,7 +40,7 @@ function PaywallPage() {
         <Button variant="control" size="icon" type="button" aria-label="Back" onClick={() => router.history.back()} className="flex size-10 items-center justify-center rounded-pill bg-card shadow-card">
           <ChevronLeft className="size-5" />
         </Button>
-        <img src={learningWorld} width={1280} height={720} alt="An open book becomes a world of discovery, with an owl, a turtle and a rocket" className="paywall-world mt-8 w-full object-contain" />
+        <OllieChase />
         <h1 className="text-title mt-8 text-center text-foreground">We want you to try Ollie for free</h1>
         <p className="text-support mt-3 text-center text-muted-foreground">7 days of questions, discoveries and creativity, made for {name}.</p>
         <div className="relative mx-auto mt-5 flex items-center gap-2 rounded-pill bg-card px-5 py-3 shadow-card">
@@ -59,7 +59,7 @@ function PaywallPage() {
             <div className="flex shrink-0 items-center justify-between px-6 pb-3"><DrawerTitle className="text-body font-bold text-foreground">Start {name}'s safe trial</DrawerTitle><Button variant="control" size="icon" aria-label="Close plan picker" onClick={() => setSheet(false)} className="size-8 rounded-pill bg-secondary"><X className="size-4" /></Button></div>
             <DrawerDescription className="sr-only">Choose monthly or yearly billing for your seven-day trial.</DrawerDescription>
             <div className="paywall-scroll min-h-0 overflow-y-auto overscroll-contain px-6 pb-4">
-             <img src={learningWorld} width={1280} height={720} loading="lazy" alt="A book opening into a world of learning" className="mb-4 w-full object-contain" />
+             <OllieChase compact />
             <div className="flex items-center justify-between rounded-control bg-card p-3">
               <div><p className="text-label text-foreground">Today</p><p className="text-support text-muted-foreground">Free access starts</p></div>
               <div className="mx-3 h-0.5 flex-1 bg-primary/30" />
