@@ -873,3 +873,13 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
     linear-gradient(180deg, color-mix(in oklab,var(--brand) 7%,var(--card)) 0%, var(--card) 70%);
   background-attachment: fixed;
 }
+
+/* Tappable storybook scenery */
+.scenery-tap { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; }
+.onboarding-companions { pointer-events: none; }
+.scenery-pop { animation: scenery-pop 520ms cubic-bezier(.34,1.56,.64,1) !important; }
+@keyframes scenery-pop { 0% { scale: 1; } 35% { scale: 1.16; rotate: -6deg; } 70% { scale: .96; rotate: 3deg; } 100% { scale: 1; rotate: 0deg; } }
+.onboarding-cloud { object-fit: contain; filter: drop-shadow(0 10px 14px color-mix(in oklab,var(--brand) 10%,transparent)); }
+.onboarding-balloon { position: absolute; top: 14%; right: 8%; width: 46px; height: auto; animation: balloon-drift 11s ease-in-out infinite; filter: drop-shadow(0 8px 10px color-mix(in oklab,var(--brand) 14%,transparent)); }
+@keyframes balloon-drift { 0%,100% { transform: translate(0,0) rotate(-3deg); } 50% { transform: translate(-22px,-16px) rotate(3deg); } }
+@media (prefers-reduced-motion: reduce) { .onboarding-balloon, .scenery-pop { animation: none !important; } }

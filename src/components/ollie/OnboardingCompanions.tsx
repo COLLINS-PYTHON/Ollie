@@ -1,3 +1,4 @@
+import { Tappable } from "./OnboardingScenery";
 import owl from "@/assets/char-owl.png";
 import turtle from "@/assets/char-turtle.png";
 import butterfly from "@/assets/char-butterfly.png";
@@ -8,13 +9,13 @@ export function OnboardingCompanions({ scene }: { scene: "reader" | "garden" }) 
     <div className="onboarding-companions" aria-hidden="true">
       {scene === "reader" ? (
         <>
-          <img src={owl} alt="" width={816} height={816} decoding="async" className="char char-main char-owl" />
-          <img src={butterfly} alt="" width={816} height={816} decoding="async" className="char char-side char-flutter" />
+          <Tappable src={owl} className="char char-main char-owl" />
+          <Tappable src={butterfly} className="char char-side char-flutter" />
         </>
       ) : (
         <>
-          <img src={turtle} alt="" width={816} height={816} decoding="async" className="char char-main char-turtle" />
-          <img src={butterfly} alt="" width={816} height={816} decoding="async" className="char char-side char-flutter" />
+          <Tappable src={turtle} className="char char-main char-turtle" />
+          <Tappable src={butterfly} className="char char-side char-flutter" />
         </>
       )}
     </div>
