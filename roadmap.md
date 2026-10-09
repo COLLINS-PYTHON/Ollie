@@ -4,6 +4,7 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Restored complete resting/curious poses from master artwork; removed chase mask and added phone-compatible MP4/autoplay retry, verified moving main and drawer clips at 390/768 with reduced-motion pause
 - Removed the paywall chase's grey studio backdrop and isolated panel; verified natural screen blending and playback on phone/tablet sizes
 - Contextual Ollie poses and expressive actions replace repeated companions; paywall uses an eight-second articulated butterfly-chasing clip with reaching jumps, inline phone/tablet playback, reduced-motion pause and faster 22s/28s cloud drift
 - Math & numbers now uses a school-age geometric discovery scene instead of preschool counting blocks, verified in interest selection and lesson preview
