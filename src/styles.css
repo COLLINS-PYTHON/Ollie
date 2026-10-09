@@ -933,5 +933,5 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) { .onboarding-ollie-pose .contextual-ollie, .onboarding-paper-flight, .onboarding-leaf-sprig, .onboarding-scenery img { animation: none; } }
 .ollie-chase-stage { position: relative; height: 212px; margin-top: 24px; overflow: hidden; pointer-events: none; }
 .ollie-chase-stage.is-compact { height: 144px; margin: 0 0 16px; }
-.ollie-chase-video { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; mask-image: radial-gradient(ellipse at center, var(--navy) 52%, transparent 78%); }
+.ollie-chase-video { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
 @media (max-height: 700px) { .ollie-chase-stage { height: 176px; margin-top: 18px; } .ollie-chase-stage.is-compact { height: 128px; } }
