@@ -37,7 +37,7 @@ function OnboardingLayout() {
       loadProfile();
       loadOnboardingDraft();
       setReady(true);
-      return () => { active = false; };
+      return () => { active = false; window.clearTimeout(warm); };
     }
     void resolveAppEntry().then((to) => {
       if (!active) return;
@@ -45,7 +45,7 @@ function OnboardingLayout() {
       loadOnboardingDraft();
       setReady(true);
     }).catch(() => { if (active) { loadOnboardingDraft(); setReady(true); } });
-    return () => { active = false; };
+    return () => { active = false; window.clearTimeout(warm); };
   }, [navigate, preview]);
 
   useEffect(() => {
