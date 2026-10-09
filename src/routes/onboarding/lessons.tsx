@@ -35,7 +35,9 @@ function LessonsPage() {
   const navigate = useNavigate();
   const name = childName(onboardingState.name);
   let picks = INTERESTS.filter((i) => onboardingState.interests.includes(i.id)).slice(0, 3);
-  if (picks.length === 0) picks = INTERESTS.slice(0, 3);
+  const pictured = INTERESTS.filter((i) => PREVIEW_TOPICS[i.id]);
+  picks = [...picks.filter((i) => PREVIEW_TOPICS[i.id]), ...picks.filter((i) => !PREVIEW_TOPICS[i.id])];
+  for (const extra of pictured) if (picks.length < 3 && !picks.includes(extra)) picks.push(extra);
   const slots = picks.length === 1 ? [FAN[1]] : picks.length === 2 ? [FAN[0], FAN[2]] : FAN;
 
   return (
