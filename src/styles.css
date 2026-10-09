@@ -844,3 +844,22 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) {
   .onboarding-theme [aria-pressed="true"] .onboarding-interest-icon, .companion-page { animation: none; }
 }
+
+/* Storybook companions */
+.onboarding-companions { position: relative; height: 128px; }
+.char { position: absolute; bottom: 0; object-fit: contain; filter: drop-shadow(0 8px 10px color-mix(in oklab,var(--brand) 14%,transparent)); }
+.char-main { left: 50%; width: 124px; height: 124px; margin-left: -62px; animation: char-bob 5s ease-in-out infinite; }
+.char-side { right: 18px; bottom: 58px; width: 54px; height: 54px; }
+.char-flutter { animation: char-flutter 7s ease-in-out infinite; }
+.char-turtle { animation: char-stroll 8s ease-in-out infinite; }
+@keyframes char-bob { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-5px) rotate(-2deg); } }
+@keyframes char-stroll { 0%,100% { transform: translateX(-14px); } 50% { transform: translateX(14px) translateY(-3px); } }
+@keyframes char-flutter { 0%,100% { transform: translate(0,0) rotate(-6deg) scaleX(1); } 25% { transform: translate(-30px,-10px) rotate(4deg) scaleX(.9); } 50% { transform: translate(-60px,4px) rotate(-3deg); } 75% { transform: translate(-24px,-14px) rotate(6deg) scaleX(.92); } }
+@media (max-height: 700px) { .onboarding-companions { height: 96px; } .char-main { width: 92px; height: 92px; margin-left: -46px; } .char-side { bottom: 44px; } }
+@media (prefers-reduced-motion: reduce) { .char { animation: none !important; } }
+
+/* KinderGPT-style soft icons: thin line icon in a white circle */
+.onboarding-theme .onboarding-interest-icon { background: var(--card) !important; border: 1px solid var(--onboarding-line); border-radius: var(--radius-pill); box-shadow: var(--elev-card); color: var(--lesson-ink, var(--brand)); background-image: none !important; }
+.onboarding-theme .onboarding-interest-icon svg { filter: none !important; color: var(--lesson-ink, var(--brand)); }
+.onboarding-theme [aria-pressed="true"] .onboarding-interest-icon { animation: icon-pop var(--duration-element, 320ms) cubic-bezier(.34,1.56,.64,1); background: color-mix(in oklab,var(--lesson-ink, var(--brand)) 10%,var(--card)) !important; }
+@keyframes icon-pop { 0% { transform: scale(1); } 45% { transform: scale(1.14); } 100% { transform: scale(1); } }
