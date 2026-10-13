@@ -16,6 +16,7 @@ import { loadChat, saveChat, type ChatMessage } from "@/lib/chat-store";
 import { addCookies, cookiesLeft, JARS, loadBalance, saveBalance, type Balance } from "@/lib/picture-store";
 import { completions, prefs, setPrefs, streakDays, type SlideshowPrefs } from "@/lib/slideshow-store";
 import { minutesToday } from "@/lib/usage-store";
+import { SUBSCRIPTION_PRICES } from "@/lib/subscription-prices";
 import { INTERESTS } from "@/lib/interests";
 import { checkPin, clearFails, deleteCloudData, deviceKey, listDevices, revokeDevice, signOutHere, type DeviceRow, hasPin, lockedSeconds, PIN_LOCK, pushAll, recordFail, sealPin } from "@/lib/cloud-sync";
 
@@ -533,7 +534,7 @@ function ParentDashboard() {
 
       {sheet === "subscription" && (
         <Sheet title="Subscription" onClose={() => setSheet(null)}>
-          <p className="text-body text-foreground">{onboardingState.plan === "monthly" ? "Monthly, $11.99 a month" : "Yearly, $99.99 a year"}</p>
+          <p className="text-body text-foreground">{onboardingState.plan === "monthly" ? `Monthly, $${SUBSCRIPTION_PRICES.monthly.toFixed(2)} a month` : `Yearly, $${SUBSCRIPTION_PRICES.yearly.toFixed(2)} a year`}</p>
           <p className="text-support text-muted-foreground">Payments are not connected yet. No subscription has been started and nothing has been charged.</p>
           <div className="mt-4 flex flex-col gap-2.5">
             <Button type="button" disabled className="rounded-pill bg-primary py-3 text-button text-primary-foreground">Manage subscription</Button>

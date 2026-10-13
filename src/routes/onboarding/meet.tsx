@@ -20,7 +20,7 @@ function MeetPage() {
   return (
     <div className="bg-gradient-hello min-h-screen">
       <main className="meet-content mx-auto flex min-h-[100svh] w-full max-w-md flex-col items-center px-6 pb-32 pt-20 text-center">
-        <h1 className="text-title text-foreground">Meet Ollie</h1>
+        <h1 className="text-title text-foreground">Meet Ollie, your child's AI tutor & creative guide</h1>
         <div className="relative mt-8 flex size-52 items-center justify-center">
           <div className={`mascot-reveal absolute inset-0 ${step >= 2 ? "is-visible" : ""}`}>
               <img src={ollie} width={208} height={208} fetchPriority="high" loading="eager" alt="Ollie the puppy" className={`size-52 object-contain ${step >= 3 ? "ollie-gentle-idle" : ""}`} />
@@ -29,11 +29,11 @@ function MeetPage() {
           <div className={`welcome-card mt-6 min-h-28 w-full rounded-card bg-card p-5 shadow-card ${step >= 3 ? "is-visible" : ""}`}>
             <div className={`welcome-copy ${step >= 4 ? "is-visible" : ""}`}>
               <p className="text-body leading-relaxed text-foreground">
-                Little questions can lead to big discoveries. With Ollie, {"kids get "}<span className="onboarding-highlight">answers they understand</span>, a daily lesson to explore and a place to bring their picture ideas to life.
+                Ollie transforms screen time into active learning. Kids can ask curious questions, explore an interactive daily lesson, and spend daily picture cookies to bring their imaginations to life through safe AI artwork.
               </p>
               <p className="text-support mt-4 font-semibold text-foreground">A learning assistant, not a digital friend.</p>
               <p className="text-support mt-2 text-muted-foreground">Ollie is here to explain, not to take the place of real people. For feelings, worries or personal advice, a trusted grown-up comes first.</p>
-              <p className="text-support mt-3 text-muted-foreground">Explore together, especially with younger children. AI can make mistakes, so important answers deserve a second look.</p>
+              <details className="mt-3 text-support text-muted-foreground"><summary className="cursor-pointer text-primary">A note for parents</summary><p className="mt-2">Explore together, especially with younger children. AI can make mistakes, so important answers deserve a second look.</p></details>
             </div>
           </div>
       </main>

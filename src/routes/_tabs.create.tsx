@@ -331,6 +331,7 @@ function CreateScreen() {
 
       <section className="mt-8">
         <h2 className="text-body font-bold text-foreground">{name}'s fridge</h2>
+        <p className="mt-2 text-support text-primary">You get 10 fresh picture cookies every morning!</p>
         {pictures.length === 0 ? (
           <p className="mt-2 text-support text-muted-foreground">Your pictures will hang here.</p>
         ) : (

@@ -41,9 +41,9 @@ function TryPage() {
 
   return (
     <div className="bg-gradient-sunrise min-h-screen">
-      <OnboardingSkeleton chapter={4} title="Try it yourself" cta="Continue" onContinue={() => navigate({ to: "/onboarding/trust" })}>
+      <OnboardingSkeleton chapter={4} title="Explore Ollie's guardrails yourself" cta="Continue" onContinue={() => navigate({ to: "/onboarding/trust" })}>
         <p className="text-body text-foreground">
-          Try Ollie for yourself. Ask a question, make a picture, and see exactly what {name} will experience.
+          Take the driver's seat before {name} does. Explore the sample search and picture previews below. These are illustrations, not live AI tests.
         </p>
         <div className="mt-5 grid grid-cols-2 gap-3">
           {([

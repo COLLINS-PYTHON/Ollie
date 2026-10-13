@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, retainSearchParams, useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { loadOnboardingDraft, loadProfile, saveOnboardingStep } from "@/lib/onboarding-store";
 import { resolveAppEntry } from "@/lib/app-entry";
 import { Button } from "@/components/ui/button";
@@ -86,17 +86,20 @@ export function OnboardingSkeleton({
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const chapterPaths = [
     ["/onboarding", "/onboarding/"],
-    ["/onboarding/age"],
+    ["/onboarding/age", "/onboarding/worries", "/onboarding/assurance"],
     ["/onboarding/reading"],
-    ["/onboarding/preview", "/onboarding/interests", "/onboarding/lessons", "/onboarding/worries", "/onboarding/assurance", "/onboarding/screen-time", "/onboarding/priorities", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin", "/onboarding/account"],
+    ["/onboarding/preview", "/onboarding/interests", "/onboarding/lessons", "/onboarding/screen-time", "/onboarding/priorities", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin", "/onboarding/account"],
   ];
   const steps = chapterPaths[chapter - 1] ?? [];
   const progress = (Math.max(0, steps.indexOf(pathname)) + 1) / Math.max(1, steps.length);
   const companion = pathname === "/onboarding/reading" ? "reading"
     : pathname === "/onboarding/age" ? "curious"
     : pathname === "/onboarding/screen-time" ? "resting" : null;
+  const touch = useRef<{ x: number; y: number } | null>(null);
   return (
-    <div className="onboarding-frame mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden">
+    <div className="onboarding-frame mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden"
+      onTouchStart={(event) => { const target = event.target; if (target instanceof Element && target.closest("input, textarea, button, [role=listbox], .safety-examples")) return; const point = event.touches[0]; if (point) touch.current = { x: point.clientX, y: point.clientY }; }}
+      onTouchEnd={(event) => { const start = touch.current; touch.current = null; const end = event.changedTouches[0]; if (!start || !end) return; const dx = end.clientX - start.x, dy = end.clientY - start.y; if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.5) return; if (dx < 0 && !ctaDisabled) onContinue?.(); else if (dx > 0) router.history.back(); }}>
       <header className="onboarding-header flex items-center gap-4 px-6 pt-5">
         <Button variant="control" size="icon"
           type="button"
