@@ -25,6 +25,7 @@ function AssurancePage() {
   const [selected, setSelected] = useState(0);
   const nextRef = useRef<(() => void) | null>(null);
   const context = SAFETY_CONTEXTS[selected] ?? SAFETY_CONTEXTS[0];
+  if (!context) return null;
 
   return (
     <div className="onboarding-assurance bg-gradient-lilac min-h-screen">

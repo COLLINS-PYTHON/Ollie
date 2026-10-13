@@ -935,3 +935,7 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .ollie-chase-stage.is-compact { height: 144px; margin: 0 0 16px; }
 .ollie-chase-video { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
 @media (max-height: 700px) { .ollie-chase-stage { height: 176px; margin-top: 18px; } .ollie-chase-stage.is-compact { height: 128px; } }
+
+.trial-emphasis { animation: trial-emphasis 3.5s ease-in-out infinite; }
+@keyframes trial-emphasis { 0%,100% { box-shadow: var(--elev-card); } 50% { box-shadow: 0 0 0 5px color-mix(in oklab, var(--brand) 14%, transparent), var(--elev-card); } }
+@media (prefers-reduced-motion: reduce) { .trial-emphasis { animation: none; } }

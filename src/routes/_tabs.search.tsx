@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowUp, Mic, Volume2 } from "lucide-react";
+import { ArrowUp, Keyboard, Mic, Volume2 } from "lucide-react";
+import { starterInterests, voiceFirst } from "@/lib/child-interactions";
 import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { askOllie } from "@/lib/search.functions";
 import { LessonCover } from "@/components/ollie/LessonCover";
@@ -75,11 +76,14 @@ function SearchChat() {
   const [listening, setListening] = useState(false);
   const [avatarNod, setAvatarNod] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
+  const [typing, setTyping] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<RecognitionLike | null>(null);
   const nodTimerRef = useRef<number | null>(null);
   const spokenRef = useRef<Set<string>>(new Set());
   const child = childProfile();
+  const largeVoice = voiceFirst(child.age) && voiceSupported;
+  const starters = starterInterests(child.interests);
   const autoSpeak = child.readingLevel === "none" || child.readingLevel === "sounding";
 
   useEffect(() => {
@@ -116,8 +120,8 @@ function SearchChat() {
     }
   }, [messages, autoSpeak]);
 
-  const send = async () => {
-    const question = input.trim();
+  const send = async (text = input) => {
+    const question = text.trim();
     if (!question || busy) return;
     setInput("");
     const userMsg: ChatMessage = {
@@ -238,6 +242,9 @@ function SearchChat() {
             <p className="text-title max-w-[280px] text-foreground">
               Hi {child.name}! What are you curious about today?
             </p>
+            <div className="flex max-w-sm flex-wrap justify-center gap-2">
+              {starters.map(({ id, label, sample, icon: Icon }) => <Button key={id} variant="secondary" onClick={() => void send(sample)} className="h-auto min-h-12 gap-2 whitespace-normal rounded-pill px-4 py-3 text-support text-foreground"><Icon className="size-5 shrink-0 text-primary" />{label}</Button>)}
+            </div>
           </div>
         ) : (
           <div className="flex flex-col gap-1.5">
@@ -297,6 +304,11 @@ function SearchChat() {
 
       {/* iMessage-style input bar */}
       <div className="search-composer relative z-10 px-3 pt-2">
+        {largeVoice && <div className="mb-2 flex items-center justify-center gap-4">
+          <Button variant="onboarding" size="icon" aria-label={listening ? "Stop listening" : "Talk to Ollie"} aria-pressed={listening} onClick={() => listening ? stopListening() : startListening()} disabled={busy} className={`size-20 rounded-pill shadow-card ${listening ? "ring-pulse" : ""}`}><Mic className="size-9" /></Button>
+          {!typing && !input && <Button variant="ghost" size="icon" aria-label="Type a question" onClick={() => setTyping(true)} className="size-11 rounded-pill text-muted-foreground"><Keyboard className="size-5" /></Button>}
+        </div>}
+        {(!largeVoice || typing || input) && <>
         <div className="flex items-end gap-2">
           <div className="flex min-w-0 flex-1 items-center rounded-[22px] border border-surface-2 bg-card px-4 py-2.5">
             <input
@@ -310,7 +322,7 @@ function SearchChat() {
               className="min-w-0 flex-1 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground"
             />
           </div>
-          {voiceSupported && !canSend && (
+          {voiceSupported && !largeVoice && !canSend && (
             <Button variant="secondary" size="icon"
               type="button"
               aria-label={listening ? "Listening, release to stop" : "Hold to talk"}
@@ -327,13 +339,14 @@ function SearchChat() {
           <Button size="icon"
             type="button"
             aria-label="Send question"
-            onClick={send}
+            onClick={() => void send()}
             disabled={!canSend}
             className="flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-primary-foreground transition-all duration-tap active:scale-95 disabled:bg-surface-2 disabled:text-muted-foreground"
           >
             <ArrowUp className="size-4" strokeWidth={2.5} />
           </Button>
         </div>
+        </>}
         {!voiceSupported && (
           <p className="mt-2 text-center text-support text-muted-foreground">
             Voice search needs a browser that supports speech

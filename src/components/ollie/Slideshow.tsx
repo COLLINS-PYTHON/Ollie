@@ -10,6 +10,7 @@ import { quizOptions, quizText, type Band } from "@/lib/slideshow/types";
 import { parentSettings } from "@/lib/onboarding-store";
 import { Volume2, VolumeX } from "lucide-react";
 import { LessonArt } from "@/components/ollie/LessonArt";
+import { canSwipeLesson } from "@/lib/child-interactions";
 import { Button } from "@/components/ui/button";
 
 export type SlideshowChild = { name: string; band: Band; interests: string[]; needsReadAloud: boolean };
@@ -42,6 +43,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
   const [rewarded, setRewarded] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const timer = useRef<number | null>(null);
+  const touch = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => () => { if (timer.current) window.clearTimeout(timer.current); }, []);
 
@@ -214,7 +216,9 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
+    <div className="fixed inset-0 z-50 flex flex-col bg-card" style={tint}
+      onTouchStart={(event) => { const target = event.target; if (target instanceof Element && target.closest("button")) return; const point = event.touches[0]; if (point) touch.current = { x: point.clientX, y: point.clientY }; }}
+      onTouchEnd={(event) => { const start = touch.current; touch.current = null; const end = event.changedTouches[0]; if (!start || !end) return; const dx = end.clientX - start.x, dy = end.clientY - start.y; if (dx < -70 && Math.abs(dx) > Math.abs(dy) * 1.5 && canSwipeLesson(current.kind, status)) advance(); }}>
       <div className="slide-tint flex flex-1 flex-col">
         <div className="flex items-center justify-between px-5 pt-12">
           <p className="text-label uppercase tracking-wide text-muted-foreground">{day.label}</p>

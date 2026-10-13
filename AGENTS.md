@@ -11,13 +11,13 @@
 - MCP server lives in src/lib/mcp (public, no auth; tools use hardcoded data only) — user explicitly chose public access; never add service-role access there.
 - Design tokens (Ollie colors, radii card/control/pill, shadow-card/sheet, duration-tap/element/reveal, text-title/body/support/label/button) live in src/styles.css; components use only these. Why: every screen follows the spec from one source.
 - Tab screens live under `_tabs`; `/` resolves completed saved/signed-in profiles to Search and unfinished setup to its resume step; onboarding redirects completed families to Search. Why: returning families never repeat setup and child screens hydrate their name before rendering.
-- Daily slideshow content lives in `src/lib/slideshow/` as hand-built per-category packs (types.ts, pack-*.ts, library.ts) and is never generated at runtime; a quiz's options/hint/why may be band-keyed when its question is. Why: marginal cost per child stays near zero and answers always match the question the child actually sees.
+- Slideshow packs are shared, band-keyed and never generated per viewer. Why: reusable lessons and matching quiz answers keep costs low.
 - The slideshow takes over the screen from the `_tabs` layout until the day is marked done in `src/lib/slideshow-store.ts`; screens never render it inline. Why: the spec requires the daily lesson to be finished before anything else.
 - Setup drafts and the resume step persist locally, excluding PIN fields; handoff marks completion and clears the draft; pricing-or-later resume goes to trust. Why: closed-app setup resumes without treating incomplete drafts as completed profiles or reopening on a price ask.
 - Screen time is tracked per surface (Search, Create) in src/lib/usage-store.ts; the slideshow is never counted. Why: spec excludes the lesson from the limit.
 - Signed-in parents' setup and child progress sync to `accounts`/`children` via src/lib/cloud-sync.ts (pushAll from the _tabs layout, pullAll on /login); localStorage stays the working copy. Why: one simple sync path until per-feature tables are needed.
 - The parent PIN is only stored as a SHA-256 hash (pinHash); check it with checkPin. Why: spec requires PINs never be stored readable.
-- The one exception to hand-built lessons is the custom-topic lesson, written once by AI during the Building finale (src/lib/custom-lesson.functions.ts) and stored in src/lib/custom-lesson-store.ts; the slideshow plays it first, then returns to the library. Why: spec makes parent-typed topics real-time.
+- Custom parent topics are generated once during Building and played before the shared library. Why: typed topics need bespoke content.
 - Signed-in devices live in the `devices` table; remote log out sets `revoked`, and that device wipes itself on its next sync. Why: no server push in v1.
 - LessonArt keeps SVG playback; LessonCover uses topic covers, shared interest-art pictures, then SVG. Interests reuse category pictures. Why: matching art without generation costs.
 - Prices derive from subscription-prices, yearly equivalent divides by 12. Why: consistent labels.
@@ -32,3 +32,6 @@
 - Keep Search's iMessage transcript and transport when polishing layout. Why: presentation fixes must preserve conversations.
 - Orbs use CrispOrb at actual size and device resolution (max 4x); pre-optimize thinking-orbs/engine in Vite. Why: crisp dots and stable React identity during lazy navigation.
 - Failed module loads refresh once per cooldown; retry refreshes. Why: discard stale chunks without loops or data loss.
+
+- child-interactions centralizes tested voice age and starter rules; swipes never bypass open quizzes. Why: consistent safe navigation.
+- Onboarding puts worries/safety after age; Continue advances contextual carousel first. Why: each tap changes the explanation.

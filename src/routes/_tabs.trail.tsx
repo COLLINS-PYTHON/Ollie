@@ -58,8 +58,8 @@ function Trail() {
           if (!point) return null;
           return <li key={done?.completion.id ?? `node-${i}`} className="trail-arrive absolute flex w-32 -translate-x-1/2 flex-col items-center text-center" style={{ left: `${point.x / 340 * 100}%`, top: point.y - 32 }}>
             {node.jar ? <><Jar filled={filled} /><p className="text-support font-bold text-foreground">+{JAR_BONUS} cookies</p></> : <>
-              <div className={`flex size-16 items-center justify-center rounded-pill ${done ? `glossy trail-node bg-gradient-to-b ${category?.tile ?? "from-cat-space to-cat-space-deep"}` : paused ? "border-2 border-dashed border-primary/30 bg-card" : "border-2 border-border bg-card"}`}>
-                {done ? <Icon className="size-7 text-primary-foreground" /> : paused ? <Pause className="size-5 text-muted-foreground" /> : <LockKeyhole className="size-5 text-muted-foreground/60" />}
+              <div className={`flex size-16 items-center justify-center rounded-pill ${done ? `glossy trail-node bg-gradient-to-b ${category?.tile ?? "from-cat-space to-cat-space-deep"}` : paused ? "border-2 border-dashed border-primary/30 bg-card" : node.day === cycleStart + filled + 1 ? "trial-emphasis border-2 border-primary bg-primary/10" : "border-2 border-border bg-card"}`}>
+                {done ? <Icon className="size-7 text-primary-foreground" /> : paused ? <Pause className="size-5 text-muted-foreground" /> : node.day === cycleStart + filled + 1 ? <Rocket className="size-7 text-primary" /> : <LockKeyhole className="size-5 text-muted-foreground/60" />}
               </div>
               <p className="trail-stop-label text-support mt-2 font-bold text-foreground">{paused ? "Paused" : `Day ${done?.learningDay ?? node.day}`}</p>
               {done && <p className="trail-stop-label text-label mt-1 text-muted-foreground">{done.completion.label}</p>}
