@@ -36,7 +36,7 @@ function PrioritiesPage() {
   return (
     <div className="bg-gradient-mist min-h-screen">
       <OnboardingSkeleton chapter={4} title={`What matters most for ${name}?`} cta="Continue" ctaDisabled={picked.length === 0} onContinue={() => navigate({ to: "/onboarding/tone" })}>
-        <p className="text-support mb-5 text-center text-muted-foreground">What would you love to see {name} discover? Choose everything that feels right.</p>
+        <p className="text-support mb-5 text-center text-muted-foreground">Select your primary goals for {name}'s development.</p>
         <div className="flex flex-col gap-3" role="group" aria-label="What matters most">
           {OPTIONS.map(({ id, label, icon: Icon }) => {
             const on = picked.includes(id);

@@ -15,14 +15,14 @@ export const Route = createFileRoute("/onboarding/paywall")({
 
 /* Owner-approved subscription prices. */
 const PRICES = { monthly: `$${SUBSCRIPTION_PRICES.monthly.toFixed(2)} / month`, yearly: `$${SUBSCRIPTION_PRICES.yearly.toFixed(2)} / year` };
-const FEATURES = ["Safe search", "Daily educational slideshows", "Age-appropriate content", "Age-appropriate image generation", "Full parent dashboard", "Weekly progress reports"];
+const FEATURES = ["Safe search", "Daily educational slideshows", "Age-appropriate content", "Age-appropriate image generation", "Customizable reply tone", "Full parent dashboard", "Weekly progress reports"];
 
 function PaywallPage() {
   const navigate = useNavigate();
   const router = useRouter();
   const name = childName(onboardingState.name);
   const [sheet, setSheet] = useState(false);
-  const [plan, setPlan] = useState(onboardingState.plan);
+  const [plan, setPlan] = useState<"monthly" | "yearly">("yearly");
   const [values, setValues] = useState(0);
 
   useEffect(() => {
@@ -42,12 +42,12 @@ function PaywallPage() {
         </Button>
         <OllieChase />
         <h1 className="text-title mt-8 text-center text-foreground">We want you to try Ollie for free</h1>
-        <p className="text-support mt-3 text-center text-muted-foreground">7 days of questions, discoveries and creativity, made for {name}.</p>
+        <p className="text-support mt-3 text-center text-muted-foreground">Made just for {name}.</p>
         <div className="relative mx-auto mt-5 flex items-center gap-2 rounded-pill bg-card px-5 py-3 shadow-card">
           <Check className="relative size-5 text-success" strokeWidth={2.2} />
           <span className="text-button relative text-foreground">No Payment Due Now</span>
         </div>
-        <p className="text-support mt-5 text-center text-muted-foreground">You'll be able to see {name}'s weekly report during your trial.</p>
+        <p className="text-support mt-5 text-center text-muted-foreground">Enjoy complete access to interactive tutoring, daily learning trails, and daily creative picture cookies. 100% free for 7 days.</p>
       </div>
         <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
           <DrawerTrigger asChild><Button variant="onboarding" size="onboarding" type="button" className="text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
@@ -70,10 +70,10 @@ function PaywallPage() {
             </ul>
               <div className={`paywall-pricing ${values >= 4 ? "is-visible" : ""}`}>
                 <div className="mt-4 grid grid-cols-2 gap-3">
-                  {(["monthly", "yearly"] as const).map((p) => (
+                  {(["yearly", "monthly"] as const).map((p) => (
                     <Button key={p} type="button" aria-pressed={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }}
-                      variant="option" className={`plan-option relative flex flex-col items-start gap-1 rounded-control bg-card p-4 text-left ${plan === p ? "ring-2 ring-primary" : ""}`}>
-                      {p === "yearly" && <span className="text-label absolute -top-2.5 right-3 rounded-pill bg-gold px-2 py-0.5 text-foreground">30% off</span>}
+                      variant="option" className={`plan-option relative flex flex-col items-start gap-1 rounded-control bg-card p-4 text-left ${plan === p ? "ring-2 ring-primary" : ""} ${p === "yearly" && plan === p ? "trial-emphasis" : ""}`}>
+                      {p === "yearly" && <span className="text-label absolute -top-2.5 right-3 rounded-pill bg-gold px-2 py-0.5 text-foreground">Save 40%</span>}
                       <span className="text-button block capitalize text-foreground">{p}</span>
                       <span className="text-support text-muted-foreground">{PRICES[p]}</span>
                       {p === "yearly" && <span className="text-label text-primary">${yearlyMonthlyEquivalent()} / month equivalent</span>}
@@ -88,7 +88,7 @@ function PaywallPage() {
               </div>
             </div>
             <div className="paywall-sheet-footer shrink-0 border-t border-border px-6 pt-3">
-                <Button variant="onboarding" size="onboarding" type="button" onClick={() => { setSheet(false); void navigate({ to: "/onboarding/account" }); }} className="text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
+                <Button variant="onboarding" size="onboarding" type="button" onClick={() => { onboardingState.plan = plan; setSheet(false); void navigate({ to: "/onboarding/account" }); }} className="trial-emphasis text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
                   Start {name}'s Safe Trial
                 </Button>
                 <p className="text-support mt-3 text-center text-muted-foreground">Payment is handled securely by Apple/Google. Ollie never sees or stores your card details.</p>

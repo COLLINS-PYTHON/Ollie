@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Delete } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
-import { pageMeta } from "@/lib/meta";
+import { childName, pageMeta } from "@/lib/meta";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/pin")({
@@ -35,8 +35,8 @@ function PinPage() {
 
   return (
     <div className="bg-gradient-lagoon min-h-screen">
-      <OnboardingSkeleton chapter={4} title={confirming ? "Enter it once more" : "Set your parent PIN"} cta="Continue" ctaDisabled={!done} onContinue={() => navigate({ to: "/onboarding/paywall" })}>
-        <p className="text-support mb-6 text-center text-muted-foreground">Their space to explore. Your place to stay in the loop.</p>
+      <OnboardingSkeleton chapter={4} title={confirming ? "Enter it once more" : "Create your parent secure PIN"} cta="Continue" ctaDisabled={!done} onContinue={() => navigate({ to: "/onboarding/paywall" })}>
+        <p className="text-support mb-6 text-center text-muted-foreground">This PIN locks your Parent Dashboard, preventing {childName(onboardingState.name)} from changing screen-time limits or modifying safety filters.</p>
         <div className="flex justify-center gap-4" aria-label={`${pin.length} of 4 digits entered`}>
           {[0, 1, 2, 3].map((i) => (
             <span key={i} className={`size-4 rounded-pill transition-colors duration-tap ${i < pin.length ? "bg-primary" : "border border-border bg-surface-2"}`} />

@@ -15,10 +15,8 @@ function FactPage() {
       <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5 py-16">
         <div className="onboarding-content px-1">
           <p className="text-label mb-4 font-bold text-primary">Ollie</p>
-          <h1 className="text-title text-foreground">Big questions.<br /><span className="onboarding-highlight">Answers made for their age.</span></h1>
-          <p className="text-body mt-6 text-foreground">Children are curious. AI isn't always built with them in mind.</p>
-          <p className="text-body mt-4 text-foreground">Ollie takes a different approach: explanations at their level, boundaries for sensitive questions, and you in the loop.</p>
-          <p className="text-support mt-5 text-muted-foreground">A little discovery for them. More clarity for you.</p>
+          <h1 className="text-title text-foreground">The safe, smart AI <span className="onboarding-highlight">learning assistant for kids</span></h1>
+          <p className="text-body mt-6 text-foreground">Explanations tailored to their age, real-time safety guardrails, and a private dashboard that keeps you completely in the loop.</p>
         </div>
         <div className="mt-10 flex justify-center">
           <Button variant="onboarding" size="icon"

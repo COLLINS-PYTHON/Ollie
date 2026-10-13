@@ -11,10 +11,10 @@ export const Route = createFileRoute("/onboarding/tone")({
 });
 
 const TONES = [
+  { id: "clear", label: "Clear & Educational", hint: "Explains the why behind every answer", speed: "2.2s", height: "-4px" },
   { id: "playful", label: "Playful & Silly", hint: "Jokes, puns, high energy", speed: "0.7s", height: "-14px" },
   { id: "gentle", label: "Warm & Gentle", hint: "Calm, patient, soothing pace", speed: "3.2s", height: "-3px" },
   { id: "curious", label: "Curious & Adventurous", hint: "Let's find out together", speed: "1.2s", height: "-9px" },
-  { id: "clear", label: "Clear & Educational", hint: "Explains the why behind every answer", speed: "2.2s", height: "-4px" },
   { id: "custom", label: "Describe it yourself", hint: "Write your own tone", speed: "1.6s", height: "-6px" },
 ];
 
