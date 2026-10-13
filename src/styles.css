@@ -653,6 +653,11 @@
 .orb-chat { width: 80px; height: 80px; }
 .orb-loading { width: 112px; height: 112px; }
 .crisp-orb { display: block; flex-shrink: 0; background: transparent; filter: none; }
+.voice-orb-control::before { content: ""; position: absolute; inset: 5px; border: 1px solid var(--primary); border-radius: var(--radius-pill); pointer-events: none; animation: voice-tap-pulse 3.2s ease-out infinite; }
+.voice-orb-control[aria-pressed="true"]::before { animation-duration: 1.8s; }
+.voice-orb-control:disabled::before { animation: none; opacity: 0; }
+@keyframes voice-tap-pulse { 0% { transform: scale(.86); opacity: 0; } 18% { opacity: .3; } 85%, 100% { transform: scale(1.08); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .voice-orb-control::before { animation: none; opacity: .16; } }
 .onboarding-soft-icon { color: var(--brand); background: var(--card); border: 1px solid var(--onboarding-line); border-radius: var(--radius-pill); box-shadow: var(--elev-card); }
 .onboarding-theme .onboarding-soft-icon { color: var(--brand); border: 0; box-shadow: none; }
 .onboarding-theme .onboarding-soft-icon svg { stroke-width: 1.8; filter: none; }

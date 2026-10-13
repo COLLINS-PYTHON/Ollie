@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Replace under-eight Search microphone circle with a crisp voice orb and subtle tap pulse; verify listening and typing.
 - Shared AI-authored lesson bank by reading band (deferred by user), secure Face ID/Touch ID with PIN fallback (needs secure passkey/native setup), confidential push alerts (needs notification delivery setup)
 - Live parent guardrails sandbox (current previews remain illustrative; requires real search/image integration)
 - Search read-along highlighting with word timing marks after a TTS provider is configured

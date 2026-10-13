@@ -305,7 +305,10 @@ function SearchChat() {
       {/* iMessage-style input bar */}
       <div className="search-composer relative z-10 px-3 pt-2">
         {largeVoice && <div className="mb-2 flex items-center justify-center gap-4">
-          <Button variant="onboarding" size="icon" aria-label={listening ? "Stop listening" : "Talk to Ollie"} aria-pressed={listening} onClick={() => listening ? stopListening() : startListening()} disabled={busy} className={`size-20 rounded-pill shadow-card [&>svg]:size-9 ${listening ? "ring-pulse" : ""}`}><Mic className="size-9" /></Button>
+          <Button variant="ghost" size="icon" aria-label={listening ? "Stop listening" : "Talk to Ollie"} aria-pressed={listening} onClick={() => listening ? stopListening() : startListening()} disabled={busy} className="voice-orb-control relative size-28 shrink-0 rounded-pill p-0 hover:bg-transparent active:scale-95">
+            <span aria-hidden="true"><CrispOrb state={listening ? "listening" : "breathing"} size={112} aria-label="Voice orb" /></span>
+            <Mic aria-hidden="true" className="pointer-events-none absolute size-5 text-primary" />
+          </Button>
           {!typing && !input && <Button variant="ghost" size="icon" aria-label="Type a question" onClick={() => setTyping(true)} className="size-11 rounded-pill text-muted-foreground"><Keyboard className="size-5" /></Button>}
         </div>}
         {(!largeVoice || typing || input) && <>
