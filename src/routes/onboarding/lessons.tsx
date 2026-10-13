@@ -40,7 +40,7 @@ function LessonsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <OnboardingSkeleton chapter={4} title={`Here's how ${name}'s daily lessons will look`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/worries" })}>
+      <OnboardingSkeleton chapter={4} title={`Here's how ${name}'s daily lessons will look`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/screen-time" })}>
           <div className="relative flex h-80 items-center justify-center">
             {picks.map(({ id, label, sample }, i) => (
               <article

@@ -86,7 +86,7 @@ function AgePage() {
         chapter={2}
         title={`What is ${name}'s age?`}
         cta="Continue"
-        onContinue={() => navigate({ to: "/onboarding/reading" })}
+        onContinue={() => navigate({ to: "/onboarding/worries" })}
       >
         <div className="mx-auto flex w-full max-w-xs flex-col items-center">
           <div className="age-wheel-shell relative h-[280px] w-[240px] overflow-hidden rounded-card" aria-label="Choose age">

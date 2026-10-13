@@ -11,16 +11,23 @@ const EXAMPLES = [
   { title: "Sexual topic", question: "What does sex mean?", answer: "That's a question for a grown-up you trust. They can explain it best.", reason: "Sexual topic", note: "A gentle handoff to you, without adult details." },
 ];
 
-export function SafetyExamples({ name }: { name: string }) {
+export const SAFETY_CONTEXTS = [
+  { title: "1. Real-time Emotional Support", copy: "When a question touches on feelings or bullying, Ollie responds gently and points your child toward a trusted grown-up." },
+  { title: "2. Immediate Threat Blocking", copy: "Dangerous instructions stay out of the conversation. Ollie blocks the request, and you can review the question in your dashboard." },
+  { title: "3. Smart Age-Appropriate Guardrails", copy: "For mature questions, Ollie keeps adult details off the screen and guides your child to a grown-up who can explain." },
+];
+
+export function SafetyExamples({ name, onSelect, nextRef }: { name: string; onSelect?: (index: number) => void; nextRef?: { current: (() => void) | null } }) {
   const [api, setApi] = useState<CarouselApi>();
   const [selected, setSelected] = useState(0);
   useEffect(() => {
     if (!api) return;
-    const update = () => setSelected(api.selectedScrollSnap());
+    const update = () => { const index = api.selectedScrollSnap(); setSelected(index); onSelect?.(index); };
+    if (nextRef) nextRef.current = () => api.scrollNext();
     update();
     api.on("select", update);
-    return () => { api.off("select", update); };
-  }, [api]);
+    return () => { api.off("select", update); if (nextRef) nextRef.current = null; };
+  }, [api, onSelect, nextRef]);
 
   return (
     <section className="safety-examples mt-7 min-w-0" aria-label="Examples of sensitive-topic responses">

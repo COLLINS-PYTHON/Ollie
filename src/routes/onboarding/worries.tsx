@@ -38,7 +38,7 @@ function WorriesPage() {
   return (
     <div className="bg-gradient-lilac min-h-screen">
       <OnboardingSkeleton
-        chapter={4}
+        chapter={2}
         title={`What worries you most about ${name} and AI today?`}
         cta="Continue"
         ctaDisabled={worries.length === 0}

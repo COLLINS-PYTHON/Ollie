@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState, formatMinutes } from "@/lib/onboarding-store";
 import { childName } from "@/lib/meta";
@@ -38,13 +39,13 @@ function Stepper({
     <div className="rounded-card bg-card p-4 shadow-card">
       <div className="text-label text-muted-foreground">{label}</div>
       <div className="mt-2 flex items-center justify-between">
-        <button type="button" aria-label={`Less: ${label}`} className={btn} disabled={value <= min} onClick={() => onChange(value - 15)}>
+        <Button variant="control" size="icon" type="button" aria-label={`Less: ${label}`} className={btn} disabled={value <= min} onClick={() => onChange(value - 15)}>
           <Minus className="size-5" />
-        </button>
+        </Button>
         <span className="text-title text-foreground" aria-live="polite">{formatMinutes(value)}</span>
-        <button type="button" aria-label={`More: ${label}`} className={btn} disabled={value >= max} onClick={() => onChange(value + 15)}>
+        <Button variant="control" size="icon" type="button" aria-label={`More: ${label}`} className={btn} disabled={value >= max} onClick={() => onChange(value + 15)}>
           <Plus className="size-5" />
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -53,7 +54,6 @@ function Stepper({
 function ScreenTimePage() {
   const navigate = useNavigate();
   const name = childName(onboardingState.name);
-  const [baseline, setBaseline] = useState(onboardingState.baselineMinutes);
   const [limit, setLimit] = useState(onboardingState.limitMinutes);
   const [reset, setReset] = useState(onboardingState.slideshowReset);
 
@@ -61,25 +61,19 @@ function ScreenTimePage() {
     <div className="bg-gradient-dawn min-h-screen">
       <OnboardingSkeleton
         chapter={4}
-        title={`How much time does ${name} spend with Ollie?`}
+        title={`Set ${name}'s daily screen-time limits`}
         cta="Continue"
         onContinue={() => navigate({ to: "/onboarding/priorities" })}
       >
         <div className="flex flex-col gap-3">
           <Stepper
-            label="Usage today, rough daily estimate"
-            value={baseline}
-            min={0}
-            max={300}
-            onChange={(v) => { setBaseline(v); onboardingState.baselineMinutes = v; }}
-          />
-          <Stepper
-            label="Daily limit going forward"
+            label="Maximum daily chat & creation time"
             value={limit}
             min={15}
             max={240}
             onChange={(v) => { setLimit(v); onboardingState.limitMinutes = v; }}
           />
+          <div className="rounded-card bg-card p-4 shadow-card"><p className="text-label text-muted-foreground">Hard shutdown limit</p><p className="text-support mt-2 text-foreground">Search and Create pause when {name} reaches {formatMinutes(limit)}. Daily lessons stay available.</p></div>
           <label className="flex items-center justify-between rounded-card bg-card p-4 shadow-card">
             <span className="text-label text-muted-foreground">Daily slideshow resets at</span>
             <input

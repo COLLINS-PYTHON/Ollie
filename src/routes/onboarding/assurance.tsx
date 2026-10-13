@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useRef, useState } from "react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName } from "@/lib/meta";
-import { SafetyExamples } from "@/components/ollie/SafetyExamples";
+import { SafetyExamples, SAFETY_CONTEXTS } from "@/components/ollie/SafetyExamples";
 
 export const Route = createFileRoute("/onboarding/assurance")({
   head: () => ({
@@ -21,18 +22,20 @@ export const Route = createFileRoute("/onboarding/assurance")({
 function AssurancePage() {
   const name = childName(onboardingState.name);
   const navigate = useNavigate();
+  const [selected, setSelected] = useState(0);
+  const nextRef = useRef<(() => void) | null>(null);
+  const context = SAFETY_CONTEXTS[selected] ?? SAFETY_CONTEXTS[0];
 
   return (
     <div className="onboarding-assurance bg-gradient-lilac min-h-screen">
-      <OnboardingSkeleton chapter={4} title="Here's our answer" cta="Continue" onContinue={() => navigate({ to: "/onboarding/screen-time" })}>
+      <OnboardingSkeleton chapter={2} title={context.title} cta="Continue" onContinue={() => selected < 2 ? nextRef.current?.() : navigate({ to: "/onboarding/reading" })}>
           <div className="assurance-copy text-center">
             <p className="text-support text-foreground">
-              That's exactly what Ollie is built for. Every search is filtered before {name} sees it, <span className="onboarding-highlight">anything
-              concerning lands straight in your dashboard</span>, and nothing here <span className="onboarding-highlight">trains on your data</span>.
+               {context.copy}
             </p>
-            <p className="text-support mt-3 font-medium text-foreground">Not hidden. Not guessed at. <span className="onboarding-highlight">Visible.</span></p>
+             <p className="text-support mt-3 font-medium text-foreground">Age-aware answers for {name}. <span className="onboarding-highlight">Visibility for you.</span></p>
           </div>
-          <SafetyExamples name={name} />
+           <SafetyExamples name={name} onSelect={setSelected} nextRef={nextRef} />
       </OnboardingSkeleton>
     </div>
   );
