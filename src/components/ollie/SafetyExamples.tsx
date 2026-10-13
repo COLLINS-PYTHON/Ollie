@@ -23,7 +23,7 @@ export function SafetyExamples({ name, onSelect, nextRef }: { name: string; onSe
   useEffect(() => {
     if (!api) return;
     const update = () => { const index = api.selectedScrollSnap(); setSelected(index); onSelect?.(index); };
-    if (nextRef) nextRef.current = () => api.scrollNext();
+    if (nextRef) nextRef.current = () => api.scrollNext(true);
     update();
     api.on("select", update);
     return () => { api.off("select", update); if (nextRef) nextRef.current = null; };

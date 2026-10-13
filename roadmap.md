@@ -1,12 +1,13 @@
 # Roadmap
 
 ## Now
-- Latest request: defer AI slideshow building; include the requested pulsing now
-- Requested budget-limited update: copy and $14.99/$99.99 pricing first; contextual safety headers, voice-first Search/starter interests, inviting first Trail stop, safe lesson swipes
-- Shared AI-authored lesson bank by reading band, optional secure device biometrics, confidential push alerts (larger follow-up work; not implemented)
+- Shared AI-authored lesson bank by reading band (deferred by user), secure Face ID/Touch ID with PIN fallback (needs secure passkey/native setup), confidential push alerts (needs notification delivery setup)
+- Live parent guardrails sandbox (current previews remain illustrative; requires real search/image integration)
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Budget-limited update: personalized onboarding value copy, worries immediately after age, contextual safety Continue sequence, accurate screen-time/PIN wording, $14.99 monthly/$99.99 annual/$8.33 equivalent, yearly default/Save 40%/trial pulses, Reply Tone checklist and Clear & Educational first
+- Under-eight voice-first Search with 80px microphone and selected-interest starter tags; daily cookie reward copy, open pulsing next Trail node, safe forward swipes in onboarding and fact slides. Seven rule tests pass; phone UI flows checked without runtime errors.
 - Restored complete resting/curious poses from master artwork; removed chase mask and added phone-compatible MP4/autoplay retry, verified moving main and drawer clips at 390/768 with reduced-motion pause
 - Removed the paywall chase's grey studio backdrop and isolated panel; verified natural screen blending and playback on phone/tablet sizes
 - Contextual Ollie poses and expressive actions replace repeated companions; paywall uses an eight-second articulated butterfly-chasing clip with reaching jumps, inline phone/tablet playback, reduced-motion pause and faster 22s/28s cloud drift

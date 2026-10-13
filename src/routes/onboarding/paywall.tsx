@@ -15,7 +15,7 @@ export const Route = createFileRoute("/onboarding/paywall")({
 
 /* Owner-approved subscription prices. */
 const PRICES = { monthly: `$${SUBSCRIPTION_PRICES.monthly.toFixed(2)} / month`, yearly: `$${SUBSCRIPTION_PRICES.yearly.toFixed(2)} / year` };
-const FEATURES = ["Safe search", "Daily educational slideshows", "Age-appropriate content", "Age-appropriate image generation", "Customizable reply tone", "Full parent dashboard", "Weekly progress reports"];
+const FEATURES = ["Customizable reply tone", "Safe search", "Daily educational slideshows", "Age-appropriate content", "Age-appropriate image generation", "Full parent dashboard", "Weekly progress reports"];
 
 function PaywallPage() {
   const navigate = useNavigate();
