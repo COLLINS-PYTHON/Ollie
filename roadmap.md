@@ -1,6 +1,8 @@
 # Roadmap
 
 ## Now
+- Requested budget-limited update: copy and $14.99/$99.99 pricing first; contextual safety headers, voice-first Search/starter interests, inviting first Trail stop, safe lesson swipes
+- Shared AI-authored lesson bank by reading band, optional secure device biometrics, confidential push alerts (larger follow-up work; not implemented)
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
