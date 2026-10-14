@@ -305,59 +305,22 @@ function SearchChat() {
         )}
       </div>
 
-      {/* iMessage-style input bar */}
       <div className="search-composer relative z-10 px-3 pt-2">
-        {largeVoice && <div className="mb-2 flex items-center justify-center gap-4">
-          <Button variant="ghost" size="icon" aria-label={listening ? "Stop listening" : "Talk to Ollie"} aria-pressed={listening} onClick={() => listening ? stopListening() : startListening()} disabled={busy} className="voice-orb-control relative size-28 shrink-0 rounded-pill p-0 hover:bg-transparent active:scale-95">
-            <span aria-hidden="true"><CrispOrb state={listening ? "listening" : "breathing"} size={112} aria-label="Voice orb" /></span>
+        {expandedVoice ? <div className="flex items-center justify-center gap-4 pb-2">
+          <Button variant="ghost" size="icon" aria-label={listening ? "Stop listening" : "Talk to Ollie"} aria-pressed={listening} onClick={() => listening ? stopListening() : startListening()} disabled={busy} className="voice-orb-control relative size-20 shrink-0 rounded-pill p-0 hover:bg-transparent active:scale-95">
+            <span aria-hidden="true"><CrispOrb state="listening" size={80} aria-label="Voice orb" /></span>
             <Mic aria-hidden="true" className="pointer-events-none absolute size-5 text-primary" />
           </Button>
-          {!typing && !input && <Button variant="ghost" size="icon" aria-label="Type a question" onClick={() => setTyping(true)} className="size-11 rounded-pill text-muted-foreground"><Keyboard className="size-5" /></Button>}
-        </div>}
-        {(!largeVoice || typing || input) && <>
-        <div className="flex items-end gap-2">
-          <div className="flex min-w-0 flex-1 items-center rounded-[22px] border border-surface-2 bg-card px-4 py-2.5">
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") send();
-              }}
-              placeholder="Ask Ollie anything"
-              aria-label="Ask Ollie anything"
-              className="min-w-0 flex-1 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground"
-            />
+          <Button variant="ghost" size="icon" aria-label="Type a question" onClick={() => { setTyping(true); window.setTimeout(() => inputRef.current?.focus(), 0); }} className="size-12 rounded-pill text-muted-foreground"><Keyboard className="size-5" /></Button>
+        </div> : <div className="flex items-end gap-2 pb-2">
+          {voiceSupported && <Button variant="ghost" size="icon" type="button" aria-label={listening ? "Stop listening" : "Talk to Ollie"} aria-pressed={listening} onClick={() => listening ? stopListening() : startListening()} disabled={busy} className="voice-orb-control relative size-12 shrink-0 rounded-pill p-0 hover:bg-transparent">
+            <span aria-hidden="true"><CrispOrb state={listening ? "listening" : "breathing"} size={48} aria-label="Voice orb" /></span><Mic aria-hidden="true" className="pointer-events-none absolute size-4 text-primary" />
+          </Button>}
+          <div className="flex min-w-0 flex-1 items-end gap-2 rounded-pill border border-border bg-card px-4 py-2">
+            <textarea ref={inputRef} rows={1} value={input} onChange={(e) => { setInput(e.target.value); e.target.style.height = "auto"; e.target.style.height = `${Math.min(96, e.target.scrollHeight)}px`; }} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void send(); } }} placeholder={listening ? "Listening…" : "Ask Ollie anything"} aria-label="Ask Ollie anything" className="max-h-24 min-h-6 min-w-0 flex-1 resize-none bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground" />
+            <Button size="icon" type="button" aria-label="Send question" onClick={() => void send()} disabled={!canSend} className="size-8 shrink-0 rounded-pill bg-primary text-primary-foreground disabled:bg-surface-2 disabled:text-muted-foreground"><ArrowUp className="size-4" strokeWidth={2.5} /></Button>
           </div>
-          {voiceSupported && !largeVoice && !canSend && (
-            <Button variant="secondary" size="icon"
-              type="button"
-              aria-label={listening ? "Listening, release to stop" : "Hold to talk"}
-              onPointerDown={startListening}
-              onPointerUp={stopListening}
-              onPointerLeave={stopListening}
-              className={`flex size-9 shrink-0 items-center justify-center rounded-pill bg-surface-2 text-foreground transition-transform duration-tap ${
-                listening ? "scale-110 ring-pulse" : "active:scale-95"
-              }`}
-            >
-              <Mic className="size-4" />
-            </Button>
-          )}
-          <Button size="icon"
-            type="button"
-            aria-label="Send question"
-            onClick={() => void send()}
-            disabled={!canSend}
-            className="flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-primary-foreground transition-all duration-tap active:scale-95 disabled:bg-surface-2 disabled:text-muted-foreground"
-          >
-            <ArrowUp className="size-4" strokeWidth={2.5} />
-          </Button>
-        </div>
-        </>}
-        {!voiceSupported && (
-          <p className="mt-2 text-center text-support text-muted-foreground">
-            Voice search needs a browser that supports speech
-          </p>
-        )}
+        </div>}
       </div>
     </main>
   );
