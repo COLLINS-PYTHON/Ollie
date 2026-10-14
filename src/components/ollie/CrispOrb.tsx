@@ -5,7 +5,7 @@ import type { OrbState } from "thinking-orbs";
 /** Original orb geometry painted at actual display size and device resolution. */
 export function CrispOrb({ state, size = 80, "aria-label": label }: {
   state: OrbState;
-  size?: 80 | 112;
+  size?: 48 | 80 | 112;
   "aria-label": string;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -54,5 +54,5 @@ export function CrispOrb({ state, size = 80, "aria-label": label }: {
       window.removeEventListener("resize", sync);
     };
   }, [size, state]);
-  return <canvas ref={ref} width={size} height={size} role="img" aria-label={label} className={`crisp-orb ${size === 112 ? "orb-loading" : "orb-chat"}`} />;
+  return <canvas ref={ref} width={size} height={size} role="img" aria-label={label} className={`crisp-orb ${size === 112 ? "orb-loading" : size === 48 ? "orb-control" : "orb-chat"}`} />;
 }
