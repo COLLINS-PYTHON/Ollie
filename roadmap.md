@@ -1,6 +1,8 @@
 # Roadmap
 
 ## Now
+- Paywall: show both prices immediately, separate yearly pulse, payment badge pulse and trial reminder timeline/prompt.
+- Refine Building and iMessage-style Search space, listening controls and tab dock; investigate published chase autoplay.
 - Shared AI-authored lesson bank by reading band (deferred by user), secure Face ID/Touch ID with PIN fallback (needs secure passkey/native setup), confidential push alerts (needs notification delivery setup)
 - Live parent guardrails sandbox (current previews remain illustrative; requires real search/image integration)
 - Search read-along highlighting with word timing marks after a TTS provider is configured
