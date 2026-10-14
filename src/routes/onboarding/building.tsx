@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Check } from "lucide-react";
+import { Bell, Check, ShieldCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
@@ -20,14 +22,15 @@ function BuildingPage() {
   const navigate = useNavigate();
   const name = childName(onboardingState.name);
   const [step, setStep] = useState(0);
-  const [askEmail, setAskEmail] = useState(false);
-  const [answered, setAnswered] = useState(onboardingState.weeklyEmail !== null);
-  const items = ["Safe topics picked", "Interests locked in", "Reading level matched", "Tone set"];
+  const [askReminder, setAskReminder] = useState(false);
+  const [permissionNote, setPermissionNote] = useState("");
+  const [answered, setAnswered] = useState(false);
+  const items = ["Age-appropriate answers", "Their interests, at the heart", "Learning at their reading level", "Your chosen reply tone"];
   const done = step > items.length;
 
   useEffect(() => {
     if (done) return;
-    if (step === 2 && !answered) { setAskEmail(true); return; }
+    if (step === 2 && !answered) { setAskReminder(true); return; }
     const t = setTimeout(() => setStep((s) => s + 1), 1400);
     return () => clearTimeout(t);
   }, [step, answered, done]);
@@ -52,57 +55,48 @@ function BuildingPage() {
       .catch(() => {});
   }, [makeLesson]);
 
-  function answer(yes: boolean) {
-    onboardingState.weeklyEmail = yes;
-    setAskEmail(false);
+  function dismissReminder() {
+    setAskReminder(false);
     setAnswered(true);
   }
-
+  async function allowReminder() {
+    if (window.top !== window.self) { setPermissionNote("Open Ollie in its own tab to allow notifications. You can continue without them."); return; }
+    if (!("Notification" in window)) { setPermissionNote("Notifications are not available in this browser. On iPhone, add Ollie to your Home Screen first."); return; }
+    try {
+      const permission = await Notification.requestPermission();
+      localStorage.setItem("ollie-trial-reminder-permission", permission);
+      setPermissionNote(permission === "granted" ? "Permission allowed. Trial reminders will be available once notification delivery is connected." : "No problem. You can continue without a reminder.");
+    } catch { setPermissionNote("Notifications could not be enabled here. You can continue without them."); }
+  }
   return (
-    <div className="bg-gradient-hello min-h-screen">
-      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-5 pb-32 pt-20 text-center">
-        <h1 className="text-title text-foreground">{done ? `${name}'s Ollie is ready!` : `Building ${name}'s Ollie`}</h1>
-        <div className="relative mt-10 flex size-40 items-center justify-center">
-          {done ? (
-            <>
-              <span className="glow-burst absolute size-32 rounded-pill bg-gold/60" aria-hidden />
-              <img src={ollie} alt="Ollie celebrating" className="pop-in bounce-soft relative size-40 object-contain" style={{ ["--bounce-speed" as string]: "0.8s", ["--bounce-height" as string]: "-12px" }} />
-            </>
-          ) : (
-            <CrispOrb state="composing" size={112} aria-label="Building" />
-          )}
+    <div className="building-screen min-h-screen bg-background">
+      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-6 pb-28 pt-12 text-center">
+        <p className="text-label mb-3 text-primary">A little preparation. A world of discovery.</p>
+        <h1 className="text-title text-foreground">{done ? `Made for ${name}. Ready to explore.` : `Making room for ${name}'s curiosity`}</h1>
+        <p className="text-support mt-4 max-w-sm text-muted-foreground">Their age, interests and reading level shape the way Ollie answers.</p>
+        <div className="relative my-7 flex size-36 shrink-0 items-center justify-center">
+          {done ? <img src={ollie} alt="Ollie" className="size-36 object-contain" /> : <CrispOrb state="composing" size={112} aria-label="Preparing Ollie" />}
         </div>
-        <ul className="mt-10 w-full space-y-3 text-left">
-          {items.map((it, i) => (
-            <li key={it} className={`flex items-center gap-3 rounded-card bg-card p-4 shadow-card transition-opacity duration-element ${step > i ? "opacity-100" : "opacity-40"}`}>
-              <span className={`flex size-6 items-center justify-center rounded-pill ${step > i ? "bg-primary text-primary-foreground" : "bg-surface-2"}`}>
-                {step > i && <Check className="pop-in size-3.5" />}
-              </span>
-              <span className="text-body text-foreground">{it}</span>
-            </li>
-          ))}
+        <ul className="building-checklist w-full text-left" aria-label="Personalizing Ollie">
+          {items.map((it, i) => <li key={it} className={`flex items-center gap-4 border-b border-border py-4 transition-opacity duration-element ${step > i ? "opacity-100" : "opacity-40"}`}>
+            <span className={`flex size-7 shrink-0 items-center justify-center rounded-pill ${step > i ? "bg-success-soft text-success" : "bg-surface-2 text-muted-foreground"}`}>
+              {step > i ? <Check className="size-4" /> : <span className="text-label">{i + 1}</span>}
+            </span><span className="text-body text-foreground">{it}</span>
+          </li>)}
         </ul>
+        <p className="text-support mt-6 flex items-center justify-center gap-2 text-muted-foreground"><ShieldCheck className="size-4 shrink-0" />Your settings stay in your hands.</p>
       </main>
-
-      {askEmail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/20 px-6" role="dialog" aria-label="Weekly summary">
-          <div className="pop-in w-full max-w-sm rounded-card bg-card p-5 shadow-sheet">
-            <p className="text-body text-foreground">Send me a weekly summary of what {name} is learning, including exactly what was flagged and why?</p>
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <button type="button" onClick={() => answer(false)} className="text-button h-12 rounded-pill bg-surface text-foreground">Not really</button>
-              <button type="button" onClick={() => answer(true)} className="text-button h-12 rounded-pill bg-primary text-primary-foreground">Yes</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {done && (
-        <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
-          <button type="button" onClick={() => navigate({ to: "/onboarding/handoff" })} className="text-button bubble-in h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card">
-            Start exploring
-          </button>
-        </div>
-      )}
+      <Drawer open={askReminder} onOpenChange={(open) => { if (!open) dismissReminder(); }} shouldScaleBackground={false}>
+        <DrawerContent className="onboarding-theme mx-auto max-w-md px-6 pb-6">
+          <Bell className="mx-auto mb-4 size-8 text-primary" />
+          <DrawerTitle className="text-title text-center">Should we remind you before your trial ends?</DrawerTitle>
+          <DrawerDescription className="text-support mt-3 text-center">Allow notifications so Ollie can send a trial reminder. Reminder delivery is not available yet.</DrawerDescription>
+          {permissionNote && <p role="status" className="text-support mt-4 text-center text-muted-foreground">{permissionNote}</p>}
+          <Button variant="onboarding" className="mt-6 h-14 rounded-pill" onClick={() => permissionNote ? dismissReminder() : void allowReminder()}>{permissionNote ? "Continue" : "Allow notifications"}</Button>
+          {!permissionNote && <Button variant="ghost" className="mt-2 h-12 rounded-pill" onClick={dismissReminder}>Not now</Button>}
+        </DrawerContent>
+      </Drawer>
+      {done && <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-6 pb-6"><Button variant="onboarding" className="h-14 w-full rounded-pill" onClick={() => navigate({ to: "/onboarding/handoff" })}>Start exploring</Button></div>}
     </div>
   );
 }
