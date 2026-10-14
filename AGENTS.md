@@ -22,9 +22,9 @@
 - LessonArt keeps SVG playback; LessonCover uses topic covers, shared interest-art pictures, then SVG. Interests reuse category pictures. Why: matching art without generation costs.
 - Prices derive from subscription-prices, yearly equivalent divides by 12. Why: consistent labels.
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
-- Onboarding uses contextual poses and sparse scenery; chase uses unmasked CDN H.264 Main/yuv420p first, muted inline autoplay, readiness retry and reduced-motion pause. Why: full outlines and compatible motion without per-view costs.
+- Chase uses direct H.264 src, muted/defaultMuted inline autoplay, readiness/gesture retries and reduced-motion pause. Why: reliable phone playback without controls.
 - Trail scenery uses authored SVG with CSS motion and local-calendar seasonal selection; its irregular path is deterministic and separate from progress. Why: crisp instant artwork, no generation charges, and rewards never change with a theme.
-- The onboarding paywall uses the shared Vaul drawer with portal, focus containment, swipe dismissal and a pinned action footer. Why: a natural interactive sheet with accessible dismissal and no simulated native purchase dialog.
+- Paywall uses Vaul with pinned prices/footer and a separate outline pulse. Building requests notification permission after opt-in only; permission never implies reminder delivery. Why: visible prices and honest consent.
 - Parent setting sheets use the shared portalled Vaul drawer outside the animated page. Why: a transformed page must not trap fixed dialogs below the viewport.
 - Onboarding's explicit preview search parameter is retained between its steps and bypasses the returning-family redirect without clearing saved data. Why: existing families can review setup while ordinary entry continues to skip it.
 - Parent-facing safety illustrations use the shared Embla carousel in SafetyExamples, with literal locked responses and clearly labelled example flags. Why: parents can inspect multiple sensitive-topic outcomes without live searches or fabricated progress.
