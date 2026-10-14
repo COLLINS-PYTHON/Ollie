@@ -78,11 +78,14 @@ function SearchChat() {
   const [voiceSupported, setVoiceSupported] = useState(false);
   const [typing, setTyping] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<RecognitionLike | null>(null);
   const nodTimerRef = useRef<number | null>(null);
   const spokenRef = useRef<Set<string>>(new Set());
   const child = childProfile();
   const largeVoice = voiceFirst(child.age) && voiceSupported;
+  const welcome = messages.length === 0 && !busy;
+  const expandedVoice = largeVoice && welcome && !typing && !input;
   const starters = starterInterests(child.interests);
   const autoSpeak = child.readingLevel === "none" || child.readingLevel === "sounding";
 
@@ -222,24 +225,24 @@ function SearchChat() {
         <img
           src={ollie}
           alt="Ollie"
-          className={`size-14 rounded-full bg-surface object-cover ${listening ? "ollie-avatar-listening" : avatarNod ? "ollie-avatar-nod" : ""}`}
-          width={56}
-          height={56}
+          className={`size-10 rounded-full bg-surface object-cover ${listening ? "ollie-avatar-listening" : avatarNod ? "ollie-avatar-nod" : ""}`}
+          width={40}
+          height={40}
         />
         <p className="text-body font-bold text-foreground">Ollie</p>
       </header>
 
       <div ref={listRef} className="search-transcript relative z-10 min-h-0 flex-1 overflow-y-auto px-3 py-4">
         {messages.length === 0 && !busy ? (
-          <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+          <div className="search-welcome flex min-h-full flex-col items-center justify-center gap-4 text-center">
             <img
               src={ollie}
               alt="Ollie the puppy"
-              className="ollie-gentle-idle w-36"
-              width={144}
-              height={144}
+              className="ollie-gentle-idle w-24"
+              width={96}
+              height={96}
             />
-            <p className="text-title max-w-[280px] text-foreground">
+            <p className="text-body max-w-[280px] font-semibold text-foreground">
               Hi {child.name}! What are you curious about today?
             </p>
             <div className="flex max-w-sm flex-wrap justify-center gap-2">
@@ -273,7 +276,7 @@ function SearchChat() {
                   </div>
                   {m.illustrationId && <AnswerArt id={m.illustrationId} />}
                   {(!m.tier || m.tier === "ok") && (
-                    <div className="mb-1 flex gap-1" role="group" aria-label="React to this answer">
+                    <div className="mb-1 flex flex-wrap gap-1" role="group" aria-label="React to this answer">
                       {REACTIONS.map((r) => {
                         const on = m.reaction === r.id;
                         return (
