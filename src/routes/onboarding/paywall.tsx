@@ -40,7 +40,8 @@ function PaywallPage() {
           <span className="text-button relative text-foreground">No Payment Due Now</span>
         </div>
         <p className="text-support mt-5 text-center text-muted-foreground">Enjoy complete access to interactive tutoring, daily learning trails, and daily creative picture cookies.</p>
-        <p className="text-support mt-4 flex items-center justify-center gap-2 text-muted-foreground"><Bell className="size-4 shrink-0" />A reminder before your trial ends</p>
+        <p className="text-support mt-4 flex items-center justify-center gap-2 text-muted-foreground"><Bell className="size-4 shrink-0" />We’ll notify you before the trial ends</p>
+        <p className="text-label mt-1 text-center text-muted-foreground">Once trial reminders are enabled.</p>
       </div>
         <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
           <DrawerTrigger asChild><Button variant="onboarding" size="onboarding" type="button" className="text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">

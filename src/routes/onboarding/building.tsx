@@ -87,7 +87,7 @@ function BuildingPage() {
         <p className="text-support mt-6 flex items-center justify-center gap-2 text-muted-foreground"><ShieldCheck className="size-4 shrink-0" />Your settings stay in your hands.</p>
       </main>
       <Drawer open={askReminder} onOpenChange={(open) => { if (!open) dismissReminder(); }} shouldScaleBackground={false}>
-        <DrawerContent className="onboarding-theme mx-auto max-w-md px-6 pb-6">
+        <DrawerContent className="onboarding-theme trial-reminder-sheet mx-auto max-w-md px-6 pb-6">
           <Bell className="mx-auto mb-4 size-8 text-primary" />
           <DrawerTitle className="text-title text-center">Should we remind you before your trial ends?</DrawerTitle>
           <DrawerDescription className="text-support mt-3 text-center">Allow notifications so Ollie can send a trial reminder. Reminder delivery is not available yet.</DrawerDescription>

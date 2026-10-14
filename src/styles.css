@@ -958,6 +958,8 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 @keyframes assurance-pulse { 0%,100% { opacity: 0; transform: scale(1); } 25% { opacity: .35; } 80% { opacity: 0; transform: scale(1.035); } }
 .trial-timeline { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .building-screen { background: var(--onboarding-wash); }
+.trial-reminder-sheet.onboarding-theme { min-height: 0; max-height: 90dvh; overflow-y: auto; }
+.building-screen main { padding-bottom: 140px; }
 .ollie-chase-video::-webkit-media-controls { display: none !important; }
-@media (max-height: 650px) { .building-screen main { padding-top: 28px; } .building-screen main > div { margin-block: 12px; width: 112px; height: 112px; } .building-checklist li { padding-block: 12px; } }
+@media (max-height: 650px) { .building-screen main { padding-top: 20px; } .building-screen main > div { margin-block: 8px; width: 88px; height: 88px; } .building-screen main > div > img { width: 88px; height: 88px; } .building-screen main > .text-support { margin-top: 12px; } .building-checklist li { padding-block: 10px; } }
 @media (prefers-reduced-motion: reduce) { .plan-outline-pulse::after, .payment-assurance::after { animation: none; opacity: .15; } }
