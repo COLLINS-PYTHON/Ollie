@@ -35,7 +35,7 @@ function PinPage() {
 
   return (
     <div className="bg-gradient-lagoon min-h-screen">
-      <OnboardingSkeleton chapter={4} title={confirming ? "Enter it once more" : "Create your parent secure PIN"} cta="Continue" ctaDisabled={!done} onContinue={() => navigate({ to: "/onboarding/paywall" })}>
+      <OnboardingSkeleton chapter={4} title={confirming ? "Enter it once more" : "Create your parent secure PIN"} cta="Continue" ctaDisabled={!done} onContinue={() => navigate({ to: "/onboarding/building" })}>
         <p className="text-support mb-6 text-center text-muted-foreground">This PIN locks your Parent Dashboard, preventing {childName(onboardingState.name)} from changing screen-time limits or modifying safety filters.</p>
         <div className="flex justify-center gap-4" aria-label={`${pin.length} of 4 digits entered`}>
           {[0, 1, 2, 3].map((i) => (

@@ -1,7 +1,8 @@
 import { createFileRoute, Outlet, retainSearchParams, useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { loadOnboardingDraft, loadProfile, saveOnboardingStep } from "@/lib/onboarding-store";
+import { onboardingState, loadOnboardingDraft, loadProfile, saveOnboardingStep } from "@/lib/onboarding-store";
+import { childName } from "@/lib/meta";
 import { resolveAppEntry } from "@/lib/app-entry";
 import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
@@ -75,7 +76,7 @@ export function OnboardingSkeleton({
   ctaDisabled,
   onContinue,
 }: {
-  chapter: 1 | 2 | 3 | 4;
+  chapter: number;
   title: string;
   children?: ReactNode;
   cta: string;
@@ -85,12 +86,15 @@ export function OnboardingSkeleton({
   const router = useRouter();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const chapterPaths = [
-    ["/onboarding", "/onboarding/"],
-    ["/onboarding/age", "/onboarding/worries", "/onboarding/assurance"],
-    ["/onboarding/reading"],
-    ["/onboarding/preview", "/onboarding/interests", "/onboarding/lessons", "/onboarding/screen-time", "/onboarding/priorities", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin", "/onboarding/account"],
+    ["/onboarding", "/onboarding/", "/onboarding/age", "/onboarding/worries", "/onboarding/assurance", "/onboarding/reading", "/onboarding/preview", "/onboarding/interests", "/onboarding/lessons"],
+    ["/onboarding/screen-time", "/onboarding/priorities", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin"],
+    ["/onboarding/building", "/onboarding/paywall", "/onboarding/account", "/onboarding/handoff"],
   ];
-  const steps = chapterPaths[chapter - 1] ?? [];
+  const found = chapterPaths.findIndex((list) => list.includes(pathname));
+  void chapter;
+  const current = found >= 0 ? found + 1 : 1;
+  const chapterNames = [`About ${childName(onboardingState.name)}`, "Safety & Boundaries", "Personalization & Ready"];
+  const steps = chapterPaths[current - 1] ?? [];
   const progress = (Math.max(0, steps.indexOf(pathname)) + 1) / Math.max(1, steps.length);
   const companion = pathname === "/onboarding/reading" ? "reading"
     : pathname === "/onboarding/age" ? "curious"
@@ -109,14 +113,15 @@ export function OnboardingSkeleton({
         >
           <ChevronLeft className="size-5" />
         </Button>
-        <div className="chapter-progress flex flex-1 gap-2" role="progressbar" aria-label="Onboarding progress" aria-valuemin={0} aria-valuemax={4} aria-valuenow={chapter - 1 + progress}>
-          {[1, 2, 3, 4].map((n) => (
-            <span key={n} className={`chapter-track h-1.5 flex-1 overflow-hidden rounded-pill bg-secondary ${n === chapter ? "chapter-current" : ""}`}>
-              <span className="chapter-fill block h-full rounded-pill bg-primary" style={{ width: `${n < chapter ? 100 : n === chapter ? progress * 100 : 0}%` }} />
+        <div className="chapter-progress flex flex-1 gap-2" role="progressbar" aria-label="Onboarding progress" aria-valuemin={0} aria-valuemax={3} aria-valuenow={current - 1 + progress}>
+          {[1, 2, 3].map((n) => (
+            <span key={n} className={`chapter-track h-1.5 flex-1 overflow-hidden rounded-pill bg-secondary ${n === current ? "chapter-current" : ""}`}>
+              <span className="chapter-fill block h-full rounded-pill bg-primary" style={{ width: `${n < current ? 100 : n === current ? progress * 100 : 0}%` }} />
             </span>
           ))}
         </div>
       </header>
+      <p className="text-label px-6 pt-2 text-center text-muted-foreground">Step {current} of 3 · {chapterNames[current - 1]}</p>
 
       <main className="onboarding-content flex min-h-0 flex-1 flex-col px-6 pb-32 pt-9">
         <h1 className="text-title mx-auto w-full max-w-sm text-center text-foreground">{title}</h1>
