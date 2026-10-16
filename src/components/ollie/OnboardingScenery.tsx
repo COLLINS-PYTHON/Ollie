@@ -6,8 +6,7 @@ export function OnboardingScenery({ variant }: { variant: "clouds" | "flight" | 
     <div className={`onboarding-scenery onboarding-scenery-${variant}`} aria-hidden="true">
       {variant === "clouds" ? (
         <>
-          <img src={cloud} alt="" className="onboarding-cloud onboarding-cloud-left" />
-          <img src={cloud} alt="" className="onboarding-cloud onboarding-cloud-right" />
+          {["a", "b", "c", "d"].map((k) => <span key={k} className={`sky-cloud sky-cloud-${k}`}><img src={cloud} alt="" /></span>)}
         </>
       ) : (
         variant === "flight" ? (
