@@ -53,14 +53,14 @@ function PaywallPage() {
             <div className="flex shrink-0 items-center justify-between px-6 pb-3"><DrawerTitle className="text-body font-bold text-foreground">Start {name}'s safe trial</DrawerTitle><Button variant="control" size="icon" aria-label="Close plan picker" onClick={() => setSheet(false)} className="size-8 rounded-pill bg-secondary"><X className="size-4" /></Button></div>
             <DrawerDescription className="sr-only">Choose monthly or yearly billing for your seven-day trial.</DrawerDescription>
             <div className="paywall-price-anchor shrink-0 px-6 pb-4">
-               <div className="grid grid-cols-2 gap-3 pt-3">
+               <div className="grid grid-cols-2 gap-3 pt-4">
                  {(["yearly", "monthly"] as const).map((p) => (
                    <Button key={p} type="button" aria-pressed={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }}
                      variant="option" className={`plan-option relative flex flex-col items-start gap-1 rounded-control p-4 text-left ${p === "yearly" && plan === p ? "plan-outline-pulse" : ""}`}>
-                     {p === "yearly" && <span className="text-label absolute -top-2.5 right-3 rounded-pill bg-gold px-2 py-0.5 text-foreground">Save 40%</span>}
-                     <span className="text-button block capitalize">{p}</span>
+                     {p === "yearly" && <span className="text-label absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-pill bg-navy px-2.5 py-0.5 text-primary-foreground shadow-card">Most Popular</span>}
+                     <span className="flex w-full items-center justify-between gap-2"><span className="text-button block capitalize">{p}</span>{p === "yearly" && <span className="text-label rounded-pill bg-success px-2 py-0.5 font-bold text-primary-foreground">Save 40%</span>}</span>
                      <span className="text-support">{PRICES[p]}</span>
-                     {p === "yearly" && <span className="text-label">${yearlyMonthlyEquivalent()} / month equivalent</span>}
+                     {p === "yearly" && <span className="text-label">${yearlyMonthlyEquivalent()}/month</span>}
                    </Button>
                  ))}
                </div>

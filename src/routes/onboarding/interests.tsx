@@ -44,7 +44,7 @@ function InterestsPage() {
         ctaDisabled={interests.length === 0}
         onContinue={() => navigate({ to: "/onboarding/lessons" })}
       >
-        <div className="grid grid-cols-3 gap-3" role="group" aria-label="Interests">
+        <div className="grid grid-cols-2 gap-2" role="group" aria-label="Interests">
           {INTERESTS.map(({ id, label }) => {
             const on = interests.includes(id);
             return (
@@ -57,12 +57,12 @@ function InterestsPage() {
                   setInterests(next);
                   onboardingState.interests = next;
                 }}
-                className={`interest-art-option flex h-auto min-w-0 flex-col items-center gap-2 whitespace-normal rounded-control p-2 transition-all duration-tap active:scale-95 ${
+                className={`interest-art-option flex h-14 min-w-0 flex-row items-center justify-start gap-2 whitespace-normal rounded-control p-1.5 pr-2 transition-all duration-tap active:scale-95 ${
                   on ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/60"
                 }`}
               >
-                <img src={INTEREST_ART[id]} alt="" width={512} height={384} loading="lazy" decoding="async" className="interest-topic-picture w-full rounded-control object-cover" />
-                <span className={`interest-topic-label text-label text-center leading-tight ${on ? "text-primary" : "text-foreground"}`}>{label}</span>
+                <img src={INTEREST_ART[id]} alt="" width={512} height={384} loading="lazy" decoding="async" className="interest-topic-picture size-11 shrink-0 rounded-control object-cover" />
+                <span className={`interest-topic-label text-label min-w-0 text-left leading-tight ${on ? "text-primary" : "text-foreground"}`}>{label}</span>
               </Button>
             );
           })}

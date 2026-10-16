@@ -96,7 +96,7 @@ function BuildingPage() {
           {!permissionNote && <Button variant="ghost" className="mt-2 h-12 rounded-pill" onClick={dismissReminder}>Not now</Button>}
         </DrawerContent>
       </Drawer>
-      {done && <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-6 pb-6"><Button variant="onboarding" className="h-14 w-full rounded-pill" onClick={() => navigate({ to: "/onboarding/handoff" })}>Start exploring</Button></div>}
+      {done && <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-6 pb-6"><Button variant="onboarding" className="h-14 w-full rounded-pill" onClick={() => navigate({ to: "/onboarding/paywall" })}>See {name}'s plan</Button></div>}
     </div>
   );
 }
