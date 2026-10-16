@@ -967,13 +967,13 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 /* Floating sky clouds: an outer drift across the screen, an inner gentle bob. */
 .onboarding-scenery-clouds .sky-cloud { position: absolute; left: 0; display: block; animation: sky-drift linear infinite; will-change: transform; }
 .onboarding-scenery-clouds .sky-cloud img { display: block; width: 100%; height: auto; opacity: .95; filter: drop-shadow(0 12px 18px color-mix(in oklab, var(--brand) 14%, transparent)); animation: sky-bob 6s ease-in-out infinite; }
-.sky-cloud-a { top: 9%; width: 150px; animation-duration: 38s; animation-delay: -6s; }
-.sky-cloud-b { top: 30%; width: 96px; opacity: .7; animation-duration: 52s; animation-delay: -30s; }
-.sky-cloud-c { top: 58%; width: 190px; animation-duration: 46s; animation-delay: -18s; }
-.sky-cloud-d { top: 80%; width: 120px; opacity: .8; animation-duration: 60s; animation-delay: -44s; }
-.sky-cloud-b img { animation-duration: 7.5s; animation-delay: -2s; }
-.sky-cloud-c img { animation-duration: 8s; animation-delay: -4s; }
-.sky-cloud-d img { animation-duration: 6.8s; animation-delay: -1s; }
+.onboarding-scenery-clouds .sky-cloud-a { top: 9%; width: 150px; animation-duration: 38s; animation-delay: -6s; }
+.onboarding-scenery-clouds .sky-cloud-b { top: 30%; width: 96px; opacity: .7; animation-duration: 52s; animation-delay: -30s; }
+.onboarding-scenery-clouds .sky-cloud-c { top: 58%; width: 190px; animation-duration: 46s; animation-delay: -18s; }
+.onboarding-scenery-clouds .sky-cloud-d { top: 80%; width: 120px; opacity: .8; animation-duration: 60s; animation-delay: -44s; }
+.onboarding-scenery-clouds .sky-cloud-b img { animation-duration: 7.5s; animation-delay: -2s; }
+.onboarding-scenery-clouds .sky-cloud-c img { animation-duration: 8s; animation-delay: -4s; }
+.onboarding-scenery-clouds .sky-cloud-d img { animation-duration: 6.8s; animation-delay: -1s; }
 @keyframes sky-drift { from { transform: translate3d(-220px,0,0); } to { transform: translate3d(calc(100vw + 40px),0,0); } }
 @keyframes sky-bob { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-14px) scale(1.03); } }
 @media (prefers-reduced-motion: reduce) { .onboarding-scenery-clouds .sky-cloud, .onboarding-scenery-clouds .sky-cloud img { animation: none; } .sky-cloud-a { transform: translateX(8vw); } .sky-cloud-c { transform: translateX(55vw); } }
