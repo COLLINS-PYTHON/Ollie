@@ -841,8 +841,8 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 
 /* Reference-led display polish, separate from the SVG lesson player. */
 .lesson-cover { display: block; aspect-ratio: 3 / 2; object-fit: cover; }
-.interest-topic-picture { aspect-ratio: 4 / 3; }
-.interest-art-option { overflow: hidden; }
+.interest-topic-picture { aspect-ratio: 1 / 1; }
+.interest-art-option { overflow: visible; }
 .interest-topic-label { display: flex; align-items: center; justify-content: center; min-height: 34px; width: 100%; border-radius: var(--radius-pill); padding: 3px 4px; transition: background-color var(--duration-tap); }
 .interest-art-option[aria-pressed="true"] .interest-topic-label { background: var(--onboarding-highlight-fill); }
 .onboarding-interest-icon { color: var(--lesson-ink); background: var(--card); border: 1px solid var(--onboarding-line); border-radius: var(--radius-pill); }
