@@ -47,6 +47,85 @@ export type Database = {
         }
         Relationships: []
       }
+      category_lessons: {
+        Row: {
+          category: string
+          id: string
+          lesson_order: number
+          subtopic_name: string
+        }
+        Insert: {
+          category: string
+          id?: string
+          lesson_order?: number
+          subtopic_name: string
+        }
+        Update: {
+          category?: string
+          id?: string
+          lesson_order?: number
+          subtopic_name?: string
+        }
+        Relationships: []
+      }
+      child_bag_state: {
+        Row: {
+          bag_position: number
+          child_id: string
+          current_bag: string[]
+          selected_content: Json | null
+          selected_day: string | null
+        }
+        Insert: {
+          bag_position?: number
+          child_id: string
+          current_bag?: string[]
+          selected_content?: Json | null
+          selected_day?: string | null
+        }
+        Update: {
+          bag_position?: number
+          child_id?: string
+          current_bag?: string[]
+          selected_content?: Json | null
+          selected_day?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "child_bag_state_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      child_slideshow_progress: {
+        Row: {
+          category: string
+          child_id: string
+          next_lesson_index: number
+        }
+        Insert: {
+          category: string
+          child_id: string
+          next_lesson_index?: number
+        }
+        Update: {
+          category?: string
+          child_id?: string
+          next_lesson_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "child_slideshow_progress_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       children: {
         Row: {
           account_id: string
@@ -144,12 +223,41 @@ export type Database = {
           },
         ]
       }
+      slideshow_content_cache: {
+        Row: {
+          band: string
+          content: Json
+          lesson_id: string
+        }
+        Insert: {
+          band: string
+          content: Json
+          lesson_id: string
+        }
+        Update: {
+          band?: string
+          content?: Json
+          lesson_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slideshow_content_cache_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "category_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      select_daily_lesson: {
+        Args: { p_child_id: string; p_custom?: Json; p_day: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

@@ -1,0 +1,54 @@
+CREATE TABLE public.category_lessons (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), category text NOT NULL, lesson_order integer NOT NULL DEFAULT 0 CHECK (lesson_order >= 0), subtopic_name text NOT NULL, UNIQUE(category, lesson_order));
+GRANT SELECT ON public.category_lessons TO authenticated, anon;
+GRANT ALL ON public.category_lessons TO service_role;
+ALTER TABLE public.category_lessons ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Shared lesson catalog" ON public.category_lessons FOR SELECT TO anon, authenticated USING (true);
+CREATE TABLE public.child_slideshow_progress (child_id uuid NOT NULL REFERENCES public.children(id) ON DELETE CASCADE, category text NOT NULL, next_lesson_index integer NOT NULL DEFAULT 0 CHECK (next_lesson_index >= 0), PRIMARY KEY(child_id, category));
+GRANT SELECT ON public.child_slideshow_progress TO authenticated;
+GRANT ALL ON public.child_slideshow_progress TO service_role;
+ALTER TABLE public.child_slideshow_progress ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Own lesson progress" ON public.child_slideshow_progress FOR SELECT TO authenticated USING (EXISTS (SELECT 1 FROM public.children c WHERE c.id=child_id AND c.account_id=auth.uid()));
+CREATE TABLE public.child_bag_state (child_id uuid PRIMARY KEY REFERENCES public.children(id) ON DELETE CASCADE, current_bag text[] NOT NULL DEFAULT '{}'::text[], bag_position integer NOT NULL DEFAULT 0 CHECK (bag_position BETWEEN 0 AND 12), selected_day date, selected_content jsonb, CHECK (cardinality(current_bag) IN (0,12)));
+GRANT SELECT ON public.child_bag_state TO authenticated;
+GRANT ALL ON public.child_bag_state TO service_role;
+ALTER TABLE public.child_bag_state ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Own category bag" ON public.child_bag_state FOR SELECT TO authenticated USING (EXISTS (SELECT 1 FROM public.children c WHERE c.id=child_id AND c.account_id=auth.uid()));
+CREATE TABLE public.slideshow_content_cache (lesson_id uuid NOT NULL REFERENCES public.category_lessons(id) ON DELETE CASCADE, band text NOT NULL CHECK (band IN ('4-6','7-9','10-12')), content jsonb NOT NULL, PRIMARY KEY(lesson_id,band));
+GRANT SELECT ON public.slideshow_content_cache TO authenticated, anon;
+GRANT ALL ON public.slideshow_content_cache TO service_role;
+ALTER TABLE public.slideshow_content_cache ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Shared band lesson content" ON public.slideshow_content_cache FOR SELECT TO anon, authenticated USING (true);
+CREATE OR REPLACE FUNCTION public.select_daily_lesson(p_child_id uuid, p_day date, p_custom jsonb DEFAULT NULL) RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE bag public.child_bag_state; child public.children; chosen_category text; idx integer; total integer; lesson public.category_lessons; selected jsonb; reading_band text; is_first boolean;
+BEGIN
+ SELECT * INTO child FROM public.children WHERE id=p_child_id AND account_id=auth.uid() FOR UPDATE;
+ IF NOT FOUND THEN RAISE EXCEPTION 'Child not available' USING ERRCODE='42501'; END IF;
+ IF p_day < (now() AT TIME ZONE 'UTC')::date - 1 OR p_day > (now() AT TIME ZONE 'UTC')::date + 1 THEN RAISE EXCEPTION 'Invalid lesson date'; END IF;
+ INSERT INTO public.child_bag_state(child_id) VALUES(p_child_id) ON CONFLICT DO NOTHING;
+ SELECT * INTO bag FROM public.child_bag_state WHERE child_id=p_child_id FOR UPDATE;
+ IF bag.selected_day IS NOT NULL AND bag.selected_day >= p_day THEN RETURN bag.selected_content; END IF;
+ is_first := bag.selected_day IS NULL AND jsonb_array_length(COALESCE(child.progress -> 'ollie-slideshow-v1' -> 'completions','[]'::jsonb))=0;
+ IF is_first AND p_custom IS NOT NULL THEN
+  IF p_custom->>'categoryId' <> 'custom' OR jsonb_typeof(p_custom->'slides') <> 'array' THEN RAISE EXCEPTION 'Invalid custom lesson'; END IF;
+  UPDATE public.child_bag_state SET selected_day=p_day, selected_content=p_custom WHERE child_id=p_child_id;
+  RETURN p_custom;
+ END IF;
+ IF cardinality(bag.current_bag) <> 12 OR bag.bag_position=12 THEN
+  SELECT array_agg(category ORDER BY random()) INTO bag.current_bag FROM (VALUES ('space'),('ocean'),('dinos'),('animals'),('body'),('math'),('art'),('weather'),('history'),('music'),('tech'),('reading')) AS categories(category);
+  bag.bag_position:=0;
+ END IF;
+ chosen_category:=bag.current_bag[bag.bag_position+1];
+ SELECT count(*) INTO total FROM public.category_lessons WHERE category=chosen_category;
+ IF total=0 THEN RAISE EXCEPTION 'Lesson content unavailable'; END IF;
+ SELECT next_lesson_index INTO idx FROM public.child_slideshow_progress WHERE child_id=p_child_id AND category=chosen_category;
+ idx:=COALESCE(idx,0); IF idx>=total THEN idx:=0; END IF;
+ SELECT * INTO lesson FROM public.category_lessons WHERE category=chosen_category ORDER BY lesson_order OFFSET idx LIMIT 1;
+ reading_band:=CASE WHEN child.reading_level IN ('none','sounding') OR child.age<=6 THEN '4-6' WHEN child.age<=9 OR child.reading_level='stories' THEN '7-9' ELSE '10-12' END;
+ SELECT content INTO selected FROM public.slideshow_content_cache WHERE lesson_id=lesson.id AND band=reading_band;
+ IF selected IS NULL THEN RAISE EXCEPTION 'Lesson content unavailable'; END IF;
+ INSERT INTO public.child_slideshow_progress(child_id,category,next_lesson_index) VALUES(p_child_id,chosen_category,idx+1) ON CONFLICT(child_id,category) DO UPDATE SET next_lesson_index=EXCLUDED.next_lesson_index;
+ UPDATE public.child_bag_state SET current_bag=bag.current_bag, bag_position=bag.bag_position+1, selected_day=p_day, selected_content=selected WHERE child_id=p_child_id;
+ RETURN selected;
+END; $$;
+REVOKE ALL ON FUNCTION public.select_daily_lesson(uuid,date,jsonb) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.select_daily_lesson(uuid,date,jsonb) TO authenticated, service_role;
