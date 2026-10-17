@@ -14,7 +14,5 @@ const COVERS: Record<string, string> = {
 export function LessonCover({ categoryId, topicId = "", title, className = "" }: {
   categoryId: string; topicId?: string; title: string; className?: string;
 }) {
-  const source = INTEREST_ART[categoryId] ?? COVERS[topicId];
-  if (!source) return <LessonArt categoryId={categoryId} topicId={topicId} title={title} animated={false} className={className} />;
-  return <img src={source} alt={title} loading="lazy" decoding="async" width={992} height={672} className={`lesson-cover ${className}`} />;
+  return <LessonArt categoryId={categoryId} topicId={topicId} title={title} animated className={className} />;
 }

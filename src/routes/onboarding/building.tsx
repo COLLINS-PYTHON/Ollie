@@ -1,8 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Bell, Check, ShieldCheck } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
@@ -22,18 +21,14 @@ function BuildingPage() {
   const navigate = useNavigate();
   const name = childName(onboardingState.name);
   const [step, setStep] = useState(0);
-  const [askReminder, setAskReminder] = useState(false);
-  const [permissionNote, setPermissionNote] = useState("");
-  const [answered, setAnswered] = useState(false);
   const items = ["Age-appropriate answers", "Their interests, at the heart", "Learning at their reading level", "Your chosen reply tone"];
   const done = step > items.length;
 
   useEffect(() => {
     if (done) return;
-    if (step === 2 && !answered) { setAskReminder(true); return; }
     const t = setTimeout(() => setStep((s) => s + 1), 1400);
     return () => clearTimeout(t);
-  }, [step, answered, done]);
+  }, [step, done]);
 
   /* Custom-topic lesson: written during this wait so it is ready as the first slideshow. */
   const makeLesson = useServerFn(generateCustomLesson);
@@ -55,19 +50,6 @@ function BuildingPage() {
       .catch(() => {});
   }, [makeLesson]);
 
-  function dismissReminder() {
-    setAskReminder(false);
-    setAnswered(true);
-  }
-  async function allowReminder() {
-    if (window.top !== window.self) { setPermissionNote("Open Ollie in its own tab to allow notifications. You can continue without them."); return; }
-    if (!("Notification" in window)) { setPermissionNote("Notifications are not available in this browser. On iPhone, add Ollie to your Home Screen first."); return; }
-    try {
-      const permission = await Notification.requestPermission();
-      localStorage.setItem("ollie-trial-reminder-permission", permission);
-      setPermissionNote(permission === "granted" ? "Permission allowed. Trial reminders will be available once notification delivery is connected." : "No problem. You can continue without a reminder.");
-    } catch { setPermissionNote("Notifications could not be enabled here. You can continue without them."); }
-  }
   return (
     <div className="building-screen min-h-screen bg-background">
       <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-6 pb-28 pt-12 text-center">
@@ -86,16 +68,6 @@ function BuildingPage() {
         </ul>
         <p className="text-support mt-6 flex items-center justify-center gap-2 text-muted-foreground"><ShieldCheck className="size-4 shrink-0" />Your settings stay in your hands.</p>
       </main>
-      <Drawer open={askReminder} onOpenChange={(open) => { if (!open) dismissReminder(); }} shouldScaleBackground={false}>
-        <DrawerContent className="onboarding-theme trial-reminder-sheet mx-auto max-w-md px-6 pb-6">
-          <Bell className="mx-auto mb-4 size-8 text-primary" />
-          <DrawerTitle className="text-title text-center">Should we remind you before your trial ends?</DrawerTitle>
-          <DrawerDescription className="text-support mt-3 text-center">Allow notifications so Ollie can send a trial reminder. Reminder delivery is not available yet.</DrawerDescription>
-          {permissionNote && <p role="status" className="text-support mt-4 text-center text-muted-foreground">{permissionNote}</p>}
-          <Button variant="onboarding" className="mt-6 h-14 rounded-pill" onClick={() => permissionNote ? dismissReminder() : void allowReminder()}>{permissionNote ? "Continue" : "Allow notifications"}</Button>
-          {!permissionNote && <Button variant="ghost" className="mt-2 h-12 rounded-pill" onClick={dismissReminder}>Not now</Button>}
-        </DrawerContent>
-      </Drawer>
       {done && <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-6 pb-6"><Button variant="onboarding" className="h-14 w-full rounded-pill" onClick={() => navigate({ to: "/onboarding/paywall" })}>See {name}'s plan</Button></div>}
     </div>
   );

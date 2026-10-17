@@ -23,9 +23,22 @@ function PaywallPage() {
   const name = childName(onboardingState.name);
   const [sheet, setSheet] = useState(false);
   const [plan, setPlan] = useState<"monthly" | "yearly">("yearly");
+  const [askReminder, setAskReminder] = useState(false);
+  const [permissionNote, setPermissionNote] = useState('');
+  function dismissReminder() { setAskReminder(false); void navigate({ to: '/onboarding/account' }); }
+  async function allowReminder() {
+    if (window.top !== window.self) { setPermissionNote('Open Ollie in its own tab to allow notifications. You can continue without them.'); return; }
+    if (!('Notification' in window)) { setPermissionNote('Notifications are not available in this browser. On iPhone, add Ollie to your Home Screen first.'); return; }
+    try {
+      const permission = await Notification.requestPermission();
+      localStorage.setItem('ollie-trial-reminder-permission', permission);
+      setPermissionNote(permission === 'granted' ? 'Permission allowed. Trial reminders will be available once notification delivery is connected.' : 'No problem. You can continue without a reminder.');
+    } catch { setPermissionNote('Notifications could not be enabled here. You can continue without them.'); }
+  }
   const valueLines = [`Every answer matched to ${name}'s age`, "Every unsafe search caught, not hidden", "Full visibility, always"];
 
   return (
+    <>
     <Drawer open={sheet} onOpenChange={setSheet} shouldScaleBackground={false} autoFocus>
     <div className="relative min-h-screen bg-background">
       <div className={`paywall-underlay mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-32 pt-4 ${sheet ? "is-presented" : ""}`}>
@@ -80,7 +93,7 @@ function PaywallPage() {
                </ul>
              </div>
              <div className="paywall-sheet-footer shrink-0 border-t border-border px-6 pt-3">
-                <Button variant="onboarding" size="onboarding" type="button" onClick={() => { onboardingState.plan = plan; setSheet(false); void navigate({ to: "/onboarding/account" }); }} className="trial-emphasis text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
+                <Button variant="onboarding" size="onboarding" type="button" onClick={() => { onboardingState.plan = plan; setSheet(false); setAskReminder(true); }} className="trial-emphasis text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
                   Start {name}'s Safe Trial
                 </Button>
                 <p className="text-support mt-3 text-center text-muted-foreground">No charge today. Selected plan: {PRICES[plan]}.</p>
@@ -89,5 +102,16 @@ function PaywallPage() {
       </DrawerContent>
     </div>
     </Drawer>
+    <Drawer open={askReminder} onOpenChange={(open) => { if (!open) dismissReminder(); }} shouldScaleBackground={false}>
+      <DrawerContent className="onboarding-theme trial-reminder-sheet mx-auto max-w-md px-6 pb-6">
+        <Bell className="mx-auto mb-4 size-8 text-primary" />
+        <DrawerTitle className="text-title text-center">Should we remind you before your trial ends?</DrawerTitle>
+        <DrawerDescription className="text-support mt-3 text-center">Allow notifications so Ollie can send a trial reminder. Reminder delivery is not available yet.</DrawerDescription>
+        {permissionNote && <p role="status" className="text-support mt-4 text-center text-muted-foreground">{permissionNote}</p>}
+        <Button variant="onboarding" className="mt-6 h-14 rounded-pill" onClick={() => permissionNote ? dismissReminder() : void allowReminder()}>{permissionNote ? 'Continue' : 'Allow notifications'}</Button>
+        {!permissionNote && <Button variant="ghost" className="mt-2 h-12 rounded-pill" onClick={dismissReminder}>Not now</Button>}
+      </DrawerContent>
+    </Drawer>
+    </>
   );
 }
