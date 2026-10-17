@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import ollie from "@/assets/ollie.png";
 import { INTERESTS } from "@/lib/interests";
-import { buildDay, pickCategoryId, type Day } from "@/lib/slideshow/library";
+import { type Day } from "@/lib/slideshow/library";
+import { selectDailyLesson } from '@/lib/daily-lesson';
 import { JAR_BONUS, recordCompletion } from "@/lib/slideshow-store";
-import { customDay, loadCustom, markCustomDone } from "@/lib/custom-lesson-store";
+import { markCustomDone } from "@/lib/custom-lesson-store";
 import { addCookies, loadBalance, saveBalance } from "@/lib/picture-store";
 import { Rocket } from "lucide-react";
 import { quizOptions, quizText, type Band } from "@/lib/slideshow/types";
@@ -26,11 +27,15 @@ function categoryIconId(categoryId: string) {
 }
 
 export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; onClose: () => void }) {
-  const [day] = useState<(Day & { image?: string }) | null>(() => {
-    const custom = loadCustom();
-    if (custom && !custom.done) return customDay(custom);
-    return buildDay(pickCategoryId(child.interests));
-  });
+  const [day, setDay] = useState<(Day & { image?: string }) | null>(null);
+  const [error, setError] = useState('');
+  const [retry, setRetry] = useState(0);
+  useEffect(() => {
+    let active = true;
+    setError('');
+    void selectDailyLesson(child.band).then(result => { if (active) setDay(result); }).catch(() => { if (active) setError('Your lesson could not be loaded. Please try again.'); });
+    return () => { active = false; };
+  }, [child.band, retry]);
   const [phase, setPhase] = useState<"intro" | "play" | "done">("intro");
   const [jarFilled, setJarFilled] = useState(false);
   const [index, setIndex] = useState(0);
@@ -137,7 +142,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
     else setHint(quizText(quiz.hint, child.band));
   };
 
-  if (!day) return null;
+  if (!day) return <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-card"><p role="status" className="text-body text-foreground">{error || 'Getting your lesson ready…'}</p>{error && <Button onClick={() => setRetry(value => value + 1)}>Try again</Button>}</div>;
 
   if (phase === "intro") {
     return (

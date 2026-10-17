@@ -80,6 +80,7 @@ function SearchChat() {
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<RecognitionLike | null>(null);
+  const holdingRef = useRef(false);
   const nodTimerRef = useRef<number | null>(null);
   const spokenRef = useRef<Set<string>>(new Set());
   const child = childProfile();
@@ -95,6 +96,7 @@ function SearchChat() {
     setVoiceSupported(Boolean(getRecognition()));
     return () => {
       if (nodTimerRef.current) window.clearTimeout(nodTimerRef.current);
+      recognitionRef.current?.stop();
     };
   }, []);
 
@@ -180,7 +182,7 @@ function SearchChat() {
 
   const startListening = () => {
     const Recognition = getRecognition();
-    if (!Recognition || busy || listening) return;
+    if (!Recognition || busy || recognitionRef.current) return;
     try {
       const rec = new Recognition();
       rec.lang = "en-US";
@@ -190,7 +192,7 @@ function SearchChat() {
         const transcript = e.results?.[0]?.[0]?.transcript ?? "";
         if (transcript) setInput(transcript);
       };
-      rec.onend = () => setListening(false);
+      rec.onend = () => { recognitionRef.current = null; setListening(false); };
       recognitionRef.current = rec;
       rec.start();
       setListening(true);
@@ -200,12 +202,28 @@ function SearchChat() {
   };
 
   const stopListening = () => {
+    holdingRef.current = false;
     try {
       recognitionRef.current?.stop();
     } catch {
       /* recognition already stopped */
     }
     setListening(false);
+  };
+
+  const voiceHold = {
+    onPointerDown: (event: React.PointerEvent<HTMLButtonElement>) => {
+      if (event.button !== 0) return;
+      event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId);
+      holdingRef.current = true; startListening();
+    },
+    onPointerUp: stopListening,
+    onPointerCancel: stopListening,
+    onLostPointerCapture: stopListening,
+    onContextMenu: (event: React.MouseEvent) => event.preventDefault(),
+    onKeyDown: (event: React.KeyboardEvent) => { if ((event.key === ' ' || event.key === 'Enter') && !event.repeat) { event.preventDefault(); holdingRef.current = true; startListening(); } },
+    onKeyUp: (event: React.KeyboardEvent) => { if (event.key === ' ' || event.key === 'Enter') { event.preventDefault(); stopListening(); } },
+    onBlur: stopListening,
   };
 
   const canSend = !busy && input.trim().length > 0;
@@ -307,13 +325,13 @@ function SearchChat() {
 
       <div className="search-composer relative z-10 px-3 pt-2">
         {expandedVoice ? <div className="flex items-center justify-center gap-4 pb-2">
-          <Button variant="ghost" size="icon" aria-label={listening ? "Stop listening" : "Talk to Ollie"} aria-pressed={listening} onClick={() => listening ? stopListening() : startListening()} disabled={busy} className="voice-orb-control relative size-20 shrink-0 rounded-pill p-0 hover:bg-transparent active:scale-95">
+          <Button variant="ghost" size="icon" aria-label="Hold to talk to Ollie" aria-pressed={listening} {...voiceHold} disabled={busy} className="voice-orb-control relative size-20 touch-none select-none shrink-0 rounded-pill p-0 hover:bg-transparent active:scale-95">
             <span aria-hidden="true"><CrispOrb state="listening" size={80} aria-label="Voice orb" /></span>
             <Mic aria-hidden="true" className="pointer-events-none absolute size-5 text-primary" />
           </Button>
           <Button variant="ghost" size="icon" aria-label="Type a question" onClick={() => { setTyping(true); window.setTimeout(() => inputRef.current?.focus(), 0); }} className="size-12 rounded-pill text-muted-foreground"><Keyboard className="size-5" /></Button>
         </div> : <div className="flex items-end gap-2 pb-2">
-          {voiceSupported && <Button variant="ghost" size="icon" type="button" aria-label={listening ? "Stop listening" : "Talk to Ollie"} aria-pressed={listening} onClick={() => listening ? stopListening() : startListening()} disabled={busy} className="voice-orb-control relative size-12 shrink-0 rounded-pill p-0 hover:bg-transparent">
+          {voiceSupported && <Button variant="ghost" size="icon" type="button" aria-label="Hold to talk to Ollie" aria-pressed={listening} {...voiceHold} disabled={busy} className="voice-orb-control relative size-12 touch-none select-none shrink-0 rounded-pill p-0 hover:bg-transparent">
             <span aria-hidden="true"><CrispOrb state={listening ? "listening" : "breathing"} size={48} aria-label="Voice orb" /></span><Mic aria-hidden="true" className="pointer-events-none absolute size-4 text-primary" />
           </Button>}
           <div className="flex min-w-0 flex-1 items-end gap-2 rounded-pill border border-border bg-card px-4 py-2">

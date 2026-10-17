@@ -3,6 +3,7 @@ import { PACK_A } from "./pack-a";
 import { PACK_B } from "./pack-b";
 import { PACK_C } from "./pack-c";
 import type { Band, Subtopic } from "./types";
+import { lessonSlides } from './selection';
 
 /*
  * The standard library is hand-built once per category and reused for every
@@ -49,22 +50,21 @@ export function pickCategoryId(interests: string[], seed = daySeed()): string {
   return list[seed % list.length] ?? "space";
 }
 
-export function buildDay(categoryId: string): Day | null {
+export function buildDay(categoryId: string, lessonIndex = 0, band: Band = '7-9'): Day | null {
   const pack = PACKS[categoryId];
   if (!pack || pack.length === 0) return null;
-  const seed = daySeed();
+  const seed = lessonIndex;
   /* One rotation per day, so a skip and a reopen show the same lesson. */
   const rotated = [...pack.slice(seed % pack.length), ...pack.slice(0, seed % pack.length)];
   return {
     categoryId,
-    label: categoryLabel(categoryId),
-    slides: [
-      ...rotated.map((sub): Slide => ({ kind: "content", sub })),
-      ...rotated.map((sub): Slide => ({ kind: "quiz", sub })),
-    ],
+    label: rotated[0]?.title ?? categoryLabel(categoryId),
+    slides: lessonSlides(rotated, band),
   };
 }
 
 export function hasLibrary(categoryId: string): boolean {
   return Boolean(PACKS[categoryId]?.length);
 }
+
+export function lessonCount(categoryId: string): number { return PACKS[categoryId]?.length ?? 0; }
