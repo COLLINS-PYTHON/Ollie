@@ -1,3 +1,4 @@
+import { speak, stopSpeaking } from "@/lib/speak";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import ollie from "@/assets/ollie.png";
 import { INTERESTS } from "@/lib/interests";

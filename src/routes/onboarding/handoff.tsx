@@ -1,3 +1,4 @@
+import { speak } from "@/lib/speak";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { onboardingState, completeOnboarding } from "@/lib/onboarding-store";
 import { loadCustom } from "@/lib/custom-lesson-store";

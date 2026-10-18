@@ -1,3 +1,4 @@
+import { speak as naturalSpeak } from "@/lib/speak";
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Mic, Sparkles, X } from "lucide-react";
