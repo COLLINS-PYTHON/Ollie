@@ -67,9 +67,7 @@ function getRecognition(): (new () => RecognitionLike) | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 function speak(text: string) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+  void naturalSpeak(text);
 }
 
 type Popup = null | "low" | "last" | "out" | "jars" | { pin: (typeof JARS)[number] } | { bought: number };
