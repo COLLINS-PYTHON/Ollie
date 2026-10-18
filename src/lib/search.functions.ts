@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const MODEL = "openai/gpt-6-astra";
+const MODEL = "openai/gpt-6-luna";
 const GATEWAY = "https://ai.gateway.lovable.dev/v1/responses";
 
 /* Locked safety copy, word for word from the spec. Never personalized by tone. */

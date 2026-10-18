@@ -1,3 +1,4 @@
+import { speak as naturalSpeak } from "@/lib/speak";
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUp, Keyboard, Mic, Volume2 } from "lucide-react";
@@ -52,10 +53,7 @@ function getRecognition(): (new () => RecognitionLike) | null {
 }
 
 function speak(text: string) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  window.speechSynthesis.speak(utterance);
+  void naturalSpeak(text);
 }
 
 function childProfile() {

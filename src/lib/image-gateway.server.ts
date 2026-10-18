@@ -7,8 +7,8 @@ export type ImageConfig = {
 
 export const imageSettings: Omit<ImageConfig, "apiKey"> = {
   baseURL: "https://ai.gateway.lovable.dev",
-  model: "openai/gpt-image-2.5-sunburst",
-  format: "openai",
+  model: "google/gemini-3.1-flash-lite-image",
+  format: "generate-content",
 };
 
 export function generateImage(config: ImageConfig, prompt: string, stream = true, signal?: AbortSignal) {

@@ -1,3 +1,4 @@
+import { speak, stopSpeaking } from "@/lib/speak";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import ollie from "@/assets/ollie.png";
 import { INTERESTS } from "@/lib/interests";
@@ -69,28 +70,18 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
       : "";
 
   useEffect(() => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
+    if (typeof window === "undefined") return;
+    stopSpeaking();
     setSpeaking(false);
     if (phase !== "play" || !narration || !parentSettings.soundOn || !child.needsReadAloud || status === "correct") return;
-    const utterance = new SpeechSynthesisUtterance(narration);
-    utterance.rate = 0.88;
-    utterance.onstart = () => setSpeaking(true);
-    utterance.onend = () => setSpeaking(false);
-    utterance.onerror = () => setSpeaking(false);
-    window.speechSynthesis.speak(utterance);
-    return () => { window.speechSynthesis.cancel(); };
+    void speak(narration, { onStart: () => setSpeaking(true), onEnd: () => setSpeaking(false) });
+    return () => { stopSpeaking(); };
   }, [phase, index, status, hint, narration, child.band, child.needsReadAloud]);
 
   const toggleNarration = () => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window) || !parentSettings.soundOn) return;
-    if (speaking) { window.speechSynthesis.cancel(); setSpeaking(false); return; }
-    const utterance = new SpeechSynthesisUtterance(narration);
-    utterance.rate = child.needsReadAloud ? 0.88 : 1;
-    utterance.onstart = () => setSpeaking(true);
-    utterance.onend = () => setSpeaking(false);
-    utterance.onerror = () => setSpeaking(false);
-    window.speechSynthesis.speak(utterance);
+    if (typeof window === "undefined" || !parentSettings.soundOn) return;
+    if (speaking) { stopSpeaking(); setSpeaking(false); return; }
+    void speak(narration, { onStart: () => setSpeaking(true), onEnd: () => setSpeaking(false) });
   };
 
   const clearSlideState = () => {

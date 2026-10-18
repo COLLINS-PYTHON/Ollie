@@ -22,6 +22,7 @@ import { Route as TabsCreateRouteImport } from './routes/_tabs.create'
 import { Route as TabsSearchRouteImport } from './routes/_tabs.search'
 import { Route as TabsTrailRouteImport } from './routes/_tabs.trail'
 import { Route as ApiGenerateImageRouteImport } from './routes/api/generate-image'
+import { Route as ApiSpeechRouteImport } from './routes/api/speech'
 import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as OnboardingAccountRouteImport } from './routes/onboarding/account'
 import { Route as OnboardingAgeRouteImport } from './routes/onboarding/age'
@@ -106,6 +107,11 @@ const TabsTrailRoute = TabsTrailRouteImport.update({
 const ApiGenerateImageRoute = ApiGenerateImageRouteImport.update({
   id: '/api/generate-image',
   path: '/api/generate-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSpeechRoute = ApiSpeechRouteImport.update({
+  id: '/api/speech',
+  path: '/api/speech',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingIndexRoute = OnboardingIndexRouteImport.update({
@@ -222,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
   '/api/generate-image': typeof ApiGenerateImageRoute
+  '/api/speech': typeof ApiSpeechRoute
   '/onboarding/account': typeof OnboardingAccountRoute
   '/onboarding/age': typeof OnboardingAgeRoute
   '/onboarding/assurance': typeof OnboardingAssuranceRoute
@@ -255,6 +262,7 @@ export interface FileRoutesByTo {
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
   '/api/generate-image': typeof ApiGenerateImageRoute
+  '/api/speech': typeof ApiSpeechRoute
   '/onboarding/account': typeof OnboardingAccountRoute
   '/onboarding/age': typeof OnboardingAgeRoute
   '/onboarding/assurance': typeof OnboardingAssuranceRoute
@@ -291,6 +299,7 @@ export interface FileRoutesById {
   '/_tabs/search': typeof TabsSearchRoute
   '/_tabs/trail': typeof TabsTrailRoute
   '/api/generate-image': typeof ApiGenerateImageRoute
+  '/api/speech': typeof ApiSpeechRoute
   '/onboarding/account': typeof OnboardingAccountRoute
   '/onboarding/age': typeof OnboardingAgeRoute
   '/onboarding/assurance': typeof OnboardingAssuranceRoute
@@ -327,6 +336,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/trail'
     | '/api/generate-image'
+    | '/api/speech'
     | '/onboarding/account'
     | '/onboarding/age'
     | '/onboarding/assurance'
@@ -360,6 +370,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/trail'
     | '/api/generate-image'
+    | '/api/speech'
     | '/onboarding/account'
     | '/onboarding/age'
     | '/onboarding/assurance'
@@ -395,6 +406,7 @@ export interface FileRouteTypes {
     | '/_tabs/search'
     | '/_tabs/trail'
     | '/api/generate-image'
+    | '/api/speech'
     | '/onboarding/account'
     | '/onboarding/age'
     | '/onboarding/assurance'
@@ -428,6 +440,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ApiGenerateImageRoute: typeof ApiGenerateImageRoute
+  ApiSpeechRoute: typeof ApiSpeechRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -521,6 +534,13 @@ declare module '@tanstack/react-router' {
       path: '/api/generate-image'
       fullPath: '/api/generate-image'
       preLoaderRoute: typeof ApiGenerateImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/speech': {
+      id: '/api/speech'
+      path: '/api/speech'
+      fullPath: '/api/speech'
+      preLoaderRoute: typeof ApiSpeechRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding/': {
@@ -742,6 +762,7 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ApiGenerateImageRoute: ApiGenerateImageRoute,
+  ApiSpeechRoute: ApiSpeechRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

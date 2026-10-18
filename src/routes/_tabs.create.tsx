@@ -1,3 +1,4 @@
+import { speak as naturalSpeak } from "@/lib/speak";
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Mic, Sparkles, X } from "lucide-react";
@@ -67,9 +68,7 @@ function getRecognition(): (new () => RecognitionLike) | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 function speak(text: string) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+  void naturalSpeak(text);
 }
 
 type Popup = null | "low" | "last" | "out" | "jars" | { pin: (typeof JARS)[number] } | { bought: number };

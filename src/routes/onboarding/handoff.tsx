@@ -1,3 +1,4 @@
+import { speak } from "@/lib/speak";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { onboardingState, completeOnboarding } from "@/lib/onboarding-store";
 import { loadCustom } from "@/lib/custom-lesson-store";
@@ -18,13 +19,12 @@ function HandoffPage() {
     completeOnboarding();
     // Pre-readers hear Ollie say hello before their first lesson opens.
     const lvl = onboardingState.readingLevel;
-    if ((lvl === "none" || lvl === "sounding") && "speechSynthesis" in window) {
+    if (lvl === "none" || lvl === "sounding") {
       const custom = loadCustom();
       const line = custom && !custom.done
         ? `Hi ${name}! I'm Ollie. I made a lesson just for you, all about ${custom.lesson.title}.`
         : `Hi ${name}! I'm Ollie. Let's learn something fun.`;
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(new SpeechSynthesisUtterance(line));
+      void speak(line);
     }
     navigate({ to: "/search" });
   }
