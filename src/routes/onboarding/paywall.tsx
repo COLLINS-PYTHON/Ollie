@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
-import { Bell, Check, ChevronLeft, X } from "lucide-react";
+import { Bell, Check, ChevronLeft, LockKeyholeOpen, X } from "lucide-react";
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription } 
 import { SUBSCRIPTION_PRICES, yearlyMonthlyEquivalent } from "@/lib/subscription-prices";
 
 export const Route = createFileRoute("/onboarding/paywall")({
-  head: () => pageMeta("We want you to try Ollie for free", "Explore safe answers, daily lessons and creativity with Ollie's 7-day trial."),
+  head: () => pageMeta("We want you and your child to try Ollie for free", "Explore safe answers, daily lessons and creativity with Ollie's 7-day trial."),
   component: PaywallPage,
 });
 
@@ -46,7 +46,7 @@ function PaywallPage() {
           <ChevronLeft className="size-5" />
         </Button>
         <OllieChase />
-        <h1 className="text-title mt-8 text-center text-foreground">We want you to try Ollie for free</h1>
+        <h1 className="text-title mt-8 text-center text-foreground">We want you and {name} to try Ollie for free</h1>
         <p className="text-support mt-3 text-center text-muted-foreground">Made just for {name}.</p>
         <div className="payment-assurance relative mx-auto mt-5 flex items-center gap-2 rounded-pill bg-card px-5 py-3 shadow-card">
           <Check className="relative size-5 text-success" strokeWidth={2.2} />
@@ -79,12 +79,22 @@ function PaywallPage() {
                </div>
              </div>
              <div className="paywall-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-4">
-               <div className="trial-timeline grid grid-cols-3 gap-2 py-3 text-center">
-                 <div><p className="text-label text-foreground">Today</p><p className="text-support text-muted-foreground">Trial starts</p></div>
-                 <div><Bell className="mx-auto mb-1 size-4 text-primary" /><p className="text-label text-foreground">Before it ends</p><p className="text-support text-muted-foreground">Trial reminder</p></div>
-                 <div><p className="text-label text-foreground">Day 7</p><p className="text-support text-muted-foreground">Billing starts</p></div>
-               </div>
-               <p className="text-label mt-1 text-center text-muted-foreground">Reminder delivery and billing are not active yet.</p>
+               <p className="text-body pt-2 text-center font-bold text-foreground">How your trial works</p>
+               <ol className="trial-timeline relative mt-3 grid grid-cols-3 gap-2 text-center">
+                 <span aria-hidden className="absolute left-[16.6%] right-[16.6%] top-5 h-0.5 rounded-pill bg-primary" />
+                 {[
+                   { icon: LockKeyholeOpen, when: "Today", what: `Full access for ${name}. $0 today.` },
+                   { icon: Bell, when: "In 5 days", what: `Reminder plus ${name}'s learning report` },
+                   { icon: Check, when: "In 7 days", what: "Plan starts. Cancel anytime before." },
+                 ].map(({ icon: Icon, when, what }) => (
+                   <li key={when} className="relative flex flex-col items-center">
+                     <span className="flex size-10 items-center justify-center rounded-pill bg-primary text-primary-foreground shadow-card"><Icon className="size-5" strokeWidth={2} /></span>
+                     <p className="text-label mt-2 font-bold text-primary">{when}</p>
+                     <p className="text-label mt-0.5 text-muted-foreground">{what}</p>
+                   </li>
+                 ))}
+               </ol>
+               <p className="text-label mt-3 text-center text-muted-foreground">Reminder delivery and billing are not active yet.</p>
                <ul className="mt-4 space-y-2">
                  {valueLines.map((l) => <li key={l} className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2.5 text-body font-medium text-foreground"><Check className="mt-1 size-4 shrink-0 text-success" /><span className="min-w-0">{l}</span></li>)}
                </ul>
@@ -106,7 +116,7 @@ function PaywallPage() {
       <DrawerContent className="onboarding-theme trial-reminder-sheet mx-auto max-w-md px-6 pb-6">
         <Bell className="mx-auto mb-4 size-8 text-primary" />
         <DrawerTitle className="text-title text-center">Should we remind you before your trial ends?</DrawerTitle>
-        <DrawerDescription className="text-support mt-3 text-center">Allow notifications so Ollie can send a trial reminder. Reminder delivery is not available yet.</DrawerDescription>
+        <DrawerDescription className="text-support mt-3 text-center">On day 5 we'll remind you before your trial ends and share {name}'s learning report so far. Reminder delivery is not available yet.</DrawerDescription>
         {permissionNote && <p role="status" className="text-support mt-4 text-center text-muted-foreground">{permissionNote}</p>}
         <Button variant="onboarding" className="mt-6 h-14 rounded-pill" onClick={() => permissionNote ? dismissReminder() : void allowReminder()}>{permissionNote ? 'Continue' : 'Allow notifications'}</Button>
         {!permissionNote && <Button variant="ghost" className="mt-2 h-12 rounded-pill" onClick={dismissReminder}>Not now</Button>}
