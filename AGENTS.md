@@ -35,3 +35,4 @@
 
 - child-interactions centralizes tested voice age and starter rules; swipes never bypass open quizzes. Why: consistent safe navigation.
 - Onboarding puts worries/safety after age; Continue advances contextual carousel first. Why: each tap changes the explanation.
+- Read-aloud goes through src/lib/speak.ts (/api/speech neural voice, browser voice fallback). Why: one natural voice everywhere, still works offline.
