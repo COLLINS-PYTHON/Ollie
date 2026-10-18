@@ -1,4 +1,4 @@
-const MODEL = "openai/gpt-6-astra";
+const MODEL = "openai/gpt-6-luna";
 const GATEWAY = "https://ai.gateway.lovable.dev/v1/responses";
 
 async function streamOnce(input: unknown[], apiKey: string): Promise<string> {
