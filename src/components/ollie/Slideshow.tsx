@@ -28,7 +28,7 @@ function categoryIconId(categoryId: string) {
   return INTERESTS.find((i) => i.id === categoryId)?.icon ?? Rocket;
 }
 
-export function SlideshowTakeover({ child, onClose, review }: { child: SlideshowChild; onClose: () => void; review?: SlideshowReview }) {
+export function SlideshowTakeover({ child, onClose, review }: { child: SlideshowChild; onClose: () => void; review?: SlideshowReview | undefined }) {
   const [day, setDay] = useState<(Day & { image?: string }) | null>(null);
   const [error, setError] = useState('');
   const [retry, setRetry] = useState(0);
