@@ -12,6 +12,7 @@ export type Completion = {
   band: Band;
   correct: number;
   total: number;
+  lessonIndex?: number;
 };
 
 /* Parent picks how a new lesson unlocks: 24 hours after the last one was
