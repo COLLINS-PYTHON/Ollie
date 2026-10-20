@@ -2,7 +2,8 @@ import { speak, stopSpeaking } from "@/lib/speak";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import ollie from "@/assets/ollie.png";
 import { INTERESTS } from "@/lib/interests";
-import { type Day } from "@/lib/slideshow/library";
+import { buildDay, type Day } from "@/lib/slideshow/library";
+import type { SlideshowReview } from "@/lib/review-store";
 import { selectDailyLesson } from '@/lib/daily-lesson';
 import { JAR_BONUS, recordCompletion } from "@/lib/slideshow-store";
 import { markCustomDone } from "@/lib/custom-lesson-store";
@@ -27,16 +28,22 @@ function categoryIconId(categoryId: string) {
   return INTERESTS.find((i) => i.id === categoryId)?.icon ?? Rocket;
 }
 
-export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; onClose: () => void }) {
+export function SlideshowTakeover({ child, onClose, review }: { child: SlideshowChild; onClose: () => void; review?: SlideshowReview }) {
   const [day, setDay] = useState<(Day & { image?: string }) | null>(null);
   const [error, setError] = useState('');
   const [retry, setRetry] = useState(0);
   useEffect(() => {
     let active = true;
     setError('');
+    if (review) {
+      const built = buildDay(review.categoryId, review.lessonIndex, review.band);
+      if (built) setDay(built);
+      else setError('That lesson could not be loaded.');
+      return () => { active = false; };
+    }
     void selectDailyLesson(child.band).then(result => { if (active) setDay(result); }).catch(() => { if (active) setError('Your lesson could not be loaded. Please try again.'); });
     return () => { active = false; };
-  }, [child.band, retry]);
+  }, [child.band, retry, review]);
   const [phase, setPhase] = useState<"intro" | "play" | "done">("intro");
   const [jarFilled, setJarFilled] = useState(false);
   const [index, setIndex] = useState(0);
@@ -93,6 +100,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
 
   const finish = () => {
     if (!day) return;
+    if (review) { setPhase("done"); return; }
     if (day.categoryId === "custom") markCustomDone();
     const { jarFilled: filled } = recordCompletion({
       categoryId: day.categoryId,
@@ -100,6 +108,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
       band: child.band,
       correct: score.correct,
       total: score.total,
+      lessonIndex: day.lessonIndex ?? 0,
     });
     saveBalance(addCookies(loadBalance(), 1 + (filled ? JAR_BONUS : 0)));
     setJarFilled(filled);
@@ -140,7 +149,7 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
       <div className="fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
         <div className="slide-tint flex flex-1 flex-col items-center justify-center gap-5 px-7 text-center">
           <LessonArt categoryId={day.categoryId} topicId={slides[0]?.sub.id ?? ""} title={day.label} className="bubble-in w-full max-w-[320px]" />
-          <p className="text-label uppercase tracking-wide text-muted-foreground">Today's lesson</p>
+          <p className="text-label uppercase tracking-wide text-muted-foreground">{review ? "Lesson review" : "Today's lesson"}</p>
           <h1 className="text-title max-w-[300px] text-foreground">{day.label}</h1>
           {child.band === "4-6" && (
             <p className="text-support max-w-[260px] text-muted-foreground">
@@ -172,13 +181,13 @@ export function SlideshowTakeover({ child, onClose }: { child: SlideshowChild; o
         <div className="slide-tint relative flex flex-1 flex-col items-center justify-center gap-5 px-7 text-center">
           <div className={`glow-burst absolute size-56 rounded-pill bg-gradient-to-b ${tile} opacity-25`} />
           <img src={ollie} alt="Ollie celebrating" className="bounce-soft relative w-32" width={128} height={128} />
-          <h1 className="relative text-title text-foreground">You did it, {child.name}!</h1>
+          <h1 className="relative text-title text-foreground">{review ? `Nice review, ${child.name}!` : `You did it, ${child.name}!`}</h1>
           <p className="relative text-body text-muted-foreground">
             You got {score.correct} of {Math.max(score.total, 1)} right on the first try.
           </p>
-          <p className={`relative rounded-pill bg-card px-5 py-2.5 text-button text-foreground shadow-card ${rewarded ? "pop-in" : ""}`}>
+          {!review && <p className={`relative rounded-pill bg-card px-5 py-2.5 text-button text-foreground shadow-card ${rewarded ? "pop-in" : ""}`}>
             +1 picture cookie for the Create tab
-          </p>
+          </p>}
           {jarFilled && (
             <p className="pop-in relative rounded-pill bg-gold px-5 py-2.5 text-button text-foreground shadow-card">
               Your trail jar is full! +{JAR_BONUS} bonus cookies

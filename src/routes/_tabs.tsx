@@ -5,6 +5,7 @@ import { Bedtime } from "@/components/ollie/Bedtime";
 import { TabBar } from "@/components/ollie/TabBar";
 import { SlideshowTakeover, type SlideshowChild } from "@/components/ollie/Slideshow";
 import { setPrefs, slideshowDue } from "@/lib/slideshow-store";
+import { endReview, useSlideshowReview } from "@/lib/review-store";
 import { effectiveBand } from "@/lib/slideshow/library";
 import { onboardingState, loadProfile } from "@/lib/onboarding-store";
 import { childName } from "@/lib/meta";
@@ -29,6 +30,7 @@ function ParentIcon() {
 function TabsLayout() {
   const [ready, setReady] = useState(false);
   const [takeover, setTakeover] = useState(false);
+  const review = useSlideshowReview();
   const [bedtime, setBedtime] = useState(false);
   const [child, setChild] = useState<SlideshowChild>({
     name: "Milo",
@@ -117,8 +119,8 @@ function TabsLayout() {
       </div>
       {ready && <Outlet />}
       {ready && <TabBar />}
-      {bedtime && !takeover && <Bedtime name={child.name} />}
-      {takeover && <SlideshowTakeover child={child} onClose={() => setTakeover(false)} />}
+      {bedtime && !takeover && !review && <Bedtime name={child.name} />}
+      {(takeover || review) && <SlideshowTakeover child={child} review={review ?? undefined} onClose={() => { setTakeover(false); endReview(); }} />}
     </div>
   );
 }
