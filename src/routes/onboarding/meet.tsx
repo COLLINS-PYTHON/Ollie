@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
 import { Button } from "@/components/ui/button";
+import { Typewriter } from "@/components/ollie/Typewriter";
 
 export const Route = createFileRoute("/onboarding/meet")({
   head: () => pageMeta("Meet Ollie", "An age-appropriate learning assistant, not a replacement for friends, family or trusted grown-ups."),
@@ -20,7 +21,7 @@ function MeetPage() {
   return (
     <div className="bg-gradient-hello min-h-screen">
       <main className="meet-content mx-auto flex min-h-[100svh] w-full max-w-md flex-col items-center px-6 pb-32 pt-20 text-center">
-        <h1 className="text-title text-foreground">Meet Ollie, your child's AI tutor & creative guide</h1>
+        <h1 className="text-title text-foreground"><Typewriter text="Meet Ollie, your child's AI tutor & creative guide" delay={300} speed={28} /></h1>
         <div className="relative mt-8 flex size-52 items-center justify-center">
           <div className={`mascot-reveal absolute inset-0 ${step >= 2 ? "is-visible" : ""}`}>
               <img src={ollie} width={208} height={208} fetchPriority="high" loading="eager" alt="Ollie the puppy" className={`size-52 object-contain ${step >= 3 ? "ollie-gentle-idle" : ""}`} />
