@@ -96,7 +96,7 @@ function TabsLayout() {
   /* Count Search and Create time only, never while the lesson is open. */
   useEffect(() => {
     const surface = pathname === "/search" ? "search" : pathname === "/create" ? "create" : null;
-    if (!ready || !surface || takeover) { setBedtime(false); return; }
+    if (!ready || !surface || takeover || review) { setBedtime(false); return; }
     const check = () => setBedtime(minutesToday() >= onboardingState.limitMinutes);
     check();
     const t = window.setInterval(() => {
@@ -104,7 +104,7 @@ function TabsLayout() {
       check();
     }, 15_000);
     return () => window.clearInterval(t);
-  }, [pathname, takeover, ready]);
+  }, [pathname, takeover, review, ready]);
 
   return (
     <div className={`tabs-shell relative min-h-screen bg-background ${pathname === "/search" ? "tabs-search" : ""}`}>
