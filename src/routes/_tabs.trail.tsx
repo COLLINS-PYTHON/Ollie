@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { LockKeyhole, Pause, Rocket } from "lucide-react";
 import { INTERESTS } from "@/lib/interests";
+import { INTEREST_ART } from "@/lib/interest-art";
+import { startReview } from "@/lib/review-store";
 import { JAR_BONUS, JAR_EVERY, jarProgress, trailStops, type TrailStop } from "@/lib/slideshow-store";
 import { pageMeta } from "@/lib/meta";
 import { TrailLandscape, trailCurve, trailPositions, trailSeason, type TrailSeason } from "@/components/ollie/TrailLandscape";
@@ -53,16 +55,29 @@ function Trail() {
           const done = stop?.kind === "done" ? stop : null;
           const paused = stop?.kind === "paused";
           const category = done ? INTERESTS.find((c) => c.id === done.completion.categoryId) : null;
+          const art = done ? INTEREST_ART[done.completion.categoryId] : undefined;
           const Icon = category?.icon ?? Rocket;
           const point = points[i];
           if (!point) return null;
           return <li key={done?.completion.id ?? `node-${i}`} className="trail-arrive absolute flex w-32 -translate-x-1/2 flex-col items-center text-center" style={{ left: `${point.x / 340 * 100}%`, top: point.y - 32 }}>
             {node.jar ? <><Jar filled={filled} /><p className="text-support font-bold text-foreground">+{JAR_BONUS} cookies</p></> : <>
-              <div className={`flex size-16 items-center justify-center rounded-pill ${done ? `glossy trail-node bg-gradient-to-b ${category?.tile ?? "from-cat-space to-cat-space-deep"}` : paused ? "border-2 border-dashed border-primary/30 bg-card" : node.day === cycleStart + filled + 1 ? "trial-emphasis border-2 border-primary bg-primary/10" : "border-2 border-border bg-card"}`}>
-                {done ? <Icon className="size-7 text-primary-foreground" /> : paused ? <Pause className="size-5 text-muted-foreground" /> : node.day === cycleStart + filled + 1 ? <Rocket className="size-7 text-primary" /> : <LockKeyhole className="size-5 text-muted-foreground/60" />}
-              </div>
+              {done ? (
+                <button
+                  type="button"
+                  onClick={() => startReview({ categoryId: done.completion.categoryId, band: done.completion.band, label: done.completion.label, lessonIndex: done.completion.lessonIndex ?? 0 })}
+                  aria-label={`Review the lesson: ${done.completion.label}`}
+                  className={`glossy trail-node relative flex size-16 items-center justify-center overflow-hidden rounded-pill bg-gradient-to-b ${category?.tile ?? "from-cat-space to-cat-space-deep"} transition-transform duration-tap active:scale-95`}
+                >
+                  {art ? <img src={art} alt="" className="absolute inset-0 size-full object-cover" /> : <Icon className="relative size-7 text-primary-foreground" />}
+                </button>
+              ) : (
+                <div className={`flex size-16 items-center justify-center rounded-pill ${paused ? "border-2 border-dashed border-primary/30 bg-card" : node.day === cycleStart + filled + 1 ? "trial-emphasis border-2 border-primary bg-primary/10" : "border-2 border-border bg-card"}`}>
+                  {paused ? <Pause className="size-5 text-muted-foreground" /> : node.day === cycleStart + filled + 1 ? <Rocket className="size-7 text-primary" /> : <LockKeyhole className="size-5 text-muted-foreground/60" />}
+                </div>
+              )}
               <p className="trail-stop-label text-support mt-2 font-bold text-foreground">{paused ? "Paused" : `Day ${done?.learningDay ?? node.day}`}</p>
               {done && <p className="trail-stop-label text-label mt-1 text-muted-foreground">{done.completion.label}</p>}
+              {done && <p className="trail-stop-label text-label mt-0.5 font-bold text-primary">Review</p>}
             </>}
           </li>;
         })}

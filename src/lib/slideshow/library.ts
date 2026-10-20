@@ -18,7 +18,7 @@ export type Slide =
   | { kind: "content"; sub: Subtopic }
   | { kind: "quiz"; sub: Subtopic };
 
-export type Day = { categoryId: string; label: string; slides: Slide[] };
+export type Day = { categoryId: string; label: string; slides: Slide[]; lessonIndex?: number };
 
 export function bandFor(age: number): Band {
   if (age <= 6) return "4-6";
@@ -60,6 +60,7 @@ export function buildDay(categoryId: string, lessonIndex = 0, band: Band = '7-9'
     categoryId,
     label: rotated[0]?.title ?? categoryLabel(categoryId),
     slides: lessonSlides(rotated, band),
+    lessonIndex: seed % pack.length,
   };
 }
 

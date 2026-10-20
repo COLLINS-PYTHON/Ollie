@@ -113,15 +113,20 @@ export function OnboardingSkeleton({
         >
           <ChevronLeft className="size-5" />
         </Button>
-        <div className="chapter-progress flex flex-1 gap-2" role="progressbar" aria-label="Onboarding progress" aria-valuemin={0} aria-valuemax={3} aria-valuenow={current - 1 + progress}>
-          {[1, 2, 3].map((n) => (
-            <span key={n} className={`chapter-track h-1.5 flex-1 overflow-hidden rounded-pill bg-secondary ${n === current ? "chapter-current" : ""}`}>
-              <span className="chapter-fill block h-full rounded-pill bg-primary" style={{ width: `${n < current ? 100 : n === current ? progress * 100 : 0}%` }} />
-            </span>
-          ))}
+        <div
+          className="chapter-progress relative h-1.5 flex-1 overflow-hidden rounded-pill bg-secondary"
+          role="progressbar"
+          aria-label={`Onboarding progress: step ${current} of 3, ${chapterNames[current - 1]}`}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(((current - 1 + progress) / 3) * 100)}
+        >
+          <span className="chapter-fill absolute inset-y-0 left-0 rounded-pill bg-primary" style={{ width: `${((current - 1 + progress) / 3) * 100}%` }} />
+          <span className="chapter-divider absolute inset-y-0 left-1/3 w-1" aria-hidden />
+          <span className="chapter-divider absolute inset-y-0 left-2/3 w-1" aria-hidden />
         </div>
       </header>
-      <p className="text-label px-6 pt-2 text-center text-muted-foreground">Step {current} of 3 · {chapterNames[current - 1]}</p>
+
 
       <main className="onboarding-content flex min-h-0 flex-1 flex-col px-6 pb-32 pt-9">
         <h1 className="text-title mx-auto w-full max-w-sm text-center text-foreground">{title}</h1>
