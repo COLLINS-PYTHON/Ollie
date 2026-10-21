@@ -2,8 +2,8 @@ import { beforeEach, expect, test } from 'bun:test';
 import { ACTIVE_KID_KEY, MAX_KIDS, readFamily, readKidValue, writeKidValue } from './kid-storage';
 import { addKid, switchKid } from './family-store';
 import { onboardingState, parentSettings, saveProfile } from './onboarding-store';
-const values = new Map<string, string>();
-const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => values.set(key, value), removeItem: (key: string) => values.delete(key) };
+const values = new Map();
+const storage = { getItem: (key) => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: (key) => values.delete(key) };
 beforeEach(() => {
   values.clear();
   Object.assign(globalThis, { localStorage: storage, sessionStorage: storage, window: { dispatchEvent: () => true } });
