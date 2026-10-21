@@ -5,6 +5,7 @@ import { loadProfile, onboardingState, saveProfile } from "@/lib/onboarding-stor
 import { pushAll } from "@/lib/cloud-sync";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { Button } from "@/components/ui/button";
 import { pageMeta } from "@/lib/meta";
 
 export const Route = createFileRoute("/onboarding/account")({
@@ -22,7 +23,7 @@ function AccountPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
-  const ok = parentName.trim() && /\S+@\S+\.\S+/.test(email) && password.length >= 8;
+  const ok = /\S+@\S+\.\S+/.test(email) && password.length >= 8;
 
   // Back from a Google/Apple redirect: setup answers were saved before leaving.
   useEffect(() => {
@@ -30,12 +31,12 @@ function AccountPage() {
       if (!data.session) return;
       if (!onboardingState.name) loadProfile();
       await pushAll();
-      navigate({ to: "/onboarding/handoff" });
+      navigate({ to: "/onboarding/parent-name" });
     });
   }, [navigate]);
 
   async function finish() {
-    if (sent) return navigate({ to: "/onboarding/handoff" });
+    if (sent) return navigate({ to: "/onboarding/parent-name" });
     setBusy(true);
     setError("");
     onboardingState.parentName = parentName.trim();
@@ -50,34 +51,34 @@ function AccountPage() {
     if (err) return setError(err.message);
     if (data.session) {
       await pushAll();
-      return navigate({ to: "/onboarding/handoff" });
+      return navigate({ to: "/onboarding/parent-name" });
     }
     setSent(true);
   }
 
   async function social(provider: "google" | "apple") {
     setError("");
-    if (!parentName.trim()) return setError("Add your first name first.");
+    
     onboardingState.parentName = parentName.trim();
     saveProfile();
     const res = await lovable.auth.signInWithOAuth(provider, { redirect_uri: `${window.location.origin}/onboarding/account` });
     if (res.error) return setError("That sign-in didn't work. Please try again.");
     if (res.redirected) return;
     await pushAll();
-    navigate({ to: "/onboarding/handoff" });
+    navigate({ to: "/onboarding/parent-name" });
   }
 
   return (
     <div className="bg-gradient-name min-h-screen">
       <OnboardingSkeleton
         chapter={4}
-        title="Create your account"
+        title="Save your family’s Ollie spaces."
         cta={sent ? "Continue" : busy ? "Creating account" : "Create account"}
         ctaDisabled={sent ? false : !ok || busy}
         onContinue={finish}
       >
         <div className="flex flex-col gap-3">
-          <input className={field} value={parentName} onChange={(e) => setParentName(e.target.value)} placeholder="Your first name" aria-label="Your first name" />
+          <p className="mb-3 text-support text-muted-foreground">Keep your family’s settings and learning progress available across your devices.</p>
           <input className={field} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" aria-label="Email" disabled={sent} />
           <input className={field} type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password (8 or more characters)" aria-label="Password" disabled={sent} />
         </div>
@@ -90,8 +91,8 @@ function AccountPage() {
           <>
             <div className="my-5 flex items-center gap-3 text-muted-foreground"><span className="h-px flex-1 bg-border" /><span className="text-support">or</span><span className="h-px flex-1 bg-border" /></div>
             <div className="flex flex-col gap-3">
-              <button type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-foreground text-background shadow-card">Continue with Apple</button>
-              <button type="button" onClick={() => social("google")} className="text-button h-14 rounded-pill bg-card text-foreground shadow-card">Continue with Google</button>
+              <Button variant="option" type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-foreground text-background shadow-card">Continue with Apple</Button>
+              <Button variant="option" type="button" onClick={() => social("google")} className="text-button h-14 rounded-pill bg-card text-foreground shadow-card">Continue with Google</Button>
             </div>
           </>
         )}

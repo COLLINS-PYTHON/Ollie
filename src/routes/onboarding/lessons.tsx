@@ -1,67 +1,12 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { OnboardingSkeleton } from "../onboarding";
-import { onboardingState } from "@/lib/onboarding-store";
-import { INTERESTS } from "@/lib/interests";
-import { childName } from "@/lib/meta";
-import { LessonCover } from "@/components/ollie/LessonCover";
-
-export const Route = createFileRoute("/onboarding/lessons")({
-  head: () => ({
-    meta: [
-      { title: "Your child's lessons | Ollie" },
-      { name: "description", content: "A preview of lessons shaped around your child's interests." },
-      { property: "og:title", content: "Your child's lessons | Ollie" },
-      { property: "og:description", content: "A preview of lessons shaped around your child's interests." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-  component: LessonsPage,
-});
-
-const FAN = [
-  "-rotate-[9deg] -translate-x-16 translate-y-4",
-  "rotate-[2deg] z-10",
-  "rotate-[11deg] translate-x-16 translate-y-6",
-];
-
-const PREVIEW_TOPICS: Record<string, { id: string; question: string }> = {
-  space: { id: "moon-phases", question: "Why does the Moon change shape?" },
-  ocean: { id: "sea-turtles", question: "How do sea turtles breathe?" },
-  dinos: { id: "dino-eggs", question: "Did dinosaurs hatch from eggs?" },
-};
-
-function LessonsPage() {
-  const navigate = useNavigate();
-  const name = childName(onboardingState.name);
-  const picks = INTERESTS.filter((i) => onboardingState.interests.includes(i.id)).slice(0, 3);
-  if (picks.length === 0) picks.push(...INTERESTS.slice(0, 3));
-  const slots = picks.length === 1 ? [FAN[1]] : picks.length === 2 ? [FAN[0], FAN[2]] : FAN;
-
-  return (
-    <div className="min-h-screen bg-background">
-      <OnboardingSkeleton chapter={4} title={`Here's how ${name}'s daily lessons will look`} cta="Continue" onContinue={() => navigate({ to: "/onboarding/screen-time" })}>
-          <div className="relative flex h-80 items-center justify-center">
-            {picks.map(({ id, label, sample }, i) => (
-              <article
-                key={id}
-                style={{ animationDelay: `${i * 160}ms` }}
-                className={`lesson-preview-card absolute w-44 ${slots[i]}`}
-              >
-                <div className="flex aspect-[3/4] flex-col overflow-hidden rounded-card bg-card shadow-sheet ring-4 ring-card">
-                  <LessonCover categoryId={id} topicId={PREVIEW_TOPICS[id]?.id ?? ""} title={label} className="w-full" />
-                  <div className="px-4 pb-4">
-                    <p className="text-label text-muted-foreground">{label}</p>
-                    <p className="text-body mt-1 font-semibold leading-snug text-foreground">{PREVIEW_TOPICS[id]?.question ?? sample}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        <p className="text-support mt-4 text-center text-muted-foreground">
-          A fresh discovery, a quick quiz and a little moment of “I know that!” Built around <span className="onboarding-highlight">what {name} loves</span>.
-        </p>
-      </OnboardingSkeleton>
-    </div>
-  );
-}
+import { createFileRoute,useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
+import { Check,ArrowRight } from 'lucide-react';
+import { OnboardingSkeleton } from '../onboarding';
+import { Button } from '@/components/ui/button';
+import { LessonArt } from '@/components/ollie/LessonArt';
+import { onboardingState } from '@/lib/onboarding-store';
+import { buildDay,effectiveBand } from '@/lib/slideshow/library';
+import { quizOptions } from '@/lib/slideshow/types';
+import { pageMeta } from '@/lib/meta';
+export const Route=createFileRoute('/onboarding/lessons')({head:()=>pageMeta('A little curiosity, carried forward','Preview a real Daily Discovery and a keepsake on the Trail.'),component:DiscoveryProof});
+function DiscoveryProof(){const navigate=useNavigate();const [quiz,setQuiz]=useState(false);const [pick,setPick]=useState<number|null>(null);const band=effectiveBand(onboardingState.age,onboardingState.readingLevel??'stories');const day=buildDay(onboardingState.interests[0]??'space',0,band);const sub=day?.slides[0]?.sub;if(!sub)return null;return <div className="min-h-screen bg-background"><OnboardingSkeleton chapter={3} title="A little curiosity, carried forward." cta="See your parent view" onContinue={()=>navigate({to:'/onboarding/assurance'})}><p className="mb-4 text-label text-muted-foreground">DAILY DISCOVERY · EXAMPLE</p><LessonArt categoryId={day.categoryId} topicId={sub.id} title={sub.title} className="w-full"/><h2 className="mt-4 text-body font-bold">{quiz?sub.quiz.q[band]:sub.title}</h2>{quiz?<div className="mt-3 space-y-2">{quizOptions(sub.quiz,band).map((option,i)=><Button key={option} variant="option" aria-pressed={pick===i} className="h-auto min-h-12 w-full justify-between whitespace-normal p-3 text-left" onClick={()=>setPick(i)}>{option}{pick===i&&<Check className="text-primary"/>}</Button>)}{pick!==null&&<p role="status" className="text-support text-muted-foreground">{pick===sub.quiz.answer?'That’s right.':'Try another answer.'}</p>}</div>:<><p className="mt-2 text-body text-muted-foreground">{sub.caption[band]}</p><Button variant="ghost" className="mt-3 min-h-12 rounded-pill text-primary" onClick={()=>setQuiz(true)}>Try a question<ArrowRight/></Button></>}<div className="mt-5 flex items-center gap-3 border-t border-border pt-4"><span className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-pill border-2 border-primary"><LessonArt categoryId={day.categoryId} topicId={sub.id} title={sub.title} animated={false} className="size-full"/></span><p className="text-support text-muted-foreground">Finished Discoveries stay on {onboardingState.name}’s Trail, ready to revisit.</p></div><p className="mt-4 text-support text-muted-foreground">One short Discovery each day. New topics to explore, with no pressure to keep going.</p></OnboardingSkeleton></div>;}

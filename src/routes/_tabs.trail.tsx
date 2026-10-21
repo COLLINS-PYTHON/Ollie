@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { LockKeyhole, Pause, Rocket } from "lucide-react";
 import { INTERESTS } from "@/lib/interests";
-import { INTEREST_ART } from "@/lib/interest-art";
+import { LessonArt } from "@/components/ollie/LessonArt";
+import { buildDay } from "@/lib/slideshow/library";
+import { Button } from "@/components/ui/button";
 import { startReview } from "@/lib/review-store";
 import { JAR_BONUS, JAR_EVERY, jarProgress, trailStops, type TrailStop } from "@/lib/slideshow-store";
 import { pageMeta } from "@/lib/meta";
@@ -36,12 +38,12 @@ function Trail() {
   const height = (points.at(-1)?.y ?? 0) + 190;
   const path = trailCurve(points);
   return <main className="screen-enter mx-auto min-h-[100svh] w-full max-w-md bg-background px-6 pb-32 pt-20">
-    <h1 className="text-title text-foreground">Your Learning Trail</h1>
+    <h1 className="text-title text-foreground">Your Discovery Trail</h1>
     <div className="mt-5 flex items-center gap-3 border-b border-border pb-4">
       <Jar filled={filled} />
       <div className="min-w-0"><p className="text-body font-bold text-foreground">{filled} of {JAR_EVERY} learning days</p><p className="text-support mt-1 text-muted-foreground">{JAR_BONUS} bonus picture cookies</p></div>
     </div>
-    {learningDays === 0 && <p className="text-body mt-5 text-center text-muted-foreground">Finish a slideshow to light up your first day.</p>}
+    {learningDays === 0 && <p className="text-body mt-5 text-center text-muted-foreground">Your first Discovery starts your Trail.</p>}
     <div className="trail-world relative mx-auto mt-7 w-full max-w-[340px]" style={{ height }} data-season={season}>
       <TrailLandscape height={height} season={season} />
       <svg viewBox={`0 0 340 ${height}`} aria-hidden className="absolute inset-0 h-full w-full overflow-visible">
@@ -55,23 +57,23 @@ function Trail() {
           const done = stop?.kind === "done" ? stop : null;
           const paused = stop?.kind === "paused";
           const category = done ? INTERESTS.find((c) => c.id === done.completion.categoryId) : null;
-          const art = done ? INTEREST_ART[done.completion.categoryId] : undefined;
+          const topic = done ? buildDay(done.completion.categoryId, done.completion.lessonIndex ?? 0, done.completion.band)?.slides[0]?.sub : undefined;
           const Icon = category?.icon ?? Rocket;
           const point = points[i];
           if (!point) return null;
           return <li key={done?.completion.id ?? `node-${i}`} className="trail-arrive absolute flex w-32 -translate-x-1/2 flex-col items-center text-center" style={{ left: `${point.x / 340 * 100}%`, top: point.y - 32 }}>
             {node.jar ? <><Jar filled={filled} /><p className="text-support font-bold text-foreground">+{JAR_BONUS} cookies</p></> : <>
               {done ? (
-                <button
+                <Button variant="ghost"
                   type="button"
                   onClick={() => startReview({ categoryId: done.completion.categoryId, band: done.completion.band, label: done.completion.label, lessonIndex: done.completion.lessonIndex ?? 0 })}
                   aria-label={`Review the lesson: ${done.completion.label}`}
                   className={`glossy trail-node relative flex size-16 items-center justify-center overflow-hidden rounded-pill bg-gradient-to-b ${category?.tile ?? "from-cat-space to-cat-space-deep"} transition-transform duration-tap active:scale-95`}
                 >
-                  {art ? <img src={art} alt="" className="absolute inset-0 size-full object-cover" /> : <Icon className="relative size-7 text-primary-foreground" />}
-                </button>
+                  {done && <LessonArt categoryId={done.completion.categoryId} topicId={topic?.id ?? ""} title={done.completion.label} animated={false} className="size-full" />}
+                </Button>
               ) : (
-                <div className={`flex size-16 items-center justify-center rounded-pill ${paused ? "border-2 border-dashed border-primary/30 bg-card" : node.day === cycleStart + filled + 1 ? "trial-emphasis border-2 border-primary bg-primary/10" : "border-2 border-border bg-card"}`}>
+                <div className={`flex size-16 items-center justify-center rounded-pill ${paused ? "border-2 border-dashed border-primary/30 bg-card" : node.day === cycleStart + filled + 1 ? "border-2 border-primary bg-primary/10" : "border-2 border-border bg-card"}`}>
                   {paused ? <Pause className="size-5 text-muted-foreground" /> : node.day === cycleStart + filled + 1 ? <Rocket className="size-7 text-primary" /> : <LockKeyhole className="size-5 text-muted-foreground/60" />}
                 </div>
               )}

@@ -6,4 +6,4 @@ test("voice is primary below eight", () => { expect(voiceFirst(7)).toBe(true); e
 test("starter tags use selected interests", () => { expect(starterInterests(["dinos", "space", "ocean"]).map(i => i.id)).toEqual(["dinos", "space", "ocean"]); });
 test("swipe cannot bypass unanswered quizzes", () => { expect(canSwipeLesson("quiz", "open")).toBe(false); expect(canSwipeLesson("content", "open")).toBe(true); expect(canSwipeLesson("quiz", "reveal")).toBe(true); });
 test("ten fresh picture cookies", () => { expect(FREE_PER_DAY).toBe(10); expect(cookiesLeft({day:"2026-10-13",freeUsed:0,jarCookies:0})).toBe(10); });
-test("worries immediately follow age", () => { const i=ONBOARDING_STEPS.indexOf("/onboarding/age"); expect(ONBOARDING_STEPS.slice(i,i+4)).toEqual(["/onboarding/age","/onboarding/worries","/onboarding/assurance","/onboarding/reading"]); });
+test("parent PIN comes before plan and account comes afterward", () => { expect(ONBOARDING_STEPS.indexOf("/onboarding/pin")).toBeLessThan(ONBOARDING_STEPS.indexOf("/onboarding/paywall")); expect(ONBOARDING_STEPS.indexOf("/onboarding/account")).toBeGreaterThan(ONBOARDING_STEPS.indexOf("/onboarding/paywall")); });

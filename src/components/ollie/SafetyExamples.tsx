@@ -12,9 +12,9 @@ const EXAMPLES = [
 ];
 
 export const SAFETY_CONTEXTS = [
-  { title: "1. Real-time Emotional Support", copy: "When a question touches on feelings or bullying, Ollie responds gently and points your child toward a trusted grown-up." },
-  { title: "2. Immediate Threat Blocking", copy: "Dangerous instructions stay out of the conversation. Ollie blocks the request, and you can review the question in your dashboard." },
-  { title: "3. Smart Age-Appropriate Guardrails", copy: "For mature questions, Ollie keeps adult details off the screen and guides your child to a grown-up who can explain." },
+  { title: "A calm response", copy: "When a question touches on feelings or bullying, Ollie responds gently and points your kid toward a trusted grown-up." },
+  { title: "A firm safety boundary", copy: "Dangerous instructions stay out of the conversation. Ollie blocks the request, and you can review the question in your dashboard." },
+  { title: "A handoff to a grown-up", copy: "For mature questions, Ollie keeps adult details off the screen and guides your kid to a grown-up who can explain." },
 ];
 
 export function SafetyExamples({ name, onSelect, nextRef }: { name: string; onSelect?: (index: number) => void; nextRef?: { current: (() => void) | null } }) {

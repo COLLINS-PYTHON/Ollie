@@ -34,7 +34,7 @@ export function TabBar() {
               ].join(" ")}
             >
               <Icon className="size-[22px] shrink-0" strokeWidth={2.2} />
-              {active && <span className="text-button">{label}</span>}
+              <span className="text-button">{label}</span>
             </Link>
           );
         })}

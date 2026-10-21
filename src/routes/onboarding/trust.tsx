@@ -1,66 +1,9 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { Check, ShieldCheck } from "lucide-react";
-import { OnboardingSkeleton } from "../onboarding";
-import { onboardingState } from "@/lib/onboarding-store";
-import { childName, pageMeta } from "@/lib/meta";
-import { Button } from "@/components/ui/button";
-
-export const Route = createFileRoute("/onboarding/trust")({
-  head: () => pageMeta("Privacy and safety", "How Ollie protects your child's privacy."),
-  component: TrustPage,
-});
-
-const PROVIDERS = ["Lovable AI service: securely connects Ollie's AI requests", "OpenAI: provides answers, safety checks and pictures", "Your device's speech service: reads answers aloud when enabled"];
-
-function TrustPage() {
-  const navigate = useNavigate();
-  const name = childName(onboardingState.name);
-  const [agree, setAgree] = useState(onboardingState.aiConsent);
-  const [showWho, setShowWho] = useState(false);
-
-  return (
-    <div className="bg-gradient-trust min-h-screen">
-      <OnboardingSkeleton chapter={4} title={`${name}'s privacy comes first`} cta="Continue" ctaDisabled={!agree} onContinue={() => navigate({ to: "/onboarding/pin" })}>
-        <div className="relative mb-6 flex h-20 items-center justify-center" aria-hidden>
-          <span className="onboarding-soft-icon relative flex size-14 items-center justify-center rounded-pill">
-            <ShieldCheck className="size-7" strokeWidth={1.8} />
-          </span>
-        </div>
-        <div className="rounded-card bg-card p-5 shadow-card">
-          <p className="text-body text-foreground">
-            {name}'s questions are for learning, not for training AI. Ollie's AI requests are sent with model training disabled. COPPA is the U.S. law that protects children's privacy.
-          </p>
-          <p className="text-body mt-4 font-medium text-foreground">
-            Safety checks come before the answer. If a question needs a grown-up, Ollie keeps the reply gentle and brings you into the loop.
-          </p>
-        </div>
-        <div className="mt-4 rounded-card bg-card p-5 shadow-card">
-          <p className="text-body text-foreground">
-            To answer {name}'s questions and make pictures, Ollie sends the request to the AI services listed below. Read-aloud uses your device's speech service.
-          </p>
-          <Button variant="link" type="button" aria-expanded={showWho} aria-controls="privacy-providers" onClick={() => setShowWho((v) => !v)} className="text-label mt-2 h-auto p-0 text-primary underline">
-            See who
-          </Button>
-          {showWho && (
-            <ul id="privacy-providers" className="text-support bubble-in mt-2 list-disc pl-5 text-muted-foreground">
-              {PROVIDERS.map((p) => <li key={p}>{p}</li>)}
-            </ul>
-          )}
-          <Button variant="control"
-            type="button"
-            role="checkbox"
-            aria-checked={agree}
-            onClick={() => { setAgree(!agree); onboardingState.aiConsent = !agree; }}
-            className="mt-4 flex h-auto w-full justify-start items-center gap-3 rounded-control bg-surface p-3 text-left"
-          >
-            <span className={`flex size-6 shrink-0 items-center justify-center rounded-control border-2 ${agree ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card"}`}>
-              {agree && <Check className="size-3.5" />}
-            </span>
-            <span className="text-body font-medium text-foreground">I agree</span>
-          </Button>
-        </div>
-      </OnboardingSkeleton>
-    </div>
-  );
-}
+import {createFileRoute,useNavigate,Link} from '@tanstack/react-router';
+import {useState} from 'react';
+import {Check,ShieldCheck} from 'lucide-react';
+import {OnboardingSkeleton} from '../onboarding';
+import {Button} from '@/components/ui/button';
+import {onboardingState,saveProfile} from '@/lib/onboarding-store';
+import {pageMeta} from '@/lib/meta';
+export const Route=createFileRoute('/onboarding/trust')({head:()=>pageMeta('Clear about AI and your control','Understand Ollie’s AI processing before giving permission.'),component:Trust});
+function Trust(){const navigate=useNavigate();const [agree,setAgree]=useState(onboardingState.aiConsent);const [who,setWho]=useState(false);return <div className="min-h-screen bg-background"><OnboardingSkeleton chapter={3} title="Clear about AI. Clear about your control." cta="See your family’s plan" ctaDisabled={!agree} onContinue={()=>{onboardingState.aiConsent=agree;saveProfile();void navigate({to:'/onboarding/paywall'});}}><p className="text-body text-muted-foreground">Ollie uses AI to explain questions, make pictures, and read answers aloud. AI can make mistakes. It is a learning assistant, not a digital friend, therapist, or emergency service.</p><section className="mt-6 border-y border-border py-5"><h2 className="text-body font-bold">We do not use engagement traps.</h2><p className="mt-2 text-support text-muted-foreground">Ollie is designed to answer, not keep kids scrolling. No autoplay rabbit holes, pressure streaks, or prompts made to keep them talking.</p></section><p className="mt-5 text-support text-muted-foreground">Questions, recent conversation context, age, reading comfort, and selected interests are sent to the AI services needed to answer. Picture ideas and read-aloud text are processed separately. Your kid’s first name is not needed by the AI provider.</p><Button variant="link" className="min-h-12 p-0 text-support" aria-expanded={who} onClick={()=>setWho(v=>!v)}>Who processes these requests?</Button>{who&&<ul className="space-y-2 border-l-2 border-border pl-4 text-support text-muted-foreground"><li>Lovable AI Gateway routes AI requests.</li><li>OpenAI processes answers, safety checks, and custom Discovery text.</li><li>Google processes picture generation and neural read-aloud text.</li><li>Your browser or device speech service may process voice input and fallback read-aloud. Its availability and processing depend on your device.</li></ul>}<Link to="/privacy" className="mt-2 block text-support font-semibold text-primary">Privacy and data details</Link><Button variant="option" role="checkbox" aria-checked={agree} onClick={()=>setAgree(v=>!v)} className="mt-5 h-auto min-h-16 w-full justify-start whitespace-normal p-4 text-left"><span className="flex size-6 shrink-0 items-center justify-center rounded-sm border border-primary">{agree&&<Check className="text-primary"/>}</span><span className="text-support">I am the parent or guardian and allow this AI processing for my kids.</span></Button></OnboardingSkeleton></div>;}

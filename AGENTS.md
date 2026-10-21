@@ -15,16 +15,16 @@
 - The slideshow takes over the screen from the `_tabs` layout until the day is marked done in `src/lib/slideshow-store.ts`; screens never render it inline. Why: the spec requires the daily lesson to be finished before anything else.
 - Setup drafts and the resume step persist locally, excluding PIN fields; handoff marks completion and clears the draft; pricing-or-later resume goes to trust. Why: closed-app setup resumes without treating incomplete drafts as completed profiles or reopening on a price ask.
 - Screen time is tracked per surface (Search, Create) in src/lib/usage-store.ts; the slideshow is never counted. Why: spec excludes the lesson from the limit.
-- Signed-in parents' setup and child progress sync to `accounts`/`children` via src/lib/cloud-sync.ts (pushAll from the _tabs layout, pullAll on /login); localStorage stays the working copy. Why: one simple sync path until per-feature tables are needed.
+- Family profiles use kid-storage/family-store; activity keys and picture databases are kid-scoped, and cloud-sync links children by stable cloudId, never array position. Why: siblings must never overwrite or inherit each other's data.
 - The parent PIN is only stored as a SHA-256 hash (pinHash); check it with checkPin. Why: spec requires PINs never be stored readable.
-- Custom parent topics are generated once during Building and played before the shared library. Why: typed topics need bespoke content.
+- Building is an immediate settings summary, not a fake timed generator; custom lessons remain persisted separately when available. Why: setup never pretends background generation happened.
 - Signed-in devices live in the `devices` table; remote log out sets `revoked`, and that device wipes itself on its next sync. Why: no server push in v1.
-- LessonArt keeps SVG playback; LessonCover uses topic covers, shared interest-art pictures, then SVG. Interests reuse category pictures. Why: matching art without generation costs.
+- LessonArt is the shared topic renderer for previews, playback and Trail keepsakes, using accurate topic diagrams and matching reusable editorial pictures. Why: a Discovery must show the same topic everywhere.
 - Prices derive from subscription-prices, yearly equivalent divides by 12. Why: consistent labels.
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
 - Chase uses direct H.264 src, muted/defaultMuted inline autoplay, readiness/gesture retries and reduced-motion pause. Why: reliable phone playback without controls.
 - Trail scenery uses authored SVG with CSS motion and local-calendar seasonal selection; its irregular path is deterministic and separate from progress. Why: crisp instant artwork, no generation charges, and rewards never change with a theme.
-- Paywall uses Vaul with pinned prices/footer and a separate outline pulse. Building requests notification permission after opt-in only; permission never implies reminder delivery. Why: visible prices and honest consent.
+- Paywall uses Vaul with pinned plan prices and footer; PaywallDiscoveryVideo loops muted inline with WebM and H.264 sources, readiness retries and reduced-motion pause. Why: prices stay visible and animation never needs a play button.
 - Parent setting sheets use the shared portalled Vaul drawer outside the animated page. Why: a transformed page must not trap fixed dialogs below the viewport.
 - Onboarding's explicit preview search parameter is retained between its steps and bypasses the returning-family redirect without clearing saved data. Why: existing families can review setup while ordinary entry continues to skip it.
 - Parent-facing safety illustrations use the shared Embla carousel in SafetyExamples, with literal locked responses and clearly labelled example flags. Why: parents can inspect multiple sensitive-topic outcomes without live searches or fabricated progress.
@@ -34,5 +34,5 @@
 - Failed module loads refresh once per cooldown; retry refreshes. Why: discard stale chunks without loops or data loss.
 
 - child-interactions centralizes tested voice age and starter rules; swipes never bypass open quizzes. Why: consistent safe navigation.
-- Onboarding puts worries/safety after age; Continue advances contextual carousel first. Why: each tap changes the explanation.
+- ONBOARDING_STEPS defines the household/value-proof flow and accurate progress; only kid calibration repeats, PIN precedes paywall, account and preferred parent name follow. Why: setup preserves the parent's payment and identity boundaries.
 - Read-aloud goes through src/lib/speak.ts (/api/speech neural voice, browser voice fallback). Why: one natural voice everywhere, still works offline.

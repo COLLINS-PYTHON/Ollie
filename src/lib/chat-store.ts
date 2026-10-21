@@ -1,3 +1,4 @@
+import { readKidValue, writeKidValue, activeKidId } from "./kid-storage";
 /* Search chat persistence. One conversation per child (v1), stored on-device
    until the backend foundation adds accounts; trimmed to the parent-set retention (30 days by default). */
 export type ChatRole = "sent" | "received";
@@ -27,7 +28,7 @@ function trim(messages: ChatMessage[]): ChatMessage[] {
 export function loadChat(): ChatMessage[] {
   if (typeof window === "undefined") return [];
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = readKidValue(KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     return trim(Array.isArray(parsed) ? parsed : []);
@@ -39,7 +40,7 @@ export function loadChat(): ChatMessage[] {
 export function saveChat(messages: ChatMessage[]) {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(trim(messages)));
+    writeKidValue(KEY, JSON.stringify(trim(messages)));
   } catch {
     /* storage full or unavailable; chat still works in-session */
   }

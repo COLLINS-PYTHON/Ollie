@@ -1,17 +1,17 @@
 import { createFileRoute, Outlet, retainSearchParams, useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { onboardingState, loadOnboardingDraft, loadProfile, saveOnboardingStep } from "@/lib/onboarding-store";
+import { onboardingState, loadOnboardingDraft, loadProfile, saveOnboardingStep, ONBOARDING_STEPS } from "@/lib/onboarding-store";
 import { childName } from "@/lib/meta";
 import { resolveAppEntry } from "@/lib/app-entry";
 import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
 import { OnboardingScenery } from "@/components/ollie/OnboardingScenery";
 import { OnboardingCompanions, OLLIE_POSES } from "@/components/ollie/OnboardingCompanions";
-import chaseClip from "@/assets/ollie-chase-compatible.mp4.asset.json";
+import chaseClip from "@/assets/ollie-paywall-discovery-compatible.mp4.asset.json";
 
 export const Route = createFileRoute("/onboarding")({
-  validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" ? { preview: true } : {}),
+  validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" || search["preview"] === "1" ? { preview: true } : {}),
   search: { middlewares: [retainSearchParams(["preview"])] },
   component: OnboardingLayout,
 });
@@ -61,9 +61,7 @@ function OnboardingLayout() {
   }, [pathname, ready, preview]);
 
   // Privacy and safety retain a quiet background. Light discovery steps share visible edge scenery.
-  const scenery = ["/onboarding/fact", "/onboarding/meet", "/onboarding", "/onboarding/", "/onboarding/age", "/onboarding/reading", "/onboarding/lessons", "/onboarding/screen-time", "/onboarding/tone", "/onboarding/building", "/onboarding/handoff"].includes(pathname) ? "clouds"
-    : pathname === "/onboarding/preview" ? "flight"
-    : pathname === "/onboarding/priorities" ? "leaves" : null;
+  const scenery = ['/onboarding/fact', '/onboarding/building', '/onboarding/handoff'].includes(pathname) ? 'clouds' : null;
   return <div className="onboarding-theme onboarding-shell">{ready ? <>{scenery && <OnboardingScenery variant={scenery} />}<div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 
@@ -85,20 +83,10 @@ export function OnboardingSkeleton({
 }) {
   const router = useRouter();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const chapterPaths = [
-    ["/onboarding", "/onboarding/", "/onboarding/age", "/onboarding/worries", "/onboarding/assurance", "/onboarding/reading", "/onboarding/preview", "/onboarding/interests", "/onboarding/lessons"],
-    ["/onboarding/screen-time", "/onboarding/priorities", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin"],
-    ["/onboarding/building", "/onboarding/paywall", "/onboarding/account", "/onboarding/handoff"],
-  ];
-  const found = chapterPaths.findIndex((list) => list.includes(pathname));
   void chapter;
-  const current = found >= 0 ? found + 1 : 1;
-  const chapterNames = [`About ${childName(onboardingState.name)}`, "Safety & Boundaries", "Personalization & Ready"];
-  const steps = chapterPaths[current - 1] ?? [];
-  const progress = (Math.max(0, steps.indexOf(pathname)) + 1) / Math.max(1, steps.length);
-  const companion = pathname === "/onboarding/reading" ? "reading"
-    : pathname === "/onboarding/age" ? "curious"
-    : pathname === "/onboarding/screen-time" ? "resting" : null;
+  const currentStep = Math.max(0, ONBOARDING_STEPS.findIndex(s => s === pathname || s + '/' === pathname));
+  const progress = (currentStep + 1) / ONBOARDING_STEPS.length;
+  const companion = null;
   const touch = useRef<{ x: number; y: number } | null>(null);
   return (
     <div className="onboarding-frame mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden"
@@ -116,14 +104,13 @@ export function OnboardingSkeleton({
         <div
           className="chapter-progress relative h-1.5 flex-1 overflow-hidden rounded-pill bg-secondary"
           role="progressbar"
-          aria-label={`Onboarding progress: step ${current} of 3, ${chapterNames[current - 1]}`}
+          aria-label={`Setup step ${currentStep + 1} of ${ONBOARDING_STEPS.length}`}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-valuenow={Math.round(((current - 1 + progress) / 3) * 100)}
+          aria-valuenow={Math.round(progress * 100)}
         >
-          <span className="chapter-fill absolute inset-y-0 left-0 rounded-pill bg-primary" style={{ width: `${((current - 1 + progress) / 3) * 100}%` }} />
-          <span className="chapter-divider absolute inset-y-0 left-1/3 w-1" aria-hidden />
-          <span className="chapter-divider absolute inset-y-0 left-2/3 w-1" aria-hidden />
+          <span className="chapter-fill absolute inset-y-0 left-0 rounded-pill bg-primary" style={{ width: `${progress * 100}%` }} />
+
         </div>
       </header>
 

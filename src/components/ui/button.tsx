@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        onboarding: "bg-primary text-primary-foreground rounded-pill shadow-card hover:bg-primary/90 active:scale-[0.98] transition-transform duration-tap",
+        onboarding: "onboarding-primary-action bg-primary text-primary-foreground rounded-pill shadow-card hover:bg-primary/90 active:scale-[0.98] transition-transform duration-tap",
         control: "bg-card text-foreground rounded-pill border border-border shadow-sm hover:bg-secondary active:scale-95 transition-transform duration-tap",
         option: "bg-card text-foreground rounded-control border border-border hover:bg-secondary active:scale-[0.98] transition-transform duration-tap",
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",

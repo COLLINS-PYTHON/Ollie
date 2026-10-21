@@ -1,74 +1,11 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Check, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { CrispOrb } from "@/components/ollie/CrispOrb";
-import { onboardingState } from "@/lib/onboarding-store";
-import { childName, pageMeta } from "@/lib/meta";
-import ollie from "@/assets/ollie.png";
-import { useServerFn } from "@tanstack/react-start";
-import { generateCustomLesson } from "@/lib/custom-lesson.functions";
-import { customTopic, loadCustom, saveCustom } from "@/lib/custom-lesson-store";
-import { effectiveBand } from "@/lib/slideshow/library";
-import { streamImage } from "@/lib/stream-image";
-
-export const Route = createFileRoute("/onboarding/building")({
-  head: () => pageMeta("Building your child's Ollie", "Ollie is getting ready for your child."),
-  component: BuildingPage,
-});
-
-function BuildingPage() {
-  const navigate = useNavigate();
-  const name = childName(onboardingState.name);
-  const [step, setStep] = useState(0);
-  const items = ["Age-appropriate answers", "Their interests, at the heart", "Learning at their reading level", "Your chosen reply tone"];
-  const done = step > items.length;
-
-  useEffect(() => {
-    if (done) return;
-    const t = setTimeout(() => setStep((s) => s + 1), 1400);
-    return () => clearTimeout(t);
-  }, [step, done]);
-
-  /* Custom-topic lesson: written during this wait so it is ready as the first slideshow. */
-  const makeLesson = useServerFn(generateCustomLesson);
-  useEffect(() => {
-    const pick = customTopic();
-    if (!pick) return;
-    const existing = loadCustom();
-    if (existing && existing.topic === pick.topic) return;
-    const band = effectiveBand(onboardingState.age || 7, onboardingState.readingLevel ?? "stories");
-    makeLesson({ data: { topic: pick.topic, age: onboardingState.age || 7, band, struggle: pick.struggle } })
-      .then((res) => {
-        if (!res.ok) return;
-        saveCustom({ topic: pick.topic, lesson: res.lesson, done: false });
-        // The picture keeps loading in the background while the child reads.
-        void streamImage("/api/generate-image", { prompt: res.lesson.picture }, (url, isFinal) => {
-          if (isFinal) { const cur = loadCustom(); if (cur && cur.topic === pick.topic) saveCustom({ ...cur, image: url }); }
-        }).catch(() => {});
-      })
-      .catch(() => {});
-  }, [makeLesson]);
-
-  return (
-    <div className="building-screen min-h-screen bg-background">
-      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-6 pb-28 pt-12 text-center">
-        <p className="text-label mb-3 text-primary">A little preparation. A world of discovery.</p>
-        <h1 className="text-title text-foreground">{done ? `Made for ${name}. Ready to explore.` : `Making room for ${name}'s curiosity`}</h1>
-        <p className="text-support mt-4 max-w-sm text-muted-foreground">Their age, interests and reading level shape the way Ollie answers.</p>
-        <div className="relative my-7 flex size-36 shrink-0 items-center justify-center">
-          {done ? <img src={ollie} alt="Ollie" className="size-36 object-contain" /> : <CrispOrb state="composing" size={112} aria-label="Preparing Ollie" />}
-        </div>
-        <ul className="building-checklist w-full text-left" aria-label="Personalizing Ollie">
-          {items.map((it, i) => <li key={it} className={`flex items-center gap-4 border-b border-border py-4 transition-opacity duration-element ${step > i ? "opacity-100" : "opacity-40"}`}>
-            <span className={`flex size-7 shrink-0 items-center justify-center rounded-pill ${step > i ? "bg-success-soft text-success" : "bg-surface-2 text-muted-foreground"}`}>
-              {step > i ? <Check className="size-4" /> : <span className="text-label">{i + 1}</span>}
-            </span><span className="text-body text-foreground">{it}</span>
-          </li>)}
-        </ul>
-        <p className="text-support mt-6 flex items-center justify-center gap-2 text-muted-foreground"><ShieldCheck className="size-4 shrink-0" />Your settings stay in your hands.</p>
-      </main>
-      {done && <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-6 pb-6"><Button variant="onboarding" className="h-14 w-full rounded-pill" onClick={() => navigate({ to: "/onboarding/paywall" })}>See {name}'s plan</Button></div>}
-    </div>
-  );
-}
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { BookOpen, Sparkles, ShieldCheck } from 'lucide-react';
+import { OnboardingSkeleton } from '../onboarding';
+import { onboardingState, saveProfile } from '@/lib/onboarding-store';
+import { familyKids } from '@/lib/family-store';
+import { INTEREST_ART } from '@/lib/interest-art';
+import { INTERESTS } from '@/lib/interests';
+import { pageMeta } from '@/lib/meta';
+import ollie from '@/assets/ollie.png';
+export const Route=createFileRoute('/onboarding/building')({head:()=>pageMeta('Made around how they learn','Your family’s personalised Ollie settings, ready to explore.'),component:Summary});
+function Summary(){const navigate=useNavigate();const kids=familyKids();return <div className="min-h-screen bg-background"><OnboardingSkeleton chapter={3} title={kids.length===1?`Made around how ${onboardingState.name} learns.`:'Two spaces. Made for each of them.'} cta="See Ollie in action" onContinue={()=>{saveProfile();void navigate({to:'/onboarding/try'});}}><img src={ollie} alt="Ollie" width={128} height={128} className="mx-auto mb-6 size-28 object-contain"/><div className="space-y-6">{kids.map(k=><section key={k.id} className="border-b border-border pb-5"><div className="flex items-center justify-between"><h2 className="text-body font-bold">{String(k.profile['name'])}</h2><span className="text-support text-muted-foreground">Age {String(k.profile['age'])}</span></div><p className="mt-2 flex items-center gap-2 text-support text-muted-foreground"><BookOpen className="size-4"/>{k.profile['readingLevel']==='none'?'Simple words and read-aloud':k.profile['readingLevel']==='sounding'?'Short sentences and reading support':'Clear explanations at their reading level'}</p><div className="mt-4 flex gap-2">{((k.profile['interests']??[]) as string[]).slice(0,4).map(id=><img key={id} src={INTEREST_ART[id]} alt={INTERESTS.find(i=>i.id===id)?.label??id} width={512} height={480} className="size-14 rounded-control object-cover"/>)}</div></section>)}</div><p className="mt-5 flex items-start gap-2 text-support text-muted-foreground"><ShieldCheck className="mt-0.5 size-4 shrink-0 text-accent-2"/>Your settings stay in your hands. Ollie answers, explains, and then lets kids get on with their day.</p></OnboardingSkeleton></div>;}

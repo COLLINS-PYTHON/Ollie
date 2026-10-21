@@ -1,3 +1,4 @@
+import { readKidValue, writeKidValue, activeKidId } from "./kid-storage";
 import type { Band } from "./slideshow/types";
 
 /* Device-only until accounts exist. A completion is what unlocks the next
@@ -32,7 +33,7 @@ const DEFAULTS: State = {
 
 function read(): State {
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = readKidValue(KEY);
     if (!raw) return DEFAULTS;
     const parsed = JSON.parse(raw) as Partial<State>;
     return {
@@ -45,7 +46,7 @@ function read(): State {
 }
 
 function write(s: State) {
-  localStorage.setItem(KEY, JSON.stringify(s));
+  writeKidValue(KEY, JSON.stringify(s));
 }
 
 export function completions(): Completion[] {

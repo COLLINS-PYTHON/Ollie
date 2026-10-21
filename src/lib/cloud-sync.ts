@@ -3,9 +3,10 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { onboardingState, parentSettings, saveProfile } from "./onboarding-store";
+import { readFamily, FAMILY_KEY, ACTIVE_KID_KEY, activeKidId, readKidValue, writeKidValue, clearFamilyStorage } from "./kid-storage";
 import { loadPictures, savePicture, type Picture } from "./picture-store";
 
-const PROGRESS_KEYS = ["ollie-chat-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1"];
+const PROGRESS_KEYS = ["ollie-chat-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-daily-selection-v1", "ollie-custom-lesson-v1"];
 const PROFILE_KEY = "ollie-profile-v1";
 
 export async function hashPin(pin: string) {
@@ -29,11 +30,11 @@ export async function sealPin() {
   saveProfile();
 }
 
-function readProgress() {
+function readProgress(id = activeKidId()) {
   const out: Record<string, Json> = {};
   for (const k of PROGRESS_KEYS) {
     try {
-      const raw = localStorage.getItem(k);
+      const raw = readKidValue(k, id);
       if (raw) out[k] = JSON.parse(raw) as Json;
     } catch {
       /* skip */
@@ -64,27 +65,31 @@ export async function pushAll() {
       updated_at: now,
     });
     if (accErr) throw accErr;
-    const { pin: _pin, ...setup } = s;
-    const row = {
-      account_id: user.id,
-      name: s.name,
-      age: s.age,
-      reading_level: s.readingLevel,
-      interests: s.interests,
-      reply_tone: s.tone,
-      screen_time_limit_minutes: s.limitMinutes,
-      slideshow_reset_time: s.slideshowReset,
-      chat_retention_setting: parentSettings.retentionDays,
-      setup: setup as unknown as Json,
-      progress: readProgress(),
-      updated_at: now,
-    };
-    const { data: existing } = await supabase.from("children").select("id").eq("account_id", user.id).limit(1).maybeSingle();
-    const res = existing
-      ? await supabase.from("children").update(row).eq("id", existing.id)
-      : await supabase.from("children").insert(row);
-    if (res.error) throw res.error;
-    await pushMissingPictures(user.id);
+    saveProfile();
+    const family = readFamily();
+    if (family.ownerId && family.ownerId !== user.id) throw new Error('This device belongs to a different family. Sign out before switching accounts.');
+    const { data: existingKids, error: kidsError } = await supabase.from('children').select('id,name').eq('account_id', user.id).order('created_at');
+    if (kidsError) throw kidsError;
+    for (const kid of family.kids) {
+      const { pin: _pin, pinHash: _hash, ...setup } = kid.profile;
+      const profile = kid.profile as unknown as typeof onboardingState;
+      const row = {
+        account_id: user.id, name: profile.name, age: profile.age,
+        reading_level: profile.readingLevel, interests: profile.interests,
+        reply_tone: profile.tone, screen_time_limit_minutes: profile.limitMinutes,
+        slideshow_reset_time: profile.slideshowReset, chat_retention_setting: parentSettings.retentionDays,
+        setup: setup as unknown as Json, progress: readProgress(kid.id), updated_at: now,
+      };
+      const exactMatches = (existingKids ?? []).filter(row => row.name === profile.name);
+      const cloudId = kid.cloudId ?? (kid.id === "first" && family.kids.length === 1 && existingKids?.length === 1 && exactMatches.length === 1 ? exactMatches[0]?.id : undefined);
+      const result = cloudId ? await supabase.from('children').update(row).eq('id', cloudId).select('id').single() : await supabase.from('children').insert(row).select('id').single();
+      if (result.error) throw result.error;
+      kid.cloudId = result.data.id;
+      kid.storageId ??= kid.id === "first" ? "first" : result.data.id;
+    }
+    family.ownerId = user.id;
+    localStorage.setItem(FAMILY_KEY, JSON.stringify(family));
+    for (const kid of family.kids) await pushMissingPictures(user.id, kid.id, kid.storageId ?? (kid.id === "first" ? "first" : kid.cloudId ?? kid.id));
     await registerDevice(user.id);
   } catch (e) {
     console.warn("Saving to account failed", e);
@@ -99,60 +104,60 @@ export async function pullAll() {
   const { data: { session } } = await supabase.auth.getSession();
   const user = session?.user;
   if (!user) return false;
-  const [{ data: acc }, { data: child }] = await Promise.all([
-    supabase.from("accounts").select("*").eq("id", user.id).maybeSingle(),
-    supabase.from("children").select("*").eq("account_id", user.id).limit(1).maybeSingle(),
+  const [{ data: acc, error: accountError }, { data: kids, error: kidsError }] = await Promise.all([
+    supabase.from('accounts').select('*').eq('id', user.id).maybeSingle(),
+    supabase.from('children').select('*').eq('account_id', user.id).order('created_at').limit(2),
   ]);
-  if (!child) return false;
-  const setup = (child.setup ?? {}) as Record<string, unknown>;
-  const profile = {
-    ...setup,
-    onboardingComplete: setup["onboardingComplete"] !== false,
-    name: child.name,
-    age: child.age,
-    readingLevel: child.reading_level,
-    interests: child.interests,
-    tone: child.reply_tone,
-    limitMinutes: child.screen_time_limit_minutes,
-    slideshowReset: child.slideshow_reset_time,
-    parentName: acc?.name ?? setup["parentName"] ?? "",
-    email: acc?.email ?? user.email ?? "",
-    pin: "",
-    pinHash: acc?.pin_hash ?? "",
-    weeklyEmail: acc?.weekly_email_opt_in ?? null,
-    settings: { soundOn: acc?.sound_enabled ?? true, retentionDays: child.chat_retention_setting },
-  };
-  localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
-  const progress = (child.progress ?? {}) as Record<string, unknown>;
-  for (const k of PROGRESS_KEYS) {
-    if (progress[k] !== undefined) localStorage.setItem(k, JSON.stringify(progress[k]));
-  }
-  await pullPictures(user.id);
+  if (accountError || kidsError) throw accountError ?? kidsError;
+  if (!kids?.length) return false;
+  const previous = readFamily();
+  const family = { ownerId: user.id, kids: kids.map((child, index) => {
+    const setup = (child.setup ?? {}) as Record<string, unknown>;
+    const id = previous.ownerId === user.id ? previous.kids.find(k => k.cloudId === child.id)?.id ?? (index === 0 ? 'first' : child.id) : index === 0 ? 'first' : child.id;
+    const storageId = index === 0 ? 'first' : child.id;
+    const profile = { ...setup, onboardingComplete: setup['onboardingComplete'] !== false,
+      name: child.name, age: child.age, readingLevel: child.reading_level, interests: child.interests,
+      tone: child.reply_tone, limitMinutes: child.screen_time_limit_minutes, slideshowReset: child.slideshow_reset_time,
+      parentName: acc?.name ?? '', email: acc?.email ?? user.email ?? '', pin: '', pinHash: acc?.pin_hash ?? '',
+      weeklyEmail: acc?.weekly_email_opt_in ?? null, settings: { soundOn: acc?.sound_enabled ?? true, retentionDays: child.chat_retention_setting },
+    };
+    const progress = (child.progress ?? {}) as Record<string, unknown>;
+    for (const key of PROGRESS_KEYS) writeKidValue(key, JSON.stringify(progress[key] ?? (key === 'ollie-chat-v1' ? [] : null)), id);
+    return { id, cloudId: child.id, storageId, profile };
+  }) };
+  localStorage.setItem(FAMILY_KEY, JSON.stringify(family));
+  const selected = family.kids.find(k => k.id === activeKidId()) ?? family.kids[0];
+  if (!selected) return false;
+  localStorage.setItem(ACTIVE_KID_KEY, selected.id);
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(selected.profile));
+  Object.assign(onboardingState, selected.profile);
+  Object.assign(parentSettings, selected.profile.settings);
+  for (const kid of family.kids) await pullPictures(user.id, kid.id, kid.storageId);
   await registerDevice(user.id);
-  return profile.onboardingComplete;
+  return selected.profile.onboardingComplete;
 }
 
 /* Pictures: each one is saved as a small file in the parent's own folder. */
-export async function uploadPicture(p: Picture) {
+export async function uploadPicture(p: Picture, id = activeKidId(), storageId = readFamily().kids.find(k => k.id === id)?.storageId ?? (id === "first" ? "first" : readFamily().kids.find(k => k.id === id)?.cloudId ?? id)) {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return;
   const body = new Blob([JSON.stringify(p)], { type: "application/json" });
-  await supabase.storage.from("pictures").upload(`${session.user.id}/${p.id}.json`, body, { upsert: true });
+  await supabase.storage.from("pictures").upload(`${session.user.id}/${storageId}/${p.id}.json`, body, { upsert: true });
 }
 
-async function pushMissingPictures(userId: string) {
-  const { data: files } = await supabase.storage.from("pictures").list(userId, { limit: 1000 });
+async function pushMissingPictures(userId: string, id: string, storageId: string) {
+  const { data: files } = await supabase.storage.from("pictures").list(`${userId}/${storageId}`, { limit: 1000 });
   const have = new Set((files ?? []).map((f) => f.name));
-  const local = await loadPictures().catch(() => [] as Picture[]);
-  for (const p of local) if (!have.has(`${p.id}.json`)) await uploadPicture(p);
+  const local = await loadPictures(id).catch(() => [] as Picture[]);
+  for (const p of local) if (!have.has(`${p.id}.json`)) await uploadPicture(p, id, storageId);
 }
 
-async function pullPictures(userId: string) {
-  const { data: files } = await supabase.storage.from("pictures").list(userId, { limit: 1000 });
+async function pullPictures(userId: string, id: string, storageId: string) {
+  const { data: files } = await supabase.storage.from("pictures").list(`${userId}/${storageId}`, { limit: 1000 });
   for (const f of files ?? []) {
-    const { data } = await supabase.storage.from("pictures").download(`${userId}/${f.name}`);
+    const { data } = await supabase.storage.from("pictures").download(`${userId}/${storageId}/${f.name}`);
     if (!data) continue;
-    try { await savePicture(JSON.parse(await data.text()) as Picture); } catch { /* skip */ }
+    try { await savePicture(JSON.parse(await data.text()) as Picture, id); } catch { /* skip */ }
   }
 }
 
@@ -212,7 +217,7 @@ async function deviceRevoked(userId: string) {
   if (!data?.revoked) return false;
   await supabase.from("devices").delete().eq("id", data.id);
   await supabase.auth.signOut();
-  ["ollie-chat-v1", "ollie-profile-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-custom-lesson-v1", "ollie-onboarding-draft-v1", "ollie-onboarding-step-v1"].forEach((k) => localStorage.removeItem(k));
+  clearFamilyStorage();
   sessionStorage.removeItem("ollie-onboarding-draft-v1");
   indexedDB.deleteDatabase("ollie-pictures");
   window.location.assign("/onboarding/fact");

@@ -1,0 +1,5 @@
+CREATE OR REPLACE FUNCTION public.enforce_household_kid_limit() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN PERFORM 1 FROM public.accounts WHERE id=NEW.account_id FOR UPDATE; IF (SELECT count(*) FROM public.children WHERE account_id=NEW.account_id AND id<>NEW.id)>=2 THEN RAISE EXCEPTION 'A family membership supports up to two kid profiles'; END IF; RETURN NEW; END; $$;
+CREATE TRIGGER household_kid_limit BEFORE INSERT OR UPDATE OF account_id ON public.children FOR EACH ROW EXECUTE FUNCTION public.enforce_household_kid_limit();
+CREATE UNIQUE INDEX IF NOT EXISTS category_lesson_order_unique ON public.category_lessons(category,lesson_order);
+GRANT SELECT ON public.category_lessons, public.slideshow_content_cache TO anon, authenticated;
+GRANT ALL ON public.category_lessons, public.slideshow_content_cache, public.children TO service_role;

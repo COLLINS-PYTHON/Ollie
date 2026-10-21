@@ -2,6 +2,8 @@
 
 ## Now
 
+- Mascot balance: refine existing Ollie's silhouette/material and reduce presence for older kids; no replacement or recolor chosen yet.
+- Incorporate uploaded Trail/fridge inspirations: airy winding path and collectible picture keepsakes, adapted to Ollie's matte blue/mist aesthetic without copying the reference.
 - Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
 - Launch dependencies: verified lesson cache and per-kid isolation, server-enforced AI limits, native purchase/restore, actual reminder delivery, native biometric unlock, full-flow device/accessibility checks.
 - Current scoped request: post-trial notification consent, hold-to-speak, 12-slide daily category-bag selection and matching animated displays.
@@ -12,6 +14,7 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Personalized “Unlock [kid’s name]’s safe trial” action with soft-white lettering; smaller monthly price line and blended book-to-discovery loop verified at compact, phone, tablet and desktop sizes; reduced-motion pauses playback, billing remains unconnected.
 - Honest whole-app audit delivered (lesson library empty, AI endpoints unprotected, image limit device-only, no payments/native build)
 - Under-eight voice control uses a crisp 112px orb, gentle tap pulse and listening-state motion; small-screen fit, tap activation, typing fallback, age-eight cutoff and reduced motion verified.
 - Budget-limited update: personalized onboarding value copy, worries immediately after age, contextual safety Continue sequence, accurate screen-time/PIN wording, $14.99 monthly/$99.99 annual/$8.33 equivalent, yearly default/Save 40%/trial pulses, Reply Tone checklist and Clear & Educational first

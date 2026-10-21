@@ -4,6 +4,7 @@ import { Delete } from "lucide-react";
 import { OnboardingSkeleton } from "../onboarding";
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
+import { sealPin } from "@/lib/cloud-sync";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/pin")({
@@ -35,8 +36,8 @@ function PinPage() {
 
   return (
     <div className="bg-gradient-lagoon min-h-screen">
-      <OnboardingSkeleton chapter={4} title={confirming ? "Enter it once more" : "Create your parent secure PIN"} cta="Continue" ctaDisabled={!done} onContinue={() => navigate({ to: "/onboarding/building" })}>
-        <p className="text-support mb-6 text-center text-muted-foreground">This PIN locks your Parent Dashboard, preventing {childName(onboardingState.name)} from changing screen-time limits or modifying safety filters.</p>
+      <OnboardingSkeleton chapter={4} title={confirming ? "Enter it once more" : "Keep the parent view yours."} cta="Continue" ctaDisabled={!done} onContinue={async () => { await sealPin(); await navigate({ to: "/onboarding/building" }); }}>
+        <p className="text-support mb-6 text-center text-muted-foreground">Your PIN protects settings, reports, and purchases from little taps.</p>
         <div className="flex justify-center gap-4" aria-label={`${pin.length} of 4 digits entered`}>
           {[0, 1, 2, 3].map((i) => (
             <span key={i} className={`size-4 rounded-pill transition-colors duration-tap ${i < pin.length ? "bg-primary" : "border border-border bg-surface-2"}`} />
@@ -60,7 +61,7 @@ function PinPage() {
         </div>
         <div className="mt-6 rounded-card bg-card/80 p-4">
           <p className="text-support text-foreground">
-            Screen time, slideshow settings, and everything else you just set up can be changed anytime from the dashboard.
+            Screen time, Discovery settings, and everything else you just set up can be changed anytime from the dashboard.
           </p>
           <p className="text-support mt-2 text-foreground">
             Your dashboard shows exactly what was flagged and why, not just a count or a vague "all clear."

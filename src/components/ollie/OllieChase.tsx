@@ -4,12 +4,13 @@ import poster from "@/assets/ollie-chase-frame.jpg";
 
 /** Decorative chase stays inside reserved space, above all plan controls. */
 export function OllieChase({ compact = false }: { compact?: boolean }) {
+  const finished = useRef(false);
   const video = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => {
       const element = video.current;
-      if (!element) return;
+      if (!element || finished.current) return;
       element.muted = true;
       element.defaultMuted = true;
       element.setAttribute("muted", "");
@@ -35,6 +36,6 @@ export function OllieChase({ compact = false }: { compact?: boolean }) {
     };
   }, []);
   return <div className={`ollie-chase-stage ${compact ? "is-compact" : ""}`} role="img" aria-label="Ollie watches glowing butterflies and occasionally jumps to catch them">
-    <video ref={video} src={chase.url} className="ollie-chase-video" poster={poster} autoPlay muted loop playsInline controls={false} preload="auto" aria-hidden="true" disablePictureInPicture />
+    <video ref={video} src={chase.url} className="ollie-chase-video" poster={poster} autoPlay muted onEnded={() => { finished.current = true; }} playsInline controls={false} preload="auto" aria-hidden="true" disablePictureInPicture />
   </div>;
 }

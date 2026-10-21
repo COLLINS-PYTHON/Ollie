@@ -1,3 +1,4 @@
+import { readKidValue, writeKidValue, activeKidId } from "./kid-storage";
 /* Device-only storage until accounts exist. Pictures live in IndexedDB (too big for
    localStorage); the cookie balance lives in localStorage. */
 
@@ -9,20 +10,20 @@ export const JARS = [
   { id: "large", label: "Large jar", count: 50, price: "$2.99" },
 ] as const;
 
-const DB = "ollie-pictures";
+const DB = () => activeKidId() === "first" ? "ollie-pictures" : `ollie-pictures-${activeKidId()}`;
 const STORE = "pictures";
 
-function openDb(): Promise<IDBDatabase> {
+function openDb(id = activeKidId()): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB, 1);
+    const req = indexedDB.open(id === 'first' ? 'ollie-pictures' : `ollie-pictures-${id}`, 1);
     req.onupgradeneeded = () => req.result.createObjectStore(STORE, { keyPath: "id" });
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   });
 }
 
-export async function loadPictures(): Promise<Picture[]> {
-  const db = await openDb();
+export async function loadPictures(id = activeKidId()): Promise<Picture[]> {
+  const db = await openDb(id);
   return new Promise((resolve, reject) => {
     const req = db.transaction(STORE).objectStore(STORE).getAll();
     req.onsuccess = () => resolve((req.result as Picture[]).sort((a, b) => b.createdAt - a.createdAt));
@@ -30,8 +31,8 @@ export async function loadPictures(): Promise<Picture[]> {
   });
 }
 
-export async function savePicture(p: Picture): Promise<void> {
-  const db = await openDb();
+export async function savePicture(p: Picture, id = activeKidId()): Promise<void> {
+  const db = await openDb(id);
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE, "readwrite");
     tx.objectStore(STORE).put(p);
@@ -51,7 +52,7 @@ function today() {
 export function loadBalance(): Balance {
   let b: Balance = { day: today(), freeUsed: 0, jarCookies: 0 };
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = readKidValue(KEY);
     if (raw) b = JSON.parse(raw) as Balance;
   } catch {
     /* fresh balance */
@@ -61,7 +62,7 @@ export function loadBalance(): Balance {
 }
 
 export function saveBalance(b: Balance) {
-  localStorage.setItem(KEY, JSON.stringify(b));
+  writeKidValue(KEY, JSON.stringify(b));
 }
 
 export function cookiesLeft(b: Balance) {
