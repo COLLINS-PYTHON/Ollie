@@ -2,6 +2,7 @@
 
 ## Now
 
+- Ollie 1 copy recovery: restored name explanation, reading heading/labels, interest heading/explanation, welcome baseline and daily-lesson wording; replaced promotional intermediate buttons with Continue. Name → reading → interests verified. Still reconcile safety/privacy and the old interactive try-it-yourself copy without changing disclosures or promising unavailable functionality.
 - Mascot balance: refine existing Ollie's silhouette/material and reduce presence for older kids; no replacement or recolor chosen yet.
 - Incorporate uploaded Trail/fridge inspirations: airy winding path and collectible picture keepsakes, adapted to Ollie's matte blue/mist aesthetic without copying the reference.
 - Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
@@ -77,7 +78,7 @@
 - [ ] Apply wording rule: 'child' in formal/parent copy, 'kid' informally (e.g. kids' assistant)
 
 ## Next (requested Oct 22)
-- [ ] Redesign mascot (calmer, age-balanced; colors may change) — needs direction approval
+- [ ] Revisit original blue-and-cream Ollie for ages 4–12: felt and both initial refinements rejected; change baby-like proportions, preserve identity, preview before replacement.
 - [ ] Make Daily Discovery interactive (narration, tap-to-reveal, predictions)
 - [ ] Restore Ollie 1 soft styling on remaining setup screens (reading, preview, safety, welcome)
 - [ ] Remove screen-time "boundaries" screen or rebuild it
