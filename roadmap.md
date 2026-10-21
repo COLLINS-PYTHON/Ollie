@@ -2,6 +2,8 @@
 
 ## Now
 
+- Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
+- Launch dependencies: verified lesson cache and per-kid isolation, server-enforced AI limits, native purchase/restore, actual reminder delivery, native biometric unlock, full-flow device/accessibility checks.
 - Current scoped request: post-trial notification consent, hold-to-speak, 12-slide daily category-bag selection and matching animated displays.
 - Paywall: show both prices immediately, separate yearly pulse, payment badge pulse and trial reminder timeline/prompt.
 - Refine Building and iMessage-style Search space, listening controls and tab dock; investigate published chase autoplay.
