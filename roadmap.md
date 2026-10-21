@@ -75,3 +75,9 @@
 - [x] Richer onboarding background colours (keep blue/white identity)
 - [x] Storybook clouds + tappable background objects in onboarding
 - [ ] Apply wording rule: 'child' in formal/parent copy, 'kid' informally (e.g. kids' assistant)
+
+## Next (requested Oct 22)
+- [ ] Redesign mascot (calmer, age-balanced; colors may change) — needs direction approval
+- [ ] Make Daily Discovery interactive (narration, tap-to-reveal, predictions)
+- [ ] Restore Ollie 1 soft styling on remaining setup screens (reading, preview, safety, welcome)
+- [ ] Remove screen-time "boundaries" screen or rebuild it
