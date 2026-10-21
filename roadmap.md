@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Now
-- Thorough honest audit of the whole app (product, safety, money, launch readiness)
+
 - Current scoped request: post-trial notification consent, hold-to-speak, 12-slide daily category-bag selection and matching animated displays.
 - Paywall: show both prices immediately, separate yearly pulse, payment badge pulse and trial reminder timeline/prompt.
 - Refine Building and iMessage-style Search space, listening controls and tab dock; investigate published chase autoplay.
@@ -10,6 +10,7 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Honest whole-app audit delivered (lesson library empty, AI endpoints unprotected, image limit device-only, no payments/native build)
 - Under-eight voice control uses a crisp 112px orb, gentle tap pulse and listening-state motion; small-screen fit, tap activation, typing fallback, age-eight cutoff and reduced motion verified.
 - Budget-limited update: personalized onboarding value copy, worries immediately after age, contextual safety Continue sequence, accurate screen-time/PIN wording, $14.99 monthly/$99.99 annual/$8.33 equivalent, yearly default/Save 40%/trial pulses, Reply Tone checklist and Clear & Educational first
 - Under-eight voice-first Search with 80px microphone and selected-interest starter tags; daily cookie reward copy, open pulsing next Trail node, safe forward swipes in onboarding and fact slides. Seven rule tests pass; phone UI flows checked without runtime errors.
