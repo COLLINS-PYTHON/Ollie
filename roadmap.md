@@ -78,7 +78,7 @@
 - [ ] Apply wording rule: 'child' in formal/parent copy, 'kid' informally (e.g. kids' assistant)
 
 ## Next (requested Oct 22)
-- [ ] Redesign mascot (calmer, age-balanced; colors may change) — needs direction approval
+- [ ] Revisit original blue-and-cream Ollie for ages 4–12: felt and both initial refinements rejected; change baby-like proportions, preserve identity, preview before replacement.
 - [ ] Make Daily Discovery interactive (narration, tap-to-reveal, predictions)
 - [ ] Restore Ollie 1 soft styling on remaining setup screens (reading, preview, safety, welcome)
 - [ ] Remove screen-time "boundaries" screen or rebuild it
