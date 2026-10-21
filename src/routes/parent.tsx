@@ -317,12 +317,12 @@ function ParentDashboard() {
       <p className="mt-1 text-support text-muted-foreground">Here is how {child} is doing today.</p>
 
       <div className="mt-5"><KidSwitcher onChange={() => { setChat(loadChat()); setBalance(loadBalance()); setUsedMin(minutesToday()); setSlidePrefs(prefs()); refresh(); }} /></div>
-      {/* Stat row */
+      {/* Stat row */}
       <div className="mt-5 grid grid-cols-3 gap-2.5">
         {[
           { icon: Clock, tile: "text-accent-2", value: formatMinutes(usedMin), label: "Screen time today" },
           { icon: Flame, tile: "text-accent-4", value: String(streakDays()), label: "Day streak" },
-          { icon: ImageIcon, tile: "text-accent-3", value: String(balance?.freeUsed ?? 0), label: "Images today" } },
+          { icon: ImageIcon, tile: "text-accent-3", value: String(balance?.freeUsed ?? 0), label: "Images today" },
         ].map((s) => (
           <div key={s.label} className="rounded-card border border-surface-2 bg-card p-3">
             <div className={`flex size-9 items-center justify-center rounded-pill bg-surface ${s.tile}`}>
