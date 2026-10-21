@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import clip from '@/assets/ollie-paywall-discovery.mp4.asset.json';
+import clip from '@/assets/ollie-paywall-discovery-compatible.mp4.asset.json';
 import ollie from '@/assets/ollie.png';
 export function PaywallDiscoveryVideo({ compact = false }: { compact?: boolean }) {
   const ref = useRef<HTMLVideoElement>(null);
