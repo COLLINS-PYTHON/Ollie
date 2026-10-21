@@ -8,7 +8,7 @@ const bodySchema = z.object({
 });
 
 const STYLE =
-  "Bright, friendly, child-safe storybook illustration in a soft glossy 3D cartoon style, warm colors, gentle lighting, no text, no words, no scary or violent elements. Scene: ";
+  "Child-safe tactile matte 3D illustration, like a carefully crafted pop-up book brought to life. Soft sculpted forms, subtle paper and natural material textures, gentle diffuse lighting, clear subject detail and restrained blue, teal, pink and amber accents. Warm and curious without babyish proportions, oversized sparkling eyes, glossy plastic, puffy cloud scenery or preschool styling. Show the requested subject, not a mascot unless requested. Keep educational objects, anatomy and scientific relationships accurate; never replace factual diagrams with decorative fantasy. No text, no words, no scary or violent elements. Scene: ";
 
 export const Route = createFileRoute("/api/generate-image")({
   server: {
