@@ -198,10 +198,10 @@ function CreateScreen() {
   const left = balance ? cookiesLeft(balance) : FREE_PER_DAY;
 
   return (
-    <main className="screen-enter relative mx-auto min-h-screen w-full max-w-md bg-gradient-wash px-5 pb-32 pt-16">
+    <main className="screen-enter relative mx-auto min-h-screen w-full max-w-md create-studio bg-card px-5 pb-32 pt-16">
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
         <h1 className="text-title text-foreground">Create</h1>
-        <button
+        <Button variant="ghost"
           type="button"
           onClick={() => setPopup(left === 0 ? "out" : "jars")}
           aria-label={`${left} cookies left`}
@@ -209,20 +209,20 @@ function CreateScreen() {
         >
           <CookieJar />
           <span className="text-label font-bold text-foreground">{left}</span>
-        </button>
+        </Button>
       </div>
 
       <section className="mt-5 border-b border-border pb-6">
         <div className="mb-3 flex gap-1 rounded-pill bg-surface p-1">
           {(["builder", "type"] as const).map((m) => (
-            <button
+            <Button variant="ghost"
               key={m}
               type="button"
               onClick={() => setMode(m)}
               className={`flex-1 rounded-pill py-1.5 text-label font-semibold transition-colors duration-tap ${mode === m ? "bg-card text-foreground shadow-card" : "text-muted-foreground"}`}
             >
               {m === "builder" ? "Picture builder" : "Type or talk"}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -235,7 +235,7 @@ function CreateScreen() {
                   {BUILDER[row].map((c) => {
                     const on = pick[row] === c;
                     return (
-                      <button
+                      <Button variant="ghost"
                         key={c}
                         type="button"
                         aria-pressed={on}
@@ -247,25 +247,25 @@ function CreateScreen() {
                         className={`rounded-pill border px-3 py-1.5 text-label transition-colors duration-tap ${on ? "border-primary bg-primary text-primary-foreground" : "border-surface-2 bg-card text-foreground"}`}
                       >
                         {c}
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>
               </div>
             ))}
             {builderSentence && (
-              <button type="button" onClick={() => speak(builderSentence)} className="pop-in w-full rounded-control bg-surface px-3 py-2 text-left text-body text-foreground">
+              <Button variant="ghost" type="button" onClick={() => speak(builderSentence)} className="pop-in w-full rounded-control bg-surface px-3 py-2 text-left text-body text-foreground">
                 {builderSentence}
-              </button>
+              </Button>
             )}
           </div>
         ) : (
           <div className="space-y-3">
             <div className="flex flex-wrap gap-1.5">
               {chips.map((c) => (
-                <button key={c} type="button" onClick={() => setIdea(c)} className="rounded-pill border border-surface-2 bg-surface px-3 py-1.5 text-left text-label text-foreground transition-colors duration-tap hover:border-primary">
+                <Button variant="ghost" key={c} type="button" onClick={() => setIdea(c)} className="rounded-pill border border-surface-2 bg-surface px-3 py-1.5 text-left text-label text-foreground transition-colors duration-tap hover:border-primary">
                   {c}
-                </button>
+                </Button>
               ))}
             </div>
             <div className="flex items-center gap-2">
@@ -280,7 +280,7 @@ function CreateScreen() {
                 className="h-11 min-w-0 flex-1 rounded-pill border border-surface-2 bg-card px-4 text-body text-foreground outline-none focus:border-primary"
               />
               {voice && (
-                <button
+                <Button variant="ghost"
                   type="button"
                   aria-label="Hold to talk"
                   onPointerDown={startListening}
@@ -289,20 +289,20 @@ function CreateScreen() {
                   className={`flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-primary-foreground ${listening ? "ring-pulse" : ""}`}
                 >
                   <Mic className="size-5" />
-                </button>
+                </Button>
               )}
             </div>
           </div>
         )}
 
-        <button
+        <Button variant="ghost"
           type="button"
           onClick={() => create()}
           disabled={busy || !currentIdea}
           className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-pill bg-primary text-button text-primary-foreground transition-all duration-tap active:scale-[0.98] disabled:bg-surface-2 disabled:text-muted-foreground"
         >
           <Sparkles className="size-4" /> Make my picture
-        </button>
+        </Button>
       </section>
 
       {(busy || preview || message) && (
@@ -328,7 +328,7 @@ function CreateScreen() {
         </section>
       )}
 
-      <section className="mt-8">
+      <section className="create-fridge mt-8">
         <h2 className="text-body font-bold text-foreground">{name}'s fridge</h2>
         <p className="mt-2 text-support text-primary">You get 10 fresh picture cookies every morning!</p>
         {pictures.length === 0 ? (
@@ -336,10 +336,10 @@ function CreateScreen() {
         ) : (
           <div className="mt-3 grid grid-cols-2 gap-4 py-4 sm:grid-cols-3">
             {pictures.map((p, i) => (
-              <button key={p.id} type="button" onClick={() => setOpen(p)} className={`relative rounded-control bg-card p-1.5 pb-3 shadow-card ${TILTS[i % TILTS.length]}`}>
-                <span className={`glossy absolute -top-2 left-1/2 size-4 -translate-x-1/2 rounded-full ${MAGNETS[i % MAGNETS.length]}`} />
-                <img src={p.dataUrl} alt={p.idea} className="aspect-square w-full rounded-[8px] object-cover" loading="lazy" />
-              </button>
+              <Button variant="ghost" key={p.id} type="button" onClick={() => setOpen(p)} className={`picture-keepsake relative h-auto min-w-0 flex-col whitespace-normal ${TILTS[i % TILTS.length]}`}>
+                <span className={`fridge-magnet absolute -top-2 left-1/2 size-4 -translate-x-1/2 rounded-full ${MAGNETS[i % MAGNETS.length]}`} />
+                <img src={p.dataUrl} alt={p.idea} className="aspect-square w-full object-cover" loading="lazy" /><span className="mt-2 block w-full truncate text-label text-muted-foreground">{p.idea}</span>
+              </Button>
             ))}
           </div>
         )}
@@ -376,9 +376,9 @@ function Overlay({ children, onClose }: { children: React.ReactNode; onClose: ()
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-navy/40 p-4 sm:items-center" onClick={onClose}>
       <div role="dialog" className="sheet-up relative w-full max-w-sm rounded-card bg-card p-5 shadow-sheet" onClick={(e) => e.stopPropagation()}>
-        <button type="button" aria-label="Close" onClick={onClose} className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-pill text-muted-foreground">
+        <Button variant="ghost" type="button" aria-label="Close" onClick={onClose} className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-pill text-muted-foreground">
           <X className="size-4" />
-        </button>
+        </Button>
         {children}
       </div>
     </div>
@@ -406,7 +406,7 @@ function PopupBody({
         <CookieJar className="mx-auto size-14" />
         <p className="mt-2 text-title text-foreground">{popup === "low" ? `${left} cookies left today` : "That was your last free picture today"}</p>
         <p className="mt-1 text-support text-muted-foreground">{popup === "low" ? "Each picture uses one cookie. More free cookies come tomorrow." : "Free cookies come back tomorrow."}</p>
-        <button type="button" className={primary} onClick={onClose}>OK</button>
+        <Button variant="ghost" type="button" className={primary} onClick={onClose}>OK</Button>
       </div>
     );
   }
@@ -416,7 +416,7 @@ function PopupBody({
         <CookieJar className="mx-auto size-14" />
         <p className="mt-2 text-title text-foreground">Out of cookies today</p>
         <p className="mt-1 text-support text-muted-foreground">You can still look at your fridge. New free cookies come tomorrow.</p>
-        <button type="button" className={primary} onClick={onGetMore}>Get more cookies</button>
+        <Button variant="ghost" type="button" className={primary} onClick={onGetMore}>Get more cookies</Button>
       </div>
     );
   }
@@ -427,12 +427,12 @@ function PopupBody({
         <p className="mt-1 text-support text-muted-foreground">A grown-up will need to say yes.</p>
         <div className="mt-4 grid grid-cols-2 gap-3">
           {JARS.map((jar) => (
-            <button key={jar.id} type="button" onClick={() => onPickJar(jar)} className="flex flex-col items-center rounded-card border border-surface-2 bg-surface p-4 transition-colors duration-tap hover:border-primary">
+            <Button variant="ghost" key={jar.id} type="button" onClick={() => onPickJar(jar)} className="flex flex-col items-center rounded-card border border-surface-2 bg-surface p-4 transition-colors duration-tap hover:border-primary">
               <CookieJar className={jar.id === "small" ? "size-10" : "size-14"} />
               <span className="mt-2 text-label font-bold text-foreground">{jar.label}</span>
               <span className="text-support text-muted-foreground">{jar.count} pictures</span>
               <span className="mt-1 text-label font-semibold text-foreground">{jar.price}</span>
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -477,7 +477,7 @@ function PopupBody({
       <CookieJar className="glow-burst mx-auto size-14" />
       <p className="mt-2 text-title text-foreground">{popup.bought} cookies added</p>
       <p className="mt-1 text-support text-muted-foreground">Have fun creating, {name}!</p>
-      <button type="button" className={primary} onClick={onClose}>Let's create</button>
+      <Button variant="ghost" type="button" className={primary} onClick={onClose}>Let's create</Button>
     </div>
   );
 }

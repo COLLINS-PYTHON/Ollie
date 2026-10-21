@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check, ChevronLeft, ChevronRight, Clock, Delete, Flame, Image as ImageIcon, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
+import { KidSwitcher } from "@/components/ollie/KidSwitcher";
+import { familyKids, addKid, switchKid } from "@/lib/family-store";
+import { clearFamilyStorage } from "@/lib/kid-storage";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import {
@@ -103,25 +106,25 @@ function Sheet({ title, onClose, children }: { title: string; onClose: () => voi
 
 function Choice({ on, label, hint, onClick }: { on: boolean; label: string; hint?: string; onClick: () => void }) {
   return (
-    <button
+    <Button variant="ghost"
       type="button"
       role="radio"
       aria-checked={on}
       onClick={onClick}
-      className={`flex w-full items-center gap-3 rounded-control border px-4 py-3 text-left transition-colors duration-tap ${on ? "border-primary bg-surface" : "border-surface-2 bg-white"}`}
+      className={`flex w-full items-center gap-3 rounded-control border px-4 py-3 text-left transition-colors duration-tap ${on ? "border-primary bg-surface" : "border-surface-2 bg-card"}`}
     >
       <div className="flex-1">
         <div className="text-body text-foreground">{label}</div>
         {hint && <div className="text-support text-muted-foreground">{hint}</div>}
       </div>
       {on && <Check className="size-5 text-primary" />}
-    </button>
+    </Button>
   );
 }
 
 function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
-    <button
+    <Button variant="ghost"
       type="button"
       role="switch"
       aria-checked={on}
@@ -129,8 +132,8 @@ function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) =
       onClick={() => onChange(!on)}
       className={`relative h-7 w-12 shrink-0 rounded-pill transition-colors duration-tap ${on ? "bg-primary" : "bg-surface-2"}`}
     >
-      <span className={`absolute top-0.5 size-6 rounded-pill bg-white shadow-card transition-all duration-tap ${on ? "left-[22px]" : "left-0.5"}`} />
-    </button>
+      <span className={`absolute top-0.5 size-6 rounded-pill bg-card shadow-card transition-all duration-tap ${on ? "left-[22px]" : "left-0.5"}`} />
+    </Button>
   );
 }
 
@@ -138,7 +141,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="mt-7">
       <h2 className="mb-2 px-1 text-label uppercase tracking-wide text-muted-foreground">{title}</h2>
-      <ul className="overflow-hidden rounded-card border border-surface-2 bg-white">{children}</ul>
+      <ul className="overflow-hidden rounded-card border border-surface-2 bg-card">{children}</ul>
     </section>
   );
 }
@@ -157,7 +160,7 @@ function Row({ icon, color, label, value, onClick, trailing }: { icon: ReactNode
   return (
     <li className="border-t border-surface-2 first:border-t-0">
       {onClick ? (
-        <button type="button" onClick={onClick} className="flex w-full items-center gap-4 px-4 py-3.5 active:bg-surface">{inner}</button>
+        <Button variant="ghost" type="button" onClick={onClick} className="flex w-full items-center gap-4 px-4 py-3.5 active:bg-surface">{inner}</Button>
       ) : (
         <div className="flex items-center gap-4 px-4 py-3.5">{inner}</div>
       )}
@@ -201,7 +204,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
   const title = creating ? (first ? "Enter it once more" : "Create a parent PIN") : "Enter your parent PIN";
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-white px-5 pt-4">
+    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-card px-5 pt-4">
       <Link to="/search" aria-label="Back" className="flex size-10 items-center justify-center rounded-pill bg-surface text-foreground">
         <ChevronLeft className="size-5" />
       </Link>
@@ -216,7 +219,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
         <div className="grid grid-cols-3 gap-3">
           {["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "del"].map((k) =>
             k === "" ? <span key="blank" /> : (
-              <button
+              <Button variant="ghost"
                 key={k}
                 type="button"
                 aria-label={k === "del" ? "Delete digit" : k}
@@ -224,7 +227,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
                 className="flex size-[72px] items-center justify-center rounded-pill bg-surface text-title text-foreground active:scale-95"
               >
                 {k === "del" ? <Delete className="size-5" /> : k}
-              </button>
+              </Button>
             ),
           )}
         </div>
@@ -234,7 +237,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
 }
 
 /* ---------- dashboard ---------- */
-type SheetId = null | "flagged" | "screen" | "slideshow" | "history" | "tone" | "jar" | "subscription" | "interests" | "support" | "delete" | "devices";
+type SheetId = null | "flagged" | "screen" | "slideshow" | "history" | "tone" | "jar" | "subscription" | "interests" | "support" | "delete" | "devices" | "kids";
 
 function greeting() {
   const h = new Date().getHours();
@@ -250,6 +253,9 @@ function ParentDashboard() {
 
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const [balance, setBalance] = useState<Balance | null>(null);
+  const [newKidName, setNewKidName] = useState("");
+  const [newKidAge, setNewKidAge] = useState(7);
+  const [kidError, setKidError] = useState("");
   const [usedMin, setUsedMin] = useState(0);
   const [slidePrefs, setSlidePrefs] = useState<SlideshowPrefs>({ enabled: true, resetTime: "07:00", resetMode: "24h" });
 
@@ -263,7 +269,7 @@ function ParentDashboard() {
     setReady(true);
   }, []);
 
-  if (!ready) return <main className="min-h-screen bg-white" />;
+  if (!ready) return <main className="min-h-screen bg-card" />;
   if (!isUnlocked) return <PinGate onUnlock={() => { unlocked = true; setUnlocked(true); }} />;
 
   const child = onboardingState.name || "your child";
@@ -297,12 +303,12 @@ function ParentDashboard() {
   const retentionLabel = { 1: "24 hours", 7: "1 week", 30: "1 month" }[parentSettings.retentionDays];
 
   return (
-    <main className="screen-enter mx-auto min-h-screen w-full max-w-md bg-white px-5 pb-16 pt-4">
+    <main className="parent-dashboard screen-enter mx-auto min-h-screen w-full max-w-xl bg-card px-5 pb-16 pt-4">
       <div className="flex items-center justify-between">
         <Link to="/search" aria-label="Back" className="flex size-10 items-center justify-center rounded-pill bg-surface text-foreground active:scale-95">
           <ChevronLeft className="size-5" />
         </Link>
-        <div className="flex size-10 items-center justify-center rounded-pill bg-primary text-button text-white" aria-hidden>
+        <div className="flex size-10 items-center justify-center rounded-pill bg-primary text-button text-primary-foreground" aria-hidden>
           {(parent || "P").charAt(0).toUpperCase()}
         </div>
       </div>
@@ -310,16 +316,17 @@ function ParentDashboard() {
       <h1 className="mt-5 text-title text-foreground">{greeting()}{parent ? `, ${parent}` : ""}</h1>
       <p className="mt-1 text-support text-muted-foreground">Here is how {child} is doing today.</p>
 
-      {/* Stat row */}
+      <div className="mt-5"><KidSwitcher onChange={() => { setChat(loadChat()); setBalance(loadBalance()); setUsedMin(minutesToday()); setSlidePrefs(prefs()); refresh(); }} /></div>
+      {/* Stat row */
       <div className="mt-5 grid grid-cols-3 gap-2.5">
         {[
-          { icon: Clock, tile: "from-cat-math to-cat-math-deep", value: formatMinutes(usedMin), label: "Screen time today" },
-          { icon: Flame, tile: "from-cat-weather to-cat-weather-deep", value: String(streakDays()), label: "Day streak" },
-          { icon: ImageIcon, tile: "from-cat-art to-cat-art-deep", value: String(balance?.freeUsed ?? 0), label: "Images today" },
+          { icon: Clock, tile: "text-accent-2", value: formatMinutes(usedMin), label: "Screen time today" },
+          { icon: Flame, tile: "text-accent-4", value: String(streakDays()), label: "Day streak" },
+          { icon: ImageIcon, tile: "text-accent-3", value: String(balance?.freeUsed ?? 0), label: "Images today" },
         ].map((s) => (
-          <div key={s.label} className="rounded-card border border-surface-2 bg-white p-3">
-            <div className={`glossy flex size-9 items-center justify-center rounded-control bg-gradient-to-b ${s.tile}`}>
-              <s.icon className="size-4.5 text-white" strokeWidth={2} />
+          <div key={s.label} className="rounded-card border border-surface-2 bg-card p-3">
+            <div className={`flex size-9 items-center justify-center rounded-pill bg-surface ${s.tile}`}>
+              <s.icon className="size-4.5" strokeWidth={2} />
             </div>
             <p className="mt-2 text-body font-bold text-foreground">{s.value}</p>
             <p className="text-label text-muted-foreground">{s.label}</p>
@@ -328,7 +335,7 @@ function ParentDashboard() {
       </div>
 
       {/* Flagged alert card */}
-      <button
+      <Button variant="ghost"
         type="button"
         onClick={() => setSheet("flagged")}
         className="mt-4 flex w-full items-center gap-3 rounded-card border border-destructive/20 bg-destructive/[0.07] p-4 text-left"
@@ -341,7 +348,7 @@ function ParentDashboard() {
           <p className="text-support text-destructive">View what was asked and why</p>
         </div>
         <ChevronRight className="size-5 text-destructive" strokeWidth={1.8} />
-      </button>
+      </Button>
 
       {/* Weekly report */}
       <div className="scalloped bg-gradient-wash mt-4 rounded-card p-5">
@@ -349,18 +356,18 @@ function ParentDashboard() {
         <p className="mt-1 text-body font-bold text-foreground">{child}'s weekly report</p>
         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
           {[
-            { v: String(weekLessons.length), l: "Slideshows" },
+            { v: String(weekLessons.length), l: "Discoveries" },
             { v: String(weekQuestions), l: "Questions" },
             { v: quizAvg === null ? "None yet" : `${quizAvg}%`, l: "Quiz average" },
           ].map((s) => (
-            <div key={s.l} className="rounded-control bg-white/80 px-2 py-3">
+            <div key={s.l} className="rounded-control bg-card/80 px-2 py-3">
               <p className="text-body font-bold text-foreground">{s.v}</p>
               <p className="text-label text-muted-foreground">{s.l}</p>
             </div>
           ))}
         </div>
         {wowMoments.length > 0 && (
-          <div className="mt-3 rounded-control bg-white/80 p-3">
+          <div className="mt-3 rounded-control bg-card/80 p-3">
             <p className="text-label uppercase tracking-wide text-muted-foreground">Wow moments</p>
             <ul className="mt-1.5 flex flex-col gap-1">
               {wowMoments.map((w) => (
@@ -373,7 +380,7 @@ function ParentDashboard() {
 
       <Section title="Controls">
         <Row icon={ICONS.screen} color="text-accent-1" label="Screen time" value={`${formatMinutes(onboardingState.limitMinutes)} a day, Search and Create only`} onClick={() => setSheet("screen")} />
-        <Row icon={ICONS.slideshow} color="text-accent-4" label="Slideshow settings" value={!slidePrefs.enabled ? "Off" : slidePrefs.resetMode === "24h" ? "On, new lesson 24 hours after the last" : `On, new lesson every day at ${formatClock(slidePrefs.resetTime)}`} onClick={() => setSheet("slideshow")} />
+        <Row icon={ICONS.slideshow} color="text-accent-4" label="Discovery settings" value={!slidePrefs.enabled ? "Off" : slidePrefs.resetMode === "24h" ? "On, new lesson 24 hours after the last" : `On, new lesson every day at ${formatClock(slidePrefs.resetTime)}`} onClick={() => setSheet("slideshow")} />
         <Row icon={ICONS.history} color="text-accent-2" label="Chat history" value={`Kept for ${retentionLabel}`} onClick={() => setSheet("history")} />
         <Row icon={ICONS.tone} color="text-accent-3" label="Reply tone" value={toneValue} onClick={() => setSheet("tone")} />
         <Row
@@ -385,9 +392,13 @@ function ParentDashboard() {
         />
       </Section>
 
+      <Section title="Family">
+        <Row icon={ICONS.interests} color="text-accent-3" label="Kid profiles" value={`${familyKids().length} of 2 family spaces`} onClick={() => setSheet("kids")} />
+      </Section>
+
       <Section title="Account">
         <Row icon={ICONS.jar} color="text-gold" label="Cookie jars" value={`${balance ? cookiesLeft(balance) : 0} picture cookies left today`} onClick={() => setSheet("jar")} />
-        <Row icon={ICONS.subscription} color="text-accent-1" label="Subscription" value={`Free trial, ${onboardingState.plan === "monthly" ? "Monthly" : "Yearly"} plan`} onClick={() => setSheet("subscription")} />
+        <Row icon={ICONS.subscription} color="text-accent-1" label="Subscription" value={`Plan selected, ${onboardingState.plan === "monthly" ? "Monthly" : "Yearly"} plan`} onClick={() => setSheet("subscription")} />
         <Row icon={ICONS.interests} color="text-accent-3" label={`${child}'s interests`} value={interestLabels.join(", ") || "None picked yet"} onClick={() => setSheet("interests")} />
       </Section>
 
@@ -415,6 +426,7 @@ function ParentDashboard() {
         <p className="mt-2 text-support text-muted-foreground">Ratings will be available when Ollie launches in the app stores.</p>
       </div>
 
+      {sheet === "kids" && <Sheet title="Your kid profiles" onClose={() => setSheet(null)}><KidSwitcher onChange={() => { setChat(loadChat()); setBalance(loadBalance()); setUsedMin(minutesToday()); setSlidePrefs(prefs()); refresh(); }} />{familyKids().length < 2 ? <><label className="mt-4 block text-support" htmlFor="new-kid">Add your other kid</label><input id="new-kid" className="setup-input mt-2" value={newKidName} onChange={e => setNewKidName(e.target.value)} placeholder="First name" maxLength={40} /><label className="mt-4 flex items-center justify-between text-support">Age<input type="number" min={4} max={12} value={newKidAge} onChange={e => setNewKidAge(Number(e.target.value))} className="setup-input max-w-20" /></label><Button className="mt-4 w-full" disabled={!newKidName.trim()} onClick={() => { const id = addKid(newKidName, newKidAge); if (!id) { setKidError("Enter a name and an age from 4 to 12."); return; } switchKid(id); window.location.assign("/onboarding/reading?preview=1"); }}>Set up their learning space</Button>{kidError && <p role="alert" className="mt-3 text-support text-destructive">{kidError}</p>}</> : <p className="mt-4 text-support text-muted-foreground">Both family spaces are set up. Their activity and settings stay separate.</p>}</Sheet>}
       {sheet === "flagged" && (
         <Sheet title="Flagged searches" onClose={() => setSheet(null)}>
           {flagged.length === 0 ? (
@@ -437,16 +449,16 @@ function ParentDashboard() {
         <Sheet title="Screen time" onClose={() => setSheet(null)}>
           <p className="text-support text-muted-foreground">Daily limit for Search and Create. The daily slideshow never counts toward it.</p>
           <div className="mt-4 flex items-center justify-between rounded-control bg-surface p-3">
-            <button type="button" aria-label="Less time" onClick={() => update(() => { onboardingState.limitMinutes = Math.max(15, onboardingState.limitMinutes - 15); })} className="size-11 rounded-pill bg-white text-title text-foreground shadow-card">-</button>
+            <Button variant="ghost" type="button" aria-label="Less time" onClick={() => update(() => { onboardingState.limitMinutes = Math.max(15, onboardingState.limitMinutes - 15); })} className="size-11 rounded-pill bg-card text-title text-foreground shadow-card">-</Button>
             <span className="text-title text-foreground">{formatMinutes(onboardingState.limitMinutes)}</span>
-            <button type="button" aria-label="More time" onClick={() => update(() => { onboardingState.limitMinutes = Math.min(240, onboardingState.limitMinutes + 15); })} className="size-11 rounded-pill bg-white text-title text-foreground shadow-card">+</button>
+            <Button variant="ghost" type="button" aria-label="More time" onClick={() => update(() => { onboardingState.limitMinutes = Math.min(240, onboardingState.limitMinutes + 15); })} className="size-11 rounded-pill bg-card text-title text-foreground shadow-card">+</Button>
           </div>
           <p className="mt-3 text-support text-muted-foreground">Used today: {formatMinutes(usedMin)}</p>
         </Sheet>
       )}
 
       {sheet === "slideshow" && (
-        <Sheet title="Slideshow settings" onClose={() => setSheet(null)}>
+        <Sheet title="Discovery settings" onClose={() => setSheet(null)}>
           <div className="flex items-center justify-between">
             <span className="text-body text-foreground">Daily slideshow</span>
             <Toggle label="Daily slideshow" on={slidePrefs.enabled} onChange={(v) => { setPrefs({ enabled: v }); setSlidePrefs(prefs()); }} />
@@ -515,7 +527,7 @@ function ParentDashboard() {
           <p className="text-support text-muted-foreground">10 free each day, plus {balance.jarCookies} from jars.</p>
           <div className="mt-4 flex flex-col gap-2.5">
             {JARS.map((j) => (
-              <button
+              <Button variant="ghost"
                 key={j.id}
                 type="button"
                 onClick={() => { const b = addCookies(loadBalance(), j.count); saveBalance(b); setBalance(b); }}
@@ -523,7 +535,7 @@ function ParentDashboard() {
               >
                 <span className="text-body text-foreground">{j.count} cookies</span>
                 <span className="text-button text-primary">{j.price}</span>
-              </button>
+              </Button>
             ))}
           </div>
           <p className="mt-3 text-label text-muted-foreground">Test mode: nothing is charged yet.</p>
@@ -549,7 +561,7 @@ function ParentDashboard() {
             {INTERESTS.map((i) => {
               const on = onboardingState.interests.includes(i.id);
               return (
-                <button
+                <Button variant="ghost"
                   key={i.id}
                   type="button"
                   aria-pressed={on}
@@ -559,7 +571,7 @@ function ParentDashboard() {
                   className={`rounded-pill border px-3.5 py-2 text-support ${on ? "border-primary bg-surface text-foreground" : "border-surface-2 text-muted-foreground"}`}
                 >
                   {i.label}
-                </button>
+                </Button>
               );
             })}
           </div>
@@ -600,7 +612,7 @@ function SupportSheet({ onClose }: { onClose: () => void }) {
           Support chat is not connected yet. You can contact the Ollie team by email.
         </p>
         {sent.map((s, i) => (
-          <p key={i} className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-4 py-2.5 text-body text-white">{s}</p>
+          <p key={i} className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-4 py-2.5 text-body text-primary-foreground">{s}</p>
         ))}
         {sent.length > 0 && (
           <p className="text-label text-muted-foreground">This message has not been sent. Please use the email link below.</p>
@@ -611,7 +623,7 @@ function SupportSheet({ onClose }: { onClose: () => void }) {
         onSubmit={(e) => { e.preventDefault(); if (text.trim()) { setSent([...sent, text.trim()]); setText(""); } }}
       >
         <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Type your question" className="flex-1 rounded-pill border border-surface-2 px-4 py-2.5 text-body text-foreground" />
-        <button type="submit" disabled={!text.trim()} className="rounded-pill bg-primary px-5 text-button text-white disabled:bg-surface-2">Send</button>
+        <Button variant="ghost" type="submit" disabled={!text.trim()} className="rounded-pill bg-primary px-5 text-button text-primary-foreground disabled:bg-surface-2">Send</Button>
       </form>
       <a href={`mailto:${SUPPORT_EMAIL}`} className="mt-4 block text-support font-bold text-primary">Email {SUPPORT_EMAIL}</a>
     </Sheet>
@@ -622,7 +634,7 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const wipe = async () => {
     await deleteCloudData().catch(() => undefined);
-    ["ollie-chat-v1", "ollie-profile-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-custom-lesson-v1", "ollie-onboarding-draft-v1", "ollie-onboarding-step-v1"].forEach((k) => localStorage.removeItem(k));
+    clearFamilyStorage();
     sessionStorage.removeItem("ollie-onboarding-draft-v1");
     indexedDB.deleteDatabase("ollie-pictures");
     setStep(3);
@@ -639,15 +651,15 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
             <li>{child}'s profile</li>
           </ul>
           <p className="mt-3 text-support text-muted-foreground">Billing records are kept separately, with nothing that identifies {child}, because the law requires them for tax.</p>
-          <button type="button" onClick={() => setStep(2)} className="mt-5 w-full rounded-pill border border-destructive py-3 text-button text-destructive">Continue</button>
+          <Button variant="ghost" type="button" onClick={() => setStep(2)} className="mt-5 w-full rounded-pill border border-destructive py-3 text-button text-destructive">Continue</Button>
         </>
       )}
       {step === 2 && (
         <>
           <p className="text-body font-bold text-foreground">This is permanent.</p>
           <p className="mt-1 text-support text-muted-foreground">Once deleted, none of it can be brought back.</p>
-          <button type="button" onClick={wipe} className="mt-5 w-full rounded-pill bg-destructive py-3 text-button text-white">Delete everything</button>
-          <button type="button" onClick={onClose} className="mt-2 w-full py-3 text-button text-muted-foreground">Keep my data</button>
+          <Button variant="ghost" type="button" onClick={wipe} className="mt-5 w-full rounded-pill bg-destructive py-3 text-button text-primary-foreground">Delete everything</Button>
+          <Button variant="ghost" type="button" onClick={onClose} className="mt-2 w-full py-3 text-button text-muted-foreground">Keep my data</Button>
         </>
       )}
       {step === 3 && <p className="text-body text-foreground">Everything has been deleted.</p>}
@@ -676,9 +688,9 @@ function DevicesSheet({ onClose }: { onClose: () => void }) {
                   <div className="text-support text-muted-foreground">{d.revoked ? "Logging out next time it opens" : `Last used ${fmt(d.last_seen)}`}</div>
                 </div>
                 {mine ? (
-                  <button type="button" onClick={async () => { await signOutHere(); window.location.assign("/onboarding/fact"); }} className="rounded-pill bg-white px-3.5 py-2 text-label font-semibold text-foreground">Log out</button>
+                  <Button variant="ghost" type="button" onClick={async () => { await signOutHere(); window.location.assign("/onboarding/fact"); }} className="rounded-pill bg-card px-3.5 py-2 text-label font-semibold text-foreground">Log out</Button>
                 ) : !d.revoked && (
-                  <button type="button" onClick={async () => { await revokeDevice(d.id); refresh(); }} className="rounded-pill bg-white px-3.5 py-2 text-label font-semibold text-destructive">Log out</button>
+                  <Button variant="ghost" type="button" onClick={async () => { await revokeDevice(d.id); refresh(); }} className="rounded-pill bg-card px-3.5 py-2 text-label font-semibold text-destructive">Log out</Button>
                 )}
               </li>
             );

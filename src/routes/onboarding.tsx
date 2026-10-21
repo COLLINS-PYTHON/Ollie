@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
 import { OnboardingScenery } from "@/components/ollie/OnboardingScenery";
 import { OnboardingCompanions, OLLIE_POSES } from "@/components/ollie/OnboardingCompanions";
-import chaseClip from "@/assets/ollie-chase-compatible.mp4.asset.json";
+import chaseClip from "@/assets/ollie-paywall-discovery-compatible.mp4.asset.json";
 
 export const Route = createFileRoute("/onboarding")({
-  validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" ? { preview: true } : {}),
+  validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" || search["preview"] === "1" ? { preview: true } : {}),
   search: { middlewares: [retainSearchParams(["preview"])] },
   component: OnboardingLayout,
 });
@@ -110,8 +110,7 @@ export function OnboardingSkeleton({
           aria-valuenow={Math.round(progress * 100)}
         >
           <span className="chapter-fill absolute inset-y-0 left-0 rounded-pill bg-primary" style={{ width: `${progress * 100}%` }} />
-          <span className="chapter-divider absolute inset-y-0 left-1/3 w-1" aria-hidden />
-          <span className="chapter-divider absolute inset-y-0 left-2/3 w-1" aria-hidden />
+
         </div>
       </header>
 
