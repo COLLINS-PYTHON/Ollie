@@ -3,7 +3,8 @@
 ## Now
 
 - Ollie 1 copy recovery: restored name explanation, reading heading/labels, interest heading/explanation, welcome baseline and daily-lesson wording; replaced promotional intermediate buttons with Continue. Name → reading → interests verified. Still reconcile safety/privacy and the old interactive try-it-yourself copy without changing disclosures or promising unavailable functionality.
-- Mascot balance: refine existing Ollie's silhouette/material and reduce presence for older kids; no replacement or recolor chosen yet.
+- Mascot preview: off-white/grey puppy with blue ears/eyes generated with smaller eyes, reduced cheeks and calmer proportions; awaiting approval before app replacement.
+- Artwork direction: new generated images use the approved tactile matte book style; live turtle generation returned and was inspected, build OK. Existing shared Daily Discovery pictures and graphics still need coordinated replacement, preserving accurate diagrams and matching preview/playback/Trail artwork.
 - Incorporate uploaded Trail/fridge inspirations: airy winding path and collectible picture keepsakes, adapted to Ollie's matte blue/mist aesthetic without copying the reference.
 - Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
 - Launch dependencies: verified lesson cache and per-kid isolation, server-enforced AI limits, native purchase/restore, actual reminder delivery, native biometric unlock, full-flow device/accessibility checks.
