@@ -1,12 +1,130 @@
-import {createFileRoute,Link,useNavigate,useRouter} from '@tanstack/react-router';
-import {useState} from 'react';
-import {Check,ChevronLeft,ChevronRight,CalendarDays,ShieldCheck,X} from 'lucide-react';
-import {Button} from '@/components/ui/button';
-import {Drawer,DrawerContent,DrawerTitle,DrawerDescription} from '@/components/ui/drawer';
-import {PaywallDiscoveryVideo as OllieChase} from '@/components/ollie/PaywallDiscoveryVideo';
-import {onboardingState,saveProfile} from '@/lib/onboarding-store';
-import {familyKids} from '@/lib/family-store';
-import {SUBSCRIPTION_PRICES,yearlyMonthlyEquivalent} from '@/lib/subscription-prices';
-import {pageMeta} from '@/lib/meta';
-export const Route=createFileRoute('/onboarding/paywall')({head:()=>pageMeta('Your family’s Ollie plan','Review Ollie’s family membership plans and trial terms.'),component:Paywall});
-function Paywall(){const navigate=useNavigate();const router=useRouter();const kids=familyKids();const names=kids.map(k=>String(k.profile['name']??'').trim()).filter(Boolean).join(' and ');const [open,setOpen]=useState(false);const [plan,setPlan]=useState(onboardingState.plan);const [note,setNote]=useState('');return <div className="paywall-page min-h-screen bg-background"><main className="mx-auto flex min-h-screen max-w-lg flex-col items-center px-6 pb-28 pt-6"><Button variant="control" size="icon" aria-label="Back" className="self-start" onClick={()=>router.history.back()}><ChevronLeft/></Button><OllieChase/><h1 className="text-title mt-6 text-center">We want you{names ? ` and ${names}` : ''} to try Ollie for free.</h1><p className="mt-4 text-center text-body text-muted-foreground">Clear answers, one Daily Discovery, and a parent view that keeps you informed.</p><Button variant="onboarding" size="onboarding" className="mt-8" onClick={()=>setOpen(true)}>Unlock {names || 'your kid'}’s safe trial<ChevronRight/></Button></main><Drawer open={open} onOpenChange={setOpen} shouldScaleBackground={false}><DrawerContent className="onboarding-theme family-paywall-sheet mx-auto max-h-[94dvh] w-full max-w-lg overflow-hidden bg-card"><div className="flex shrink-0 items-center justify-between px-5 pb-3"><DrawerTitle className="text-body font-bold">Your family’s Ollie plan</DrawerTitle><Button variant="ghost" size="icon" aria-label="Close plans" onClick={()=>setOpen(false)}><X/></Button></div><DrawerDescription className="sr-only">Review the annual and monthly membership prices. No payment is taken in this preview.</DrawerDescription><div className="shrink-0 px-5"><h2 className="text-title mt-2 text-center">A little more room for curiosity.</h2><p className="mt-2 text-center text-support text-muted-foreground">Choose a plan. Cancel any time.</p><div className="mt-5 grid grid-cols-2 gap-3">{(['yearly','monthly'] as const).map(p=><Button key={p} variant="option" aria-pressed={plan===p} onClick={()=>setPlan(p)} className="family-plan-option relative h-auto min-h-32 flex-col items-start gap-1 whitespace-normal p-4 text-left">{p==='yearly'&&<span className="plan-value-tag">Best value</span>}<span className="text-body font-bold">{p==='yearly'?'Yearly':'Monthly'}</span><span className="text-body font-semibold">${SUBSCRIPTION_PRICES[p].toFixed(2)}<span className="text-support">/{p==='yearly'?'year':'month'}</span></span>{p==='yearly'&&<span className="plan-monthly-subtext">${yearlyMonthlyEquivalent()}/month</span>}<span className="text-label">Billed {p==='yearly'?'annually':'monthly'}</span></Button>)}</div><p className="mt-3 text-center text-support text-muted-foreground">One membership. Up to two kid profiles.</p></div><div className="min-h-0 flex-1 overflow-y-auto px-5 py-4"><ul className="space-y-2.5">{['Clear answers matched to age and reading comfort','One short Daily Discovery and a Trail to revisit','10 fresh picture cookies per kid, per day','Protected parent settings and saved safety context'].map(line=><li key={line} className="flex items-start gap-2 text-support"><Check className="mt-0.5 size-4 shrink-0 text-accent-2"/>{line}</li>)}</ul><ol className="trial-process-map mt-5 grid grid-cols-3 gap-3 text-center">{[{label:'Today',copy:'Choose your plan'},{label:'Day 5',copy:'Reminder + report*'},{label:'Day 7',copy:'Paid plan begins*'}].map((item,i)=><li key={item.label} className="relative"><span className="relative z-10 mx-auto flex size-8 items-center justify-center rounded-pill bg-secondary text-primary">{i===0?<Check className="size-4"/>:<CalendarDays className="size-4"/>}</span><p className="mt-2 text-label font-bold">{item.label}</p><p className="mt-1 text-label text-muted-foreground">{item.copy}</p></li>)}</ol><p className="mt-3 text-support text-muted-foreground">*Proposed seven-day trial for eligible new subscribers. Billing and reminder delivery are not active in this preview.</p></div><footer className="shrink-0 border-t border-border px-5 pb-5 pt-3"><Button variant="onboarding" size="onboarding" onClick={()=>{onboardingState.plan=plan;saveProfile();void navigate({to:'/onboarding/account'});}}>Start free trial<ChevronRight/></Button><p className="mt-2 text-center text-support text-muted-foreground">No payment is taken. No trial starts yet.</p><div className="mt-2 flex flex-wrap items-center justify-center gap-4"><Button variant="link" className="h-8 p-0 text-support" onClick={()=>setNote('Purchases cannot be restored until native billing is connected.')}>Restore purchases</Button><Link to="/terms" className="text-support text-primary">Terms</Link><Link to="/privacy" className="text-support text-primary">Privacy</Link></div>{note&&<p role="status" className="mt-2 text-support text-muted-foreground">{note}</p>}</footer></DrawerContent></Drawer></div>;}
+import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
+import { useState } from "react";
+import { Bell, Check, ChevronLeft, LockKeyholeOpen, X } from "lucide-react";
+import { onboardingState } from "@/lib/onboarding-store";
+import { childName, pageMeta } from "@/lib/meta";
+import { Button } from "@/components/ui/button";
+import { PaywallDiscoveryVideo as OllieChase } from "@/components/ollie/PaywallDiscoveryVideo";
+import { familyKids } from "@/lib/family-store";
+import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
+import { SUBSCRIPTION_PRICES, yearlyMonthlyEquivalent } from "@/lib/subscription-prices";
+
+export const Route = createFileRoute("/onboarding/paywall")({
+  head: () => pageMeta("We want you and your kid to try Ollie for free", "Explore safe answers, daily lessons and creativity with Ollie's 7-day trial."),
+  component: PaywallPage,
+});
+
+/* Owner-approved subscription prices. */
+const PRICES = { monthly: `$${SUBSCRIPTION_PRICES.monthly.toFixed(2)} / month`, yearly: `$${SUBSCRIPTION_PRICES.yearly.toFixed(2)} / year` };
+const FEATURES = ["Customizable reply tone", "Safe search", "Daily educational slideshows", "Age-appropriate content", "Age-appropriate image generation", "Full parent dashboard", "Weekly progress reports"];
+
+function PaywallPage() {
+  const navigate = useNavigate();
+  const router = useRouter();
+  const kidNames = familyKids().map(k => String(k.profile["name"] ?? "").trim()).filter(Boolean);
+  const name = kidNames.length ? kidNames.join(" and ") : childName(onboardingState.name);
+  const savings = Math.round((1 - SUBSCRIPTION_PRICES.yearly / (SUBSCRIPTION_PRICES.monthly * 12)) * 100);
+  const [sheet, setSheet] = useState(false);
+  const [plan, setPlan] = useState<"monthly" | "yearly">("yearly");
+  const [askReminder, setAskReminder] = useState(false);
+  const [permissionNote, setPermissionNote] = useState('');
+  function dismissReminder() { setAskReminder(false); void navigate({ to: '/onboarding/account' }); }
+  async function allowReminder() {
+    if (window.top !== window.self) { setPermissionNote('Open Ollie in its own tab to allow notifications. You can continue without them.'); return; }
+    if (!('Notification' in window)) { setPermissionNote('Notifications are not available in this browser. On iPhone, add Ollie to your Home Screen first.'); return; }
+    try {
+      const permission = await Notification.requestPermission();
+      localStorage.setItem('ollie-trial-reminder-permission', permission);
+      setPermissionNote(permission === 'granted' ? 'Permission allowed. Trial reminders will be available once notification delivery is connected.' : 'No problem. You can continue without a reminder.');
+    } catch { setPermissionNote('Notifications could not be enabled here. You can continue without them.'); }
+  }
+  const valueLines = [`Every answer matched to ${name}'s age`, "Sensitive searches flagged for you, not hidden", "Full visibility, always"];
+
+  return (
+    <>
+    <Drawer open={sheet} onOpenChange={setSheet} shouldScaleBackground={false} autoFocus>
+    <div className="relative min-h-screen bg-background">
+      <div className={`paywall-underlay mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-32 pt-4 ${sheet ? "is-presented" : ""}`}>
+        <Button variant="control" size="icon" type="button" aria-label="Back" onClick={() => router.history.back()} className="flex size-10 items-center justify-center rounded-pill bg-card shadow-card">
+          <ChevronLeft className="size-5" />
+        </Button>
+        <OllieChase />
+        <h1 className="text-title mt-8 text-center text-foreground">We want you and {name} to try Ollie for free</h1>
+        <p className="text-support mt-3 text-center text-muted-foreground">Made just for {name}.</p>
+        <div className="payment-assurance relative mx-auto mt-5 flex items-center gap-2 rounded-pill bg-card px-5 py-3 shadow-card">
+          <Check className="relative size-5 text-success" strokeWidth={2.2} />
+          <span className="text-button relative text-foreground">No Payment Due Now</span>
+        </div>
+        <p className="text-support mt-5 text-center text-muted-foreground">Enjoy complete access to interactive tutoring, daily learning trails, and daily creative picture cookies.</p>
+        <p className="text-support mt-4 flex items-center justify-center gap-2 text-muted-foreground"><Bell className="size-4 shrink-0" />We’ll notify you before the trial ends</p>
+        <p className="text-label mt-1 text-center text-muted-foreground">Once trial reminders are enabled.</p>
+      </div>
+        <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>
+          <DrawerTrigger asChild><Button variant="onboarding" size="onboarding" type="button" className="text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
+            Unlock {name}'s safe trial
+          </Button></DrawerTrigger>
+        </div>
+
+      <DrawerContent aria-modal="true" className="onboarding-theme apple-paywall-sheet mx-auto max-h-[94svh] min-h-0 w-full max-w-md overflow-hidden border-0 shadow-sheet" overlayClassName="apple-paywall-overlay">
+            <div className="flex shrink-0 items-center justify-between px-6 pb-3"><DrawerTitle className="text-body font-bold text-foreground">Start {name}'s safe trial</DrawerTitle><Button variant="control" size="icon" aria-label="Close plan picker" onClick={() => setSheet(false)} className="size-8 rounded-pill bg-secondary"><X className="size-4" /></Button></div>
+            <DrawerDescription className="sr-only">Choose monthly or yearly billing for your seven-day trial.</DrawerDescription>
+            <div className="paywall-price-anchor shrink-0 px-6 pb-4">
+               <div className="grid grid-cols-2 gap-3 pt-4">
+                 {(["yearly", "monthly"] as const).map((p) => (
+                   <Button key={p} type="button" aria-pressed={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }}
+                     variant="option" className={`plan-option relative flex flex-col items-start gap-1 rounded-control p-4 text-left ${p === "yearly" && plan === p ? "plan-outline-pulse" : ""}`}>
+                     {p === "yearly" && <span className="text-label absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-pill bg-navy px-2.5 py-0.5 text-primary-foreground shadow-card">Best value</span>}
+                     <span className="flex w-full items-center justify-between gap-2"><span className="text-button block capitalize">{p}</span>{p === "yearly" && <span className="text-label rounded-pill bg-success px-2 py-0.5 font-bold text-primary-foreground">Save {savings}%</span>}</span>
+                     <span className="text-support">{PRICES[p]}</span>
+                     {p === "yearly" && <span className="plan-monthly-subtext">${yearlyMonthlyEquivalent()}/month</span>}
+                   </Button>
+                 ))}
+               </div>
+             </div>
+             <div className="paywall-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-4">
+               <p className="text-body pt-2 text-center font-bold text-foreground">How your trial works</p>
+               <ol className="trial-timeline relative mt-3 grid grid-cols-3 gap-2 text-center">
+                 <span aria-hidden className="absolute left-[16.6%] right-[16.6%] top-5 h-0.5 rounded-pill bg-primary" />
+                 {[
+                   { icon: LockKeyholeOpen, when: "Today", what: `Full access for ${name}. $0 today.` },
+                   { icon: Bell, when: "In 5 days", what: `Reminder plus ${name}'s learning report` },
+                   { icon: Check, when: "In 7 days", what: "Plan starts. Cancel anytime before." },
+                 ].map(({ icon: Icon, when, what }) => (
+                   <li key={when} className="relative flex flex-col items-center">
+                     <span className="flex size-10 items-center justify-center rounded-pill bg-primary text-primary-foreground shadow-card"><Icon className="size-5" strokeWidth={2} /></span>
+                     <p className="text-label mt-2 font-bold text-primary">{when}</p>
+                     <p className="text-label mt-0.5 text-muted-foreground">{what}</p>
+                   </li>
+                 ))}
+               </ol>
+               <p className="text-label mt-3 text-center text-muted-foreground">Reminder delivery and billing are not active yet.</p>
+               <ul className="mt-4 space-y-2">
+                 {valueLines.map((l) => <li key={l} className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2.5 text-body font-medium text-foreground"><Check className="mt-1 size-4 shrink-0 text-success" /><span className="min-w-0">{l}</span></li>)}
+               </ul>
+               <ul className="mt-4 grid grid-cols-1 gap-1.5">
+                 {FEATURES.map((f) => <li key={f} className="text-support grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 text-foreground"><Check className="size-4 shrink-0 text-success" /><span className="min-w-0">{f}</span></li>)}
+               </ul>
+             </div>
+             <div className="paywall-sheet-footer shrink-0 border-t border-border px-6 pt-3">
+                <Button variant="onboarding" size="onboarding" type="button" onClick={() => { onboardingState.plan = plan; setSheet(false); setAskReminder(true); }} className="trial-emphasis text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
+                  Start {name}'s Safe Trial
+                </Button>
+                <p className="text-support mt-3 text-center text-muted-foreground">No charge today. Selected plan: {PRICES[plan]}.</p>
+                <Button variant="link" type="button" className="text-label mt-2 w-full text-center text-muted-foreground underline">Restore Purchases</Button>
+            </div>
+      </DrawerContent>
+    </div>
+    </Drawer>
+    <Drawer open={askReminder} onOpenChange={(open) => { if (!open) dismissReminder(); }} shouldScaleBackground={false}>
+      <DrawerContent className="onboarding-theme trial-reminder-sheet mx-auto max-w-md px-6 pb-6">
+        <Bell className="mx-auto mb-4 size-8 text-primary" />
+        <DrawerTitle className="text-title text-center">Should we remind you before your trial ends?</DrawerTitle>
+        <DrawerDescription className="text-support mt-3 text-center">On day 5 we'll remind you before your trial ends and share {name}'s learning report so far. Reminder delivery is not available yet.</DrawerDescription>
+        {permissionNote && <p role="status" className="text-support mt-4 text-center text-muted-foreground">{permissionNote}</p>}
+        <Button variant="onboarding" className="mt-6 h-14 rounded-pill" onClick={() => permissionNote ? dismissReminder() : void allowReminder()}>{permissionNote ? 'Continue' : 'Allow notifications'}</Button>
+        {!permissionNote && <Button variant="ghost" className="mt-2 h-12 rounded-pill" onClick={dismissReminder}>Not now</Button>}
+      </DrawerContent>
+    </Drawer>
+    </>
+  );
+}
