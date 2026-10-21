@@ -1068,3 +1068,7 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .onboarding-primary-action:disabled { color:var(--action-ink); }
 .onboarding-primary-action svg { color:inherit; }
 .plan-monthly-subtext { font-size:12px;line-height:17px;font-weight:500;opacity:.85; }
+
+@media(max-height:650px) { .family-paywall-sheet.onboarding-theme { height:96dvh; max-height:96dvh; } .family-paywall-sheet .paywall-discovery-video.is-compact { max-height:64px; } .family-paywall-sheet footer { padding-bottom:max(10px,env(safe-area-inset-bottom)); } .family-paywall-sheet footer > p { font-size:12px;line-height:17px; } .family-paywall-sheet [data-vaul-drawer] { min-height:0; } }
+.parent-dashboard button:not([role=switch]) { height:auto; min-height:48px; white-space:normal; }
+.create-studio section button { height:auto; min-height:44px; white-space:normal; }

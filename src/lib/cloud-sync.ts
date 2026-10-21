@@ -85,10 +85,11 @@ export async function pushAll() {
       const result = cloudId ? await supabase.from('children').update(row).eq('id', cloudId).select('id').single() : await supabase.from('children').insert(row).select('id').single();
       if (result.error) throw result.error;
       kid.cloudId = result.data.id;
+      kid.storageId ??= kid.id === "first" ? "first" : result.data.id;
     }
     family.ownerId = user.id;
     localStorage.setItem(FAMILY_KEY, JSON.stringify(family));
-    await pushMissingPictures(user.id);
+    for (const kid of family.kids) await pushMissingPictures(user.id, kid.id, kid.storageId ?? (kid.id === "first" ? "first" : kid.cloudId ?? kid.id));
     await registerDevice(user.id);
   } catch (e) {
     console.warn("Saving to account failed", e);
@@ -131,32 +132,32 @@ export async function pullAll() {
   localStorage.setItem(PROFILE_KEY, JSON.stringify(selected.profile));
   Object.assign(onboardingState, selected.profile);
   Object.assign(parentSettings, selected.profile.settings);
-  await pullPictures(user.id);
+  for (const kid of family.kids) await pullPictures(user.id, kid.id, kid.storageId);
   await registerDevice(user.id);
   return selected.profile.onboardingComplete;
 }
 
 /* Pictures: each one is saved as a small file in the parent's own folder. */
-export async function uploadPicture(p: Picture) {
+export async function uploadPicture(p: Picture, id = activeKidId(), storageId = readFamily().kids.find(k => k.id === id)?.storageId ?? (id === "first" ? "first" : readFamily().kids.find(k => k.id === id)?.cloudId ?? id)) {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return;
   const body = new Blob([JSON.stringify(p)], { type: "application/json" });
-  await supabase.storage.from("pictures").upload(`${session.user.id}/${activeKidId()}/${p.id}.json`, body, { upsert: true });
+  await supabase.storage.from("pictures").upload(`${session.user.id}/${storageId}/${p.id}.json`, body, { upsert: true });
 }
 
-async function pushMissingPictures(userId: string) {
-  const { data: files } = await supabase.storage.from("pictures").list(`${userId}/${activeKidId()}`, { limit: 1000 });
+async function pushMissingPictures(userId: string, id: string, storageId: string) {
+  const { data: files } = await supabase.storage.from("pictures").list(`${userId}/${storageId}`, { limit: 1000 });
   const have = new Set((files ?? []).map((f) => f.name));
-  const local = await loadPictures().catch(() => [] as Picture[]);
-  for (const p of local) if (!have.has(`${p.id}.json`)) await uploadPicture(p);
+  const local = await loadPictures(id).catch(() => [] as Picture[]);
+  for (const p of local) if (!have.has(`${p.id}.json`)) await uploadPicture(p, id, storageId);
 }
 
-async function pullPictures(userId: string) {
-  const { data: files } = await supabase.storage.from("pictures").list(`${userId}/${activeKidId()}`, { limit: 1000 });
+async function pullPictures(userId: string, id: string, storageId: string) {
+  const { data: files } = await supabase.storage.from("pictures").list(`${userId}/${storageId}`, { limit: 1000 });
   for (const f of files ?? []) {
-    const { data } = await supabase.storage.from("pictures").download(`${userId}/${activeKidId()}/${f.name}`);
+    const { data } = await supabase.storage.from("pictures").download(`${userId}/${storageId}/${f.name}`);
     if (!data) continue;
-    try { await savePicture(JSON.parse(await data.text()) as Picture); } catch { /* skip */ }
+    try { await savePicture(JSON.parse(await data.text()) as Picture, id); } catch { /* skip */ }
   }
 }
 
