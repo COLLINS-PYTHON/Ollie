@@ -2,6 +2,7 @@
 
 ## Now
 
+- Restore the established Ollie 1 onboarding wording from its source, retaining only justified safety corrections and the compressed flow.
 - Mascot balance: refine existing Ollie's silhouette/material and reduce presence for older kids; no replacement or recolor chosen yet.
 - Incorporate uploaded Trail/fridge inspirations: airy winding path and collectible picture keepsakes, adapted to Ollie's matte blue/mist aesthetic without copying the reference.
 - Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
