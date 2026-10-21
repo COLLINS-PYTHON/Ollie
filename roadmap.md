@@ -2,6 +2,7 @@
 
 ## Now
 
+- Fix all primary setup buttons with soft-white lettering, clear contrast, and a restrained blue appearance.
 - Integrate and verify the requested original Ollie book-to-discovery animation as a continuously looping, muted inline animation without a play button, visible inside the paywall.
 - Incorporate uploaded Trail/fridge inspirations: airy winding path and collectible picture keepsakes, adapted to Ollie's matte blue/mist aesthetic without copying the reference.
 - Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
