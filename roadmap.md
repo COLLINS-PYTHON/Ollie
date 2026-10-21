@@ -2,7 +2,7 @@
 
 ## Now
 
-- Mascot decision: recommend refining existing Ollie's silhouette/material and reducing its presence for older kids; no replacement or recolor without a chosen direction.
+- Mascot balance: refine existing Ollie's silhouette/material and reduce presence for older kids; no replacement or recolor chosen yet.
 - Make $8.33/month a smaller secondary line beneath the annual charge.
 
 - Refine primary actions to fit the whole aesthetic using design judgment: clear contrast, restrained blue, lighter visual weight.
