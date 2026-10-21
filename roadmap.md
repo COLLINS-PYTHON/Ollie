@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- Thorough honest audit of the whole app (product, safety, money, launch readiness)
 - Current scoped request: post-trial notification consent, hold-to-speak, 12-slide daily category-bag selection and matching animated displays.
 - Paywall: show both prices immediately, separate yearly pulse, payment badge pulse and trial reminder timeline/prompt.
 - Refine Building and iMessage-style Search space, listening controls and tab dock; investigate published chase autoplay.
