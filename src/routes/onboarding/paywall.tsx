@@ -76,12 +76,12 @@ function PaywallPage() {
                 <button key={p} type="button" role="radio" aria-checked={on} onClick={() => { setPlan(p); onboardingState.plan = p; }} className={`pw-plan ${on ? "is-on" : ""}`}>
                   <span className="pw-radio" aria-hidden>{on && <Check className="size-3.5" strokeWidth={3} />}</span>
                   <span className="min-w-0 flex-1 text-left">
-                    <span className="flex items-center gap-2"><span className="text-button capitalize">{p}</span>{p === "yearly" && <span className="pw-chip">Best value · Save {savings}%</span>}</span>
-                    <span className="pw-plan-sub">{p === "yearly" ? `${PRICES.yearly}, billed after trial` : "Billed monthly after trial"}</span>
+                    <span className="flex items-center gap-2"><span className="text-button capitalize">{p}</span>{p === "yearly" && <span className="pw-chip">Save {savings}%</span>}</span>
+                    <span className="pw-plan-sub">{p === "yearly" ? "Billed yearly after trial" : "Billed monthly after trial"}</span>
                   </span>
                   <span className="text-right">
-                    <span className="text-button block">{p === "yearly" ? `$${yearlyMonthlyEquivalent()}` : `$${SUBSCRIPTION_PRICES.monthly.toFixed(2)}`}</span>
-                    <span className="pw-plan-sub">per month</span>
+                    <span className="text-button block">{p === "yearly" ? `$${SUBSCRIPTION_PRICES.yearly.toFixed(2)}` : `$${SUBSCRIPTION_PRICES.monthly.toFixed(2)}`}</span>
+                    <span className="pw-plan-sub">{p === "yearly" ? `per year (≈ $${yearlyMonthlyEquivalent()}/mo)` : "per month"}</span>
                   </span>
                 </button>
               );
@@ -104,8 +104,8 @@ function PaywallPage() {
           <Button variant="onboarding" size="onboarding" type="button" onClick={() => { onboardingState.plan = plan; setSheet(false); setAskReminder(true); }} className="w-full">
             Start {name}'s Safe Trial
           </Button>
-          <p className="pw-fine mt-2 text-center text-muted-foreground">No charge today. Billing is not connected yet in this preview.</p>
-          <Button variant="link" type="button" className="pw-fine h-8 w-full text-muted-foreground">Restore Purchases</Button>
+          <p className="pw-fine mt-2 text-center text-muted-foreground">Free for 7 days, then {PRICES[plan].replace(" / ", " per ")}. Renews automatically until canceled. Cancel anytime in Settings at least 24 hours before the trial ends. Billing is not connected yet in this preview.</p>
+          <div className="pw-fine flex items-center justify-center gap-3 text-muted-foreground"><Button variant="link" type="button" className="pw-fine h-8 px-0 text-muted-foreground">Restore Purchases</Button><a href="/terms" className="underline">Terms</a><a href="/privacy" className="underline">Privacy</a></div>
         </div>
       </DrawerContent>
     </div>
