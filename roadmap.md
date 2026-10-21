@@ -2,6 +2,8 @@
 
 ## Now
 
+- Paywall action: “Unlock [kid’s name]’s safe trial”, personalized for selected kid, with truthful preview limitation retained.
+
 - Remove the new paywall animation’s visible studio rectangle so the scene blends into the screen like the former clip.
 
 - Mascot balance: refine existing Ollie's silhouette/material and reduce presence for older kids; no replacement or recolor chosen yet.
