@@ -2,6 +2,8 @@
 
 ## Now
 
+- Remove the new paywall animation’s visible studio rectangle so the scene blends into the screen like the former clip.
+
 - Mascot balance: refine existing Ollie's silhouette/material and reduce presence for older kids; no replacement or recolor chosen yet.
 - Make $8.33/month a smaller secondary line beneath the annual charge.
 
