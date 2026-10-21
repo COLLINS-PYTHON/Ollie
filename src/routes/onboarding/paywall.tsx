@@ -77,7 +77,7 @@ function PaywallPage() {
                   <span className="pw-radio" aria-hidden>{on && <Check className="size-3.5" strokeWidth={3} />}</span>
                   <span className="min-w-0 flex-1 text-left">
                     <span className="flex items-center gap-2"><span className="text-button capitalize">{p}</span>{p === "yearly" && <span className="pw-chip">Save {savings}%</span>}</span>
-                    <span className="pw-plan-sub">{p === "yearly" ? "Billed yearly after 7-day trial" : "Billed monthly after 7-day trial"}</span>
+                    <span className="pw-plan-sub">{p === "yearly" ? "Billed yearly after trial" : "Billed monthly after trial"}</span>
                   </span>
                   <span className="text-right">
                     <span className="text-button block">{p === "yearly" ? `$${SUBSCRIPTION_PRICES.yearly.toFixed(2)}` : `$${SUBSCRIPTION_PRICES.monthly.toFixed(2)}`}</span>
