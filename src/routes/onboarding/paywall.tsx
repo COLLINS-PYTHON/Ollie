@@ -72,7 +72,7 @@ function PaywallPage() {
                <div className="grid grid-cols-2 gap-3 pt-4">
                  {(["yearly", "monthly"] as const).map((p) => (
                    <Button key={p} type="button" aria-pressed={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }}
-                     variant="option" className={`family-plan-option relative h-auto whitespace-normal flex flex-col items-start gap-1 rounded-control p-4 text-left ${p === "yearly" && plan === p ? "plan-outline-pulse" : ""}`}>
+                     variant="option" className={`family-plan-option relative h-auto whitespace-normal flex flex-col items-start gap-1 rounded-control p-4 text-left`}>
                      {p === "yearly" && <span className="text-label absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-pill bg-navy px-2.5 py-0.5 text-primary-foreground shadow-card">Best value</span>}
                      <span className="flex w-full items-center justify-between gap-2"><span className="text-button block capitalize">{p}</span>{p === "yearly" && <span className="text-label rounded-pill bg-success px-2 py-0.5 font-bold text-primary-foreground">Save {savings}%</span>}</span>
                      <span className="text-support">{PRICES[p]}</span>
