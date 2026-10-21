@@ -1,81 +1,15 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { Check } from "lucide-react";
-import { OnboardingSkeleton } from "../onboarding";
-import { onboardingState, type ReadingLevel } from "@/lib/onboarding-store";
-import { childName } from "@/lib/meta";
-import { Button } from "@/components/ui/button";
-
-export const Route = createFileRoute("/onboarding/reading")({
-  head: () => ({
-    meta: [
-      { title: "Reading level | Ollie" },
-      { name: "description", content: "Tell Ollie how your child reads so answers fit just right." },
-      { property: "og:title", content: "Reading level | Ollie" },
-      { property: "og:description", content: "Tell Ollie how your child reads so answers fit just right." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-  component: ReadingPage,
-});
-
-const OPTIONS: { id: ReadingLevel; label: string }[] = [
-  { id: "none", label: "Not reading yet" },
-  { id: "sounding", label: "Sounding out simple words" },
-  { id: "stories", label: "Reads short stories" },
-  { id: "chapters", label: "Reads chapter books confidently" },
-];
-
-function ReadingPage() {
-  const navigate = useNavigate();
-  const name = childName(onboardingState.name);
-  const [level, setLevel] = useState<ReadingLevel | null>(onboardingState.readingLevel);
-
-  return (
-    <div className="bg-gradient-ice min-h-screen">
-      <OnboardingSkeleton
-        chapter={3}
-        title={`What's ${name}'s reading level?`}
-        cta="Continue"
-        ctaDisabled={!level}
-        onContinue={() => navigate({ to: "/onboarding/preview" })}
-      >
-        <div className="flex flex-col gap-3" role="radiogroup" aria-label="Reading level">
-          {OPTIONS.map((opt) => {
-            const selected = level === opt.id;
-            return (
-              <Button variant="control"
-                key={opt.id}
-                type="button"
-                role="radio"
-                aria-checked={selected}
-                onClick={() => {
-                  setLevel(opt.id);
-                  onboardingState.readingLevel = opt.id;
-                }}
-                className={`text-body flex h-14 w-full items-center justify-between gap-3 rounded-control px-4 text-left shadow-card transition-all duration-tap active:scale-[0.98] ${
-                  selected
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-card text-foreground"
-                }`}
-              >
-                <span className="min-w-0 whitespace-normal">{opt.label}</span>
-                <span
-                  className={`flex size-6 shrink-0 items-center justify-center rounded-pill transition-colors duration-tap ${
-                    selected ? "bg-primary-foreground/25" : "bg-surface-2"
-                  }`}
-                >
-                  {selected && <Check className="size-4" aria-hidden />}
-                </span>
-              </Button>
-            );
-          })}
-        </div>
-        <p className="text-support mt-4 text-center text-muted-foreground">
-          A comfortable starting point for {name}, not a test. You can change this anytime.
-        </p>
-      </OnboardingSkeleton>
-    </div>
-  );
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
+import { Volume2, BookOpen, BookText, Check } from 'lucide-react';
+import { OnboardingSkeleton } from '../onboarding';
+import { SetupKidTabs } from '@/components/ollie/SetupKidTabs';
+import { Button } from '@/components/ui/button';
+import { onboardingState, saveProfile, type ReadingLevel } from '@/lib/onboarding-store';
+import { familyKids, switchKid } from '@/lib/family-store';
+import { pageMeta } from '@/lib/meta';
+export const Route = createFileRoute('/onboarding/reading')({ head: () => pageMeta('Learning comfort', 'Choose words and read-aloud support that fit each kid.'), component: Reading });
+const options = [{ id:'none', icon:Volume2, title:'Mostly listening', copy:'Simple words, with answers read aloud.' },{id:'sounding',icon:BookOpen,title:'Sounding out words',copy:'Short sentences and a little reading support.'},{id:'stories',icon:BookText,title:'Reading stories',copy:'Clear explanations with room to discover.'},{id:'chapters',icon:BookText,title:'Reading independently',copy:'More detail, without unnecessary complexity.'}] as const;
+function Reading() {
+ const navigate=useNavigate(); const [level,setLevel]=useState<ReadingLevel|null>(onboardingState.readingLevel);
+ return <div className="min-h-screen bg-background"><OnboardingSkeleton chapter={1} title={`How does ${onboardingState.name} like to learn?`} cta="Continue" ctaDisabled={!level} onContinue={() => { saveProfile(); const next=familyKids().find(k=>!k.profile['readingLevel']); if(next){switchKid(next.id);setLevel(onboardingState.readingLevel);return;} void navigate({to:'/onboarding/interests'}); }}><SetupKidTabs onChange={()=>setLevel(onboardingState.readingLevel)} /><div className="space-y-3" role="radiogroup" aria-label="Learning preference">{options.map(o=><Button key={o.id} variant="option" role="radio" aria-checked={level===o.id} className="h-auto min-h-20 w-full justify-start whitespace-normal p-4 text-left" onClick={()=>{setLevel(o.id);onboardingState.readingLevel=o.id;saveProfile();}}><o.icon className="size-6 text-primary" /><span className="min-w-0 flex-1"><span className="block text-body font-semibold">{o.title}</span><span className="mt-1 block text-support text-muted-foreground">{o.copy}</span></span>{level===o.id&&<Check className="text-primary" />}</Button>)}</div><p className="mt-5 text-support text-muted-foreground">A comfortable starting point, not a test. You can change this anytime.</p></OnboardingSkeleton></div>;
 }

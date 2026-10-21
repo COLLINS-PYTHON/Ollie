@@ -29,6 +29,13 @@
       "when": 1792244098448,
       "tag": "0003_daily_lesson_bags_and_shared_cache",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792620353778,
+      "tag": "0004_enforce_two_kid_households",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,9 @@
 import { speak } from "@/lib/speak";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { onboardingState, completeOnboarding } from "@/lib/onboarding-store";
+import { KidSwitcher } from "@/components/ollie/KidSwitcher";
+import { useState } from "react";
+import { pushAll } from "@/lib/cloud-sync";
 import { loadCustom } from "@/lib/custom-lesson-store";
 import { childName, pageMeta } from "@/lib/meta";
 import ollie from "@/assets/ollie.png";
@@ -13,10 +16,12 @@ export const Route = createFileRoute("/onboarding/handoff")({
 
 function HandoffPage() {
   const navigate = useNavigate();
+  const [, refresh] = useState(0);
   const name = childName(onboardingState.name);
 
   function start() {
     completeOnboarding();
+    void pushAll();
     // Pre-readers hear Ollie say hello before their first lesson opens.
     const lvl = onboardingState.readingLevel;
     if (lvl === "none" || lvl === "sounding") {
@@ -32,8 +37,9 @@ function HandoffPage() {
   return (
     <div className="bg-gradient-hello min-h-screen">
       <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-5 pb-32 text-center">
-        <img src={ollie} alt="Ollie waving" className="wave-hello pop-in size-48 object-contain" />
-        <h1 className="text-title mt-8 text-foreground">Ready? Hand the phone to {name}.</h1>
+        <img src={ollie} alt="Ollie waving" className="setup-reveal size-48 object-contain" />
+        <h1 className="text-title mt-8 text-foreground">{name}’s space is ready.</h1>
+        <div className="mt-5 w-full"><KidSwitcher onChange={() => refresh(n => n + 1)} /></div>
         <p className="text-body mt-5 max-w-xs text-muted-foreground">Hi {name}, I'm Ollie. Let's discover something wonderful together.</p>
       </main>
       <div className="fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5" style={{ paddingBottom: "max(20px, env(safe-area-inset-bottom))" }}>

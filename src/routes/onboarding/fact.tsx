@@ -1,38 +1,11 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-import { pageMeta } from "@/lib/meta";
-import { Button } from "@/components/ui/button";
-import { Typewriter } from "@/components/ollie/Typewriter";
-
-export const Route = createFileRoute("/onboarding/fact")({
-  head: () => pageMeta("Big questions, age-appropriate answers", "Meet Ollie, a learning assistant designed around your child's age and your guidance."),
-  component: FactPage,
-});
-
-function FactPage() {
-  const navigate = useNavigate();
-  return (
-    <div className="bg-gradient-quiet min-h-screen">
-      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5 py-16">
-        <div className="onboarding-content px-1">
-          <p className="text-label mb-4 font-bold text-primary">Ollie</p>
-          <h1 className="text-title text-foreground"><Typewriter text="The safe, smart AI " /><span className="onboarding-highlight"><Typewriter text="learning assistant for kids" delay={560} /></span></h1>
-          <p className="text-body mt-6 text-foreground"><Typewriter text="Explanations tailored to their age, real-time safety guardrails, and a private dashboard that keeps you completely in the loop." delay={1600} speed={18} /></p>
-        </div>
-        <div className="mt-10 flex justify-center">
-          <Button variant="onboarding" size="icon"
-            type="button"
-            aria-label="Continue"
-            onClick={() => navigate({ to: "/onboarding/meet" })}
-            className="relative flex size-16 items-center justify-center rounded-pill bg-primary text-primary-foreground shadow-card transition-all duration-element"
-          >
-            <ArrowRight className="relative size-6" />
-          </Button>
-        </div>
-        <Link to="/login" className="mt-8 self-center text-support font-medium text-primary">
-          I already have an account. Log in
-        </Link>
-      </main>
-    </div>
-  );
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { Globe, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { pageMeta } from '@/lib/meta';
+import ollie from '@/assets/ollie.png';
+export const Route = createFileRoute('/onboarding/fact')({ head: () => pageMeta('A better place for big questions', 'Meet Ollie: age-appropriate answers, Daily Discoveries, and a parent view.'), component: Welcome });
+function Welcome() {
+ const navigate = useNavigate(); const [language, setLanguage] = useState(false);
+ return <div className="setup-welcome min-h-screen"><main className="mx-auto flex min-h-[100dvh] max-w-lg flex-col px-6 pb-8 pt-8"><header className="flex items-center justify-between"><span className="text-body font-bold text-foreground">Ollie</span><Button variant="ghost" className="rounded-pill text-support" onClick={() => setLanguage(v => !v)} aria-expanded={language}><Globe />English</Button></header>{language && <p role="status" className="mt-3 text-support text-muted-foreground">Ollie is currently available in English. More languages will follow after review.</p>}<div className="flex flex-1 flex-col justify-center py-8"><div className="welcome-ollie-scene relative mx-auto mb-8 flex h-52 w-full items-center justify-center"><img src={ollie} alt="Ollie" width={200} height={200} className="ollie-gentle-idle relative z-10 size-44 object-contain" /><span className="welcome-question welcome-question-one" aria-hidden="true">Why?</span><span className="welcome-question welcome-question-two" aria-hidden="true">How?</span><span className="welcome-question welcome-question-three" aria-hidden="true"><Sparkles className="size-5" /></span></div><h1 className="setup-welcome-title text-foreground">A better place for<br />kids’ big questions.</h1><p className="mt-5 max-w-sm text-body text-muted-foreground">Clear, age-appropriate answers. Small daily discoveries. A parent view that keeps you informed.</p><p className="mt-6 flex items-center gap-2 text-support text-muted-foreground"><ShieldCheck className="size-4 text-accent-2" />A learning assistant, not a digital friend.</p></div><Button variant="onboarding" size="onboarding" onClick={() => navigate({ to: '/onboarding' })}>Set up Ollie<ArrowRight /></Button><Link to="/login" className="mt-5 text-center text-support text-muted-foreground">Already have an account? <span className="font-semibold text-primary">Log in</span></Link></main></div>;
 }

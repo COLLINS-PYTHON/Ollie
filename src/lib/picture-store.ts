@@ -1,3 +1,4 @@
+import { readKidValue, writeKidValue, activeKidId } from "./kid-storage";
 /* Device-only storage until accounts exist. Pictures live in IndexedDB (too big for
    localStorage); the cookie balance lives in localStorage. */
 
@@ -9,12 +10,12 @@ export const JARS = [
   { id: "large", label: "Large jar", count: 50, price: "$2.99" },
 ] as const;
 
-const DB = "ollie-pictures";
+const DB = () => activeKidId() === "first" ? "ollie-pictures" : `ollie-pictures-${activeKidId()}`;
 const STORE = "pictures";
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB, 1);
+    const req = indexedDB.open(DB(), 1);
     req.onupgradeneeded = () => req.result.createObjectStore(STORE, { keyPath: "id" });
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
@@ -51,7 +52,7 @@ function today() {
 export function loadBalance(): Balance {
   let b: Balance = { day: today(), freeUsed: 0, jarCookies: 0 };
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = readKidValue(KEY);
     if (raw) b = JSON.parse(raw) as Balance;
   } catch {
     /* fresh balance */
@@ -61,7 +62,7 @@ export function loadBalance(): Balance {
 }
 
 export function saveBalance(b: Balance) {
-  localStorage.setItem(KEY, JSON.stringify(b));
+  writeKidValue(KEY, JSON.stringify(b));
 }
 
 export function cookiesLeft(b: Balance) {

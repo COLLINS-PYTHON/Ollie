@@ -11,6 +11,9 @@ import { onboardingState, loadProfile } from "@/lib/onboarding-store";
 import { childName } from "@/lib/meta";
 import { resolveAppEntry } from "@/lib/app-entry";
 import { pushAll } from "@/lib/cloud-sync";
+import { KidSwitcher } from "@/components/ollie/KidSwitcher";
+import { activeKidId } from "@/lib/kid-storage";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_tabs")({
@@ -28,6 +31,8 @@ function ParentIcon() {
 }
 
 function TabsLayout() {
+  const [kidVersion, setKidVersion] = useState(0);
+  const [chooseKid, setChooseKid] = useState(false);
   const [ready, setReady] = useState(false);
   const [takeover, setTakeover] = useState(false);
   const review = useSlideshowReview();
@@ -58,7 +63,9 @@ function TabsLayout() {
     };
     void hydrate();
     return () => { active = false; };
-  }, []);
+  }, [kidVersion]);
+
+  useEffect(() => { const changed = () => { setChooseKid(false); setKidVersion(n => n + 1); }; window.addEventListener("ollie-kid-changed", changed); return () => window.removeEventListener("ollie-kid-changed", changed); }, []);
 
   /* Save the child's progress to the parent's account while signed in. */
   useEffect(() => {
@@ -117,10 +124,10 @@ function TabsLayout() {
           <ParentIcon />
         </Link>
       </div>
-      {ready && <Outlet />}
+      {ready && <><div className="kid-identity z-30"><Button variant="ghost" className="h-10 max-w-full truncate rounded-pill text-support" onClick={() => setChooseKid(v => !v)} aria-expanded={chooseKid}>{child.name}</Button></div>{chooseKid && <div className="absolute inset-x-5 top-16 z-40 mx-auto max-w-md rounded-card border border-border bg-card p-3 shadow-sheet"><KidSwitcher /></div>}<div key={activeKidId()} className="contents"><Outlet /></div></>}
       {ready && <TabBar />}
       {bedtime && !takeover && !review && <Bedtime name={child.name} />}
-      {(takeover || review) && <SlideshowTakeover child={child} review={review ?? undefined} onClose={() => { setTakeover(false); endReview(); }} />}
+      {(takeover || review) && <SlideshowTakeover key={`${activeKidId()}-${review?.label ?? "daily"}`} child={child} review={review ?? undefined} onClose={() => { setTakeover(false); endReview(); }} />}
     </div>
   );
 }

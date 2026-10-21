@@ -1,118 +1,36 @@
-import { useId, type CSSProperties } from "react";
+import { useId } from 'react';
+import { INTEREST_ART } from '@/lib/interest-art';
 
-export function LessonArt({ categoryId, topicId = "", title, className = "", animated = true }: {
-  categoryId: string; topicId?: string; title: string; className?: string; animated?: boolean;
-}) {
-  const uid = useId().replace(/:/g, "");
-  const tint = { "--lesson-ink": `var(--cat-${categoryId === "custom" ? "tech" : categoryId})` } as CSSProperties;
-  const motion = animated ? `lesson-motion-${categoryId}` : "";
-  const star = (x: number, y: number) => <path key={`${x}-${y}`} d={`M${x} ${y - 6}v12m-6-6h12`} className="lesson-line" />;
-  let scene;
-  switch (categoryId) {
-    case "space":
-      scene = topicId === "moon-phases" ? <>
-        <circle cx="160" cy="112" r="65" className="lesson-fill" />
-        <path d="M160 47a65 65 0 0 1 0 130c33-18 33-112 0-130Z" className="lesson-paper" />
-        <circle cx="128" cy="92" r="12" className="lesson-soft" /><circle cx="146" cy="135" r="8" className="lesson-soft" />
-        {[star(53,65),star(265,70),star(240,181),star(73,167)]}
-      </> : <>
-        <circle cx="160" cy="112" r="44" className="lesson-fill" />
-        <ellipse cx="160" cy="112" rx="116" ry="72" className="lesson-line" />
-        <g className={motion}><circle cx="260" cy="148" r="20" className="lesson-fill" /><circle cx="68" cy="69" r="12" className="lesson-fill" /></g>
-        {[star(264,45),star(44,174),star(211,196)]}
-      </>;
-      break;
-    case "ocean":
-      scene = <>
-        <path d="M16 168q36-25 72 0t72 0 72 0 72 0M16 196q36-25 72 0t72 0 72 0 72 0" className="lesson-line" />
-        <g className={motion}>
-          <ellipse cx="157" cy="108" rx="58" ry="40" className="lesson-fill" />
-          {topicId === "sea-turtles" ? <><ellipse cx="219" cy="109" rx="19" ry="16" className="lesson-fill" /><g className={animated ? "lesson-flippers" : ""}><path d="m124 78-33-22 11 42m21 36-30 22 13-36m68-40 26-24-8 34m-12 30 24 25-7-36" className="lesson-line" /></g><path d="m138 83 29-3 19 21-11 24-30 3-19-24Zm-12 21-27-3m39-18-6-12m35 9 8-10m11 31 25-1m-36 25 10 14m-40-11-6 12" className="lesson-detail" /></> : <><path d="m107 106-41-27v59Z" className={animated ? "lesson-fill lesson-tail" : "lesson-fill"} /><path d="M168 88q-14 18 0 36m-33-12 22 19-27 4" className="lesson-detail" /></>}
-          <circle cx="184" cy="99" r="5" className="lesson-paper" />
-        </g><g className={animated ? "lesson-bubbles" : ""}><circle cx="243" cy="61" r="9" className="lesson-line" /><circle cx="265" cy="38" r="5" className="lesson-line" /></g>
-        <path d="M35 209q-14-27 3-44 15 20-3 44m10 0q-2-33 17-46 9 30-17 46M278 213q-18-33-5-53 17 15 5 53" className="lesson-environment" />
-      </>;
-      break;
-    case "dinos":
-      scene = topicId === "dino-eggs" ? <>
-        {[95,160,225].map((x) => <path key={x} d={`M${x} 61c-46 29-47 113 0 113s46-84 0-113Z`} className="lesson-fill" />)}
-        <path d="m142 121 16-14 16 16 13-13" className="lesson-paper-line" />
-      </> : <g className={motion}>
-        <path d="M58 157q43 1 61-38l20-26 37 6 22-42q8-18 35-17l24 16-3 26-28 6-13 61-28 14-4 35h-22l-8-31-28-5-18 36H86l15-48Z" className="lesson-fill" />
-        <path d="m140 100-5-15 18 5m25 11 5-17 10 5M189 132l20 6m-79-2 13 8" className="lesson-detail" />
-        <circle cx="235" cy="62" r="4" className="lesson-paper" /><path d="M44 204h237" className="lesson-line" />
-      </g>;
-      break;
-    case "animals":
-      scene = topicId === "snail-shell" ? <>
-        <path d="M65 165h173q24-5 14-26l-13-13" className="lesson-line" /><circle cx="149" cy="123" r="49" className="lesson-fill" /><path d="M150 93c-43 0-39 64 0 58 26-4 18-38 0-29" className="lesson-paper-line" />
-      </> : topicId === "bird-song" ? <g className={motion}>
-        <path d="M80 117q39-64 102-24l48-18-12 35q25 70-49 64l-61-26-31 15 6-37Z" className="lesson-fill" /><path d="M112 114q46-16 63 30-30 25-63-30Z" className={animated ? "lesson-detail lesson-bird-wing" : "lesson-detail"} /><path d="m223 108 33 10-34 13" className="lesson-fill" /><circle cx="207" cy="108" r="4" className="lesson-paper" /><path d="M139 186v21m37-23v23M50 211q100-14 231-4" className="lesson-line" />
-      </g> : <>
-        <ellipse cx="160" cy="123" rx="67" ry="58" className="lesson-fill" /><circle cx="111" cy="71" r="25" className="lesson-fill" /><circle cx="209" cy="71" r="25" className="lesson-fill" /><ellipse cx="160" cy="143" rx="34" ry="24" className="lesson-paper" /><circle cx="135" cy="112" r="6" className="lesson-paper" /><circle cx="185" cy="112" r="6" className="lesson-paper" /><path d="m151 136 9 10 9-10Z" className="lesson-fill" />
-      </>;
-      break;
-    case "body":
-      scene = topicId === "bones-fuse" ? <path d="M97 58a17 17 0 1 0-19 27l133 92a17 17 0 1 0 22-28L104 64Z" className="lesson-fill" /> : <>
-        <path d="M160 190 75 109C21 50 112 15 160 77c48-62 139-27 85 32Z" className="lesson-fill" />
-        <path d="M61 119h58l15-27 26 55 19-31h76" className={`lesson-paper-line ${motion}`} />
-      </>;
-      break;
-    case "math":
-      scene = topicId === "shapes" ? <>
-        <circle cx="85" cy="94" r="38" className="lesson-fill" /><path d="m226 52 46 77h-92Z" className="lesson-fill" /><rect x="128" y="145" width="60" height="60" rx="5" className="lesson-fill" />
-      </> : <>
-        <circle cx="98" cy="113" r="50" className="lesson-line" /><path d="M183 98h80m-80 25h80" className="lesson-line" />
-        <path d="M71 69a50 50 0 0 1 70 69l-43-25Z" className="lesson-fill" />
-      </>;
-      break;
-    case "art":
-      scene = <>
-        <path d="M155 39c-126-3-139 146-29 160 34 4 23-37 47-37 18 0 26 24 49 7 51-38 0-128-67-130Z" className="lesson-fill" />
-        {[[96,92],[131,68],[180,72],[211,108]].map(([x,y]) => <circle key={x} cx={x} cy={y} r="12" className="lesson-paper" />)}
-        <path d="m103 194 111-110 15 15-110 112Z" className={`lesson-line ${motion}`} />
-      </>;
-      break;
-    case "weather":
-      scene = topicId === "snowflakes" ? <g className={motion}>
-        <path d="M160 43v160M91 83l138 80M91 163l138-80m-81-31 12 14 12-14m-24 148 12-14 12 14M97 99l20-5-5-20m96 100-20 5 5 20M97 146l20 5-5 20m96-100-20-5 5-20" className="lesson-line" />
-      </g> : <>
-        <circle cx="209" cy="75" r="34" className="lesson-soft" /><path d="M81 139c-52 0-42-62-3-63 5-50 90-50 97 0 57-5 60 63 10 63Z" className="lesson-fill" />
-        <g className={motion}><path d="m98 159-8 20m47-20-8 20m47-20-8 20" className="lesson-line" /></g>
-      </>;
-      break;
-    case "history":
-      scene = topicId === "castles" ? <>
-        <path d="M73 199V80h25v20h23V80h25v119m28 0V80h25v20h23V80h25v119M146 121h28v78" className="lesson-fill" /><path d="M151 199v-37q9-19 18 0v37" className="lesson-paper-line" />
-      </> : <>
-        <path d="m42 192 94-140 97 140Zm100 0 69-106 70 106Z" className="lesson-fill" /><path d="m136 52 19 140m56-106 17 106M44 211h237" className="lesson-line" />
-      </>;
-      break;
-    case "music":
-      scene = topicId === "drums" ? <>
-        <path d="M90 95v79c0 35 140 35 140 0V95" className="lesson-fill" /><ellipse cx="160" cy="95" rx="70" ry="24" className="lesson-line" /><path d="m108 40 91 37m-3-35-78 36" className={`lesson-line ${motion}`} />
-      </> : <g className={motion}>
-        <path d="M122 164V66l105-24v101" className="lesson-line" /><ellipse cx="103" cy="174" rx="27" ry="20" className="lesson-fill" /><ellipse cx="208" cy="153" rx="27" ry="20" className="lesson-fill" /><path d="m124 92 101-24" className="lesson-line" />
-      </g>;
-      break;
-    case "tech":
-      scene = <>
-        <rect x="83" y="66" width="154" height="122" rx="30" className="lesson-fill" /><path d="M160 66V45m-77 61H61v51h22m154-51h22v51h-22" className="lesson-line" /><circle cx="160" cy="37" r="8" className="lesson-fill" /><circle cx="128" cy="113" r="12" className="lesson-paper" /><circle cx="192" cy="113" r="12" className="lesson-paper" /><path d="M126 153h68" className={`lesson-paper-line ${motion}`} />
-      </>;
-      break;
-    default:
-      scene = <>
-        <path d="M160 79Q98 42 53 68v124q56-20 107 15 51-35 107-15V68q-45-26-107 11Z" className="lesson-fill" /><path d="M160 79v128M80 98l53 16m-53 9 53 16m54-25 53-16m-53 41 53-16" className="lesson-paper-line" />
-      </>;
-  }
-  return <svg viewBox="0 0 320 240" role="img" aria-labelledby={`${uid}-title`} className={`lesson-art lesson-category-${categoryId} ${className}`} style={tint}>
-    <title id={`${uid}-title`}>{title}</title>
-    <defs>
-      <linearGradient id={`${uid}-wash`} x2="0" y2="1"><stop stopColor="var(--lesson-ink)" stopOpacity=".12" /><stop offset="1" stopColor="var(--card)" /></linearGradient>
-      <linearGradient id={`${uid}-subject`} x2=".4" y2="1"><stop stopColor="var(--lesson-light)" /><stop offset=".55" stopColor="var(--lesson-ink)" /><stop offset="1" stopColor="var(--lesson-deep)" /></linearGradient>
-    </defs>
-    <rect width="320" height="240" rx="28" fill={`url(#${uid}-wash)`} />
-    <ellipse cx="160" cy="214" rx="83" ry="7" className="lesson-ground" />
-    <g className="lesson-subject" style={{ "--lesson-paint": `url(#${uid}-subject)` } as CSSProperties}>{scene}</g>
-  </svg>;
+const ASSET_TOPICS = new Set(['sea-turtles','heart-beats','breathing','shapes','pyramids','drums','robots','story-shape','imagination']);
+function ScientificScene({ topic }: { topic: string }) {
+ const uid=useId().replace(/:/g,'');
+ const dot=(x:number,y:number,r=8)=><circle key={`${x}-${y}`} cx={x} cy={y} r={r} className="discovery-blue"/>;
+ let scene;
+ if(topic==='moon-phases') scene=<><circle cx="48" cy="65" r="24" className="discovery-paper"/><path d="M25 180H375" className="discovery-line"/>{[0,1,2,3,4].map((phase)=><g key={phase}><circle cx={65+phase*68} cy="130" r="24" className="discovery-muted"/><path d={phase===0?`M65 106a24 24 0 0 1 0 48c14-10 14-38 0-48Z`:phase===1?`M133 106a24 24 0 0 1 0 48Z`:phase===2?`M201 106a24 24 0 1 1 0 48 24 24 0 1 1 0-48Z`:phase===3?`M269 106a24 24 0 0 0 0 48Z`:`M337 106a24 24 0 0 0 0 48c-14-10-14-38 0-48Z`} className="discovery-paper"/></g>)}<text x="200" y="215" textAnchor="middle" className="discovery-svg-label">Sunlight changes what we see</text></>;
+ else if(['stars-are-suns','our-sun','eight-planets'].includes(topic))scene=<><circle cx="70" cy="135" r="39" className="discovery-paper"/>{[125,165,205,248,290,330,363].map((x,i)=><g key={x}><path d={`M${x} 108V163`} className="discovery-line" opacity=".15"/>{dot(x,135,5+i*1.5)}</g>)}<g className="discovery-moving">{[dot(120,45,3),dot(230,63,4),dot(350,220,3)]}</g><text x="200" y="245" textAnchor="middle" className="discovery-svg-label">One Sun. A solar system.</text></>;
+ else if(topic==='why-salty')scene=<><path d="M20 170q40-24 80 0t80 0 80 0 80 0 80 0v110H20Z" className="discovery-blue"/>{[70,125,190,255,325].map((x,i)=><rect key={x} x={x} y={105+(i%2)*35} width="12" height="12" rx="2" className="discovery-paper"/>)}<path d="M60 45q90 10 140 120" className="discovery-line"/><text x="200" y="240" textAnchor="middle" className="discovery-svg-label">Water carries dissolved minerals</text></>;
+ else if(['deep-and-dark','coral-is-alive'].includes(topic))scene=<><path d="M0 70q50-10 100 0t100 0 100 0 100 0v230H0Z" className="discovery-blue"/><path d="M0 190h400" className="discovery-line" opacity=".25"/><g className="discovery-moving"><path d="M160 140q45-35 80 0-35 35-80 0l-30-20v40Z" className="discovery-paper"/></g>{[40,80,300,340].map(x=><path key={x} d={`M${x} 270v-45m0 20-15-15m15 5 15-15`} className="discovery-line"/>)}<text x="200" y="45" textAnchor="middle" className="discovery-svg-label">A living world below the surface</text></>;
+ else if(['dino-eggs','fossils','trex-size','long-necks'].includes(topic))scene=<><path d="M0 235q100-30 200 0t200 0v65H0Z" className="discovery-paper"/>{topic==='dino-eggs'?<>{[115,200,285].map(x=><path key={x} d={`M${x} 105c-49 32-44 115 0 115s49-83 0-115Z`} className="discovery-blue"/>)}<path d="m183 151 16-15 15 16 12-10" className="discovery-line"/></>:topic==='fossils'?<><rect x="80" y="55" width="240" height="175" rx="30" className="discovery-muted"/><path d="M120 140h150m-120-35v70m35-80v90m35-83v73m35-61v48" className="discovery-line"/><circle cx="280" cy="130" r="18" className="discovery-paper"/></>:<><path d="M50 213q100-1 120-65l40-25 20-72q6-20 33-11l24 18-3 17-30 9-11 89-41 18-8 35h-21l-6-35-36-4-23 40H83l15-38Z" className="discovery-blue"/><circle cx="270" cy="55" r="3" className="discovery-ink"/></>}<text x="200" y="270" textAnchor="middle" className="discovery-svg-label">Evidence from a prehistoric world</text></>;
+ else if(topic==='zebra-stripes')scene=<><path d="M70 195v-70q75-70 150 0l35-70 45 10 5 50-55 15-10 75h-22l-10-60H105l-10 60Z" className="discovery-paper"/>{[105,130,155,180,205].map(x=><path key={x} d={`M${x} 100l-12 58`} className="discovery-line"/>)}<circle cx="283" cy="80" r="4" className="discovery-ink"/></>;
+ else if(topic==='bird-song')scene=<><path d="M60 231h300" className="discovery-line"/><g className="discovery-moving"><ellipse cx="178" cy="142" rx="56" ry="39" className="discovery-blue"/><circle cx="229" cy="111" r="25" className="discovery-blue"/><path d="m253 108 24 8-25 9" className="discovery-paper"/><path d="M146 140q30-30 62 15" className="discovery-line"/><circle cx="238" cy="106" r="4" className="discovery-ink"/><path d="M168 177v48m25-48v48" className="discovery-line"/></g><path d="M300 80v35m0-28 20-8v29" className="discovery-line"/></>;
+ else if(topic==='busy-hive')scene=<><path d="M115 75h170l35 130H80Z" className="discovery-blue"/>{[0,1,2].map(i=><g key={i}><ellipse cx={90+i*110} cy={55+i*45} rx="18" ry="10" className="discovery-paper"/><path d={`M${90+i*110} ${45+i*45}v20`} className="discovery-line"/></g>)}<path d="M170 205v-35q30-40 60 0v35" className="discovery-line"/><text x="200" y="255" textAnchor="middle" className="discovery-svg-label">Different jobs. One hive.</text></>;
+ else if(topic==='snail-shell')scene=<><path d="M70 215h220q25 0 25-30v-40m0 0-15-20m15 20 15-20" className="discovery-line"/><circle cx="177" cy="155" r="64" className="discovery-blue"/><path d="M180 120c-60 0-52 85 0 70 33-9 20-47-3-34" className="discovery-line"/></>;
+ else if(topic==='brain-messages')scene=<><path d="M85 140c-35-40 10-90 47-73 25-42 80-20 82 13 48-22 90 31 65 64 35 43-13 78-51 57-27 35-70 21-82-13-38 22-76-7-61-48Z" className="discovery-paper"/><path d="M133 87q-20 38 5 45m35-50q35 24 2 56m56-40q-25 45 14 62M115 155q35 28 58-8m26 24 35 22" className="discovery-line"/><path d="M200 208v44" className="discovery-line"/></>;
+ else if(topic==='bones-fuse')scene=<><path d="M105 80a22 22 0 1 0-22 33l145 91a22 22 0 1 0 23-32Z" className="discovery-paper"/><path d="M173 125l-8 18" className="discovery-line"/><text x="200" y="255" textAnchor="middle" className="discovery-svg-label">Some bones join as we grow</text></>;
+ else if(['zero','no-biggest','equal-fractions'].includes(topic))scene=topic==='equal-fractions'?<><circle cx="115" cy="135" r="57" className="discovery-paper"/><path d="M115 78a57 57 0 0 1 0 114Z" className="discovery-blue"/><circle cx="285" cy="135" r="57" className="discovery-paper"/><path d="M285 78a57 57 0 0 1 0 114Z" className="discovery-blue"/><path d="M228 135h114M285 78v114" className="discovery-line"/><text x="115" y="235" textAnchor="middle" className="discovery-svg-number">½</text><text x="285" y="235" textAnchor="middle" className="discovery-svg-number">2/4</text></>:<><path d="M50 185h300m-15-10 15 10-15 10" className="discovery-line"/>{[0,1,2,3,4].map((n)=><g key={n}><path d={`M${70+n*60} 179v12`} className="discovery-line"/><text x={70+n*60} y="155" textAnchor="middle" className="discovery-svg-number">{n}</text></g>)}<text x="200" y="245" textAnchor="middle" className="discovery-svg-label">{topic==='zero'?'Zero means none':'You can always add one more'}</text></>;
+ else if(topic==='mixing-colors')scene=<><circle cx="150" cy="137" r="55" className="discovery-blue"/><circle cx="245" cy="137" r="55" className="discovery-pink"/><ellipse cx="197" cy="137" rx="15" ry="30" className="discovery-teal"/><text x="200" y="245" textAnchor="middle" className="discovery-svg-label">Mix colors. See what changes.</text></>;
+ else if(topic==='patterns')scene=<>{[0,1,2,3,4].map(i=><g key={i}><rect x={45+i*68} y="90" width="30" height="30" rx="4" className={i%2?'discovery-pink':'discovery-blue'}/><circle cx={60+i*68} cy="180" r="16" className={i%2?'discovery-blue':'discovery-teal'}/></g>)}</>;
+ else if(['old-paintings','how-cameras-work'].includes(topic))scene=topic==='how-cameras-work'?<><rect x="105" y="100" width="200" height="115" rx="20" className="discovery-paper"/><circle cx="205" cy="155" r="44" className="discovery-blue"/><circle cx="205" cy="155" r="22" className="discovery-ink"/><rect x="130" y="78" width="65" height="25" rx="5" className="discovery-paper"/><path d="M45 80l85 70" className="discovery-line"/></>:<><rect x="85" y="50" width="230" height="180" rx="6" className="discovery-paper"/><path d="M120 185q30-80 80-40t80-40" className="discovery-line"/><path d="m135 110 20-35 20 35" className="discovery-line"/></>;
+ else if(['rain','wind','rainbows','snowflakes'].includes(topic))scene=topic==='snowflakes'?<g className="discovery-moving"><path d="M200 55v185m-80-139 160 92m-160 0 160-92m-90-32 10 12 10-12m-10 130-10 12m10-12 10 12M120 101l20 1-4-20m124 101 20 10m-20-10 5 20M120 193l19-2-4 20m125-130-2 20 22 0" className="discovery-line"/></g>:<><path d="M115 145c-70 0-70-75-10-76 4-52 94-60 105-2 80-16 85 78 18 78Z" className="discovery-paper"/>{topic==='rain'?<>{[130,170,210,250].map(x=><path key={x} d={`m${x} 170-9 25`} className="discovery-line discovery-moving"/>)}</>:topic==='wind'?<path d="M80 180h225q45 0 15-28m-250 65h200q45 0 20 25" className="discovery-line"/>:<>{[0,1,2].map(i=><path key={i} d={`M${90+i*15} 240a${110-i*15} ${110-i*15} 0 0 1 ${220-i*30} 0`} className="discovery-line"/>)}</>}</>;
+ else if(['first-writing','castles','old-maps'].includes(topic))scene=topic==='castles'?<><path d="M80 240V95h30v25h30V95h30v145m60 0V95h30v25h30V95h30v145M170 135h60v105" className="discovery-paper"/><path d="M187 240v-53q13-30 26 0v53" className="discovery-line"/></>:topic==='old-maps'?<><path d="M70 60l80 20 100-20 80 20v160l-80-20-100 20-80-20Z" className="discovery-paper"/><path d="M150 80v160m100-180v160M100 150q60-40 100 5t100-40" className="discovery-line"/></>:<><rect x="110" y="50" width="180" height="200" rx="20" className="discovery-paper"/>{[90,135,180].map(y=><path key={y} d={`M140 ${y}h120m-110-10 20 20m20-20 20 20m20-20 20 20`} className="discovery-line"/>)}</>;
+ else if(['strings-vibrate','piano','voice'].includes(topic))scene=topic==='piano'?<><rect x="75" y="85" width="250" height="130" rx="10" className="discovery-paper"/>{[110,145,180,215,250,285].map(x=><path key={x} d={`M${x} 85v130`} className="discovery-line"/>)}{[95,130,200,235,270].map(x=><rect key={x} x={x} y="85" width="18" height="72" className="discovery-ink"/>)}</>:<><path d="M50 150h300" className="discovery-line"/><path d="M55 150q23-75 46 0t46 0 46 0 46 0 46 0 46 0" className="discovery-line discovery-moving"/><text x="200" y="245" textAnchor="middle" className="discovery-svg-label">Vibrations make sound</text></>;
+ else if(['binary','games','wifi'].includes(topic))scene=topic==='binary'?<>{[0,1,2].map(r=><text key={r} x="200" y={100+r*55} textAnchor="middle" className="discovery-svg-number">{r%2?'1 0 1 0 1':'0 1 0 1 0'}</text>)}</>:topic==='wifi'?<><circle cx="200" cy="220" r="10" className="discovery-blue"/>{[40,75,110].map(r=><path key={r} d={`M${200-r} ${220-r/2}q${r} ${-r} ${r*2} 0`} className="discovery-line"/>)}</>:<>{[0,1,2].map(i=><g key={i}><rect x={35+i*125} y="80" width="105" height="140" rx="12" className="discovery-paper"/><circle cx={60+i*145} cy={150-i*15} r="18" className="discovery-blue"/></g>)}</>;
+ else if(['new-words','write-your-own'].includes(topic))scene=<><path d="M200 80Q130 40 60 70v155q75-25 140 15 65-40 140-15V70q-70-30-140 10Z" className="discovery-paper"/><path d="M200 80v160M90 110h75m-75 35h75m-75 35h65m82-70h75m-75 35h75m-75 35h65" className="discovery-line"/></>;
+ else scene=<><circle cx="200" cy="140" r="80" className="discovery-paper"/><path d="M135 150q65-95 130 0m-115 30h100" className="discovery-line"/></>;
+ return <svg viewBox="0 0 400 300" className="discovery-diagram" aria-hidden="true"><defs><linearGradient id={uid} x2="0" y2="1"><stop stopColor="var(--sky-mist)"/><stop offset="1" stopColor="var(--card)"/></linearGradient></defs><rect width="400" height="300" fill={`url(#${uid})`}/>{scene}</svg>;
+}
+export function LessonArt({categoryId,topicId='',title,className='',animated=true}:{categoryId:string;topicId?:string;title:string;className?:string;animated?:boolean}) {
+ const image=(!topicId||ASSET_TOPICS.has(topicId))?INTEREST_ART[categoryId]:undefined;
+ return <div role="img" aria-label={title} className={`discovery-scene ${animated?'':'discovery-still'} ${className}`}>
+ {image?<img src={image} alt="" width={512} height={480} loading="lazy" className="aspect-[4/3] w-full object-cover"/>:<ScientificScene topic={topicId}/>}</div>;
 }

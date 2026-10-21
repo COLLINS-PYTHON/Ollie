@@ -1,3 +1,4 @@
+import { readKidValue, writeKidValue, activeKidId } from "./kid-storage";
 /* The one-time custom-topic lesson made at the end of setup. It becomes the
    child's first slideshow, then the regular library takes over. */
 import { Sparkles } from "lucide-react";
@@ -11,15 +12,15 @@ export type Stored = { topic: string; lesson: CustomLesson; image?: string; done
 
 export function loadCustom(): Stored | null {
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = readKidValue(KEY);
     return raw ? (JSON.parse(raw) as Stored) : null;
   } catch {
     return null;
   }
 }
 export function saveCustom(s: Stored) {
-  try { localStorage.setItem(KEY, JSON.stringify(s)); } catch { /* image too large: drop it */
-    try { localStorage.setItem(KEY, JSON.stringify({ ...s, image: undefined })); } catch { /* storage full */ }
+  try { writeKidValue(KEY, JSON.stringify(s)); } catch { /* image too large: drop it */
+    try { writeKidValue(KEY, JSON.stringify({ ...s, image: undefined })); } catch { /* storage full */ }
   }
 }
 export function markCustomDone() {
@@ -47,7 +48,8 @@ export function customTopic(): { topic: string; struggle: boolean } | null {
 export function customDay(s: Stored): Day & { image?: string } {
   const same = (t: string) => ({ "4-6": t, "7-9": t, "10-12": t });
   const subs: Subtopic[] = s.lesson.slides.map((sl, i) => {
-    const q = s.lesson.quizzes[i % s.lesson.quizzes.length]!;
+    const q = s.lesson.quizzes[i % s.lesson.quizzes.length];
+    if (!q) throw new Error("Discovery questions unavailable");
     return {
       id: `custom-${i}`,
       title: sl.title,

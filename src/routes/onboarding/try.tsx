@@ -1,120 +1,13 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { Search, Wand2 } from "lucide-react";
-import { CrispOrb } from "@/components/ollie/CrispOrb";
-import { OnboardingSkeleton } from "../onboarding";
-import { onboardingState } from "@/lib/onboarding-store";
-import { INTERESTS } from "@/lib/interests";
-import { childName, pageMeta } from "@/lib/meta";
-
-export const Route = createFileRoute("/onboarding/try")({
-  head: () => pageMeta("Try Ollie yourself", "Ask a question and make a picture with Ollie."),
-  component: TryPage,
-});
-
-/* Sample demo until the AI providers are connected. */
-const SAMPLE_ANSWER =
-  "Great question! Here is a safe, age-matched answer from Ollie. Real answers switch on once Ollie's AI is connected.";
-
-function TryPage() {
-  const navigate = useNavigate();
-  const name = childName(onboardingState.name);
-  const [mode, setMode] = useState<"search" | "image" | null>(null);
-  const [q, setQ] = useState("");
-  const [phase, setPhase] = useState<"idle" | "thinking" | "done">("idle");
-  const [used, setUsed] = useState({ search: onboardingState.triedSearch, image: onboardingState.triedImage });
-
-  const picked = INTERESTS.filter((i) => onboardingState.interests.includes(i.id));
-  const prompts = (picked.length ? picked : INTERESTS).slice(0, 3).map((i) => i.sample);
-
-  function run(text: string) {
-    if (!mode || used[mode] || !text.trim()) return;
-    setQ(text);
-    setPhase("thinking");
-    setTimeout(() => {
-      setPhase("done");
-      setUsed((u) => ({ ...u, [mode]: true }));
-      if (mode === "search") onboardingState.triedSearch = true;
-      else onboardingState.triedImage = true;
-    }, 1800);
-  }
-
-  return (
-    <div className="bg-gradient-sunrise min-h-screen">
-      <OnboardingSkeleton chapter={4} title="Explore Ollie's guardrails yourself" cta="Continue" onContinue={() => navigate({ to: "/onboarding/trust" })}>
-        <p className="text-body text-foreground">
-          Take the driver's seat before {name} does. Explore the sample search and picture previews below. These are illustrations, not live AI tests.
-        </p>
-        <div className="mt-5 grid grid-cols-2 gap-3">
-          {([
-            { id: "search", label: "Try Safe Search", icon: Search },
-            { id: "image", label: "Try Image Generation", icon: Wand2 },
-          ] as const).map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              type="button"
-              aria-pressed={mode === id}
-              onClick={() => {
-                setMode(id);
-                setPhase(used[id] ? "done" : "idle");
-                setQ("");
-              }}
-              className={`flex flex-col items-center gap-2 rounded-card p-4 transition-all duration-tap active:scale-[0.98] ${mode === id ? "bg-card shadow-card ring-2 ring-primary" : "bg-card/70"}`}
-            >
-              <span className="onboarding-soft-icon flex size-11 items-center justify-center rounded-control">
-                <Icon className="size-5" strokeWidth={1.8} />
-              </span>
-              <span className="text-label text-foreground">{label}</span>
-            </button>
-          ))}
-        </div>
-
-        {mode && phase === "idle" && !used[mode] && (
-          <div className="bubble-in mt-5 rounded-card bg-card p-4 shadow-card">
-            {mode === "search" && (
-              <div className="mb-3 flex flex-col gap-2">
-                {prompts.map((p) => (
-                  <button key={p} type="button" onClick={() => run(p)} className="text-support rounded-control bg-surface px-3 py-2.5 text-left text-foreground active:scale-[0.98]">
-                    {p}
-                  </button>
-                ))}
-              </div>
-            )}
-            <form onSubmit={(e) => { e.preventDefault(); run(q); }} className="flex gap-2">
-              <input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder={mode === "search" ? "Or type your own question" : "Describe a picture"}
-                aria-label={mode === "search" ? "Your question" : "Picture description"}
-                className="text-body h-12 flex-1 rounded-control bg-surface px-3 text-foreground outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button type="submit" disabled={!q.trim()} className="text-button rounded-control bg-primary px-4 text-primary-foreground disabled:bg-surface-2 disabled:text-muted-foreground">
-                Go
-              </button>
-            </form>
-            <p className="text-support mt-2 text-muted-foreground">One try each, just to show you how it works.</p>
-          </div>
-        )}
-
-        {mode && phase === "thinking" && (
-          <div className="mt-8 flex justify-center">
-            <CrispOrb state={mode === "search" ? "searching" : "shaping"} size={112} aria-label="Ollie is working" />
-          </div>
-        )}
-
-        {mode && phase === "done" && (
-          <div className="bubble-in mt-5 rounded-card bg-card p-4 shadow-card">
-            {mode === "search" ? (
-              <p className="text-body text-foreground">{SAMPLE_ANSWER}</p>
-            ) : (
-              <div className="glossy flex aspect-square w-full items-center justify-center rounded-control bg-gradient-to-br from-cat-space to-cat-ocean">
-                <Wand2 className="size-12 text-primary-foreground" />
-              </div>
-            )}
-            <p className="text-support mt-3 text-muted-foreground">You've used your {mode === "search" ? "search" : "picture"} try.</p>
-          </div>
-        )}
-      </OnboardingSkeleton>
-    </div>
-  );
-}
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
+import { Volume2, MessageCircle, Sparkles } from 'lucide-react';
+import { OnboardingSkeleton } from '../onboarding';
+import { Button } from '@/components/ui/button';
+import { onboardingState } from '@/lib/onboarding-store';
+import { effectiveBand } from '@/lib/slideshow/library';
+import { INTEREST_ART } from '@/lib/interest-art';
+import { speak } from '@/lib/speak';
+import { pageMeta } from '@/lib/meta';
+import ollie from '@/assets/ollie.png';
+export const Route=createFileRoute('/onboarding/try')({head:()=>pageMeta('Big questions, clear answers','See how Ollie explains and helps kids create.'),component:Proof});
+function Proof(){const navigate=useNavigate();const [mode,setMode]=useState<'ask'|'create'>('ask');const band=effectiveBand(onboardingState.age,onboardingState.readingLevel??'stories');const answer=band==='4-6'?'The Moon shines because sunlight bounces off it. It does not make its own light.':band==='7-9'?'The Moon does not make its own light. Sunlight bounces off its surface, so we can see it glowing in the night sky.':'The Moon reflects sunlight rather than producing light. As it travels around Earth, we see different amounts of its sunlit half. That is why it appears to change shape.';return <div className="min-h-screen bg-background"><OnboardingSkeleton chapter={3} title="Big questions. Clear answers." cta="See their Daily Discovery" onContinue={()=>navigate({to:'/onboarding/lessons'})}><div className="mb-5 flex gap-2" role="group" aria-label="Product examples"><Button variant="option" aria-pressed={mode==='ask'} className="h-12 flex-1 rounded-pill" onClick={()=>setMode('ask')}><MessageCircle/>Ask</Button><Button variant="option" aria-pressed={mode==='create'} className="h-12 flex-1 rounded-pill" onClick={()=>setMode('create')}><Sparkles/>Create</Button></div><p className="mb-3 text-label text-muted-foreground">EXAMPLE · MADE FOR {onboardingState.name.toUpperCase()}</p>{mode==='ask'?<div className="proof-transcript"><header className="mb-5 flex flex-col items-center gap-1"><img src={ollie} alt="Ollie" width={40} height={40} className="size-10 rounded-pill object-cover"/><span className="text-support font-bold">Ollie</span></header><div className="flex flex-col gap-4"><p className="max-w-[82%] self-end rounded-control rounded-br-sm bg-primary px-4 py-3 text-body text-primary-foreground">Why does the Moon glow?</p><p className="max-w-[90%] self-start rounded-control rounded-bl-sm bg-secondary px-4 py-3 text-body text-foreground">{answer}</p></div><Button variant="ghost" className="mt-3 min-h-12 rounded-pill text-primary" onClick={()=>void speak(answer)}><Volume2/>Hear the answer</Button></div>:<div className="setup-reveal"><p className="mb-3 rounded-control bg-secondary px-4 py-3 text-body">A world unfolding from a book</p><img src={INTEREST_ART['reading']} alt="A sculpted landscape unfolding from an open book" width={512} height={480} className="aspect-square w-full rounded-card object-cover"/><p className="mt-3 text-support text-muted-foreground">An illustrative picture example. Each picture uses one cookie. Kids get 10 fresh picture cookies each day.</p></div>}<p className="mt-5 text-support text-muted-foreground">Answers fit their age and reading comfort. Kids can hold to speak or type, and read or listen to the reply.</p></OnboardingSkeleton></div>;}

@@ -1,3 +1,4 @@
+import { persistKidProfile } from './kid-storage';
 /* Shared onboarding state so Back keeps entered values across screens. */
 export type ReadingLevel = "none" | "sounding" | "stories" | "chapters";
 
@@ -14,7 +15,7 @@ export const onboardingState = {
   limitMinutes: 45,
   slideshowReset: "07:00",
   priorities: [] as string[],
-  tone: null as string | null,
+  tone: 'clear' as string | null,
   customTone: "",
   triedSearch: false,
   triedImage: false,
@@ -50,7 +51,7 @@ export const parentSettings = {
 const PROFILE_KEY = "ollie-profile-v1";
 const DRAFT_KEY = "ollie-onboarding-draft-v1";
 const STEP_KEY = "ollie-onboarding-step-v1";
-export const ONBOARDING_STEPS = ["/onboarding/fact", "/onboarding/meet", "/onboarding", "/onboarding/age", "/onboarding/worries", "/onboarding/assurance", "/onboarding/reading", "/onboarding/preview", "/onboarding/interests", "/onboarding/lessons", "/onboarding/screen-time", "/onboarding/priorities", "/onboarding/tone", "/onboarding/try", "/onboarding/trust", "/onboarding/pin", "/onboarding/building", "/onboarding/paywall", "/onboarding/account", "/onboarding/handoff"] as const;
+export const ONBOARDING_STEPS = ["/onboarding/fact", "/onboarding", "/onboarding/household", "/onboarding/reading", "/onboarding/interests", "/onboarding/screen-time", "/onboarding/pin", "/onboarding/building", "/onboarding/try", "/onboarding/lessons", "/onboarding/assurance", "/onboarding/trust", "/onboarding/paywall", "/onboarding/account", "/onboarding/parent-name", "/onboarding/protection", "/onboarding/handoff"] as const;
 export function saveOnboardingStep(path: string) {
   if (!ONBOARDING_STEPS.some((s) => s === path)) return;
   localStorage.setItem(STEP_KEY, path);
@@ -60,7 +61,7 @@ export function resumeOnboardingStep(): typeof ONBOARDING_STEPS[number] {
   const saved = localStorage.getItem(STEP_KEY);
   const step = ONBOARDING_STEPS.find((s) => s === saved);
   if (!step) return "/onboarding/fact";
-  return ONBOARDING_STEPS.indexOf(step) >= 16 ? "/onboarding/trust" : step;
+  return ONBOARDING_STEPS.indexOf(step) >= 12 ? "/onboarding/trust" : step;
 }
 export function hasCompletedProfile() {
   try {
@@ -103,6 +104,7 @@ export function loadOnboardingDraft() {
 export function saveProfile() {
   try {
     localStorage.setItem(PROFILE_KEY, JSON.stringify({ ...onboardingState, settings: parentSettings }));
+    if (onboardingState.name.trim()) persistKidProfile({ ...onboardingState, pin: '', settings: { ...parentSettings } });
   } catch {
     /* storage unavailable */
   }

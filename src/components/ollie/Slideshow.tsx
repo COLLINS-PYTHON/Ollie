@@ -133,12 +133,12 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
       setStatus("correct");
       setPraise(PRAISE[index % PRAISE.length] ?? "Yes! Exactly right!");
       setScore((s) => ({ correct: s.correct + (attempts === 0 ? 1 : 0), total: s.total + 1 }));
-      timer.current = window.setTimeout(advance, 1400);
+      timer.current = window.setTimeout(advance, 1100);
       return;
     }
     const nextAttempts = attempts + 1;
     setAttempts(nextAttempts);
-    if (nextAttempts >= 2) setStatus("reveal");
+    if (nextAttempts >= 2) { setStatus("reveal"); setScore(s => ({ ...s, total: s.total + 1 })); }
     else setHint(quizText(quiz.hint, child.band));
   };
 
@@ -149,7 +149,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
       <div className="fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
         <div className="slide-tint flex flex-1 flex-col items-center justify-center gap-5 px-7 text-center">
           <LessonArt categoryId={day.categoryId} topicId={slides[0]?.sub.id ?? ""} title={day.label} className="bubble-in w-full max-w-[320px]" />
-          <p className="text-label uppercase tracking-wide text-muted-foreground">{review ? "Lesson review" : "Today's lesson"}</p>
+          <p className="text-label uppercase tracking-wide text-muted-foreground">{review ? "Discovery review" : "Today's Discovery"}</p>
           <h1 className="text-title max-w-[300px] text-foreground">{day.label}</h1>
           {child.band === "4-6" && (
             <p className="text-support max-w-[260px] text-muted-foreground">
@@ -180,7 +180,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
       <div className="fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
         <div className="slide-tint relative flex flex-1 flex-col items-center justify-center gap-5 px-7 text-center">
           <div className={`glow-burst absolute size-56 rounded-pill bg-gradient-to-b ${tile} opacity-25`} />
-          <img src={ollie} alt="Ollie celebrating" className="bounce-soft relative w-32" width={128} height={128} />
+          <img src={ollie} alt="Ollie celebrating" className="relative w-32" width={128} height={128} />
           <h1 className="relative text-title text-foreground">{review ? `Nice review, ${child.name}!` : `You did it, ${child.name}!`}</h1>
           <p className="relative text-body text-muted-foreground">
             You got {score.correct} of {Math.max(score.total, 1)} right on the first try.
@@ -235,6 +235,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
             )}
             <Button variant="ghost"
               type="button"
+              disabled={!canSwipeLesson(current.kind, status)}
               onClick={advance}
               className="rounded-pill bg-card/80 px-3.5 py-1.5 text-support text-muted-foreground transition-transform duration-tap active:scale-95"
             >

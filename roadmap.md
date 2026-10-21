@@ -2,6 +2,8 @@
 
 ## Now
 
+- Integrate and verify the requested original Ollie book-to-discovery animation as a continuously looping, muted inline animation without a play button, visible inside the paywall.
+- Incorporate uploaded Trail/fridge inspirations: airy winding path and collectible picture keepsakes, adapted to Ollie's matte blue/mist aesthetic without copying the reference.
 - Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
 - Launch dependencies: verified lesson cache and per-kid isolation, server-enforced AI limits, native purchase/restore, actual reminder delivery, native biometric unlock, full-flow device/accessibility checks.
 - Current scoped request: post-trial notification consent, hold-to-speak, 12-slide daily category-bag selection and matching animated displays.

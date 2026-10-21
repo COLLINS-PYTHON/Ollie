@@ -1,3 +1,4 @@
+import { readKidValue, writeKidValue, activeKidId } from "./kid-storage";
 /* Screen time is tracked per surface: only Search and Create count toward the
    parent's limit. The daily slideshow is never tracked here. */
 export type Surface = "search" | "create";
@@ -12,7 +13,7 @@ function today() {
 
 function read(): Usage {
   try {
-    const u = JSON.parse(localStorage.getItem(KEY) ?? "null") as Usage | null;
+    const u = JSON.parse(readKidValue(KEY) ?? "null") as Usage | null;
     if (u && u.day === today()) return u;
   } catch {
     /* ignore */
@@ -23,7 +24,7 @@ function read(): Usage {
 export function addUsage(surface: Surface, seconds: number) {
   const u = read();
   u.seconds[surface] += seconds;
-  localStorage.setItem(KEY, JSON.stringify(u));
+  writeKidValue(KEY, JSON.stringify(u));
 }
 
 export function minutesToday(): number {
