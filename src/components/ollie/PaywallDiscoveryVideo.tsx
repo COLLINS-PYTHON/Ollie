@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import clip from '@/assets/ollie-paywall-discovery-compatible.mp4.asset.json';
+import clip from '@/assets/ollie-paywall-blended.mp4.asset.json';
 import ollie from '@/assets/ollie.png';
-import webm from '@/assets/ollie-paywall-discovery.webm.asset.json';
+import webm from '@/assets/ollie-paywall-blended.webm.asset.json';
 export function PaywallDiscoveryVideo({ compact = false }: { compact?: boolean }) {
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {

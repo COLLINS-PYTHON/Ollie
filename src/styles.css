@@ -1072,3 +1072,8 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 @media(max-height:650px) { .family-paywall-sheet.onboarding-theme { height:96dvh; max-height:96dvh; } .family-paywall-sheet .paywall-discovery-video.is-compact { max-height:64px; } .family-paywall-sheet footer { padding-bottom:max(10px,env(safe-area-inset-bottom)); } .family-paywall-sheet footer > p { font-size:12px;line-height:17px; } .family-paywall-sheet [data-vaul-drawer] { min-height:0; } }
 .parent-dashboard button:not([role=switch]) { height:auto; min-height:48px; white-space:normal; }
 .create-studio section button { height:auto; min-height:44px; white-space:normal; }
+
+.paywall-discovery-video.is-compact { height:116px; max-height:116px; aspect-ratio:auto; }
+.paywall-discovery-video.is-compact video { width:100%;height:100%;object-fit:contain; }
+.family-paywall-sheet h2 { font-size:26px;line-height:32px; }
+@media(max-height:650px) { .paywall-discovery-video.is-compact { height:64px;max-height:64px; } .family-paywall-sheet h2 { font-size:22px;line-height:28px; } }
