@@ -16,7 +16,6 @@ export const Route = createFileRoute("/onboarding/paywall")({
 
 /* Owner-approved subscription prices. */
 const PRICES = { monthly: `$${SUBSCRIPTION_PRICES.monthly.toFixed(2)} / month`, yearly: `$${SUBSCRIPTION_PRICES.yearly.toFixed(2)} / year` };
-const FEATURES = ["Customizable reply tone", "Safe search", "Daily educational slideshows", "Age-appropriate content", "Age-appropriate image generation", "Full parent dashboard", "Weekly progress reports"];
 
 function PaywallPage() {
   const navigate = useNavigate();
@@ -65,53 +64,49 @@ function PaywallPage() {
           </Button></DrawerTrigger>
         </div>
 
-      <DrawerContent aria-modal="true" className="onboarding-theme apple-paywall-sheet mx-auto max-h-[94svh] min-h-0 w-full max-w-md overflow-hidden border-0 shadow-sheet" overlayClassName="apple-paywall-overlay">
-            <div className="flex shrink-0 items-center justify-between px-6 pb-3"><DrawerTitle className="text-body font-bold text-foreground">Start {name}'s safe trial</DrawerTitle><Button variant="control" size="icon" aria-label="Close plan picker" onClick={() => setSheet(false)} className="size-8 rounded-pill bg-secondary"><X className="size-4" /></Button></div>
-            <DrawerDescription className="sr-only">Choose monthly or yearly billing for your seven-day trial.</DrawerDescription>
-            <div className="paywall-price-anchor shrink-0 px-6 pb-4">
-               <div className="grid grid-cols-2 gap-3 pt-4">
-                 {(["yearly", "monthly"] as const).map((p) => (
-                   <Button key={p} type="button" aria-pressed={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }}
-                     variant="option" className={`family-plan-option relative h-auto whitespace-normal flex flex-col items-start gap-1 rounded-control p-4 text-left`}>
-                     {p === "yearly" && <span className="text-label absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-pill bg-navy px-2.5 py-0.5 text-primary-foreground shadow-card">Best value</span>}
-                     <span className="flex w-full items-center justify-between gap-2"><span className="text-button block capitalize">{p}</span>{p === "yearly" && <span className="text-label rounded-pill bg-success px-2 py-0.5 font-bold text-primary-foreground">Save {savings}%</span>}</span>
-                     <span className="text-support">{PRICES[p]}</span>
-                     {p === "yearly" && <span className="plan-monthly-subtext">${yearlyMonthlyEquivalent()}/month</span>}
-                   </Button>
-                 ))}
-               </div>
-             </div>
-             <div className="paywall-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-4">
-               <p className="text-body pt-2 text-center font-bold text-foreground">How your trial works</p>
-               <ol className="trial-timeline relative mt-3 grid grid-cols-3 gap-2 text-center">
-                 <span aria-hidden className="absolute left-[16.6%] right-[16.6%] top-5 h-0.5 rounded-pill bg-primary" />
-                 {[
-                   { icon: LockKeyholeOpen, when: "Today", what: `Full access for ${name}. $0 today.` },
-                   { icon: Bell, when: "In 5 days", what: `Reminder plus ${name}'s learning report` },
-                   { icon: Check, when: "In 7 days", what: "Plan starts. Cancel anytime before." },
-                 ].map(({ icon: Icon, when, what }) => (
-                   <li key={when} className="relative flex flex-col items-center">
-                     <span className="flex size-10 items-center justify-center rounded-pill bg-primary text-primary-foreground shadow-card"><Icon className="size-5" strokeWidth={2} /></span>
-                     <p className="text-label mt-2 font-bold text-primary">{when}</p>
-                     <p className="text-label mt-0.5 text-muted-foreground">{what}</p>
-                   </li>
-                 ))}
-               </ol>
-               <p className="text-label mt-3 text-center text-muted-foreground">Reminder delivery and billing are not active yet.</p>
-               <ul className="mt-4 space-y-2">
-                 {valueLines.map((l) => <li key={l} className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2.5 text-body font-medium text-foreground"><Check className="mt-1 size-4 shrink-0 text-success" /><span className="min-w-0">{l}</span></li>)}
-               </ul>
-               <ul className="mt-4 grid grid-cols-1 gap-1.5">
-                 {FEATURES.map((f) => <li key={f} className="text-support grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 text-foreground"><Check className="size-4 shrink-0 text-success" /><span className="min-w-0">{f}</span></li>)}
-               </ul>
-             </div>
-             <div className="paywall-sheet-footer shrink-0 border-t border-border px-6 pt-3">
-                <Button variant="onboarding" size="onboarding" type="button" onClick={() => { onboardingState.plan = plan; setSheet(false); setAskReminder(true); }} className="trial-emphasis text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card active:scale-[0.98]">
-                  Start {name}'s Safe Trial
-                </Button>
-                <p className="text-support mt-3 text-center text-muted-foreground">No charge today. Selected plan: {PRICES[plan]}.</p>
-                <Button variant="link" type="button" className="text-label mt-2 w-full text-center text-muted-foreground underline">Restore Purchases</Button>
-            </div>
+      <DrawerContent aria-modal="true" className="onboarding-theme pw-sheet mx-auto w-full max-w-md overflow-hidden border-0" overlayClassName="apple-paywall-overlay">
+        <div className="flex shrink-0 justify-end px-5 pt-1"><Button variant="control" size="icon" aria-label="Close plan picker" onClick={() => setSheet(false)} className="pw-close size-8 rounded-pill"><X className="size-4" /></Button></div>
+        <div className="pw-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-6">
+          <DrawerTitle className="pw-title text-center text-foreground">Start {name}'s safe trial</DrawerTitle>
+          <DrawerDescription className="text-support mt-2 text-center text-muted-foreground">7 days free, then your plan. Cancel anytime before.</DrawerDescription>
+          <div role="radiogroup" aria-label="Choose a plan" className="mt-6 space-y-3">
+            {(["yearly", "monthly"] as const).map((p) => {
+              const on = plan === p;
+              return (
+                <button key={p} type="button" role="radio" aria-checked={on} onClick={() => { setPlan(p); onboardingState.plan = p; }} className={`pw-plan ${on ? "is-on" : ""}`}>
+                  <span className="pw-radio" aria-hidden>{on && <Check className="size-3.5" strokeWidth={3} />}</span>
+                  <span className="min-w-0 flex-1 text-left">
+                    <span className="flex items-center gap-2"><span className="text-button capitalize">{p}</span>{p === "yearly" && <span className="pw-chip">Best value · Save {savings}%</span>}</span>
+                    <span className="pw-plan-sub">{p === "yearly" ? `${PRICES.yearly}, billed after trial` : "Billed monthly after trial"}</span>
+                  </span>
+                  <span className="text-right">
+                    <span className="text-button block">{p === "yearly" ? `$${yearlyMonthlyEquivalent()}` : `$${SUBSCRIPTION_PRICES.monthly.toFixed(2)}`}</span>
+                    <span className="pw-plan-sub">per month</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          <ol className="pw-timeline mt-7" aria-label="How your trial works">
+            {[
+              { icon: LockKeyholeOpen, when: "Today", what: "Full access, $0" },
+              { icon: Bell, when: "Day 5", what: `Reminder + ${name}'s report` },
+              { icon: Check, when: "Day 7", what: "Plan begins" },
+            ].map(({ icon: Icon, when, what }) => (
+              <li key={when}><span className="pw-dot"><Icon className="size-4" strokeWidth={2.2} /></span><b>{when}</b><span>{what}</span></li>
+            ))}
+          </ol>
+          <ul className="mt-7 space-y-3 pb-5">
+            {valueLines.map((l) => <li key={l} className="flex items-start gap-3 text-support font-medium text-foreground"><span className="pw-tick"><Check className="size-3.5" strokeWidth={3} /></span><span className="min-w-0 pt-0.5">{l}</span></li>)}
+          </ul>
+        </div>
+        <div className="pw-footer shrink-0 px-6 pt-3">
+          <Button variant="onboarding" size="onboarding" type="button" onClick={() => { onboardingState.plan = plan; setSheet(false); setAskReminder(true); }} className="w-full">
+            Start {name}'s Safe Trial
+          </Button>
+          <p className="pw-fine mt-2 text-center text-muted-foreground">No charge today. Billing is not connected yet in this preview.</p>
+          <Button variant="link" type="button" className="pw-fine h-8 w-full text-muted-foreground">Restore Purchases</Button>
+        </div>
       </DrawerContent>
     </div>
     </Drawer>
