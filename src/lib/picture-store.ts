@@ -13,17 +13,17 @@ export const JARS = [
 const DB = () => activeKidId() === "first" ? "ollie-pictures" : `ollie-pictures-${activeKidId()}`;
 const STORE = "pictures";
 
-function openDb(): Promise<IDBDatabase> {
+function openDb(id = activeKidId()): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB(), 1);
+    const req = indexedDB.open(id === 'first' ? 'ollie-pictures' : `ollie-pictures-${id}`, 1);
     req.onupgradeneeded = () => req.result.createObjectStore(STORE, { keyPath: "id" });
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   });
 }
 
-export async function loadPictures(): Promise<Picture[]> {
-  const db = await openDb();
+export async function loadPictures(id = activeKidId()): Promise<Picture[]> {
+  const db = await openDb(id);
   return new Promise((resolve, reject) => {
     const req = db.transaction(STORE).objectStore(STORE).getAll();
     req.onsuccess = () => resolve((req.result as Picture[]).sort((a, b) => b.createdAt - a.createdAt));
@@ -31,8 +31,8 @@ export async function loadPictures(): Promise<Picture[]> {
   });
 }
 
-export async function savePicture(p: Picture): Promise<void> {
-  const db = await openDb();
+export async function savePicture(p: Picture, id = activeKidId()): Promise<void> {
+  const db = await openDb(id);
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE, "readwrite");
     tx.objectStore(STORE).put(p);

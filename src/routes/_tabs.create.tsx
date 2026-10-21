@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Mic, Sparkles, X } from "lucide-react";
 import { CrispOrb } from "@/components/ollie/CrispOrb";
+import { Button } from "@/components/ui/button";
 import { preparePicture } from "@/lib/picture.functions";
 import { streamImage } from "@/lib/stream-image";
 import {
