@@ -68,9 +68,9 @@ export async function pushAll() {
     saveProfile();
     const family = readFamily();
     if (family.ownerId && family.ownerId !== user.id) throw new Error('This device belongs to a different family. Sign out before switching accounts.');
-    const { data: existingKids, error: kidsError } = await supabase.from('children').select('id').eq('account_id', user.id).order('created_at');
+    const { data: existingKids, error: kidsError } = await supabase.from('children').select('id,name').eq('account_id', user.id).order('created_at');
     if (kidsError) throw kidsError;
-    for (const [index, kid] of family.kids.entries()) {
+    for (const kid of family.kids) {
       const { pin: _pin, pinHash: _hash, ...setup } = kid.profile;
       const profile = kid.profile as unknown as typeof onboardingState;
       const row = {
@@ -80,7 +80,8 @@ export async function pushAll() {
         slideshow_reset_time: profile.slideshowReset, chat_retention_setting: parentSettings.retentionDays,
         setup: setup as unknown as Json, progress: readProgress(kid.id), updated_at: now,
       };
-      const cloudId = kid.cloudId ?? existingKids?.[index]?.id;
+      const exactMatches = (existingKids ?? []).filter(row => row.name === profile.name);
+      const cloudId = kid.cloudId ?? (kid.id === "first" && family.kids.length === 1 && existingKids?.length === 1 && exactMatches.length === 1 ? exactMatches[0]?.id : undefined);
       const result = cloudId ? await supabase.from('children').update(row).eq('id', cloudId).select('id').single() : await supabase.from('children').insert(row).select('id').single();
       if (result.error) throw result.error;
       kid.cloudId = result.data.id;
@@ -112,6 +113,7 @@ export async function pullAll() {
   const family = { ownerId: user.id, kids: kids.map((child, index) => {
     const setup = (child.setup ?? {}) as Record<string, unknown>;
     const id = previous.ownerId === user.id ? previous.kids.find(k => k.cloudId === child.id)?.id ?? (index === 0 ? 'first' : child.id) : index === 0 ? 'first' : child.id;
+    const storageId = index === 0 ? 'first' : child.id;
     const profile = { ...setup, onboardingComplete: setup['onboardingComplete'] !== false,
       name: child.name, age: child.age, readingLevel: child.reading_level, interests: child.interests,
       tone: child.reply_tone, limitMinutes: child.screen_time_limit_minutes, slideshowReset: child.slideshow_reset_time,
@@ -120,7 +122,7 @@ export async function pullAll() {
     };
     const progress = (child.progress ?? {}) as Record<string, unknown>;
     for (const key of PROGRESS_KEYS) writeKidValue(key, JSON.stringify(progress[key] ?? (key === 'ollie-chat-v1' ? [] : null)), id);
-    return { id, cloudId: child.id, profile };
+    return { id, cloudId: child.id, storageId, profile };
   }) };
   localStorage.setItem(FAMILY_KEY, JSON.stringify(family));
   const selected = family.kids.find(k => k.id === activeKidId()) ?? family.kids[0];

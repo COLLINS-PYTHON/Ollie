@@ -1,6 +1,6 @@
 export const FAMILY_KEY = 'ollie-family-v2';
 export const ACTIVE_KID_KEY = 'ollie-active-kid-v2';
-export type KidRecord = { id: string; cloudId?: string; profile: Record<string, unknown> };
+export type KidRecord = { id: string; cloudId?: string; storageId?: string; profile: Record<string, unknown> };
 export type Family = { kids: KidRecord[]; ownerId?: string };
 export const MAX_KIDS = 2;
 

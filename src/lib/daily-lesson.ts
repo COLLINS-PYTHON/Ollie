@@ -1,4 +1,5 @@
 import { readKidValue, writeKidValue, activeKidId, readFamily } from "./kid-storage";
+import { onboardingState } from "./onboarding-store";
 import { Rocket } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
@@ -19,9 +20,13 @@ export async function selectDailyLesson(band: Band): Promise<Day & { image?: str
   const custom = completedCount() === 0 && stored && !stored.done ? cacheDay(customDay(stored)) : null;
   const { data: { session } } = await supabase.auth.getSession();
   if (session) {
-    const cloudId = readFamily().kids.find(k => k.id === activeKidId())?.cloudId;
-    const query = supabase.from('children').select('id').eq('account_id', session.user.id);
-    const { data: child, error: childError } = cloudId ? await query.eq('id', cloudId).maybeSingle() : await query.order('created_at').limit(1).maybeSingle();
+    let cloudId = readFamily().kids.find(k => k.id === activeKidId())?.cloudId;
+    if (!cloudId) {
+      const { data: matches } = await supabase.from('children').select('id').eq('account_id', session.user.id).eq('name', onboardingState.name);
+      if (matches?.length === 1) cloudId = matches[0]?.id;
+    }
+    if (!cloudId) throw new Error('This learning space is still saving. Please try again shortly.');
+    const { data: child, error: childError } = await supabase.from('children').select('id').eq('account_id', session.user.id).eq('id', cloudId).maybeSingle();
     if (childError || !child) throw new Error('Your lesson could not be loaded. Please try again.');
     const { data, error } = await supabase.rpc('select_daily_lesson', { p_child_id: child.id, p_day: day, p_custom: custom as unknown as Json });
     if (error || !data) throw new Error('Your lesson could not be loaded. Please try again.');

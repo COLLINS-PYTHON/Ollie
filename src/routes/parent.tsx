@@ -322,7 +322,7 @@ function ParentDashboard() {
         {[
           { icon: Clock, tile: "text-accent-2", value: formatMinutes(usedMin), label: "Screen time today" },
           { icon: Flame, tile: "text-accent-4", value: String(streakDays()), label: "Day streak" },
-          { icon: ImageIcon, tile: "text-accent-3", value: String(balance?.freeUsed ?? 0), label: "Images today" },
+          { icon: ImageIcon, tile: "text-accent-3", value: String(balance?.freeUsed ?? 0), label: "Images today" } },
         ].map((s) => (
           <div key={s.label} className="rounded-card border border-surface-2 bg-card p-3">
             <div className={`flex size-9 items-center justify-center rounded-pill bg-surface ${s.tile}`}>
