@@ -51,7 +51,7 @@ export const parentSettings = {
 const PROFILE_KEY = "ollie-profile-v1";
 const DRAFT_KEY = "ollie-onboarding-draft-v1";
 const STEP_KEY = "ollie-onboarding-step-v1";
-export const ONBOARDING_STEPS = ["/onboarding/fact", "/onboarding", "/onboarding/household", "/onboarding/reading", "/onboarding/interests", "/onboarding/screen-time", "/onboarding/pin", "/onboarding/building", "/onboarding/try", "/onboarding/lessons", "/onboarding/assurance", "/onboarding/trust", "/onboarding/paywall", "/onboarding/account", "/onboarding/parent-name", "/onboarding/protection", "/onboarding/handoff"] as const;
+export const ONBOARDING_STEPS = ["/onboarding/fact", "/onboarding", "/onboarding/reading", "/onboarding/interests", "/onboarding/screen-time", "/onboarding/pin", "/onboarding/building", "/onboarding/try", "/onboarding/lessons", "/onboarding/assurance", "/onboarding/trust", "/onboarding/paywall", "/onboarding/account", "/onboarding/parent-name", "/onboarding/handoff"] as const;
 export function saveOnboardingStep(path: string) {
   if (!ONBOARDING_STEPS.some((s) => s === path)) return;
   localStorage.setItem(STEP_KEY, path);
@@ -61,7 +61,7 @@ export function resumeOnboardingStep(): typeof ONBOARDING_STEPS[number] {
   const saved = localStorage.getItem(STEP_KEY);
   const step = ONBOARDING_STEPS.find((s) => s === saved);
   if (!step) return "/onboarding/fact";
-  return ONBOARDING_STEPS.indexOf(step) >= 12 ? "/onboarding/trust" : step;
+  return ONBOARDING_STEPS.indexOf(step) >= ONBOARDING_STEPS.indexOf("/onboarding/paywall") ? "/onboarding/trust" : step;
 }
 export function hasCompletedProfile() {
   try {
