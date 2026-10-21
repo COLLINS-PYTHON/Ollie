@@ -74,3 +74,4 @@
 - None outstanding
 - [x] Richer onboarding background colours (keep blue/white identity)
 - [x] Storybook clouds + tappable background objects in onboarding
+- [ ] Apply wording rule: 'child' in formal/parent copy, 'kid' informally (e.g. kids' assistant)

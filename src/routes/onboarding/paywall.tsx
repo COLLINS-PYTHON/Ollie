@@ -10,7 +10,7 @@ import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription } 
 import { SUBSCRIPTION_PRICES, yearlyMonthlyEquivalent } from "@/lib/subscription-prices";
 
 export const Route = createFileRoute("/onboarding/paywall")({
-  head: () => pageMeta("We want you and your kid to try Ollie for free", "Explore safe answers, daily lessons and creativity with Ollie's 7-day trial."),
+  head: () => pageMeta("We want you and your child to try Ollie for free", "Explore safe answers, daily lessons and creativity with Ollie's 7-day trial."),
   component: PaywallPage,
 });
 
@@ -22,7 +22,7 @@ function PaywallPage() {
   const navigate = useNavigate();
   const router = useRouter();
   const kidNames = familyKids().map(k => String(k.profile["name"] ?? "").trim()).filter(Boolean);
-  const name = kidNames.length ? kidNames.join(" and ") : childName(onboardingState.name);
+  const name = kidNames.length ? kidNames.join(" and ") : "your child";
   const savings = Math.round((1 - SUBSCRIPTION_PRICES.yearly / (SUBSCRIPTION_PRICES.monthly * 12)) * 100);
   const [sheet, setSheet] = useState(false);
   const [plan, setPlan] = useState<"monthly" | "yearly">("yearly");
