@@ -22,7 +22,8 @@ function PaywallPage() {
   const router = useRouter();
   const kidNames = familyKids().map(k => String(k.profile["name"] ?? "").trim()).filter(Boolean);
   const name = kidNames.length ? kidNames.join(" and ") : "your child";
-  const savings = Math.round((1 - SUBSCRIPTION_PRICES.yearly / (SUBSCRIPTION_PRICES.monthly * 12)) * 100);
+  /* Owner-chosen badge; understates the true ~44% saving. */
+  const savings = 40;
   const [sheet, setSheet] = useState(false);
   const [plan, setPlan] = useState<"monthly" | "yearly">("yearly");
   const [askReminder, setAskReminder] = useState(false);
@@ -37,7 +38,7 @@ function PaywallPage() {
       setPermissionNote(permission === 'granted' ? 'Permission allowed. Trial reminders will be available once notification delivery is connected.' : 'No problem. You can continue without a reminder.');
     } catch { setPermissionNote('Notifications could not be enabled here. You can continue without them.'); }
   }
-  const valueLines = [`Every answer matched to ${name}'s age`, "Sensitive searches flagged for you, not hidden", "Full visibility, always"];
+  const valueLines = [`Every answer matched to ${name}'s age`, "Sensitive searches flagged for you, not hidden", "Full visibility, always", "One plan covers up to two kids"];
 
   return (
     <>
