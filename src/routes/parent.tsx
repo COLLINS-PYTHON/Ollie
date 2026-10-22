@@ -338,7 +338,7 @@ function ParentDashboard() {
       <Button variant="ghost"
         type="button"
         onClick={() => setSheet("flagged")}
-        className="mt-4 flex w-full items-center gap-3 rounded-card border border-destructive/20 bg-destructive/[0.07] p-4 text-left"
+        className="mt-4 flex h-auto min-h-20 w-full items-center gap-3 whitespace-normal rounded-card border border-destructive/20 bg-destructive/[0.07] p-4 text-left"
       >
         <span className="flex size-9 items-center justify-center rounded-pill bg-destructive/15 text-body font-bold text-destructive">{flagged.length}</span>
         <div className="flex-1">
@@ -352,7 +352,7 @@ function ParentDashboard() {
 
       <p className="mt-2 text-support text-muted-foreground">Flags are available here. Automatic alerts are not connected yet.</p>
 
-      {/* Weekly report */
+      {/* Weekly report */}
       <div className="scalloped bg-gradient-wash mt-4 rounded-card p-5">
         <p className="text-label uppercase tracking-wide text-muted-foreground">This week</p>
         <p className="mt-1 text-body font-bold text-foreground">{child}'s weekly report</p>
