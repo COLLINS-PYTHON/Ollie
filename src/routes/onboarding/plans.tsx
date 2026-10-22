@@ -26,7 +26,7 @@ function Plans(){
       setPermissionNote(permission === 'granted' ? 'Permission allowed. Trial reminders will be available once notification delivery is connected.' : 'No problem. You can continue without a reminder.');
     } catch { setPermissionNote('Notifications could not be enabled here. You can continue without them.'); }
   }
-  const valueLines = [`Every answer matched to ${name}'s age`, "Sensitive searches flagged for you, not hidden", "Full visibility, always", "One plan covers up to two kids"];
+  const valueLines = [`Age-tailored answers, with voice and typing`, "Daily topic lessons, quick quizzes and Trail replay", "Creative picture-making and a saved picture fridge", "Natural read-aloud at a comfortable pace", "Parent PIN, screen-time controls and sensitive-search context", "One plan covers two separate learning spaces"];
 
 
  return <><main className="trial-plans-page">
@@ -43,12 +43,12 @@ function Plans(){
  </Button>)}
  </div>
  <ol className="pw-timeline mt-7" aria-label="How your trial works">
- {[{icon:LockKeyholeOpen,when:'Today',what:'Full access, $0'},{icon:Bell,when:'Day 5',what:`Reminder + ${name}'s report`},{icon:Check,when:'Day 7',what:'Plan begins'}].map(({icon:Icon,when,what})=><li key={when}><span className="pw-dot"><Icon /></span><b>{when}</b><span>{what}</span></li>)}
+ {[{icon:LockKeyholeOpen,when:'Today',what:'Full access, $0'},{icon:Bell,when:'Day 5',what:'Reminder + report*'},{icon:Check,when:'Day 7',what:'First charge'}].map(({icon:Icon,when,what})=><li key={when}><span className="pw-dot"><Icon /></span><b>{when}</b><span>{what}</span></li>)}
  </ol>
- <ul className="mt-7 space-y-3">{valueLines.map(l=><li key={l} className="flex items-start gap-3 text-support"><span className="pw-tick"><Check /></span><span>{l}</span></li>)}</ul>
+ <p className="pw-fine mt-3 text-center text-muted-foreground">*Reminder and report delivery are not connected yet.</p><ul className="trial-feature-list mt-6 space-y-3">{valueLines.map(l=><li key={l} className="flex items-start gap-3 text-support"><span className="pw-tick"><Check /></span><span>{l}</span></li>)}</ul>
  </div>
  <footer className="pw-footer">
- <Button variant="onboarding" size="onboarding" onClick={()=>{onboardingState.plan=plan;setAskReminder(true);}}>Start {name}'s Safe Trial</Button>
+ <Button variant="onboarding" size="onboarding" onClick={()=>{onboardingState.plan=plan;setAskReminder(true);}}>Unlock {name}'s safe trial</Button>
  <p className="pw-fine mt-2 text-center text-muted-foreground">Free for 7 days, then {PRICES[plan]}. Renews automatically until canceled. Cancel anytime in Settings at least 24 hours before the trial ends. Billing is not connected yet in this preview.</p>
  <div className="pw-fine flex items-center justify-center gap-3 text-muted-foreground"><Button variant="link" className="pw-fine h-8 px-0 text-muted-foreground" disabled>Restore Purchases</Button><a href="/terms" className="underline">Terms</a><a href="/privacy" className="underline">Privacy</a></div>
  </footer></main>

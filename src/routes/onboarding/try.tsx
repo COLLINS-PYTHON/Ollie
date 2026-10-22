@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Volume2, MessageCircle, Sparkles, ShieldCheck, Check, ArrowRight } from 'lucide-react';
 import { OnboardingSkeleton } from '../onboarding';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,9 @@ import { SafetyExamples } from '@/components/ollie/SafetyExamples';
 import { onboardingState } from '@/lib/onboarding-store';
 import { buildDay, effectiveBand } from '@/lib/slideshow/library';
 import { quizOptions } from '@/lib/slideshow/types';
-import { speak } from '@/lib/speak';
+import { speak, preloadSpeech, stopSpeaking } from '@/lib/speak';
+import { DiscoveryDeck } from '@/components/ollie/DiscoveryDeck';
+import { bubbleSound } from '@/lib/bubble-sound';
 import { pageMeta } from '@/lib/meta';
 import whale from '@/assets/whale-curious.png';
 
@@ -39,7 +41,9 @@ function Proof() {
     : band === '7-9'
       ? 'The Moon does not make its own light. Sunlight bounces off its surface, so we can see it glowing in the night sky.'
       : 'The Moon reflects sunlight rather than producing light. As it travels around Earth, we see different amounts of its sunlit half. That is why it appears to change shape.';
-  const open = (t: Tab) => { setTab(t); setSeen(s => new Set(s).add(t)); };
+  useEffect(() => { void preloadSpeech(answer, onboardingState.age).catch(() => {}); }, [answer]);
+  useEffect(() => { if (tab === 'ask') void speak(answer, { age: onboardingState.age }); return () => stopSpeaking(); }, [tab, answer]);
+  const open = (t: Tab) => { bubbleSound(); setTab(t); setSeen(s => new Set(s).add(t)); };
   const nextTab = TABS.find(t => !seen.has(t.id));
 
   return (
@@ -56,7 +60,7 @@ function Proof() {
         <div key={tab} className="reveal-stagger space-y-4">
           {tab === 'discover' && sub && day && <>
             <p className="text-label text-muted-foreground">DAILY DISCOVERY · EXAMPLE</p>
-            <LessonArt categoryId={day.categoryId} topicId={sub.id} title={sub.title} className="w-full" />
+            <DiscoveryDeck categoryId={day.categoryId} band={band} />
             <h2 className="text-body font-bold">{sub.quiz.q[band]}</h2>
             <div className="space-y-2">
               {quizOptions(sub.quiz, band).map((option, i) => (
@@ -77,7 +81,7 @@ function Proof() {
                 <p className="max-w-[82%] self-end rounded-control rounded-br-sm bg-primary px-4 py-3 text-body text-primary-foreground">Why does the Moon glow?</p>
                 <p className="flag-pop max-w-[90%] self-start rounded-control rounded-bl-sm bg-secondary px-4 py-3 text-body text-foreground" style={{ animationDelay: '500ms' }}>{answer}</p>
               </div>
-              <Button variant="ghost" className="mt-3 min-h-12 rounded-pill text-primary" onClick={() => void speak(answer)}><Volume2 />Hear the answer</Button>
+              <Button variant="ghost" className="hear-highlight mt-3 min-h-12 rounded-pill text-primary" onClick={() => void speak(answer, { age: onboardingState.age })}><Volume2 />Hear the answer</Button>
             </div>
             <p className="text-support text-muted-foreground">Answers fit their age and reading comfort. Kids can hold to speak or type, and read or listen to the reply.</p>
           </>}

@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button";
 import ollie from "@/assets/ollie.png";
 import { OnboardingScenery } from "@/components/ollie/OnboardingScenery";
 import { OnboardingCompanions, OLLIE_POSES } from "@/components/ollie/OnboardingCompanions";
+import { AmbientDepth } from "@/components/ollie/AmbientDepth";
+import { FloatingWhale } from "@/components/ollie/FloatingWhale";
+import { bubbleSound } from "@/lib/bubble-sound";
+import { preloadSpeech } from "@/lib/speak";
 import chaseClip from "@/assets/ollie-paywall-discovery-compatible.mp4.asset.json";
 
 export const Route = createFileRoute("/onboarding")({
@@ -65,8 +69,8 @@ function OnboardingLayout() {
   }, [pathname, ready, preview]);
 
   // Privacy and safety retain a quiet background. Light discovery steps share visible edge scenery.
-  const scenery = ['/onboarding/fact', '/onboarding/handoff'].includes(pathname) ? 'clouds' : null;
-  return <div data-navigation={direction} className="onboarding-theme onboarding-shell">{ready ? <>{scenery && <OnboardingScenery variant={scenery} />}<div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
+  const scenery = null;
+  return <div data-navigation={direction} className="onboarding-theme onboarding-shell">{ready ? <><AmbientDepth /><div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 
 /* Fixed onboarding skeleton: back, 4-segment chapter bar, title slot, pinned button. */
@@ -90,7 +94,7 @@ export function OnboardingSkeleton({
   void chapter;
   const currentStep = Math.max(0, ONBOARDING_STEPS.findIndex(s => s === pathname || s + '/' === pathname));
   const progress = (currentStep + 1) / ONBOARDING_STEPS.length;
-  const companion = null;
+  const companion = ["/onboarding", "/onboarding/reading", "/onboarding/interests", "/onboarding/pin"].includes(pathname);
   const touch = useRef<{ x: number; y: number } | null>(null);
   return (
     <div className="onboarding-frame mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden"
@@ -122,7 +126,7 @@ export function OnboardingSkeleton({
       <main key={pathname} className="onboarding-content flex min-h-0 flex-1 flex-col px-6 pb-32 pt-9">
         <h1 className="text-title mx-auto w-full max-w-sm text-center text-foreground">{title}</h1>
         <div className="onboarding-step-body mt-7 flex-1">{children}</div>
-        {companion && <OnboardingCompanions scene={companion} />}
+        {companion && <div className="setup-whale-companion"><FloatingWhale size={100}/></div>}
       </main>
 
       <div
@@ -132,7 +136,7 @@ export function OnboardingSkeleton({
         <Button variant="onboarding" size="onboarding"
           type="button"
           disabled={ctaDisabled}
-          onClick={onContinue}
+          onClick={() => { bubbleSound(); onContinue?.(); }}
           className="text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card transition-all duration-tap active:scale-[0.98] disabled:bg-surface-2 disabled:text-muted-foreground disabled:shadow-none"
         >
           {cta}
