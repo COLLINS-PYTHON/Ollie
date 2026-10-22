@@ -2,11 +2,11 @@
 
 ## Now
 
-- [ ] October 22 reference-led full-interface refresh: review five uploaded clips across their timelines; improve soft controls, onboarding transitions, Search, Create, Trail and Parent Dashboard without changing transport, rules or established wording.
-- [ ] Additional Trail request: research suitable learning-path designs and motion, then adapt restrained scenery and keepsake interactions to Ollie.
-- [ ] Trail/Create clarification: replace ugly repeated Trail motion and polish Create composition, iconography and control details in this same batch.
-- [ ] New palette/paywall request: reevaluate softer readable blue and supporting colors; retain prepaywall, replace popup with a separate horizontal-plan screen, and prioritize onboarding motion.
-- [ ] Requested grey/blue Ollie preview: slightly fuller chest and thicker tail, same intermediate age and matte style, modestly less babyish; no automatic app replacement.
+- [x] October 22 reference-led refresh: sampled five clips across their timelines, softened shared controls/navigation, refined Search, Create and Parent presentation, added staged onboarding entrances. Source clips were sampled, not checked literally frame by frame.
+- [x] Trail research and refresh: adapted finite path/keepsake principles, replaced triangular trees and repeated butterfly motion with rounded seasonal canopies and one quiet flight; progress logic unchanged.
+- [x] Create/details: matte sketchbook artwork, clearer modes/starters, fridge empty state and restrained shared icons.
+- [x] Palette/paywall: softer accessible blue, supporting teal/pink/amber, original prepaywall kept, separate full page with horizontal Yearly/Monthly plans and trial timeline. Verified navigation through monthly selection/reminder dismissal to account at phone/tablet/desktop sizes; billing still unconnected.
+- [x] Grey/blue Ollie fuller-chest/thicker-tail preview generated and inspected; app mascot unchanged. It still leans young and requires owner approval before replacement.
 
 - Ollie 1 copy recovery: restored name explanation, reading heading/labels, interest heading/explanation, welcome baseline and daily-lesson wording; replaced promotional intermediate buttons with Continue. Name → reading → interests verified. Still reconcile safety/privacy and the old interactive try-it-yourself copy without changing disclosures or promising unavailable functionality.
 - Mascot refinement is limited to the requested preview; app mascot artwork stays unchanged until approval.
