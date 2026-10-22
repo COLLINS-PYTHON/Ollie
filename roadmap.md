@@ -2,6 +2,8 @@
 
 ## Now
 
+- [ ] October 22 00:34: adapt new clip's actual flow/motion beats and iMessage screenshot to onboarding/chat presentation; explore contextual whale sleep animation without replacing the app mascot wholesale.
+
 - [x] October 22 reference-led refresh: sampled five clips across their timelines, softened shared controls/navigation, refined Search, Create and Parent presentation, added staged onboarding entrances. Source clips were sampled, not checked literally frame by frame.
 - [x] Trail research and refresh: adapted finite path/keepsake principles, replaced triangular trees and repeated butterfly motion with rounded seasonal canopies and one quiet flight; progress logic unchanged.
 - [x] Create/details: matte sketchbook artwork, clearer modes/starters, fridge empty state and restrained shared icons.
