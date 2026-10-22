@@ -53,7 +53,7 @@ function Proof() {
           ))}
         </div>
 
-        <div key={tab} className="reveal-stagger">
+        <div key={tab} className="reveal-stagger space-y-4">
           {tab === 'discover' && sub && day && <>
             <p className="text-label text-muted-foreground">DAILY DISCOVERY · EXAMPLE</p>
             <LessonArt categoryId={day.categoryId} topicId={sub.id} title={sub.title} className="w-full" />

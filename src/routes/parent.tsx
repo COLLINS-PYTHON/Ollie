@@ -639,11 +639,15 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
     await deleteCloudData().catch(() => undefined);
     clearFamilyStorage();
     sessionStorage.removeItem("ollie-onboarding-draft-v1");
+    ["ollie-onboarding-draft-v1", "ollie-onboarding-step-v1", "ollie-profile-v1"].forEach((k) => localStorage.removeItem(k));
     indexedDB.deleteDatabase("ollie-pictures");
+    resetOnboardingState();
     setStep(3);
+    // Hard reload discards every in-memory store and starts setup from the first screen.
+    setTimeout(() => window.location.replace("/onboarding/fact"), 1200);
   };
   return (
-    <Sheet title="Delete my data" onClose={step === 3 ? () => window.location.assign("/onboarding/fact") : onClose}>
+    <Sheet title="Delete my data" onClose={step === 3 ? () => window.location.replace("/onboarding/fact") : onClose}>
       {step === 1 && (
         <>
           <p className="text-body font-bold text-foreground">This deletes:</p>
@@ -665,7 +669,7 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
           <Button variant="ghost" type="button" onClick={onClose} className="mt-2 w-full py-3 text-button text-muted-foreground">Keep my data</Button>
         </>
       )}
-      {step === 3 && <p className="text-body text-foreground">Everything has been deleted.</p>}
+      {step === 3 && <p className="text-body text-foreground">Everything has been deleted. Starting fresh…</p>}
     </Sheet>
   );
 }
