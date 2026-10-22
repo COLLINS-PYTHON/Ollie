@@ -986,6 +986,25 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 @keyframes sky-bob { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-14px) scale(1.03); } }
 @media (prefers-reduced-motion: reduce) { .onboarding-scenery-clouds .sky-cloud, .onboarding-scenery-clouds .sky-cloud img { animation: none; } .sky-cloud-a { transform: translateX(8vw); } .sky-cloud-c { transform: translateX(55vw); } }
 
+/* Ambient depth: Ollie's blue world with a quiet underwater feel. Light from above, gentle depth below, faint rising motes. Abstract only — no ocean props. */
+.ambient-depth { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+.ambient-depth::before { content:""; position:absolute; inset:0; background:
+  linear-gradient(180deg, transparent 34%, color-mix(in oklab, var(--sky) 10%, transparent) 74%, color-mix(in oklab, var(--brand-deep) 13%, transparent) 100%); }
+.ambient-shaft { position:absolute; top:-25%; bottom:-25%; left:6%; width:34%;
+  background:linear-gradient(100deg, transparent 0%, color-mix(in oklab, white 30%, transparent) 48%, transparent 72%);
+  opacity:.45; transform:skewX(-8deg); transform-origin:top center; animation:ambient-shaft 16s ease-in-out infinite; }
+.ambient-shaft-b { left:58%; width:26%; opacity:.3; animation-duration:22s; animation-delay:-9s; }
+.ambient-mote { position:absolute; bottom:-6%; border-radius:9999px;
+  background:radial-gradient(closest-side, color-mix(in oklab, var(--card) 90%, transparent), transparent 72%);
+  filter:blur(1px); opacity:0; animation:ambient-mote var(--mote-time,28s) linear infinite; will-change:transform; }
+.ambient-mote-a { left:10%; width:9px; height:9px; --mote-time:34s; }
+.ambient-mote-b { left:30%; width:6px; height:6px; --mote-time:26s; animation-delay:-12s; }
+.ambient-mote-c { left:64%; width:11px; height:11px; --mote-time:40s; animation-delay:-22s; }
+.ambient-mote-d { left:86%; width:7px; height:7px; --mote-time:30s; animation-delay:-5s; }
+@keyframes ambient-shaft { 0%,100% { transform:skewX(-8deg) translateX(0); opacity:.45; } 50% { transform:skewX(-4deg) translateX(3%); opacity:.6; } }
+@keyframes ambient-mote { 0% { transform:translate3d(0,0,0); opacity:0; } 10% { opacity:.55; } 55% { transform:translate3d(16px,-42vh,0); } 90% { opacity:.35; } 100% { transform:translate3d(-12px,-84vh,0); opacity:0; } }
+@media (prefers-reduced-motion: reduce) { .ambient-shaft { animation:none; opacity:.35; } .ambient-mote { animation:none; opacity:.25; bottom:20%; } }
+
 /* Reference-led soft interface. Surface roles remain separate from chat transport. */
 :root {
  --onboarding-wash: linear-gradient(155deg, var(--sky-mist) 0%, var(--card) 54%, color-mix(in oklab,var(--accent-2) 5%,var(--card)) 100%);

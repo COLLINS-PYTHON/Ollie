@@ -7,6 +7,7 @@ import { pushAll } from "@/lib/cloud-sync";
 import { loadCustom } from "@/lib/custom-lesson-store";
 import { childName, pageMeta } from "@/lib/meta";
 import { FloatingWhale } from "@/components/ollie/FloatingWhale";
+import { AmbientDepth } from "@/components/ollie/AmbientDepth";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/handoff")({
@@ -36,7 +37,8 @@ function HandoffPage() {
 
   return (
     <div className="bg-gradient-hello min-h-screen">
-      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-5 pb-32 text-center">
+      <AmbientDepth />
+      <main className="relative mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-5 pb-32 text-center">
         <div className="setup-reveal"><FloatingWhale pose="celebrate" size={280} /></div>
         <h1 className="text-title mt-8 text-foreground">{name}’s space is ready.</h1>
         <div className="mt-5 w-full"><KidSwitcher onChange={() => refresh(n => n + 1)} /></div>
