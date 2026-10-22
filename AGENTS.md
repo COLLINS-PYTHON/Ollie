@@ -36,3 +36,4 @@
 - child-interactions centralizes tested voice age and starter rules; swipes never bypass open quizzes. Why: consistent safe navigation.
 - ONBOARDING_STEPS defines the household/value-proof flow and accurate progress; only kid calibration repeats, PIN precedes paywall, account and preferred parent name follow. Why: setup preserves the parent's payment and identity boundaries.
 - Read-aloud goes through src/lib/speak.ts (/api/speech neural voice, browser voice fallback). Why: one natural voice everywhere, still works offline.
+- Cookie purchase availability is shared through picture-store; preview purchase controls never award credits. Why: a parent PIN is permission, not evidence of payment.
