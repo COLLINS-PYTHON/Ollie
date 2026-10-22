@@ -21,6 +21,10 @@ function OnboardingLayout() {
   const [ready, setReady] = useState(false);
   const { preview } = Route.useSearch();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const previousStep = useRef(0);
+  const stepIndex = ONBOARDING_STEPS.findIndex(step => step === pathname || step + '/' === pathname);
+  const direction = stepIndex < previousStep.current ? 'back' : 'forward';
+  useEffect(() => { previousStep.current = stepIndex; }, [stepIndex]);
 
   useEffect(() => {
     let active = true;
@@ -62,7 +66,7 @@ function OnboardingLayout() {
 
   // Privacy and safety retain a quiet background. Light discovery steps share visible edge scenery.
   const scenery = ['/onboarding/fact', '/onboarding/building', '/onboarding/handoff'].includes(pathname) ? 'clouds' : null;
-  return <div className="onboarding-theme onboarding-shell">{ready ? <>{scenery && <OnboardingScenery variant={scenery} />}<div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
+  return <div data-navigation={direction} className="onboarding-theme onboarding-shell">{ready ? <>{scenery && <OnboardingScenery variant={scenery} />}<div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 
 /* Fixed onboarding skeleton: back, 4-segment chapter bar, title slot, pinned button. */
