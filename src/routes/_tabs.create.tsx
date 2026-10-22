@@ -1,4 +1,4 @@
-import { speak as naturalSpeak } from "@/lib/speak";
+import { speak as naturalSpeak, stopSpeaking } from "@/lib/speak";
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Mic, Sparkles, X, Shapes, Keyboard, Rocket, BookOpen, Leaf } from "lucide-react";
@@ -119,6 +119,7 @@ function CreateScreen() {
     heldRef.current = false;
     const rec = recRef.current;
     if (rec) { rec.onresult = null; rec.onend = null; try { rec.stop(); } catch { /* already ended */ } }
+    stopSpeaking();
   }, []);
   const inputRef = useRef<HTMLInputElement>(null);
 

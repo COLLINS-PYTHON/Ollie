@@ -1154,7 +1154,7 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .thinking-dots i:nth-child(2) { animation-delay:.2s; }.thinking-dots i:nth-child(3) { animation-delay:.4s; }
 .is-painting .thinking-dots i:nth-child(2) { background:var(--accent-2); border-color:var(--accent-2); }.is-painting .thinking-dots i:nth-child(3) { background:var(--accent-3); border-color:var(--accent-3); }
 @keyframes thought-rise { 50% { transform:translateY(-7px); opacity:.55; } }
-.search-screen[data-welcome=true][data-older=true] .search-composer { padding-top:14px; padding-bottom:16px; }
+.search-screen[data-welcome=true][data-older=true] .search-composer { padding-top:14px; padding-bottom:calc(var(--app-dock-height) + 12px); }
 .search-screen[data-welcome=true][data-older=true] .search-composer > div > div:has(textarea) { min-height:64px; border:1px solid var(--border); background:var(--card); box-shadow:var(--elev-card); }
 .search-screen[data-welcome=true] .search-transcript { background:transparent; }
 .discovery-deck-wrap { margin:12px 0 4px; }
@@ -1177,11 +1177,22 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .privacy-summary { padding:0; }.privacy-shield { width:54px; height:54px; color:var(--accent-2); margin:0 auto 20px; }
 .create-studio > :not(.ambient-depth), .trail-page > :not(.ambient-depth) { position:relative; }
 .create-whale-scene { position:relative; }.create-whale-scene > .floating-whale { position:absolute; right:calc(50% - 150px); top:3px; }.create-whale-scene > img { margin-right:70px; }
-.trail-guide { position:absolute !important; right:0; top:58px; width:150px; pointer-events:none; opacity:.9; }
-.trail-page > h1,.trail-page > p { max-width:65%; }
+.trail-guide { position:absolute !important; right:20px; top:134px; width:94px; pointer-events:none; opacity:.9; }
+.trail-guide .floating-whale { max-width:94px; }
+.trail-guide .whale-thought { display:none; }
+.trail-screen { position:relative; overflow-x:clip; }
 .lesson-art-unavailable { aspect-ratio:1; display:grid; place-items:center; color:var(--primary); }.lesson-art-unavailable svg { width:64px; height:64px; }
 .lesson-copy { font-size:21px; line-height:29px; font-weight:600; max-width:460px; text-wrap:pretty; }
 .lesson-stage-enter { animation-duration:450ms; }
+.welcome-question { animation:trial-card-drift 7s ease-in-out infinite; }
+.welcome-question-three { animation-delay:-3.5s; }
+.onboarding-theme .setup-interests [aria-pressed] { animation:reveal-up 400ms var(--ease-enter) both; }
+.onboarding-theme .setup-interests [aria-pressed]:nth-child(2n) { animation-delay:60ms; }
+.discovery-preview-card { animation:deck-arrival 600ms var(--ease-enter) both; }
+@keyframes deck-arrival { from { opacity:0; translate:0 20px; } to { translate:0 0; } }
+.slide-tint { overflow-y:auto; }
+.lesson-stage-enter .discovery-scene { flex-shrink:0; width:min(100%,320px,35dvh); }
+@media(prefers-reduced-motion:reduce) { .welcome-question,.onboarding-theme .setup-interests [aria-pressed],.discovery-preview-card { animation:none; } }
 @media(min-width:768px) { .trial-feature-list { grid-template-columns:1fr 1fr; }.discovery-deck { height:294px; }.discovery-preview-card { width:66%; left:17%; } }
 @media(max-width:360px) { .discovery-deck { height:222px; }.trial-whale-story { height:190px; }.trial-orbit { width:70px; height:70px; } }
 @media(prefers-reduced-motion:reduce) { .thinking-dots i,.hear-highlight,.trial-orbit { animation:none; }.discovery-preview-card { transition:none; }.onboarding-content,.lesson-stage-enter { animation:none; } }

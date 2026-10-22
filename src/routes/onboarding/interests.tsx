@@ -9,6 +9,9 @@ import { familyKids, switchKid } from '@/lib/family-store';
 import { INTERESTS } from '@/lib/interests';
 import { INTEREST_ART } from '@/lib/interest-art';
 import { pageMeta } from '@/lib/meta';
+import { preloadSpeech } from '@/lib/speak';
+import { effectiveBand } from '@/lib/slideshow/library';
+import { ONBOARDING_ANSWER } from '@/lib/onboarding-answer';
 export const Route=createFileRoute('/onboarding/interests')({head:()=>pageMeta('What sparks curiosity', 'Choose the topics that shape your kid’s first Discovery.'),component:Interests});
 function Interests(){
  const navigate=useNavigate(); const [,refresh]=useState(0); const redraw=()=>refresh(n=>n+1);

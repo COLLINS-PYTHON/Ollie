@@ -5,14 +5,12 @@ import { onboardingState, loadOnboardingDraft, loadProfile, saveOnboardingStep, 
 import { childName } from "@/lib/meta";
 import { resolveAppEntry } from "@/lib/app-entry";
 import { Button } from "@/components/ui/button";
-import ollie from "@/assets/ollie.png";
-import { OnboardingScenery } from "@/components/ollie/OnboardingScenery";
-import { OnboardingCompanions, OLLIE_POSES } from "@/components/ollie/OnboardingCompanions";
+import whaleCurious from '@/assets/whale-curious.png';
+import whaleCelebrate from '@/assets/whale-celebrate.png';
 import { AmbientDepth } from "@/components/ollie/AmbientDepth";
 import { FloatingWhale } from "@/components/ollie/FloatingWhale";
 import { bubbleSound } from "@/lib/bubble-sound";
 import { preloadSpeech } from "@/lib/speak";
-import chaseClip from "@/assets/ollie-paywall-discovery-compatible.mp4.asset.json";
 
 export const Route = createFileRoute("/onboarding")({
   validateSearch: (search: Record<string, unknown>): { preview?: boolean } => (search["preview"] === true || search["preview"] === "true" || search["preview"] === "1" ? { preview: true } : {}),
@@ -32,21 +30,16 @@ function OnboardingLayout() {
 
   useEffect(() => {
     let active = true;
-    const image = new Image();
-    image.src = ollie;
-    void image.decode().catch(() => {});
-    Object.values(OLLIE_POSES).forEach((src) => {
+    [whaleCurious,whaleCelebrate].forEach((src) => {
       const pose = new Image();
       pose.src = src;
       void pose.decode().catch(() => {});
     });
-    // Warm the paywall chase clip early so it plays instantly when reached.
-    const warm = window.setTimeout(() => { void fetch(chaseClip.url, { priority: "low" } as RequestInit).catch(() => {}); }, 1500);
     if (preview) {
       loadProfile();
       loadOnboardingDraft();
       setReady(true);
-      return () => { active = false; window.clearTimeout(warm); };
+      return () => { active = false; };
     }
     void resolveAppEntry().then((to) => {
       if (!active) return;
@@ -54,7 +47,7 @@ function OnboardingLayout() {
       loadOnboardingDraft();
       setReady(true);
     }).catch(() => { if (active) { loadOnboardingDraft(); setReady(true); } });
-    return () => { active = false; window.clearTimeout(warm); };
+    return () => { active = false; };
   }, [navigate, preview]);
 
   useEffect(() => {
@@ -68,8 +61,6 @@ function OnboardingLayout() {
     };
   }, [pathname, ready, preview]);
 
-  // Privacy and safety retain a quiet background. Light discovery steps share visible edge scenery.
-  const scenery = null;
   return <div data-navigation={direction} className="onboarding-theme onboarding-shell">{ready ? <><AmbientDepth /><div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 

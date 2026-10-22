@@ -92,6 +92,12 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
     void speak(narration, { age:child.age, onStart: () => setSpeaking(true), onEnd: () => setSpeaking(false) });
   };
 
+  useEffect(() => {
+    if (!child.needsReadAloud || !parentSettings.soundOn || !day) return;
+    const next = phase === 'intro' ? day.slides[0] : day.slides[index+1];
+    if (next?.kind === 'content') void preloadSpeech(next.sub.caption[child.band],child.age).catch(() => {});
+  }, [day,index,phase,child.age,child.band,child.needsReadAloud]);
+
   const clearSlideState = () => {
     setStatus("open");
     setPicked(null);
