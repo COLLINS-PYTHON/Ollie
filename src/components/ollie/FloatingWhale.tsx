@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { BookOpen, Star } from 'lucide-react';
 import curious from '@/assets/whale-curious.png';
 import celebrate from '@/assets/whale-celebrate.png';
 import { bell, lagged, loopClock, prefersReducedMotion, wave } from '@/lib/motion';
@@ -30,8 +31,12 @@ export function FloatingWhale({ pose = 'curious', size = 220, className = '' }: 
       <span className="floating-whale-shadow" aria-hidden="true" />
       <div className="floating-whale-body">
         <img src={ART[pose]} alt="" width={1024} height={1024} draggable={false} />
-        {pose === 'curious' && <><span className="whale-puff puff-a" aria-hidden="true" /><span className="whale-puff puff-b" aria-hidden="true" /></>}
       </div>
+      {/* Cartoon thought bubble floating above his head, drifting on its own. */}
+      <span className="whale-thought" aria-hidden="true">
+        <span className="thought-dot dot-1" /><span className="thought-dot dot-2" />
+        <span className="thought-cloud">{pose === 'celebrate' ? <Star /> : <BookOpen />}</span>
+      </span>
     </div>
   );
 }
