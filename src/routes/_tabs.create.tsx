@@ -1,7 +1,7 @@
 import { speak as naturalSpeak } from "@/lib/speak";
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Mic, Sparkles, X } from "lucide-react";
+import { Mic, Sparkles, X, Shapes, Keyboard, Rocket, BookOpen, Leaf } from "lucide-react";
 import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
@@ -233,9 +233,10 @@ function CreateScreen() {
               key={m}
               type="button"
               onClick={() => setMode(m)}
+              aria-pressed={mode === m}
               className={`flex-1 rounded-pill py-1.5 text-label font-semibold transition-colors duration-tap ${mode === m ? "bg-card text-foreground shadow-card" : "text-muted-foreground"}`}
             >
-              {m === "builder" ? "Picture builder" : "Type or talk"}
+              {m === "builder" ? <Shapes /> : <Keyboard />}{m === "builder" ? "Picture builder" : "Type or talk"}
             </Button>
           ))}
         </div>
@@ -276,9 +277,9 @@ function CreateScreen() {
         ) : (
           <div className="create-typing space-y-3">
             <div className="flex flex-wrap gap-1.5">
-              {chips.map((c) => (
-                <Button variant="ghost" key={c} type="button" onClick={() => setIdea(c)} className="rounded-pill border border-surface-2 bg-surface px-3 py-1.5 text-left text-label text-foreground transition-colors duration-tap hover:border-primary">
-                  {c}
+              {chips.map((c, index) => (
+                <Button variant="ghost" key={c} type="button" onClick={() => setIdea(c)} className="create-starter rounded-control border border-surface-2 bg-card px-3 py-1.5 text-left text-label text-foreground transition-colors duration-tap hover:border-primary">
+                  {index % 3 === 0 ? <Rocket /> : index % 3 === 1 ? <BookOpen /> : <Leaf />}<span>{c}</span>
                 </Button>
               ))}
             </div>
