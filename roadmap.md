@@ -5,6 +5,7 @@
 - [ ] October 22 reference-led full-interface refresh: review five uploaded clips across their timelines; improve soft controls, onboarding transitions, Search, Create, Trail and Parent Dashboard without changing transport, rules or established wording.
 - [ ] Additional Trail request: research suitable learning-path designs and motion, then adapt restrained scenery and keepsake interactions to Ollie.
 - [ ] Trail/Create clarification: replace ugly repeated Trail motion and polish Create composition, iconography and control details in this same batch.
+- [ ] New palette/paywall request: reevaluate softer readable blue and supporting colors; retain prepaywall, replace popup with a separate horizontal-plan screen, and prioritize onboarding motion.
 - [ ] Requested grey/blue Ollie preview: slightly fuller chest and thicker tail, same intermediate age and matte style, modestly less babyish; no automatic app replacement.
 
 - Ollie 1 copy recovery: restored name explanation, reading heading/labels, interest heading/explanation, welcome baseline and daily-lesson wording; replaced promotional intermediate buttons with Continue. Name → reading → interests verified. Still reconcile safety/privacy and the old interactive try-it-yourself copy without changing disclosures or promising unavailable functionality.
