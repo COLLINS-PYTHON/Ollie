@@ -65,7 +65,7 @@ function OnboardingLayout() {
   }, [pathname, ready, preview]);
 
   // Privacy and safety retain a quiet background. Light discovery steps share visible edge scenery.
-  const scenery = ['/onboarding/fact', '/onboarding/building', '/onboarding/handoff'].includes(pathname) ? 'clouds' : null;
+  const scenery = ['/onboarding/fact', '/onboarding/handoff'].includes(pathname) ? 'clouds' : null;
   return <div data-navigation={direction} className="onboarding-theme onboarding-shell">{ready ? <>{scenery && <OnboardingScenery variant={scenery} />}<div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 
