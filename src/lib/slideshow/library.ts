@@ -15,8 +15,8 @@ const PACKS: Record<string, Subtopic[]> = { ...PACK_A, ...PACK_B, ...PACK_C };
 export const CATEGORY_IDS = INTERESTS.map((i) => i.id);
 
 export type Slide =
-  | { kind: "content"; sub: Subtopic }
-  | { kind: "quiz"; sub: Subtopic };
+  | { kind: "content"; sub: Subtopic; scene?: number }
+  | { kind: "quiz"; sub: Subtopic; scene?: number };
 
 export type Day = { categoryId: string; label: string; slides: Slide[]; lessonIndex?: number };
 

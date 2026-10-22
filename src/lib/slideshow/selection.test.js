@@ -19,3 +19,11 @@ test('reopening same day reuses the selected lesson', () => {
 test('daily lessons total twelve slides, early readers get eight', () => {
   for (const category of CATEGORY_IDS) { expect(buildDay(category, 0, '7-9')?.slides.length).toBe(12); expect(buildDay(category, 0, '10-12')?.slides.length).toBe(12); expect(buildDay(category, 0, '4-6')?.slides.length).toBe(8); }
 });
+test('every category has four distinct single-topic lessons', () => {
+  for (const category of CATEGORY_IDS) {
+    const ids = [];
+    for (let index=0;index<4;index++) { const day=buildDay(category,index,'10-12'); const topics=new Set(day.slides.map(s=>s.sub.id)); expect(topics.size).toBe(1);ids.push(day.slides[0].sub.id); expect(new Set(day.slides.filter(s=>s.kind==='content').slice(0,4).map(s=>s.sub.caption['10-12'])).size).toBe(4); }
+    expect(new Set(ids).size).toBe(4);
+  }
+});
+test('older Moon quiz actually answers the phases question', () => { const quiz=buildDay('space',0,'10-12').slides.find(s=>s.kind==='quiz').sub.quiz; expect(quiz.options[quiz.answer]).toBe('Our changing view of its sunlit half'); });

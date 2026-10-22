@@ -20,7 +20,7 @@
 - The parent PIN is only stored as a SHA-256 hash (pinHash); check it with checkPin. Why: spec requires PINs never be stored readable.
 - Building is an immediate settings summary, not a fake timed generator; custom lessons remain persisted separately when available. Why: setup never pretends background generation happened.
 - Signed-in devices live in the `devices` table; remote log out sets `revoked`, and that device wipes itself on its next sync. Why: no server push in v1.
-- LessonArt is the shared topic renderer for previews, playback and Trail keepsakes, using accurate topic diagrams and matching reusable editorial pictures. Why: a Discovery must show the same topic everywhere.
+- LessonArt uses the topic-art registry and topic-sequences for previews, playback and Trail; unknown topics show no unrelated category cover. Why: topic identity and artwork must match everywhere.
 - Prices derive from subscription-prices, yearly equivalent divides by 12. Why: consistent labels.
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
 - Chase uses direct H.264 src, muted/defaultMuted inline autoplay, readiness/gesture retries and reduced-motion pause. Why: reliable phone playback without controls.
@@ -36,5 +36,6 @@
 
 - child-interactions centralizes tested voice age and starter rules; swipes never bypass open quizzes. Why: consistent safe navigation.
 - ONBOARDING_STEPS defines the household/value-proof flow and accurate progress; only kid calibration repeats, PIN precedes paywall, account and preferred parent name follow. Why: setup preserves the parent's payment and identity boundaries.
-- Read-aloud goes through src/lib/speak.ts (/api/speech neural voice, browser voice fallback). Why: one natural voice everywhere, still works offline.
+- Read-aloud goes through src/lib/speak.ts with actual age pacing, deduplicated bounded preloads and browser fallback. Why: pace follows age rather than reading difficulty, without duplicate voice charges.
+- Shared lessons teach one topic at a time; daily cached choices rebuild current content locally without advancing selection. Why: library improvements reach old selections without rewriting cloud progress.
 - Cookie purchase availability is shared through picture-store; preview purchase controls never award credits. Why: a parent PIN is permission, not evidence of payment.

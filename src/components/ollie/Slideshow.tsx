@@ -1,6 +1,7 @@
-import { speak, stopSpeaking } from "@/lib/speak";
+import { speak, stopSpeaking, preloadSpeech } from "@/lib/speak";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import ollie from "@/assets/ollie.png";
+import { FloatingWhale } from './FloatingWhale';
+import { bubbleSound } from '@/lib/bubble-sound';
 import { INTERESTS } from "@/lib/interests";
 import { buildDay, type Day } from "@/lib/slideshow/library";
 import type { SlideshowReview } from "@/lib/review-store";
@@ -16,7 +17,7 @@ import { LessonArt } from "@/components/ollie/LessonArt";
 import { canSwipeLesson } from "@/lib/child-interactions";
 import { Button } from "@/components/ui/button";
 
-export type SlideshowChild = { name: string; band: Band; interests: string[]; needsReadAloud: boolean };
+export type SlideshowChild = { name: string; age: number; band: Band; interests: string[]; needsReadAloud: boolean };
 
 const PRAISE = ["Yes! Exactly right!", "That is it!", "You nailed it!", "Perfect!"];
 
@@ -81,14 +82,14 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
     stopSpeaking();
     setSpeaking(false);
     if (phase !== "play" || !narration || !parentSettings.soundOn || !child.needsReadAloud || status === "correct") return;
-    void speak(narration, { onStart: () => setSpeaking(true), onEnd: () => setSpeaking(false) });
+    void speak(narration, { age:child.age, onStart: () => setSpeaking(true), onEnd: () => setSpeaking(false) });
     return () => { stopSpeaking(); };
   }, [phase, index, status, hint, narration, child.band, child.needsReadAloud]);
 
   const toggleNarration = () => {
     if (typeof window === "undefined" || !parentSettings.soundOn) return;
     if (speaking) { stopSpeaking(); setSpeaking(false); return; }
-    void speak(narration, { onStart: () => setSpeaking(true), onEnd: () => setSpeaking(false) });
+    void speak(narration, { age:child.age, onStart: () => setSpeaking(true), onEnd: () => setSpeaking(false) });
   };
 
   const clearSlideState = () => {
@@ -117,6 +118,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
   };
 
   const advance = () => {
+    bubbleSound();
     if (index + 1 >= slides.length) {
       finish();
       return;
@@ -158,7 +160,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
           )}
           <Button variant="ghost"
             type="button"
-            onClick={() => setPhase("play")}
+            onClick={() => { bubbleSound(); setPhase("play"); }}
             className="h-12 rounded-pill bg-primary px-10 py-3.5 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
           >
             Start
@@ -180,7 +182,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
       <div className="fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
         <div className="slide-tint relative flex flex-1 flex-col items-center justify-center gap-5 px-7 text-center">
           <div className={`glow-burst absolute size-56 rounded-pill bg-gradient-to-b ${tile} opacity-25`} />
-          <img src={ollie} alt="Ollie celebrating" className="relative w-32" width={128} height={128} />
+          <FloatingWhale pose="celebrate" size={200}/>
           <h1 className="relative text-title text-foreground">{review ? `Nice review, ${child.name}!` : `You did it, ${child.name}!`}</h1>
           <p className="relative text-body text-muted-foreground">
             You got {score.correct} of {Math.max(score.total, 1)} right on the first try.
@@ -245,14 +247,14 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
         </div>
 
         {current.kind === "content" ? (
-          <div key={current.sub.id} className="lesson-stage-enter flex flex-1 flex-col items-center justify-center gap-6 px-7 text-center">
+          <div key={index} className="lesson-stage-enter flex flex-1 flex-col items-center justify-center gap-5 px-6 py-5 text-center">
             {day.image && index === 0 ? (
               <img src={day.image} alt="" className="pop-in size-56 rounded-card object-cover shadow-card" />
             ) : (
-              <LessonArt categoryId={day.categoryId} topicId={current.sub.id} title={current.sub.title} className="w-full max-w-[360px]" />
+              <LessonArt categoryId={day.categoryId} topicId={current.sub.id} title={day.label} scene={current.scene ?? 0} className="w-full max-w-[320px]" />
             )}
             <p className="text-label uppercase tracking-wide text-muted-foreground">{current.sub.title}</p>
-            <p className="text-title max-w-[320px] text-foreground">{current.sub.caption[child.band]}</p>
+            <p className="lesson-copy text-foreground">{current.sub.caption[child.band]}</p>
           </div>
         ) : (
           <div key={`quiz-${current.sub.id}`} className="lesson-stage-enter flex flex-1 flex-col justify-center gap-4 px-6 py-4">

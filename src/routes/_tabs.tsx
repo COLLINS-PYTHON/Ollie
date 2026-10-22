@@ -38,7 +38,8 @@ function TabsLayout() {
   const review = useSlideshowReview();
   const [bedtime, setBedtime] = useState(false);
   const [child, setChild] = useState<SlideshowChild>({
-    name: "Milo",
+    name: "",
+    age: 7,
     band: "7-9",
     interests: [],
     needsReadAloud: false,
@@ -54,6 +55,7 @@ function TabsLayout() {
     setPrefs({ resetTime: onboardingState.slideshowReset });
     setChild({
       name: childName(onboardingState.name),
+      age: onboardingState.age || 7,
       band: effectiveBand(onboardingState.age || 7, onboardingState.readingLevel ?? "stories"),
       interests: onboardingState.interests,
       needsReadAloud: onboardingState.readingLevel === "none" || onboardingState.readingLevel === "sounding",
