@@ -2,8 +2,11 @@
 
 ## Now
 
+- [ ] October 22 reference-led full-interface refresh: review five uploaded clips across their timelines; improve soft controls, onboarding transitions, Search, Create, Trail and Parent Dashboard without changing transport, rules or established wording.
+- [ ] Requested grey/blue Ollie preview: slightly fuller chest and thicker tail, same intermediate age and matte style, modestly less babyish; no automatic app replacement.
+
 - Ollie 1 copy recovery: restored name explanation, reading heading/labels, interest heading/explanation, welcome baseline and daily-lesson wording; replaced promotional intermediate buttons with Continue. Name → reading → interests verified. Still reconcile safety/privacy and the old interactive try-it-yourself copy without changing disclosures or promising unavailable functionality.
-- Mascot work paused. Remaining full-app work is tracked below; app mascot artwork stays unchanged.
+- Mascot refinement is limited to the requested preview; app mascot artwork stays unchanged until approval.
 - Artwork direction: new generated images use the approved tactile matte book style; live turtle generation returned and was inspected, build OK. Existing shared Daily Discovery pictures and graphics still need coordinated replacement, preserving accurate diagrams and matching preview/playback/Trail artwork.
 - Incorporate uploaded Trail/fridge inspirations: airy winding path and collectible picture keepsakes, adapted to Ollie's matte blue/mist aesthetic without copying the reference.
 - Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
