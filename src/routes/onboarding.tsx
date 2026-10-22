@@ -10,6 +10,7 @@ import whaleCelebrate from '@/assets/whale-celebrate.png';
 import { AmbientDepth } from "@/components/ollie/AmbientDepth";
 import { FloatingWhale } from "@/components/ollie/FloatingWhale";
 import { bubbleSound } from "@/lib/bubble-sound";
+import { ONBOARDING_ANSWER } from '@/lib/onboarding-answer';
 import { preloadSpeech } from "@/lib/speak";
 
 export const Route = createFileRoute("/onboarding")({
@@ -23,6 +24,7 @@ function OnboardingLayout() {
   const [ready, setReady] = useState(false);
   const { preview } = Route.useSearch();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  useEffect(() => { if (ready && pathname === "/onboarding/fact") void preloadSpeech(ONBOARDING_ANSWER["7-9"],7).catch(() => {}); }, [ready,pathname]);
   const previousStep = useRef(0);
   const stepIndex = ONBOARDING_STEPS.findIndex(step => step === pathname || step + '/' === pathname);
   const direction = stepIndex < previousStep.current ? 'back' : 'forward';

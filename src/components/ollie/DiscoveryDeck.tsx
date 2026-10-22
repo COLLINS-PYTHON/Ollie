@@ -6,10 +6,10 @@ import type { Band } from '@/lib/slideshow/types';
 import { bubbleSound } from '@/lib/bubble-sound';
 import { LessonArt } from './LessonArt';
 
-export function DiscoveryDeck({ categoryId, band }: { categoryId: string; band: Band }) {
+export function DiscoveryDeck({ categoryId, band, onChange }: { categoryId: string; band: Band; onChange?: (index:number)=>void }) {
   const [active,setActive] = useState(0);
   const days = [0,1,2].map(index => buildDay(categoryId,index,band));
-  const move = (step: number) => { bubbleSound(); setActive(value => (value + step + 3) % 3); };
+  const move = (step: number) => { bubbleSound(); const next=(active+step+3)%3;setActive(next);onChange?.(next); };
   return <div className="discovery-deck-wrap"><div className="discovery-deck">
     {days.map((day,index) => { if (!day) return null; const position=(index-active+3)%3; return <div key={index} data-position={position} aria-hidden={position !== 0} className="discovery-preview-card"><LessonArt categoryId={categoryId} topicId={day.slides[0]?.sub.id ?? ''} title={day.label} animated={position===0}/><p className="text-support font-bold text-foreground">{day.label}</p></div>; })}
     </div><div className="deck-controls"><Button variant="control" size="icon" aria-label="Previous lesson example" onClick={()=>move(-1)}><ChevronLeft/></Button><span className="text-label text-muted-foreground">{active+1} / 3</span><Button variant="control" size="icon" aria-label="Next lesson example" onClick={()=>move(1)}><ChevronRight/></Button></div></div>;
