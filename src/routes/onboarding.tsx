@@ -110,12 +110,12 @@ export function OnboardingSkeleton({
           aria-valuenow={Math.round(progress * 100)}
         >
           <span className="chapter-fill absolute inset-y-0 left-0 rounded-pill bg-primary" style={{ width: `${progress * 100}%` }} />
-
+          {[25, 50, 75].map(at => <span key={at} aria-hidden="true" className="chapter-divider absolute inset-y-0 w-1" style={{ left: `${at}%` }} />)}
         </div>
       </header>
 
 
-      <main className="onboarding-content flex min-h-0 flex-1 flex-col px-6 pb-32 pt-9">
+      <main key={pathname} className="onboarding-content flex min-h-0 flex-1 flex-col px-6 pb-32 pt-9">
         <h1 className="text-title mx-auto w-full max-w-sm text-center text-foreground">{title}</h1>
         <div className="onboarding-step-body mt-7 flex-1">{children}</div>
         {companion && <OnboardingCompanions scene={companion} />}

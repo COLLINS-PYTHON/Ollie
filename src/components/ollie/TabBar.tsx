@@ -27,10 +27,10 @@ export function TabBar() {
               aria-label={label}
               aria-current={active ? "page" : undefined}
               className={[
-                "flex h-12 items-center justify-center gap-2 rounded-pill transition-all duration-element ease-enter active:scale-95",
+                "app-tab flex h-12 flex-1 flex-col items-center justify-center gap-1 rounded-pill transition-all duration-element ease-enter active:scale-95",
                 active
-                  ? "bg-primary px-5 text-primary-foreground"
-                  : "w-14 text-muted-foreground hover:text-foreground",
+                  ? "bg-secondary px-5 text-primary"
+                  : "px-5 text-muted-foreground hover:text-foreground",
               ].join(" ")}
             >
               <Icon className="size-[22px] shrink-0" strokeWidth={2.2} />

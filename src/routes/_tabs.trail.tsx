@@ -37,9 +37,9 @@ function Trail() {
   const points = trailPositions(nodes.length);
   const height = (points.at(-1)?.y ?? 0) + 190;
   const path = trailCurve(points);
-  return <main className="screen-enter mx-auto min-h-[100svh] w-full max-w-md bg-background px-6 pb-32 pt-20">
+  return <main className="trail-screen screen-enter mx-auto min-h-[100svh] w-full max-w-md bg-background px-6 pb-32 pt-20">
     <h1 className="text-title text-foreground">Your Discovery Trail</h1>
-    <div className="mt-5 flex items-center gap-3 border-b border-border pb-4">
+    <div className="trail-summary mt-5 flex items-center gap-3 pb-4">
       <Jar filled={filled} />
       <div className="min-w-0"><p className="text-body font-bold text-foreground">{filled} of {JAR_EVERY} learning days</p><p className="text-support mt-1 text-muted-foreground">{JAR_BONUS} bonus picture cookies</p></div>
     </div>
@@ -68,12 +68,12 @@ function Trail() {
                   type="button"
                   onClick={() => startReview({ categoryId: done.completion.categoryId, band: done.completion.band, label: done.completion.label, lessonIndex: done.completion.lessonIndex ?? 0 })}
                   aria-label={`Review the lesson: ${done.completion.label}`}
-                  className={`glossy trail-node relative flex size-16 items-center justify-center overflow-hidden rounded-pill bg-gradient-to-b ${category?.tile ?? "from-cat-space to-cat-space-deep"} transition-transform duration-tap active:scale-95`}
+                  className="trail-keepsake trail-node relative flex size-16 items-center justify-center overflow-hidden rounded-control bg-card transition-transform duration-tap active:scale-95"
                 >
                   {done && <LessonArt categoryId={done.completion.categoryId} topicId={topic?.id ?? ""} title={done.completion.label} animated={false} className="size-full" />}
                 </Button>
               ) : (
-                <div className={`flex size-16 items-center justify-center rounded-pill ${paused ? "border-2 border-dashed border-primary/30 bg-card" : node.day === cycleStart + filled + 1 ? "border-2 border-primary bg-primary/10" : "border-2 border-border bg-card"}`}>
+                <div className={`trail-unvisited flex size-16 items-center justify-center rounded-pill ${paused ? "border-2 border-dashed border-primary/30 bg-card" : node.day === cycleStart + filled + 1 ? "trail-next border-2 border-primary bg-primary/10" : "border-2 border-border bg-card"}`}>
                   {paused ? <Pause className="size-5 text-muted-foreground" /> : node.day === cycleStart + filled + 1 ? <Rocket className="size-7 text-primary" /> : <LockKeyhole className="size-5 text-muted-foreground/60" />}
                 </div>
               )}
