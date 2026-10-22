@@ -130,7 +130,7 @@ function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) =
       aria-checked={on}
       aria-label={label}
       onClick={() => onChange(!on)}
-      className={`relative h-7 w-12 shrink-0 rounded-pill transition-colors duration-tap ${on ? "bg-primary" : "bg-surface-2"}`}
+      className={`parent-toggle relative h-7 w-12 shrink-0 rounded-pill transition-colors duration-element ${on ? "bg-primary" : "bg-surface-2"}`}
     >
       <span className={`absolute top-0.5 size-6 rounded-pill bg-card shadow-card transition-all duration-tap ${on ? "left-[22px]" : "left-0.5"}`} />
     </Button>
@@ -139,7 +139,7 @@ function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) =
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="mt-7">
+    <section className="parent-section mt-7">
       <h2 className="mb-2 px-1 text-label uppercase tracking-wide text-muted-foreground">{title}</h2>
       <ul className="overflow-hidden rounded-card border border-surface-2 bg-card">{children}</ul>
     </section>
@@ -149,7 +149,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 function Row({ icon, color, label, value, onClick, trailing }: { icon: ReactNode; color: string; label: string; value: string; onClick?: () => void; trailing?: ReactNode }) {
   const inner = (
     <>
-      <span className={color}>{icon}</span>
+      <span className={`parent-row-icon ${color}`}>{icon}</span>
       <div className="min-w-0 flex-1 text-left">
         <div className="text-body text-foreground">{label}</div>
         <div className="text-support text-muted-foreground">{value}</div>

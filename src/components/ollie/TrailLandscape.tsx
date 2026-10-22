@@ -33,9 +33,8 @@ export function trailCurve(points: Array<{ x: number; y: number }>) {
 function Tree({ x, y, snow, christmas }: { x: number; y: number; snow: boolean; christmas: boolean }) {
   return <g transform={`translate(${x} ${y})`}>
     <ellipse cy="8" rx="26" ry="7" className="trail-ground-shadow" />
-    <path d="M-3-22h6V7h-6Z" className="fill-foreground" />
-    <path d="M0-87-23-50h12l-22 32H33L11-50h12Z" className="trail-tree" />
-    <path d="M0-87-10-67H9ZM-18-38l-15 20H33L18-38q-18 12-36 0" className={snow ? "trail-snow-cap" : "trail-tree-highlight"} />
+    <path d="M-3-38h6V7h-6Z" className="trail-trunk" />
+    {christmas ? <><path d="M0-87-23-50h12l-22 32H33L11-50h12Z" className="trail-tree" /><path d="M0-87-10-67H9ZM-18-38l-15 20H33L18-38q-18 12-36 0" className="trail-snow-cap" /></> : <g className="trail-canopy"><path d="M-27-34C-43-42-31-63-17-65-26-91 21-103 27-77 47-75 45-43 29-38 20-18-16-16-27-34Z" className="trail-tree" /><path d="M-24-51C-33-65-13-76-6-73-8-89 16-92 22-79 5-81 14-62-1-55-10-50-13-43-24-51Z" className={snow ? "trail-snow-cap" : "trail-tree-highlight"} /></g>}
     {christmas && <><path d="m-13-51 29 8m-39 10 47 10" className="trail-ribbon" /><circle cy="-88" r="4" className="fill-accent-4" /><circle cx="-12" cy="-40" r="3" className="fill-accent-3" /><circle cx="15" cy="-28" r="3" className="fill-primary" /></>}
   </g>;
 }
@@ -45,7 +44,7 @@ export function TrailLandscape({ height, season }: { height: number; season: Tra
   return <svg viewBox={`0 0 340 ${height}`} className={`trail-landscape trail-season-${season} absolute inset-0 h-full w-full`} aria-hidden="true">
     {Array.from({ length: Math.ceil(height / 310) }, (_, i) => {
       const y = i * 310 + 110;
-      return <g key={i}>
+      return <g key={i} className="trail-landmark">
         <path d={`M-20 ${y + 110}Q100 ${y + 25} 215 ${y + 117}T370 ${y + 86}V${y + 198}Q170 ${y + 126}-20 ${y + 195}Z`} className="trail-meadow" />
         <g transform={`translate(0 ${i % 3 * 9})`}><Tree x={i % 2 ? 291 : 38} y={y + 38} snow={snow} christmas={season === "christmas"} /></g>
         {i % 3 === 1 ? <g transform={`translate(${i % 2 ? 27 : 301} ${y + 175})`}>
@@ -55,9 +54,9 @@ export function TrailLandscape({ height, season }: { height: number; season: Tra
           <ellipse rx="22" ry="9" className="trail-stone" /><path d="M-14-2q12-9 25 0" className="trail-stone-shine" />
           {!snow && <g className="trail-botanical"><path d="M0-4q-9-24 2-37M0-15q-21-4-18-18 18 0 18 18m2-9q18-7 18-21-20 3-18 21" className="trail-leaf" />{season === "spring" && <circle cx="3" cy="-42" r="7" className="fill-accent-3" />}</g>}
         </g>
-        {snow ? Array.from({ length: 7 }, (_, j) => <circle key={j} cx={25 + j * 47} cy={y - 80 + j % 3 * 28} r={j % 2 ? 2 : 3} className={`trail-snowfall trail-snow-${j % 3}`} />) : <g transform={`translate(${i % 2 ? 274 : 65} ${y - 35})`} className="trail-butterfly">
-          <path d="M0 0C-30-29-25 14 0 9C25 14 30-29 0 0Z" className="fill-accent-3" /><path d="M0-4v16" className="trail-fine-line" />
-        </g>}
+        {snow ? Array.from({ length: 4 }, (_, j) => <circle key={j} cx={25 + j * 83} cy={y - 80 + j % 3 * 28} r={j % 2 ? 2 : 3} className={`trail-snowfall trail-snow-${j % 3}`} />) : i===0 ? <g transform={`translate(281 ${y - 28})`}>
+          <g className="trail-flight"><path d="M0 0C-21-23-22 8 0 8C22 8 21-23 0 0Z" className="trail-wings fill-accent-3" /><path d="M0-3v13" className="trail-fine-line" /></g>
+        </g> : null}
       </g>;
     })}
   </svg>;

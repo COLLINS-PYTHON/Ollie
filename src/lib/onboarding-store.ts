@@ -51,7 +51,7 @@ export const parentSettings = {
 const PROFILE_KEY = "ollie-profile-v1";
 const DRAFT_KEY = "ollie-onboarding-draft-v1";
 const STEP_KEY = "ollie-onboarding-step-v1";
-export const ONBOARDING_STEPS = ["/onboarding/fact", "/onboarding", "/onboarding/reading", "/onboarding/interests", "/onboarding/screen-time", "/onboarding/pin", "/onboarding/building", "/onboarding/try", "/onboarding/lessons", "/onboarding/assurance", "/onboarding/trust", "/onboarding/paywall", "/onboarding/account", "/onboarding/parent-name", "/onboarding/handoff"] as const;
+export const ONBOARDING_STEPS = ["/onboarding/fact", "/onboarding", "/onboarding/reading", "/onboarding/interests", "/onboarding/screen-time", "/onboarding/pin", "/onboarding/building", "/onboarding/try", "/onboarding/lessons", "/onboarding/assurance", "/onboarding/trust", "/onboarding/paywall", "/onboarding/plans", "/onboarding/account", "/onboarding/parent-name", "/onboarding/handoff"] as const;
 export function saveOnboardingStep(path: string) {
   if (!ONBOARDING_STEPS.some((s) => s === path)) return;
   localStorage.setItem(STEP_KEY, path);

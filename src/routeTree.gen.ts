@@ -39,6 +39,7 @@ import { Route as OnboardingMeetRouteImport } from './routes/onboarding/meet'
 import { Route as OnboardingParentNameRouteImport } from './routes/onboarding/parent-name'
 import { Route as OnboardingPaywallRouteImport } from './routes/onboarding/paywall'
 import { Route as OnboardingPinRouteImport } from './routes/onboarding/pin'
+import { Route as OnboardingPlansRouteImport } from './routes/onboarding/plans'
 import { Route as OnboardingPreviewRouteImport } from './routes/onboarding/preview'
 import { Route as OnboardingPrioritiesRouteImport } from './routes/onboarding/priorities'
 import { Route as OnboardingProtectionRouteImport } from './routes/onboarding/protection'
@@ -199,6 +200,11 @@ const OnboardingPinRoute = OnboardingPinRouteImport.update({
   path: '/pin',
   getParentRoute: () => OnboardingRoute,
 } as any)
+const OnboardingPlansRoute = OnboardingPlansRouteImport.update({
+  id: '/plans',
+  path: '/plans',
+  getParentRoute: () => OnboardingRoute,
+} as any)
 const OnboardingPreviewRoute = OnboardingPreviewRouteImport.update({
   id: '/preview',
   path: '/preview',
@@ -274,6 +280,7 @@ export interface FileRoutesByFullPath {
   '/onboarding/parent-name': typeof OnboardingParentNameRoute
   '/onboarding/paywall': typeof OnboardingPaywallRoute
   '/onboarding/pin': typeof OnboardingPinRoute
+  '/onboarding/plans': typeof OnboardingPlansRoute
   '/onboarding/preview': typeof OnboardingPreviewRoute
   '/onboarding/priorities': typeof OnboardingPrioritiesRoute
   '/onboarding/protection': typeof OnboardingProtectionRoute
@@ -313,6 +320,7 @@ export interface FileRoutesByTo {
   '/onboarding/parent-name': typeof OnboardingParentNameRoute
   '/onboarding/paywall': typeof OnboardingPaywallRoute
   '/onboarding/pin': typeof OnboardingPinRoute
+  '/onboarding/plans': typeof OnboardingPlansRoute
   '/onboarding/preview': typeof OnboardingPreviewRoute
   '/onboarding/priorities': typeof OnboardingPrioritiesRoute
   '/onboarding/protection': typeof OnboardingProtectionRoute
@@ -355,6 +363,7 @@ export interface FileRoutesById {
   '/onboarding/parent-name': typeof OnboardingParentNameRoute
   '/onboarding/paywall': typeof OnboardingPaywallRoute
   '/onboarding/pin': typeof OnboardingPinRoute
+  '/onboarding/plans': typeof OnboardingPlansRoute
   '/onboarding/preview': typeof OnboardingPreviewRoute
   '/onboarding/priorities': typeof OnboardingPrioritiesRoute
   '/onboarding/protection': typeof OnboardingProtectionRoute
@@ -397,6 +406,7 @@ export interface FileRouteTypes {
     | '/onboarding/parent-name'
     | '/onboarding/paywall'
     | '/onboarding/pin'
+    | '/onboarding/plans'
     | '/onboarding/preview'
     | '/onboarding/priorities'
     | '/onboarding/protection'
@@ -436,6 +446,7 @@ export interface FileRouteTypes {
     | '/onboarding/parent-name'
     | '/onboarding/paywall'
     | '/onboarding/pin'
+    | '/onboarding/plans'
     | '/onboarding/preview'
     | '/onboarding/priorities'
     | '/onboarding/protection'
@@ -477,6 +488,7 @@ export interface FileRouteTypes {
     | '/onboarding/parent-name'
     | '/onboarding/paywall'
     | '/onboarding/pin'
+    | '/onboarding/plans'
     | '/onboarding/preview'
     | '/onboarding/priorities'
     | '/onboarding/protection'
@@ -717,6 +729,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingPinRouteImport
       parentRoute: typeof OnboardingRoute
     }
+    '/onboarding/plans': {
+      id: '/onboarding/plans'
+      path: '/plans'
+      fullPath: '/onboarding/plans'
+      preLoaderRoute: typeof OnboardingPlansRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
     '/onboarding/preview': {
       id: '/onboarding/preview'
       path: '/preview'
@@ -811,6 +830,7 @@ interface OnboardingRouteChildren {
   OnboardingParentNameRoute: typeof OnboardingParentNameRoute
   OnboardingPaywallRoute: typeof OnboardingPaywallRoute
   OnboardingPinRoute: typeof OnboardingPinRoute
+  OnboardingPlansRoute: typeof OnboardingPlansRoute
   OnboardingPreviewRoute: typeof OnboardingPreviewRoute
   OnboardingPrioritiesRoute: typeof OnboardingPrioritiesRoute
   OnboardingProtectionRoute: typeof OnboardingProtectionRoute
@@ -837,6 +857,7 @@ const OnboardingRouteChildren: OnboardingRouteChildren = {
   OnboardingParentNameRoute: OnboardingParentNameRoute,
   OnboardingPaywallRoute: OnboardingPaywallRoute,
   OnboardingPinRoute: OnboardingPinRoute,
+  OnboardingPlansRoute: OnboardingPlansRoute,
   OnboardingPreviewRoute: OnboardingPreviewRoute,
   OnboardingPrioritiesRoute: OnboardingPrioritiesRoute,
   OnboardingProtectionRoute: OnboardingProtectionRoute,

@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 - MCP server lives in src/lib/mcp (public, no auth; tools use hardcoded data only) — user explicitly chose public access; never add service-role access there.
 - Design tokens (Ollie colors, radii card/control/pill, shadow-card/sheet, duration-tap/element/reveal, text-title/body/support/label/button) live in src/styles.css; components use only these. Why: every screen follows the spec from one source.
+- Shared soft controls use Button variants and surface-scoped presentation hooks; onboarding content remounts by pathname while its header/action stay stable. Why: one visual language and replayable transitions without resetting saved setup or conversation state.
 - Tab screens live under `_tabs`; `/` resolves completed saved/signed-in profiles to Search and unfinished setup to its resume step; onboarding redirects completed families to Search. Why: returning families never repeat setup and child screens hydrate their name before rendering.
 - Slideshow packs are shared, band-keyed and never generated per viewer. Why: reusable lessons and matching quiz answers keep costs low.
 - The slideshow takes over the screen from the `_tabs` layout until the day is marked done in `src/lib/slideshow-store.ts`; screens never render it inline. Why: the spec requires the daily lesson to be finished before anything else.
@@ -24,7 +25,7 @@
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
 - Chase uses direct H.264 src, muted/defaultMuted inline autoplay, readiness/gesture retries and reduced-motion pause. Why: reliable phone playback without controls.
 - Trail scenery uses authored SVG with CSS motion and local-calendar seasonal selection; its irregular path is deterministic and separate from progress. Why: crisp instant artwork, no generation charges, and rewards never change with a theme.
-- Paywall uses Vaul with pinned plan prices and footer; PaywallDiscoveryVideo loops muted inline with WebM and H.264 sources, readiness retries and reduced-motion pause. Why: prices stay visible and animation never needs a play button.
+- Paywall intro navigates to the separate plans route with side-by-side prices and a pinned footer; only reminder permission uses Vaul. PaywallDiscoveryVideo retains muted inline retries and reduced-motion pause. Why: two distinct pages preserve trial proof and readable pricing.
 - Parent setting sheets use the shared portalled Vaul drawer outside the animated page. Why: a transformed page must not trap fixed dialogs below the viewport.
 - Onboarding's explicit preview search parameter is retained between its steps and bypasses the returning-family redirect without clearing saved data. Why: existing families can review setup while ordinary entry continues to skip it.
 - Parent-facing safety illustrations use the shared Embla carousel in SafetyExamples, with literal locked responses and clearly labelled example flags. Why: parents can inspect multiple sensitive-topic outcomes without live searches or fabricated progress.

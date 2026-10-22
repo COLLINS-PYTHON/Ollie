@@ -2,8 +2,14 @@
 
 ## Now
 
+- [x] October 22 reference-led refresh: sampled five clips across their timelines, softened shared controls/navigation, refined Search, Create and Parent presentation, added staged onboarding entrances. Source clips were sampled, not checked literally frame by frame.
+- [x] Trail research and refresh: adapted finite path/keepsake principles, replaced triangular trees and repeated butterfly motion with rounded seasonal canopies and one quiet flight; progress logic unchanged.
+- [x] Create/details: matte sketchbook artwork, clearer modes/starters, fridge empty state and restrained shared icons.
+- [x] Palette/paywall: softer accessible blue, supporting teal/pink/amber, original prepaywall kept, separate full page with horizontal Yearly/Monthly plans and trial timeline. Verified navigation through monthly selection/reminder dismissal to account at phone/tablet/desktop sizes; billing still unconnected.
+- [x] Grey/blue Ollie fuller-chest/thicker-tail preview generated and inspected; app mascot unchanged. It still leans young and requires owner approval before replacement.
+
 - Ollie 1 copy recovery: restored name explanation, reading heading/labels, interest heading/explanation, welcome baseline and daily-lesson wording; replaced promotional intermediate buttons with Continue. Name → reading → interests verified. Still reconcile safety/privacy and the old interactive try-it-yourself copy without changing disclosures or promising unavailable functionality.
-- Mascot work paused. Remaining full-app work is tracked below; app mascot artwork stays unchanged.
+- Mascot refinement is limited to the requested preview; app mascot artwork stays unchanged until approval.
 - Artwork direction: new generated images use the approved tactile matte book style; live turtle generation returned and was inspected, build OK. Existing shared Daily Discovery pictures and graphics still need coordinated replacement, preserving accurate diagrams and matching preview/playback/Trail artwork.
 - Incorporate uploaded Trail/fridge inspirations: airy winding path and collectible picture keepsakes, adapted to Ollie's matte blue/mist aesthetic without copying the reference.
 - Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
