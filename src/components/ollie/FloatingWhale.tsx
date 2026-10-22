@@ -27,10 +27,10 @@ export function FloatingWhale({ pose = 'curious', size = 220, className = '' }: 
     });
   }, [pose, size]);
   return (
-    <div ref={root} className={`floating-whale ${className}`} style={{ width: size, height: size * 0.85 }} role="img" aria-label={pose === 'celebrate' ? 'Ollie the whale leaping happily' : 'Ollie the whale floating calmly'}>
+    <div ref={root} className={`floating-whale ${className}`} style={{ width: size, height: size * 0.5 }} role="img" aria-label={pose === 'celebrate' ? 'Ollie the whale leaping happily' : 'Ollie the whale floating calmly'}>
       <span className="floating-whale-shadow" aria-hidden="true" />
       <div className="floating-whale-body">
-        <img src={ART[pose]} alt="" width={1024} height={1024} draggable={false} />
+        <img src={ART[pose]} alt="" width={1200} height={550} draggable={false} />
       </div>
       {/* Cartoon thought bubble floating above his head, drifting on its own. */}
       <span className="whale-thought" aria-hidden="true">
