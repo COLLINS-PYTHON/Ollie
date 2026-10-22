@@ -37,7 +37,7 @@ function HandoffPage() {
   return (
     <div className="bg-gradient-hello min-h-screen">
       <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-5 pb-32 text-center">
-        <div className="setup-reveal"><FloatingWhale pose="celebrate" size={210} /></div>
+        <div className="setup-reveal"><FloatingWhale pose="celebrate" size={280} /></div>
         <h1 className="text-title mt-8 text-foreground">{name}’s space is ready.</h1>
         <div className="mt-5 w-full"><KidSwitcher onChange={() => refresh(n => n + 1)} /></div>
         <p className="text-body mt-5 max-w-xs text-muted-foreground">Hi {name}, I'm Ollie. Let's discover something wonderful together.</p>
