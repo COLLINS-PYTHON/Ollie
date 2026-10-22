@@ -14,6 +14,7 @@ import {
   loadProfile,
   saveProfile,
   TONE_LABELS,
+  resetOnboardingState,
 } from "@/lib/onboarding-store";
 import { loadChat, saveChat, type ChatMessage } from "@/lib/chat-store";
 import { COOKIE_PURCHASES_AVAILABLE, cookiesLeft, JARS, loadBalance, type Balance } from "@/lib/picture-store";

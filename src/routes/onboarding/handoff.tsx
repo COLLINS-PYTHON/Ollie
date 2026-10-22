@@ -6,7 +6,7 @@ import { useState } from "react";
 import { pushAll } from "@/lib/cloud-sync";
 import { loadCustom } from "@/lib/custom-lesson-store";
 import { childName, pageMeta } from "@/lib/meta";
-import ollie from "@/assets/ollie.png";
+import { FloatingWhale } from "@/components/ollie/FloatingWhale";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/onboarding/handoff")({
@@ -37,7 +37,7 @@ function HandoffPage() {
   return (
     <div className="bg-gradient-hello min-h-screen">
       <main className="mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-5 pb-32 text-center">
-        <img src={ollie} alt="Ollie waving" className="setup-reveal size-48 object-contain" />
+        <div className="setup-reveal"><FloatingWhale pose="celebrate" size={210} /></div>
         <h1 className="text-title mt-8 text-foreground">{name}’s space is ready.</h1>
         <div className="mt-5 w-full"><KidSwitcher onChange={() => refresh(n => n + 1)} /></div>
         <p className="text-body mt-5 max-w-xs text-muted-foreground">Hi {name}, I'm Ollie. Let's discover something wonderful together.</p>
