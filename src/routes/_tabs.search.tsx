@@ -30,7 +30,9 @@ const REACTIONS: { id: Reaction; label: string }[] = [
 ];
 import { onboardingState } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
-import ollie from "@/assets/ollie.png";
+import ollie from "@/assets/whale-curious.png";
+import { FloatingWhale } from "@/components/ollie/FloatingWhale";
+import { AmbientDepth } from "@/components/ollie/AmbientDepth";
 import { Button } from "@/components/ui/button";
 
 type RecognitionLike = {
@@ -236,12 +238,13 @@ function SearchChat() {
 
   return (
     <main className="search-screen screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-card">
+      {welcome && <AmbientDepth />}
       {/* iMessage-style header: centered round photo with name underneath */}
       <header className="search-header frosted relative z-10 flex flex-col items-center gap-1 pb-2.5 pt-12">
         <img
           src={ollie}
           alt="Ollie"
-          className={`size-10 rounded-full bg-surface object-cover ${listening ? "ollie-avatar-listening" : avatarNod ? "ollie-avatar-nod" : ""}`}
+          className={`size-10 rounded-full bg-surface object-contain p-0.5 ${listening ? "ollie-avatar-listening" : avatarNod ? "ollie-avatar-nod" : ""}`}
           width={40}
           height={40}
         />
@@ -251,18 +254,12 @@ function SearchChat() {
       <div ref={listRef} className="search-transcript relative z-10 min-h-0 flex-1 overflow-y-auto px-3 py-4">
         {messages.length === 0 && !busy ? (
           <div className="search-welcome flex min-h-full flex-col items-center justify-center gap-4 text-center">
-            <img
-              src={ollie}
-              alt="Ollie the puppy"
-              className="ollie-gentle-idle w-24"
-              width={96}
-              height={96}
-            />
-            <p className="text-body max-w-[280px] font-semibold text-foreground">
+            <FloatingWhale size={200} />
+            <p className="pop-in text-body max-w-[280px] font-semibold text-foreground">
               Hi {child.name}! What are you curious about today?
             </p>
             <div className="search-starters flex max-w-sm flex-wrap justify-center gap-2">
-              {starters.map(({ id, label, sample, icon: Icon }) => <Button key={id} variant="secondary" onClick={() => void send(sample)} className="h-auto min-h-12 gap-2 whitespace-normal rounded-pill px-4 py-3 text-support text-foreground"><Icon className="size-5 shrink-0 text-primary" />{label}</Button>)}
+              {starters.map(({ id, label, sample, icon: Icon }, i) => <Button key={id} variant="secondary" onClick={() => void send(sample)} style={{ animationDelay: `${150 + i * 90}ms` }} className="pop-in h-auto min-h-12 gap-2 whitespace-normal rounded-pill px-4 py-3 text-support text-foreground"><Icon className="size-5 shrink-0 text-primary" />{label}</Button>)}
             </div>
           </div>
         ) : (
