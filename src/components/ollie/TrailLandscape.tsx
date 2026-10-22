@@ -56,7 +56,7 @@ export function TrailLandscape({ height, season }: { height: number; season: Tra
         </g>
         {snow ? Array.from({ length: 4 }, (_, j) => <circle key={j} cx={25 + j * 83} cy={y - 80 + j % 3 * 28} r={j % 2 ? 2 : 3} className={`trail-snowfall trail-snow-${j % 3}`} />) : i===0 ? <g transform={`translate(281 ${y - 28})`}>
           <g className="trail-flight"><path d="M0 0C-21-23-22 8 0 8C22 8 21-23 0 0Z" className="trail-wings fill-accent-3" /><path d="M0-3v13" className="trail-fine-line" /></g>
-        </g>}
+        </g> : null}
       </g>;
     })}
   </svg>;
