@@ -1210,4 +1210,16 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .bedtime-screen { background:var(--rest-sky); color:var(--foreground); }
 .bedtime-star { background:var(--primary); }
 .bedtime-moon { position:absolute; top:10%; right:14%; width:48px; height:48px; border-radius:var(--radius-pill); background:var(--card); box-shadow:var(--elev-card); }
+.create-modes { position:relative; isolation:isolate; }
+.create-modes::before { content:''; position:absolute; z-index:-1; inset:5px auto 5px 5px; width:calc(50% - 5px); border-radius:var(--radius-pill); background:var(--card); box-shadow:var(--elev-card); transition:transform var(--duration-element) var(--ease-enter); }
+.create-modes[data-mode=type]::before { transform:translateX(100%); }
+.create-modes button[aria-pressed] { background:transparent; box-shadow:none; }
+.create-choice { transition:background-color var(--duration-element),color var(--duration-element),transform var(--duration-tap); }
+.create-choice[aria-pressed=true] { animation:choice-settle var(--duration-element) var(--ease-enter); }
+.builder-result { animation:local-result var(--duration-element) var(--ease-enter) both; }
+@keyframes choice-settle { 50% { transform:scale(1.035); } }
+@keyframes local-result { from { opacity:0.4; transform:translateY(5px); } to { opacity:1; transform:none; } }
+.discovery-open { animation:discovery-open var(--duration-reveal) var(--ease-enter) both; }
+@keyframes discovery-open { from { opacity:0.5; transform:translateY(32px); } to { opacity:1; transform:none; } }
 @media(prefers-reduced-motion:reduce) { .whale-breath,.whale-dream { animation:none; } }
+@media(prefers-reduced-motion:reduce) { .discovery-open,.create-choice[aria-pressed=true],.builder-result { animation:none; } .create-modes::before { transition:none; } }

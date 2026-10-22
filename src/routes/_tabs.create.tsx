@@ -227,7 +227,7 @@ function CreateScreen() {
 
       <div className="create-artwork" aria-hidden="true"><img src={sketchbook} alt="" width={1024} height={768} /></div>
       <section className="create-workbench mt-5 pb-6">
-        <div className="create-modes mb-3 flex gap-1 rounded-pill bg-surface p-1">
+        <div data-mode={mode} className="create-modes mb-3 flex gap-1 rounded-pill bg-surface p-1">
           {(["builder", "type"] as const).map((m) => (
             <Button variant="ghost"
               key={m}
@@ -269,7 +269,7 @@ function CreateScreen() {
               </div>
             ))}
             {builderSentence && (
-              <Button variant="ghost" type="button" onClick={() => speak(builderSentence)} className="pop-in w-full rounded-control bg-surface px-3 py-2 text-left text-body text-foreground">
+              <Button variant="ghost" type="button" onClick={() => speak(builderSentence)} className="builder-result w-full rounded-control bg-surface px-3 py-2 text-left text-body text-foreground">
                 {builderSentence}
               </Button>
             )}
