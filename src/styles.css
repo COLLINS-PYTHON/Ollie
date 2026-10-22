@@ -1223,3 +1223,28 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 @keyframes discovery-open { from { opacity:0.5; transform:translateY(32px); } to { opacity:1; transform:none; } }
 @media(prefers-reduced-motion:reduce) { .whale-breath,.whale-dream { animation:none; } }
 @media(prefers-reduced-motion:reduce) { .discovery-open,.create-choice[aria-pressed=true],.builder-result { animation:none; } .create-modes::before { transition:none; } }
+
+/* Floating sky whale: transforms come from the motion clock (src/lib/motion.ts). */
+.floating-whale { position:relative; margin-inline:auto; }
+.floating-whale-body { position:absolute; inset:0; transform:translate3d(var(--wx,0),var(--wy,0),0) rotate(var(--wr,0)); will-change:transform; }
+.floating-whale-body img { width:100%; height:100%; object-fit:contain; user-select:none; }
+.floating-whale-shadow { position:absolute; left:22%; right:22%; bottom:-6%; height:9%; border-radius:50%; background:var(--foreground); opacity:var(--wo,0.2); filter:blur(10px); transform:scaleX(var(--ws,1)); }
+/* Thought bubble: small dots rise toward a bobbing cloud above the head. */
+.whale-thought { position:absolute; left:56%; top:-26%; z-index:2; width:44%; height:40%; pointer-events:none; }
+.thought-dot,.thought-cloud { position:absolute; background:var(--card); box-shadow:var(--shadow-card); border-radius:50%; }
+.thought-dot.dot-1 { left:12%; bottom:0; width:9%; aspect-ratio:1; animation:thought-bob 3.2s ease-in-out infinite; }
+.thought-dot.dot-2 { left:24%; bottom:18%; width:14%; aspect-ratio:1; animation:thought-bob 3.2s ease-in-out .25s infinite; }
+.thought-cloud { left:36%; bottom:34%; width:52%; aspect-ratio:1.35; border-radius:999px; display:grid; place-items:center; color:var(--primary); animation:thought-bob 3.2s ease-in-out .5s infinite, thought-in 700ms cubic-bezier(.2,.8,.2,1) both; }
+.thought-cloud::before,.thought-cloud::after { content:""; position:absolute; background:var(--card); border-radius:50%; }
+.thought-cloud::before { width:46%; aspect-ratio:1; left:10%; top:-22%; }
+.thought-cloud::after { width:38%; aspect-ratio:1; right:12%; top:-14%; }
+.thought-cloud svg { position:relative; z-index:1; width:42%; height:auto; animation:thought-tilt 4s ease-in-out infinite; }
+@keyframes thought-bob { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+@keyframes thought-in { from { opacity:0; scale:.6; } to { opacity:1; scale:1; } }
+@keyframes thought-tilt { 0%,100% { rotate:-6deg; } 50% { rotate:6deg; } }
+.reveal-stagger > * { animation:reveal-up 520ms cubic-bezier(.2,.8,.2,1) both; }
+.reveal-stagger > *:nth-child(2) { animation-delay:90ms; } .reveal-stagger > *:nth-child(3) { animation-delay:180ms; } .reveal-stagger > *:nth-child(4) { animation-delay:270ms; } .reveal-stagger > *:nth-child(5) { animation-delay:360ms; }
+@keyframes reveal-up { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+.flag-pop { animation:flag-pop 420ms cubic-bezier(.2,.8,.2,1) both; }
+@keyframes flag-pop { from { opacity:0; transform:translateY(8px) scale(.96); } to { opacity:1; transform:none; } }
+@media(prefers-reduced-motion:reduce) { .thought-dot,.thought-cloud,.thought-cloud svg,.reveal-stagger > *,.flag-pop { animation:none; opacity:1; } }

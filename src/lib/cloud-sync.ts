@@ -166,10 +166,15 @@ export async function deleteCloudData() {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return;
   const uid = session.user.id;
-  const { data: files } = await supabase.storage.from("pictures").list(uid, { limit: 1000 });
-  if (files?.length) await supabase.storage.from("pictures").remove(files.map((f) => `${uid}/${f.name}`));
-  await supabase.from("accounts").delete().eq("id", uid);
-  await supabase.auth.signOut();
+  try {
+    const { data: files } = await supabase.storage.from("pictures").list(uid, { limit: 1000 });
+    if (files?.length) await supabase.storage.from("pictures").remove(files.map((f) => `${uid}/${f.name}`));
+    const { error } = await supabase.from("accounts").delete().eq("id", uid);
+    if (error) throw error;
+  } finally {
+    // Always sign out, so a failed delete can never restore the profile on next launch.
+    await supabase.auth.signOut().catch(() => supabase.auth.signOut({ scope: "local" }));
+  }
 }
 
 /* Brute-force protection: after 5 wrong tries, wait 60 seconds. */

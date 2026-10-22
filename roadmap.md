@@ -95,3 +95,5 @@
 - [ ] Make Daily Discovery interactive (narration, tap-to-reveal, predictions)
 - [ ] Restore Ollie 1 soft styling on remaining setup screens (reading, preview, safety, welcome)
 - [ ] Remove screen-time "boundaries" screen or rebuild it
+
+- [ ] Whale: no blowhole spray; cartoon thought/dream bubbles float above his head

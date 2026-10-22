@@ -31,12 +31,12 @@ function AccountPage() {
       if (!data.session) return;
       if (!onboardingState.name) loadProfile();
       await pushAll();
-      navigate({ to: "/onboarding/parent-name" });
+      navigate({ to: "/onboarding/handoff" });
     });
   }, [navigate]);
 
   async function finish() {
-    if (sent) return navigate({ to: "/onboarding/parent-name" });
+    if (sent) return navigate({ to: "/onboarding/handoff" });
     setBusy(true);
     setError("");
     onboardingState.parentName = parentName.trim();
@@ -51,7 +51,7 @@ function AccountPage() {
     if (err) return setError(err.message);
     if (data.session) {
       await pushAll();
-      return navigate({ to: "/onboarding/parent-name" });
+      return navigate({ to: "/onboarding/handoff" });
     }
     setSent(true);
   }
@@ -65,7 +65,7 @@ function AccountPage() {
     if (res.error) return setError("That sign-in didn't work. Please try again.");
     if (res.redirected) return;
     await pushAll();
-    navigate({ to: "/onboarding/parent-name" });
+    navigate({ to: "/onboarding/handoff" });
   }
 
   return (

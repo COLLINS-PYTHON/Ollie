@@ -36,7 +36,7 @@ function PinPage() {
 
   return (
     <div className="bg-gradient-lagoon min-h-screen">
-      <OnboardingSkeleton chapter={4} title={confirming ? "Enter it once more" : "Keep the parent view yours."} cta="Continue" ctaDisabled={!done} onContinue={async () => { await sealPin(); await navigate({ to: "/onboarding/building" }); }}>
+      <OnboardingSkeleton chapter={4} title={confirming ? "Enter it once more" : "Keep the parent view yours."} cta="Continue" ctaDisabled={!done} onContinue={async () => { await sealPin(); await navigate({ to: "/onboarding/trust" }); }}>
         <p className="text-support mb-6 text-center text-muted-foreground">Your PIN protects settings, reports, and purchases from little taps.</p>
         <div className="flex justify-center gap-4" aria-label={`${pin.length} of 4 digits entered`}>
           {[0, 1, 2, 3].map((i) => (

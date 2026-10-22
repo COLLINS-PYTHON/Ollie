@@ -27,28 +27,15 @@ import { Route as ApiGenerateImageRouteImport } from './routes/api/generate-imag
 import { Route as ApiSpeechRouteImport } from './routes/api/speech'
 import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as OnboardingAccountRouteImport } from './routes/onboarding/account'
-import { Route as OnboardingAgeRouteImport } from './routes/onboarding/age'
-import { Route as OnboardingAssuranceRouteImport } from './routes/onboarding/assurance'
-import { Route as OnboardingBuildingRouteImport } from './routes/onboarding/building'
 import { Route as OnboardingFactRouteImport } from './routes/onboarding/fact'
 import { Route as OnboardingHandoffRouteImport } from './routes/onboarding/handoff'
-import { Route as OnboardingHouseholdRouteImport } from './routes/onboarding/household'
 import { Route as OnboardingInterestsRouteImport } from './routes/onboarding/interests'
-import { Route as OnboardingLessonsRouteImport } from './routes/onboarding/lessons'
-import { Route as OnboardingMeetRouteImport } from './routes/onboarding/meet'
-import { Route as OnboardingParentNameRouteImport } from './routes/onboarding/parent-name'
 import { Route as OnboardingPaywallRouteImport } from './routes/onboarding/paywall'
 import { Route as OnboardingPinRouteImport } from './routes/onboarding/pin'
 import { Route as OnboardingPlansRouteImport } from './routes/onboarding/plans'
-import { Route as OnboardingPreviewRouteImport } from './routes/onboarding/preview'
-import { Route as OnboardingPrioritiesRouteImport } from './routes/onboarding/priorities'
-import { Route as OnboardingProtectionRouteImport } from './routes/onboarding/protection'
 import { Route as OnboardingReadingRouteImport } from './routes/onboarding/reading'
-import { Route as OnboardingScreenTimeRouteImport } from './routes/onboarding/screen-time'
-import { Route as OnboardingToneRouteImport } from './routes/onboarding/tone'
 import { Route as OnboardingTrustRouteImport } from './routes/onboarding/trust'
 import { Route as OnboardingTryRouteImport } from './routes/onboarding/try'
-import { Route as OnboardingWorriesRouteImport } from './routes/onboarding/worries'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -140,21 +127,6 @@ const OnboardingAccountRoute = OnboardingAccountRouteImport.update({
   path: '/account',
   getParentRoute: () => OnboardingRoute,
 } as any)
-const OnboardingAgeRoute = OnboardingAgeRouteImport.update({
-  id: '/age',
-  path: '/age',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingAssuranceRoute = OnboardingAssuranceRouteImport.update({
-  id: '/assurance',
-  path: '/assurance',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingBuildingRoute = OnboardingBuildingRouteImport.update({
-  id: '/building',
-  path: '/building',
-  getParentRoute: () => OnboardingRoute,
-} as any)
 const OnboardingFactRoute = OnboardingFactRouteImport.update({
   id: '/fact',
   path: '/fact',
@@ -165,29 +137,9 @@ const OnboardingHandoffRoute = OnboardingHandoffRouteImport.update({
   path: '/handoff',
   getParentRoute: () => OnboardingRoute,
 } as any)
-const OnboardingHouseholdRoute = OnboardingHouseholdRouteImport.update({
-  id: '/household',
-  path: '/household',
-  getParentRoute: () => OnboardingRoute,
-} as any)
 const OnboardingInterestsRoute = OnboardingInterestsRouteImport.update({
   id: '/interests',
   path: '/interests',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingLessonsRoute = OnboardingLessonsRouteImport.update({
-  id: '/lessons',
-  path: '/lessons',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingMeetRoute = OnboardingMeetRouteImport.update({
-  id: '/meet',
-  path: '/meet',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingParentNameRoute = OnboardingParentNameRouteImport.update({
-  id: '/parent-name',
-  path: '/parent-name',
   getParentRoute: () => OnboardingRoute,
 } as any)
 const OnboardingPaywallRoute = OnboardingPaywallRouteImport.update({
@@ -205,34 +157,9 @@ const OnboardingPlansRoute = OnboardingPlansRouteImport.update({
   path: '/plans',
   getParentRoute: () => OnboardingRoute,
 } as any)
-const OnboardingPreviewRoute = OnboardingPreviewRouteImport.update({
-  id: '/preview',
-  path: '/preview',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingPrioritiesRoute = OnboardingPrioritiesRouteImport.update({
-  id: '/priorities',
-  path: '/priorities',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingProtectionRoute = OnboardingProtectionRouteImport.update({
-  id: '/protection',
-  path: '/protection',
-  getParentRoute: () => OnboardingRoute,
-} as any)
 const OnboardingReadingRoute = OnboardingReadingRouteImport.update({
   id: '/reading',
   path: '/reading',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingScreenTimeRoute = OnboardingScreenTimeRouteImport.update({
-  id: '/screen-time',
-  path: '/screen-time',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingToneRoute = OnboardingToneRouteImport.update({
-  id: '/tone',
-  path: '/tone',
   getParentRoute: () => OnboardingRoute,
 } as any)
 const OnboardingTrustRoute = OnboardingTrustRouteImport.update({
@@ -243,11 +170,6 @@ const OnboardingTrustRoute = OnboardingTrustRouteImport.update({
 const OnboardingTryRoute = OnboardingTryRouteImport.update({
   id: '/try',
   path: '/try',
-  getParentRoute: () => OnboardingRoute,
-} as any)
-const OnboardingWorriesRoute = OnboardingWorriesRouteImport.update({
-  id: '/worries',
-  path: '/worries',
   getParentRoute: () => OnboardingRoute,
 } as any)
 
@@ -268,28 +190,15 @@ export interface FileRoutesByFullPath {
   '/api/generate-image': typeof ApiGenerateImageRoute
   '/api/speech': typeof ApiSpeechRoute
   '/onboarding/account': typeof OnboardingAccountRoute
-  '/onboarding/age': typeof OnboardingAgeRoute
-  '/onboarding/assurance': typeof OnboardingAssuranceRoute
-  '/onboarding/building': typeof OnboardingBuildingRoute
   '/onboarding/fact': typeof OnboardingFactRoute
   '/onboarding/handoff': typeof OnboardingHandoffRoute
-  '/onboarding/household': typeof OnboardingHouseholdRoute
   '/onboarding/interests': typeof OnboardingInterestsRoute
-  '/onboarding/lessons': typeof OnboardingLessonsRoute
-  '/onboarding/meet': typeof OnboardingMeetRoute
-  '/onboarding/parent-name': typeof OnboardingParentNameRoute
   '/onboarding/paywall': typeof OnboardingPaywallRoute
   '/onboarding/pin': typeof OnboardingPinRoute
   '/onboarding/plans': typeof OnboardingPlansRoute
-  '/onboarding/preview': typeof OnboardingPreviewRoute
-  '/onboarding/priorities': typeof OnboardingPrioritiesRoute
-  '/onboarding/protection': typeof OnboardingProtectionRoute
   '/onboarding/reading': typeof OnboardingReadingRoute
-  '/onboarding/screen-time': typeof OnboardingScreenTimeRoute
-  '/onboarding/tone': typeof OnboardingToneRoute
   '/onboarding/trust': typeof OnboardingTrustRoute
   '/onboarding/try': typeof OnboardingTryRoute
-  '/onboarding/worries': typeof OnboardingWorriesRoute
   '/onboarding/': typeof OnboardingIndexRoute
 }
 export interface FileRoutesByTo {
@@ -308,28 +217,15 @@ export interface FileRoutesByTo {
   '/api/generate-image': typeof ApiGenerateImageRoute
   '/api/speech': typeof ApiSpeechRoute
   '/onboarding/account': typeof OnboardingAccountRoute
-  '/onboarding/age': typeof OnboardingAgeRoute
-  '/onboarding/assurance': typeof OnboardingAssuranceRoute
-  '/onboarding/building': typeof OnboardingBuildingRoute
   '/onboarding/fact': typeof OnboardingFactRoute
   '/onboarding/handoff': typeof OnboardingHandoffRoute
-  '/onboarding/household': typeof OnboardingHouseholdRoute
   '/onboarding/interests': typeof OnboardingInterestsRoute
-  '/onboarding/lessons': typeof OnboardingLessonsRoute
-  '/onboarding/meet': typeof OnboardingMeetRoute
-  '/onboarding/parent-name': typeof OnboardingParentNameRoute
   '/onboarding/paywall': typeof OnboardingPaywallRoute
   '/onboarding/pin': typeof OnboardingPinRoute
   '/onboarding/plans': typeof OnboardingPlansRoute
-  '/onboarding/preview': typeof OnboardingPreviewRoute
-  '/onboarding/priorities': typeof OnboardingPrioritiesRoute
-  '/onboarding/protection': typeof OnboardingProtectionRoute
   '/onboarding/reading': typeof OnboardingReadingRoute
-  '/onboarding/screen-time': typeof OnboardingScreenTimeRoute
-  '/onboarding/tone': typeof OnboardingToneRoute
   '/onboarding/trust': typeof OnboardingTrustRoute
   '/onboarding/try': typeof OnboardingTryRoute
-  '/onboarding/worries': typeof OnboardingWorriesRoute
   '/onboarding': typeof OnboardingIndexRoute
 }
 export interface FileRoutesById {
@@ -351,28 +247,15 @@ export interface FileRoutesById {
   '/api/generate-image': typeof ApiGenerateImageRoute
   '/api/speech': typeof ApiSpeechRoute
   '/onboarding/account': typeof OnboardingAccountRoute
-  '/onboarding/age': typeof OnboardingAgeRoute
-  '/onboarding/assurance': typeof OnboardingAssuranceRoute
-  '/onboarding/building': typeof OnboardingBuildingRoute
   '/onboarding/fact': typeof OnboardingFactRoute
   '/onboarding/handoff': typeof OnboardingHandoffRoute
-  '/onboarding/household': typeof OnboardingHouseholdRoute
   '/onboarding/interests': typeof OnboardingInterestsRoute
-  '/onboarding/lessons': typeof OnboardingLessonsRoute
-  '/onboarding/meet': typeof OnboardingMeetRoute
-  '/onboarding/parent-name': typeof OnboardingParentNameRoute
   '/onboarding/paywall': typeof OnboardingPaywallRoute
   '/onboarding/pin': typeof OnboardingPinRoute
   '/onboarding/plans': typeof OnboardingPlansRoute
-  '/onboarding/preview': typeof OnboardingPreviewRoute
-  '/onboarding/priorities': typeof OnboardingPrioritiesRoute
-  '/onboarding/protection': typeof OnboardingProtectionRoute
   '/onboarding/reading': typeof OnboardingReadingRoute
-  '/onboarding/screen-time': typeof OnboardingScreenTimeRoute
-  '/onboarding/tone': typeof OnboardingToneRoute
   '/onboarding/trust': typeof OnboardingTrustRoute
   '/onboarding/try': typeof OnboardingTryRoute
-  '/onboarding/worries': typeof OnboardingWorriesRoute
   '/onboarding/': typeof OnboardingIndexRoute
 }
 export interface FileRouteTypes {
@@ -394,28 +277,15 @@ export interface FileRouteTypes {
     | '/api/generate-image'
     | '/api/speech'
     | '/onboarding/account'
-    | '/onboarding/age'
-    | '/onboarding/assurance'
-    | '/onboarding/building'
     | '/onboarding/fact'
     | '/onboarding/handoff'
-    | '/onboarding/household'
     | '/onboarding/interests'
-    | '/onboarding/lessons'
-    | '/onboarding/meet'
-    | '/onboarding/parent-name'
     | '/onboarding/paywall'
     | '/onboarding/pin'
     | '/onboarding/plans'
-    | '/onboarding/preview'
-    | '/onboarding/priorities'
-    | '/onboarding/protection'
     | '/onboarding/reading'
-    | '/onboarding/screen-time'
-    | '/onboarding/tone'
     | '/onboarding/trust'
     | '/onboarding/try'
-    | '/onboarding/worries'
     | '/onboarding/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -434,28 +304,15 @@ export interface FileRouteTypes {
     | '/api/generate-image'
     | '/api/speech'
     | '/onboarding/account'
-    | '/onboarding/age'
-    | '/onboarding/assurance'
-    | '/onboarding/building'
     | '/onboarding/fact'
     | '/onboarding/handoff'
-    | '/onboarding/household'
     | '/onboarding/interests'
-    | '/onboarding/lessons'
-    | '/onboarding/meet'
-    | '/onboarding/parent-name'
     | '/onboarding/paywall'
     | '/onboarding/pin'
     | '/onboarding/plans'
-    | '/onboarding/preview'
-    | '/onboarding/priorities'
-    | '/onboarding/protection'
     | '/onboarding/reading'
-    | '/onboarding/screen-time'
-    | '/onboarding/tone'
     | '/onboarding/trust'
     | '/onboarding/try'
-    | '/onboarding/worries'
     | '/onboarding'
   id:
     | '__root__'
@@ -476,28 +333,15 @@ export interface FileRouteTypes {
     | '/api/generate-image'
     | '/api/speech'
     | '/onboarding/account'
-    | '/onboarding/age'
-    | '/onboarding/assurance'
-    | '/onboarding/building'
     | '/onboarding/fact'
     | '/onboarding/handoff'
-    | '/onboarding/household'
     | '/onboarding/interests'
-    | '/onboarding/lessons'
-    | '/onboarding/meet'
-    | '/onboarding/parent-name'
     | '/onboarding/paywall'
     | '/onboarding/pin'
     | '/onboarding/plans'
-    | '/onboarding/preview'
-    | '/onboarding/priorities'
-    | '/onboarding/protection'
     | '/onboarding/reading'
-    | '/onboarding/screen-time'
-    | '/onboarding/tone'
     | '/onboarding/trust'
     | '/onboarding/try'
-    | '/onboarding/worries'
     | '/onboarding/'
   fileRoutesById: FileRoutesById
 }
@@ -645,27 +489,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingAccountRouteImport
       parentRoute: typeof OnboardingRoute
     }
-    '/onboarding/age': {
-      id: '/onboarding/age'
-      path: '/age'
-      fullPath: '/onboarding/age'
-      preLoaderRoute: typeof OnboardingAgeRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/assurance': {
-      id: '/onboarding/assurance'
-      path: '/assurance'
-      fullPath: '/onboarding/assurance'
-      preLoaderRoute: typeof OnboardingAssuranceRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/building': {
-      id: '/onboarding/building'
-      path: '/building'
-      fullPath: '/onboarding/building'
-      preLoaderRoute: typeof OnboardingBuildingRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
     '/onboarding/fact': {
       id: '/onboarding/fact'
       path: '/fact'
@@ -680,39 +503,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingHandoffRouteImport
       parentRoute: typeof OnboardingRoute
     }
-    '/onboarding/household': {
-      id: '/onboarding/household'
-      path: '/household'
-      fullPath: '/onboarding/household'
-      preLoaderRoute: typeof OnboardingHouseholdRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
     '/onboarding/interests': {
       id: '/onboarding/interests'
       path: '/interests'
       fullPath: '/onboarding/interests'
       preLoaderRoute: typeof OnboardingInterestsRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/lessons': {
-      id: '/onboarding/lessons'
-      path: '/lessons'
-      fullPath: '/onboarding/lessons'
-      preLoaderRoute: typeof OnboardingLessonsRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/meet': {
-      id: '/onboarding/meet'
-      path: '/meet'
-      fullPath: '/onboarding/meet'
-      preLoaderRoute: typeof OnboardingMeetRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/parent-name': {
-      id: '/onboarding/parent-name'
-      path: '/parent-name'
-      fullPath: '/onboarding/parent-name'
-      preLoaderRoute: typeof OnboardingParentNameRouteImport
       parentRoute: typeof OnboardingRoute
     }
     '/onboarding/paywall': {
@@ -736,46 +531,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingPlansRouteImport
       parentRoute: typeof OnboardingRoute
     }
-    '/onboarding/preview': {
-      id: '/onboarding/preview'
-      path: '/preview'
-      fullPath: '/onboarding/preview'
-      preLoaderRoute: typeof OnboardingPreviewRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/priorities': {
-      id: '/onboarding/priorities'
-      path: '/priorities'
-      fullPath: '/onboarding/priorities'
-      preLoaderRoute: typeof OnboardingPrioritiesRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/protection': {
-      id: '/onboarding/protection'
-      path: '/protection'
-      fullPath: '/onboarding/protection'
-      preLoaderRoute: typeof OnboardingProtectionRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
     '/onboarding/reading': {
       id: '/onboarding/reading'
       path: '/reading'
       fullPath: '/onboarding/reading'
       preLoaderRoute: typeof OnboardingReadingRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/screen-time': {
-      id: '/onboarding/screen-time'
-      path: '/screen-time'
-      fullPath: '/onboarding/screen-time'
-      preLoaderRoute: typeof OnboardingScreenTimeRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/tone': {
-      id: '/onboarding/tone'
-      path: '/tone'
-      fullPath: '/onboarding/tone'
-      preLoaderRoute: typeof OnboardingToneRouteImport
       parentRoute: typeof OnboardingRoute
     }
     '/onboarding/trust': {
@@ -790,13 +550,6 @@ declare module '@tanstack/react-router' {
       path: '/try'
       fullPath: '/onboarding/try'
       preLoaderRoute: typeof OnboardingTryRouteImport
-      parentRoute: typeof OnboardingRoute
-    }
-    '/onboarding/worries': {
-      id: '/onboarding/worries'
-      path: '/worries'
-      fullPath: '/onboarding/worries'
-      preLoaderRoute: typeof OnboardingWorriesRouteImport
       parentRoute: typeof OnboardingRoute
     }
   }
@@ -818,55 +571,29 @@ const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
 
 interface OnboardingRouteChildren {
   OnboardingAccountRoute: typeof OnboardingAccountRoute
-  OnboardingAgeRoute: typeof OnboardingAgeRoute
-  OnboardingAssuranceRoute: typeof OnboardingAssuranceRoute
-  OnboardingBuildingRoute: typeof OnboardingBuildingRoute
   OnboardingFactRoute: typeof OnboardingFactRoute
   OnboardingHandoffRoute: typeof OnboardingHandoffRoute
-  OnboardingHouseholdRoute: typeof OnboardingHouseholdRoute
   OnboardingInterestsRoute: typeof OnboardingInterestsRoute
-  OnboardingLessonsRoute: typeof OnboardingLessonsRoute
-  OnboardingMeetRoute: typeof OnboardingMeetRoute
-  OnboardingParentNameRoute: typeof OnboardingParentNameRoute
   OnboardingPaywallRoute: typeof OnboardingPaywallRoute
   OnboardingPinRoute: typeof OnboardingPinRoute
   OnboardingPlansRoute: typeof OnboardingPlansRoute
-  OnboardingPreviewRoute: typeof OnboardingPreviewRoute
-  OnboardingPrioritiesRoute: typeof OnboardingPrioritiesRoute
-  OnboardingProtectionRoute: typeof OnboardingProtectionRoute
   OnboardingReadingRoute: typeof OnboardingReadingRoute
-  OnboardingScreenTimeRoute: typeof OnboardingScreenTimeRoute
-  OnboardingToneRoute: typeof OnboardingToneRoute
   OnboardingTrustRoute: typeof OnboardingTrustRoute
   OnboardingTryRoute: typeof OnboardingTryRoute
-  OnboardingWorriesRoute: typeof OnboardingWorriesRoute
   OnboardingIndexRoute: typeof OnboardingIndexRoute
 }
 
 const OnboardingRouteChildren: OnboardingRouteChildren = {
   OnboardingAccountRoute: OnboardingAccountRoute,
-  OnboardingAgeRoute: OnboardingAgeRoute,
-  OnboardingAssuranceRoute: OnboardingAssuranceRoute,
-  OnboardingBuildingRoute: OnboardingBuildingRoute,
   OnboardingFactRoute: OnboardingFactRoute,
   OnboardingHandoffRoute: OnboardingHandoffRoute,
-  OnboardingHouseholdRoute: OnboardingHouseholdRoute,
   OnboardingInterestsRoute: OnboardingInterestsRoute,
-  OnboardingLessonsRoute: OnboardingLessonsRoute,
-  OnboardingMeetRoute: OnboardingMeetRoute,
-  OnboardingParentNameRoute: OnboardingParentNameRoute,
   OnboardingPaywallRoute: OnboardingPaywallRoute,
   OnboardingPinRoute: OnboardingPinRoute,
   OnboardingPlansRoute: OnboardingPlansRoute,
-  OnboardingPreviewRoute: OnboardingPreviewRoute,
-  OnboardingPrioritiesRoute: OnboardingPrioritiesRoute,
-  OnboardingProtectionRoute: OnboardingProtectionRoute,
   OnboardingReadingRoute: OnboardingReadingRoute,
-  OnboardingScreenTimeRoute: OnboardingScreenTimeRoute,
-  OnboardingToneRoute: OnboardingToneRoute,
   OnboardingTrustRoute: OnboardingTrustRoute,
   OnboardingTryRoute: OnboardingTryRoute,
-  OnboardingWorriesRoute: OnboardingWorriesRoute,
   OnboardingIndexRoute: OnboardingIndexRoute,
 }
 
