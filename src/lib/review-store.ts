@@ -28,5 +28,6 @@ export function useSlideshowReview(): SlideshowReview | null {
       return () => listeners.delete(listener);
     },
     () => current,
+    () => null,
   );
 }

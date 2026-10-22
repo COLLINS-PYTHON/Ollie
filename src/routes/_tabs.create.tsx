@@ -4,10 +4,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Mic, Sparkles, X } from "lucide-react";
 import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { Button } from "@/components/ui/button";
+import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { preparePicture } from "@/lib/picture.functions";
 import { streamImage } from "@/lib/stream-image";
 import {
   FREE_PER_DAY,
+  COOKIE_PURCHASES_AVAILABLE,
   JARS,
   cookiesLeft,
   loadBalance,
@@ -20,7 +22,7 @@ import {
   type Picture,
 } from "@/lib/picture-store";
 import { onboardingState } from "@/lib/onboarding-store";
-import { checkPin, clearFails, hasPin, lockedSeconds, PIN_LOCK, recordFail, uploadPicture } from "@/lib/cloud-sync";
+import { uploadPicture } from "@/lib/cloud-sync";
 import { childName, pageMeta } from "@/lib/meta";
 
 export const Route = createFileRoute("/_tabs/create")({
@@ -72,7 +74,7 @@ function speak(text: string) {
   void naturalSpeak(text);
 }
 
-type Popup = null | "low" | "last" | "out" | "jars" | { pin: (typeof JARS)[number] } | { bought: number };
+type Popup = null | "low" | "last" | "out" | "jars";
 
 function CookieJar({ className = "size-6" }: { className?: string }) {
   return (
@@ -107,6 +109,13 @@ function CreateScreen() {
   const [listening, setListening] = useState(false);
   const [voice, setVoice] = useState(false);
   const recRef = useRef<RecognitionLike | null>(null);
+  const heldRef = useRef(false);
+
+  useEffect(() => () => {
+    heldRef.current = false;
+    const rec = recRef.current;
+    if (rec) { rec.onresult = null; rec.onend = null; try { rec.stop(); } catch { /* already ended */ } }
+  }, []);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -171,6 +180,7 @@ function CreateScreen() {
   const startListening = () => {
     const R = getRecognition();
     if (!R || busy || listening) return;
+    heldRef.current = true;
     try {
       const rec = new R();
       rec.lang = "en-US";
@@ -179,7 +189,7 @@ function CreateScreen() {
         const t = e.results?.[0]?.[0]?.transcript ?? "";
         if (t) setIdea(t);
       };
-      rec.onend = () => setListening(false);
+      rec.onend = () => { if (recRef.current === rec) { heldRef.current = false; recRef.current = null; setListening(false); } };
       recRef.current = rec;
       rec.start();
       setListening(true);
@@ -188,6 +198,7 @@ function CreateScreen() {
     }
   };
   const stopListening = () => {
+    heldRef.current = false;
     try {
       recRef.current?.stop();
     } catch {
@@ -284,9 +295,14 @@ function CreateScreen() {
                 <Button variant="ghost"
                   type="button"
                   aria-label="Hold to talk"
-                  onPointerDown={startListening}
+                  onPointerDown={(event) => { event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); startListening(); }}
                   onPointerUp={stopListening}
-                  onPointerLeave={() => listening && stopListening()}
+                  onPointerCancel={stopListening}
+                  onLostPointerCapture={() => { if (heldRef.current) stopListening(); }}
+                  onKeyDown={(event) => { if ((event.key === " " || event.key === "Enter") && !event.repeat) { event.preventDefault(); startListening(); } }}
+                  onKeyUp={(event) => { if (event.key === " " || event.key === "Enter") { event.preventDefault(); stopListening(); } }}
+                  onBlur={() => { if (heldRef.current) stopListening(); }}
+                  aria-pressed={listening}
                   className={`flex size-11 shrink-0 items-center justify-center rounded-pill bg-primary text-primary-foreground ${listening ? "ring-pulse" : ""}`}
                 >
                   <Mic className="size-5" />
@@ -347,24 +363,19 @@ function CreateScreen() {
       </section>
 
       {open && (
-        <Overlay onClose={() => setOpen(null)}>
+        <Overlay title="Your picture" onClose={() => setOpen(null)}>
           <img src={open.dataUrl} alt={open.idea} className="aspect-square w-full rounded-control object-cover" />
           <p className="mt-3 text-body text-foreground">{open.idea}</p>
         </Overlay>
       )}
 
       {popup && (
-        <Overlay onClose={() => setPopup(null)}>
+        <Overlay title="Picture cookies" onClose={() => setPopup(null)}>
           <PopupBody
             popup={popup}
             name={name}
             left={left}
             onGetMore={() => setPopup("jars")}
-            onPickJar={(jar) => setPopup({ pin: jar })}
-            onPinOk={(jar) => {
-              updateBalance({ ...loadBalance(), jarCookies: loadBalance().jarCookies + jar.count });
-              setPopup({ bought: jar.count });
-            }}
             onClose={() => setPopup(null)}
           />
         </Overlay>
@@ -373,112 +384,43 @@ function CreateScreen() {
   );
 }
 
-function Overlay({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+function Overlay({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-navy/40 p-4 sm:items-center" onClick={onClose}>
-      <div role="dialog" className="sheet-up relative w-full max-w-sm rounded-card bg-card p-5 shadow-sheet" onClick={(e) => e.stopPropagation()}>
-        <Button variant="ghost" type="button" aria-label="Close" onClick={onClose} className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-pill text-muted-foreground">
-          <X className="size-4" />
-        </Button>
-        {children}
-      </div>
-    </div>
+    <Drawer open shouldScaleBackground={false} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DrawerContent aria-describedby={undefined} className="mx-auto max-h-[85dvh] w-full max-w-md bg-card px-5 pb-6 shadow-sheet">
+        <div className="mb-4 flex items-center justify-between">
+          <DrawerTitle className="text-body font-bold">{title}</DrawerTitle>
+          <Button variant="control" size="icon" aria-label="Close" onClick={onClose}><X /></Button>
+        </div>
+        <div className="min-h-0 overflow-y-auto overscroll-contain">{children}</div>
+      </DrawerContent>
+    </Drawer>
   );
 }
 
-function PopupBody({
-  popup, name, left, onGetMore, onPickJar, onPinOk, onClose,
-}: {
+function PopupBody({ popup, name, left, onGetMore, onClose }: {
   popup: Exclude<Popup, null>;
   name: string;
   left: number;
   onGetMore: () => void;
-  onPickJar: (jar: (typeof JARS)[number]) => void;
-  onPinOk: (jar: (typeof JARS)[number]) => void;
   onClose: () => void;
 }) {
-  const [pin, setPin] = useState("");
-  const [wrong, setWrong] = useState(false);
-  const primary = "mt-4 h-12 w-full rounded-pill bg-primary text-button text-primary-foreground";
-
-  if (popup === "low" || popup === "last") {
-    return (
-      <div className="text-center">
-        <CookieJar className="mx-auto size-14" />
-        <p className="mt-2 text-title text-foreground">{popup === "low" ? `${left} cookies left today` : "That was your last free picture today"}</p>
-        <p className="mt-1 text-support text-muted-foreground">{popup === "low" ? "Each picture uses one cookie. More free cookies come tomorrow." : "Free cookies come back tomorrow."}</p>
-        <Button variant="ghost" type="button" className={primary} onClick={onClose}>OK</Button>
-      </div>
-    );
-  }
-  if (popup === "out") {
-    return (
-      <div className="text-center">
-        <CookieJar className="mx-auto size-14" />
-        <p className="mt-2 text-title text-foreground">Out of cookies today</p>
-        <p className="mt-1 text-support text-muted-foreground">You can still look at your fridge. New free cookies come tomorrow.</p>
-        <Button variant="ghost" type="button" className={primary} onClick={onGetMore}>Get more cookies</Button>
-      </div>
-    );
-  }
-  if (popup === "jars") {
-    return (
-      <div>
-        <p className="text-title text-foreground">Cookie jars</p>
-        <p className="mt-1 text-support text-muted-foreground">A grown-up will need to say yes.</p>
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          {JARS.map((jar) => (
-            <Button variant="ghost" key={jar.id} type="button" onClick={() => onPickJar(jar)} className="flex flex-col items-center rounded-card border border-surface-2 bg-surface p-4 transition-colors duration-tap hover:border-primary">
-              <CookieJar className={jar.id === "small" ? "size-10" : "size-14"} />
-              <span className="mt-2 text-label font-bold text-foreground">{jar.label}</span>
-              <span className="text-support text-muted-foreground">{jar.count} pictures</span>
-              <span className="mt-1 text-label font-semibold text-foreground">{jar.price}</span>
-            </Button>
-          ))}
-        </div>
-      </div>
-    );
-  }
-  if ("pin" in popup) {
-    const jar = popup.pin;
-    const check = (value: string) => {
-      setPin(value);
-      setWrong(false);
-      if (value.length === 4) {
-        void (async () => {
-        if (lockedSeconds(PIN_LOCK)) { setWrong(true); setPin(""); return; }
-        if (!hasPin() || (await checkPin(value))) { clearFails(PIN_LOCK); onPinOk(jar); }
-        else {
-          recordFail(PIN_LOCK);
-          setWrong(true);
-          setPin("");
-        }
-        })();
-      }
-    };
-    return (
-      <div className="text-center">
-        <p className="text-title text-foreground">Grown-up PIN</p>
-        <p className="mt-1 text-support text-muted-foreground">{jar.label}, {jar.count} pictures for {jar.price}</p>
-        <input
-          autoFocus
-          inputMode="numeric"
-          type="password"
-          aria-label="Parent PIN"
-          value={pin}
-          onChange={(e) => check(e.target.value.replace(/\D/g, "").slice(0, 4))}
-          className="mx-auto mt-4 block h-12 w-40 rounded-control border border-surface-2 bg-surface text-center text-title tracking-[0.5em] text-foreground outline-none focus:border-primary"
-        />
-        {wrong && <p className="mt-2 text-support text-muted-foreground">That PIN didn't match. Try again.</p>}
-      </div>
-    );
-  }
-  return (
-    <div className="text-center">
-      <CookieJar className="glow-burst mx-auto size-14" />
-      <p className="mt-2 text-title text-foreground">{popup.bought} cookies added</p>
-      <p className="mt-1 text-support text-muted-foreground">Have fun creating, {name}!</p>
-      <Button variant="ghost" type="button" className={primary} onClick={onClose}>Let's create</Button>
+  if (popup === "jars") return <div>
+    <p className="text-body font-bold">{name}'s picture cookies</p>
+    <p className="mt-2 text-support text-muted-foreground">{left} left today. You get 10 fresh picture cookies every morning, plus any earned on your Trail.</p>
+    <p className="mt-4 text-support text-muted-foreground">Extra cookie purchases are not available yet. Nothing will be charged.</p>
+    <div className="mt-4 grid grid-cols-2 gap-3">
+      {JARS.map(jar => <Button variant="option" key={jar.id} disabled={!COOKIE_PURCHASES_AVAILABLE} className="h-auto flex-col whitespace-normal p-4">
+        <CookieJar className="size-12" /><span className="text-body">{jar.label}</span><span className="text-support">{jar.count} pictures</span><span className="text-label">{jar.price}</span>
+      </Button>)}
     </div>
-  );
+  </div>;
+  const out = popup === "out";
+  return <div className="text-center">
+    <CookieJar className="mx-auto size-14" />
+    <p className="mt-2 text-title">{out ? "Out of cookies today" : popup === "last" ? "That was your last free picture today" : `${left} cookies left today`}</p>
+    <p className="mt-2 text-support text-muted-foreground">{out ? "Your pictures are still on the fridge. New free cookies come tomorrow." : "Each picture uses one cookie. More free cookies come tomorrow."}</p>
+    <Button className="mt-4 h-12 w-full rounded-pill" onClick={onClose}>{out ? "Back to my fridge" : "OK"}</Button>
+    {out && <Button variant="link" className="mt-2" onClick={onGetMore}>My cookie balance</Button>}
+  </div>;
 }

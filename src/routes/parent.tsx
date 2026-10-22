@@ -16,7 +16,7 @@ import {
   TONE_LABELS,
 } from "@/lib/onboarding-store";
 import { loadChat, saveChat, type ChatMessage } from "@/lib/chat-store";
-import { addCookies, cookiesLeft, JARS, loadBalance, saveBalance, type Balance } from "@/lib/picture-store";
+import { COOKIE_PURCHASES_AVAILABLE, cookiesLeft, JARS, loadBalance, type Balance } from "@/lib/picture-store";
 import { completions, prefs, setPrefs, streakDays, type SlideshowPrefs } from "@/lib/slideshow-store";
 import { minutesToday } from "@/lib/usage-store";
 import { SUBSCRIPTION_PRICES } from "@/lib/subscription-prices";
@@ -152,7 +152,7 @@ function Row({ icon, color, label, value, onClick, trailing }: { icon: ReactNode
       <span className={color}>{icon}</span>
       <div className="min-w-0 flex-1 text-left">
         <div className="text-body text-foreground">{label}</div>
-        <div className="truncate text-support text-muted-foreground">{value}</div>
+        <div className="text-support text-muted-foreground">{value}</div>
       </div>
       {trailing ?? <ChevronRight className="size-5 text-muted-foreground" strokeWidth={1.8} />}
     </>
@@ -160,7 +160,7 @@ function Row({ icon, color, label, value, onClick, trailing }: { icon: ReactNode
   return (
     <li className="border-t border-surface-2 first:border-t-0">
       {onClick ? (
-        <Button variant="ghost" type="button" onClick={onClick} className="flex w-full items-center gap-4 px-4 py-3.5 active:bg-surface">{inner}</Button>
+        <Button variant="ghost" type="button" onClick={onClick} className="flex h-auto min-h-16 w-full items-center gap-4 whitespace-normal px-4 py-3.5 active:bg-surface">{inner}</Button>
       ) : (
         <div className="flex items-center gap-4 px-4 py-3.5">{inner}</div>
       )}
@@ -338,7 +338,7 @@ function ParentDashboard() {
       <Button variant="ghost"
         type="button"
         onClick={() => setSheet("flagged")}
-        className="mt-4 flex w-full items-center gap-3 rounded-card border border-destructive/20 bg-destructive/[0.07] p-4 text-left"
+        className="mt-4 flex h-auto min-h-20 w-full items-center gap-3 whitespace-normal rounded-card border border-destructive/20 bg-destructive/[0.07] p-4 text-left"
       >
         <span className="flex size-9 items-center justify-center rounded-pill bg-destructive/15 text-body font-bold text-destructive">{flagged.length}</span>
         <div className="flex-1">
@@ -350,10 +350,13 @@ function ParentDashboard() {
         <ChevronRight className="size-5 text-destructive" strokeWidth={1.8} />
       </Button>
 
+      <p className="mt-2 text-support text-muted-foreground">Flags are available here. Automatic alerts are not connected yet.</p>
+
       {/* Weekly report */}
       <div className="scalloped bg-gradient-wash mt-4 rounded-card p-5">
         <p className="text-label uppercase tracking-wide text-muted-foreground">This week</p>
         <p className="mt-1 text-body font-bold text-foreground">{child}'s weekly report</p>
+        <p className="mt-1 text-support text-muted-foreground">Based on activity available on this device. Email reports are not connected yet.</p>
         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
           {[
             { v: String(weekLessons.length), l: "Discoveries" },
@@ -524,13 +527,13 @@ function ParentDashboard() {
       {sheet === "jar" && balance && (
         <Sheet title="Cookie jars" onClose={() => setSheet(null)}>
           <p className="text-body text-foreground">{cookiesLeft(balance)} picture cookies left today</p>
-          <p className="text-support text-muted-foreground">10 free each day, plus {balance.jarCookies} from jars.</p>
+          <p className="text-support text-muted-foreground">10 free each day, plus {balance.jarCookies} earned or saved.</p>
           <div className="mt-4 flex flex-col gap-2.5">
             {JARS.map((j) => (
               <Button variant="ghost"
                 key={j.id}
                 type="button"
-                onClick={() => { const b = addCookies(loadBalance(), j.count); saveBalance(b); setBalance(b); }}
+                disabled={!COOKIE_PURCHASES_AVAILABLE}
                 className="flex items-center justify-between rounded-control border border-surface-2 px-4 py-3"
               >
                 <span className="text-body text-foreground">{j.count} cookies</span>
@@ -538,7 +541,7 @@ function ParentDashboard() {
               </Button>
             ))}
           </div>
-          <p className="mt-3 text-label text-muted-foreground">Test mode: nothing is charged yet.</p>
+          <p className="mt-3 text-label text-muted-foreground">Extra cookie purchases are not available yet. Nothing will be charged.</p>
         </Sheet>
       )}
 

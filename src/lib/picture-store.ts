@@ -5,6 +5,8 @@ import { readKidValue, writeKidValue, activeKidId } from "./kid-storage";
 export type Picture = { id: string; idea: string; dataUrl: string; createdAt: number };
 
 export const FREE_PER_DAY = 10;
+// Enable only after a verified payment flow supplies purchased-cookie credits.
+export const COOKIE_PURCHASES_AVAILABLE = false;
 export const JARS = [
   { id: "small", label: "Small jar", count: 10, price: "$0.99" },
   { id: "large", label: "Large jar", count: 50, price: "$2.99" },

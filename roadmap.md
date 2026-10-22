@@ -3,8 +3,7 @@
 ## Now
 
 - Ollie 1 copy recovery: restored name explanation, reading heading/labels, interest heading/explanation, welcome baseline and daily-lesson wording; replaced promotional intermediate buttons with Continue. Name → reading → interests verified. Still reconcile safety/privacy and the old interactive try-it-yourself copy without changing disclosures or promising unavailable functionality.
-- Mascot preview: breed experiments rejected for drifting from original Ollie. Return to his recognizable silhouette with grey/white coat and blue details in the beige book video's soft tactile 3D finish; gently reduce babyish proportions, no visible genital anatomy. New original-based preview pending review, no app replacement authorized.
-- Mascot age: intermediate, healthy and balanced, neither baby puppy nor full adult; refine original Ollie rather than produce more breed variants.
+- Mascot work paused. Remaining full-app work is tracked below; app mascot artwork stays unchanged.
 - Artwork direction: new generated images use the approved tactile matte book style; live turtle generation returned and was inspected, build OK. Existing shared Daily Discovery pictures and graphics still need coordinated replacement, preserving accurate diagrams and matching preview/playback/Trail artwork.
 - Incorporate uploaded Trail/fridge inspirations: airy winding path and collectible picture keepsakes, adapted to Ollie's matte blue/mist aesthetic without copying the reference.
 - Complete October 21 redesign: exact full-app specification, blue/mist design system, matte topic artwork, value-led onboarding, two separate kid profiles, PIN before paywall, account afterward, parent dashboard and age-adapted Search/Create/Discovery/Trail.
@@ -17,6 +16,7 @@
 - Search read-along highlighting with word timing marks after a TTS provider is configured
 
 ## Done
+- Core reliability batch: removed fake cookie-purchase credit awards in Create and Parent Dashboard, portalled Create sheets, added keyboard/cancel/unmount voice cleanup, softened cramped settings layout, qualified AI privacy claims, and exposed unavailable report/alert delivery. Fixed server rendering of lesson-review state discovered during phone checks.
 - Personalized “Unlock [kid’s name]’s safe trial” action with soft-white lettering; smaller monthly price line and blended book-to-discovery loop verified at compact, phone, tablet and desktop sizes; reduced-motion pauses playback, billing remains unconnected.
 - Honest whole-app audit delivered (lesson library empty, AI endpoints unprotected, image limit device-only, no payments/native build)
 - Under-eight voice control uses a crisp 112px orb, gentle tap pulse and listening-state motion; small-screen fit, tap activation, typing fallback, age-eight cutoff and reduced motion verified.
