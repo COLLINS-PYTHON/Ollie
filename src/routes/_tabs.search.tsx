@@ -261,7 +261,7 @@ function SearchChat() {
             <p className="text-body max-w-[280px] font-semibold text-foreground">
               Hi {child.name}! What are you curious about today?
             </p>
-            <div className="flex max-w-sm flex-wrap justify-center gap-2">
+            <div className="search-starters flex max-w-sm flex-wrap justify-center gap-2">
               {starters.map(({ id, label, sample, icon: Icon }) => <Button key={id} variant="secondary" onClick={() => void send(sample)} className="h-auto min-h-12 gap-2 whitespace-normal rounded-pill px-4 py-3 text-support text-foreground"><Icon className="size-5 shrink-0 text-primary" />{label}</Button>)}
             </div>
           </div>

@@ -24,6 +24,7 @@ import {
 import { onboardingState } from "@/lib/onboarding-store";
 import { uploadPicture } from "@/lib/cloud-sync";
 import { childName, pageMeta } from "@/lib/meta";
+import sketchbook from "@/assets/create-sketchbook.png";
 
 export const Route = createFileRoute("/_tabs/create")({
   head: () => ({ meta: pageMeta("Create", "Turn ideas into safe, friendly pictures with Ollie.").meta }),
@@ -224,8 +225,9 @@ function CreateScreen() {
         </Button>
       </div>
 
-      <section className="mt-5 border-b border-border pb-6">
-        <div className="mb-3 flex gap-1 rounded-pill bg-surface p-1">
+      <div className="create-artwork" aria-hidden="true"><img src={sketchbook} alt="" width={1024} height={768} /></div>
+      <section className="create-workbench mt-5 pb-6">
+        <div className="create-modes mb-3 flex gap-1 rounded-pill bg-surface p-1">
           {(["builder", "type"] as const).map((m) => (
             <Button variant="ghost"
               key={m}
@@ -239,7 +241,7 @@ function CreateScreen() {
         </div>
 
         {mode === "builder" ? (
-          <div className="space-y-3">
+          <div className="create-builder space-y-3">
             {(Object.keys(BUILDER) as (keyof typeof BUILDER)[]).map((row) => (
               <div key={row}>
                 <p className="mb-1.5 text-support text-muted-foreground">{row === "who" ? "Who?" : row === "doing" ? "Doing what?" : "Where?"}</p>
@@ -256,7 +258,7 @@ function CreateScreen() {
                           setPick(next);
                           speak(c);
                         }}
-                        className={`rounded-pill border px-3 py-1.5 text-label transition-colors duration-tap ${on ? "border-primary bg-primary text-primary-foreground" : "border-surface-2 bg-card text-foreground"}`}
+                        className={`create-choice rounded-pill border px-3 py-1.5 text-label transition-colors duration-tap ${on ? "border-primary bg-secondary text-primary" : "border-surface-2 bg-card text-foreground"}`}
                       >
                         {c}
                       </Button>
@@ -272,7 +274,7 @@ function CreateScreen() {
             )}
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="create-typing space-y-3">
             <div className="flex flex-wrap gap-1.5">
               {chips.map((c) => (
                 <Button variant="ghost" key={c} type="button" onClick={() => setIdea(c)} className="rounded-pill border border-surface-2 bg-surface px-3 py-1.5 text-left text-label text-foreground transition-colors duration-tap hover:border-primary">
@@ -316,7 +318,7 @@ function CreateScreen() {
           type="button"
           onClick={() => create()}
           disabled={busy || !currentIdea}
-          className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-pill bg-primary text-button text-primary-foreground transition-all duration-tap active:scale-[0.98] disabled:bg-surface-2 disabled:text-muted-foreground"
+          className="soft-primary mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-pill bg-primary text-button text-primary-foreground transition-all duration-tap active:scale-[0.98] disabled:bg-surface-2 disabled:text-muted-foreground"
         >
           <Sparkles className="size-4" /> Make my picture
         </Button>
@@ -349,7 +351,7 @@ function CreateScreen() {
         <h2 className="text-body font-bold text-foreground">{name}'s fridge</h2>
         <p className="mt-2 text-support text-primary">You get 10 fresh picture cookies every morning!</p>
         {pictures.length === 0 ? (
-          <p className="mt-2 text-support text-muted-foreground">Your pictures will hang here.</p>
+          <div className="fridge-empty"><img src={sketchbook} alt="" width={1024} height={768} loading="lazy" /><p className="mt-2 text-support text-muted-foreground">Your pictures will hang here.</p></div>
         ) : (
           <div className="mt-3 grid grid-cols-2 gap-4 py-4 sm:grid-cols-3">
             {pictures.map((p, i) => (
