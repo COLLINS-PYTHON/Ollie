@@ -21,7 +21,10 @@ function PaywallPage() {
         <div className="payment-assurance relative mx-auto mt-5 flex items-center gap-2 rounded-pill bg-card px-5 py-3 shadow-card">
           <Check className="relative size-5 text-success" strokeWidth={2.2} />
           <span className="text-button relative text-foreground">No Payment Due Now</span>
-  
+        </div>
+        <p className="text-support mt-5 text-center text-muted-foreground">Enjoy complete access to interactive tutoring, daily learning trails, and daily creative picture cookies.</p>
+        <p className="text-support mt-4 flex items-center justify-center gap-2 text-muted-foreground"><Bell className="size-4 shrink-0" />We’ll notify you before the trial ends</p>
+        <p className="text-label mt-1 text-center text-muted-foreground">Once trial reminders are enabled.</p>
  </div><div className="onboarding-action onboarding-cta-fade fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5 pt-5 pb-5">
  <Button variant="onboarding" size="onboarding" onClick={()=>navigate({to:'/onboarding/plans'})}>Unlock {name}'s safe trial</Button>
  </div></div>;
