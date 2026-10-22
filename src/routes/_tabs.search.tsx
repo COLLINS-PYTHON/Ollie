@@ -267,18 +267,20 @@ function SearchChat() {
           </div>
         ) : (
           <div className="flex flex-col gap-1.5">
-            {messages.map((m) =>
+            {messages.map((m, index) =>
               m.role === "sent" ? (
                 <div
                   key={m.id}
-                  className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-3.5 py-2 text-body text-primary-foreground"
+                  data-group-start={messages[index - 1]?.role !== m.role}
+                  data-group-end={messages[index + 1]?.role !== m.role}
+                  className="chat-bubble chat-sent max-w-[78%] self-end bg-primary px-3.5 py-2 text-body text-primary-foreground"
                 >
                   {m.text}
                 </div>
               ) : (
-                <div key={m.id} className="flex max-w-[80%] flex-col items-start gap-1 self-start">
+                <div key={m.id} data-group-start={messages[index - 1]?.role !== m.role} className="chat-received-group flex max-w-[88%] flex-col items-start gap-1 self-start">
                   <div className="flex items-end gap-1">
-                    <div className="rounded-[18px] rounded-bl-[4px] bg-surface-2 px-3.5 py-2 text-body text-foreground">
+                    <div data-group-end={messages[index + 1]?.role !== m.role} className="chat-bubble chat-received bg-surface-2 px-3.5 py-2 text-body text-foreground">
                       {m.text}
                     </div>
                     <Button variant="ghost" size="icon"

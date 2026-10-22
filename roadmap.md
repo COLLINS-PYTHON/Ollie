@@ -2,6 +2,11 @@
 
 ## Now
 
+- [ ] October 22 00:38: replace Daily Discovery geometric artwork with topic-specific beige-book-style matte illustrations across preview/playback/Trail, and loosen lesson layout and transitions while preserving content, quizzes and rewards.
+
+- [x] October 22 00:34: adapted directional setup transitions, stable Create mode selection and one-shot lesson entrance; grouped iMessage bubbles and added contextual whale breathing/dream bubbles without replacing Ollie throughout. Saved local chat, Create selections, Trail review and reduced-motion checks passed; signed-in cloud checks blocked by unavailable matching test identity.
+- [x] October 22 00:36 clarification: independently inspected all six panels at 4fps, 27 samples per panel. Habit dashboard: retain records, reject XP/disintegration. Drink builder: borrow stable selection, reject invented generation progress. Finance: success only after real save, reject swipe-only confirmation. Welcome: stable controls and finite entrance, not camera zoom as navigation. Path: quiet lesson entrance, not decorative locks. Job cards: focused selection, no endless swiping. Sampling establishes sequence, not frame-exact easing; optional preview sheets/card decks were not added.
+
 - [x] October 22 reference-led refresh: sampled five clips across their timelines, softened shared controls/navigation, refined Search, Create and Parent presentation, added staged onboarding entrances. Source clips were sampled, not checked literally frame by frame.
 - [x] Trail research and refresh: adapted finite path/keepsake principles, replaced triangular trees and repeated butterfly motion with rounded seasonal canopies and one quiet flight; progress logic unchanged.
 - [x] Create/details: matte sketchbook artwork, clearer modes/starters, fridge empty state and restrained shared icons.

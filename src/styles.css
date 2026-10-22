@@ -1011,14 +1011,12 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .setup-welcome-title { font-size:34px; line-height:41px; font-weight:750; text-wrap:balance; }
 .onboarding-step-body > .border-y { border:0; padding:24px; border-radius:var(--radius-card); background:var(--card); box-shadow:var(--elev-card); }
 .chapter-progress { box-shadow:var(--control-inset); height:7px; }
-.chapter-fill { transition:width var(--duration-reveal) var(--ease-enter); }
-.onboarding-content { animation:soft-screen-arrive var(--duration-reveal) var(--ease-enter) both; }
-.onboarding-step-body > :is(p,[role=radiogroup],.discovery-scene) { animation:premium-heading var(--duration-reveal) var(--ease-enter) both; }
-.onboarding-step-body [role=radio] { animation:premium-heading var(--duration-reveal) var(--ease-enter) both; }
-.onboarding-step-body [role=radio]:nth-child(2) { animation-delay:35ms; }
-.onboarding-step-body [role=radio]:nth-child(3) { animation-delay:70ms; }
-.onboarding-step-body [role=radio]:nth-child(4) { animation-delay:105ms; }
-@keyframes soft-screen-arrive { from { opacity:0; transform:translate3d(18px,5px,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+.chapter-fill { transition:width var(--duration-element) var(--ease-enter); }
+.onboarding-content { animation:soft-screen-arrive var(--duration-element) var(--ease-enter) both; }
+.onboarding-shell { --step-offset:24px; }
+.onboarding-shell[data-navigation=back] { --step-offset:-24px; }
+.onboarding-step-body > :is(p,[role=radiogroup],.discovery-scene),.onboarding-step-body [role=radio] { animation:none; }
+@keyframes soft-screen-arrive { from { opacity:0.3; transform:translate3d(var(--step-offset,24px),0,0); } to { opacity:1; transform:translate3d(0,0,0); } }
 .soft-primary, .onboarding-primary-action { box-shadow:var(--action-shadow),inset 0 1px 0 color-mix(in oklab,var(--card) 20%,transparent); }
 .soft-primary:hover { color:var(--primary-foreground); }
 .onboarding-primary-action:disabled { background:var(--surface-2); color:var(--muted-foreground); border-color:transparent; box-shadow:none; opacity:1; }
@@ -1047,7 +1045,12 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .tabs-search .app-tabbar a { height:46px; }
 .tabs-search { --app-dock-height:calc(78px + env(safe-area-inset-bottom,0px)); }
 .search-header { min-height:90px; }
-.search-transcript { padding-top:20px; background:linear-gradient(180deg,color-mix(in oklab,var(--brand) 3%,var(--card)),var(--card) 42%); }
+.search-transcript { padding-top:20px; background:var(--card); }
+.chat-bubble { position:relative; border-radius:22px; overflow-wrap:anywhere; }
+.chat-sent[data-group-start=true],.chat-received-group[data-group-start=true] { margin-top:14px; }
+.chat-bubble[data-group-end=true]::after { content:''; position:absolute; bottom:0; width:12px; height:14px; background:inherit; }
+.chat-sent[data-group-end=true]::after { right:-5px; border-radius:0 0 0 12px; transform:skewX(24deg); }
+.chat-received[data-group-end=true]::after { left:-5px; border-radius:0 0 12px 0; transform:skewX(-24deg); }
 .search-header img { box-shadow:var(--elev-card); }
 .search-starters .ollie-button { background:var(--card); border:1px solid var(--border); box-shadow:var(--elev-card); }
 .search-composer > div > div:has(textarea) { background:var(--surface); border-color:transparent; box-shadow:var(--control-inset); }
@@ -1190,3 +1193,33 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 @media(max-height:650px) { .pw-title { font-size:22px; line-height:28px; } .pw-plan { padding:12px 14px; } .pw-timeline { margin-top:18px; } }
 /* iOS Low Power Mode blocks autoplay; never show Safari's play overlay on the decorative loop. */
 .paywall-discovery-video video::-webkit-media-controls, .paywall-discovery-video video::-webkit-media-controls-start-playback-button, .paywall-discovery-video video::-webkit-media-controls-overlay-play-button { display:none !important; -webkit-appearance:none; opacity:0; }
+
+/* Whale concept stays contextual; it does not replace Ollie's chat identity. */
+:root { --rest-sky:linear-gradient(165deg,color-mix(in oklab,var(--sky-mist) 80%,var(--card)),var(--card) 65%,color-mix(in oklab,var(--accent-2) 7%,var(--card))); }
+.whale-rest { position:relative; width:min(100%,320px); height:220px; flex-shrink:0; }
+.whale-rest img { position:absolute; width:100%; height:100%; object-fit:contain; transform-origin:55% 65%; }
+.whale-breath { animation:whale-breathe 5s ease-in-out infinite; }
+.whale-rest.is-small { width:180px; height:112px; margin-inline:auto; }
+.whale-dream { position:absolute; border:1px solid var(--border); background:var(--card); border-radius:var(--radius-pill); box-shadow:var(--elev-card); animation:whale-dream 5s ease-in-out infinite; }
+.dream-one { width:8px; height:8px; right:25%; top:28%; }
+.dream-two { width:13px; height:13px; right:19%; top:19%; animation-delay:180ms; }
+.dream-book { display:flex; width:40px; height:40px; align-items:center; justify-content:center; right:8%; top:0; color:var(--accent-2); animation-delay:360ms; }
+.dream-book svg { width:19px; height:19px; }
+@keyframes whale-breathe { 50% { transform:translateY(-4px) scaleY(1.025); } }
+@keyframes whale-dream { 0%,100% { opacity:0.35; transform:translateY(2px); } 50% { opacity:1; transform:translateY(-3px); } }
+.bedtime-screen { background:var(--rest-sky); color:var(--foreground); }
+.bedtime-star { background:var(--primary); }
+.bedtime-moon { position:absolute; top:10%; right:14%; width:48px; height:48px; border-radius:var(--radius-pill); background:var(--card); box-shadow:var(--elev-card); }
+.create-modes { position:relative; isolation:isolate; }
+.create-modes::before { content:''; position:absolute; z-index:-1; inset:5px auto 5px 5px; width:calc(50% - 5px); border-radius:var(--radius-pill); background:var(--card); box-shadow:var(--elev-card); transition:transform var(--duration-element) var(--ease-enter); }
+.create-modes[data-mode=type]::before { transform:translateX(100%); }
+.create-modes button[aria-pressed] { background:transparent; box-shadow:none; }
+.create-choice { transition:background-color var(--duration-element),color var(--duration-element),transform var(--duration-tap); }
+.create-choice[aria-pressed=true] { animation:choice-settle var(--duration-element) var(--ease-enter); }
+.builder-result { animation:local-result var(--duration-element) var(--ease-enter) both; }
+@keyframes choice-settle { 50% { transform:scale(1.035); } }
+@keyframes local-result { from { opacity:0.4; transform:translateY(5px); } to { opacity:1; transform:none; } }
+.discovery-open { animation:discovery-open var(--duration-reveal) var(--ease-enter) both; }
+@keyframes discovery-open { from { opacity:0.5; transform:translateY(32px); } to { opacity:1; transform:none; } }
+@media(prefers-reduced-motion:reduce) { .whale-breath,.whale-dream { animation:none; } }
+@media(prefers-reduced-motion:reduce) { .discovery-open,.create-choice[aria-pressed=true],.builder-result { animation:none; } .create-modes::before { transition:none; } }
