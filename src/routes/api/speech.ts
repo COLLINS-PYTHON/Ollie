@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { voicePace } from '@/lib/voice-pacing';
 
-const bodySchema = z.object({ text: z.string().trim().min(1).max(800) });
+const bodySchema = z.object({ text: z.string().trim().min(1).max(800), age: z.number().int().min(4).max(12).default(7) });
 const MODEL = "google/gemini-3.1-flash-tts-preview";
 const VOICE = "Kore";
 
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/api/speech")({
           headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
             model: MODEL,
-            contents: [{ role: "user", parts: [{ text: `Say warmly and gently, at a calm pace for a young child: ${parsed.data.text}` }] }],
+            contents: [{ role: "user", parts: [{ text: `Read warmly, ${voicePace(parsed.data.age)}. Do not rush. Speak only the following text: ${parsed.data.text}` }] }],
             generationConfig: {
               responseModalities: ["AUDIO"],
               speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE } } },

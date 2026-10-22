@@ -1,9 +1,24 @@
 /* Natural read-aloud with the browser voice as an offline fallback. */
-type Handlers = { onStart?: () => void; onEnd?: () => void; rate?: number };
+import { voiceRate } from './voice-pacing';
+type Handlers = { onStart?: () => void; onEnd?: () => void; rate?: number; age?: number };
 
 let current: HTMLAudioElement | null = null;
 let token = 0;
 const cache = new Map<string, string>();
+const pending = new Map<string, Promise<string>>();
+
+export function preloadSpeech(text: string, age = 7): Promise<string> {
+  const key = `${age}:${text}`;
+  const cached = cache.get(key); if (cached) return Promise.resolve(cached);
+  const request = pending.get(key); if (request) return request;
+  const next = fetch('/api/speech', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text.slice(0,800), age }) }).then(async res => {
+    if (!res.ok) throw new Error(String(res.status));
+    const url = URL.createObjectURL(await res.blob()); cache.set(key,url);
+    if (cache.size > 40) { const oldest = cache.keys().next().value; if (oldest) { const old = cache.get(oldest); if (old) URL.revokeObjectURL(old); cache.delete(oldest); } }
+    return url;
+  }).finally(() => pending.delete(key));
+  pending.set(key,next); return next;
+}
 
 export function stopSpeaking() {
   token++;
@@ -14,7 +29,7 @@ export function stopSpeaking() {
 function browserSpeak(text: string, h: Handlers) {
   if (!("speechSynthesis" in window)) { h.onEnd?.(); return; }
   const u = new SpeechSynthesisUtterance(text);
-  u.rate = h.rate ?? 0.92;
+  u.rate = h.rate ?? voiceRate(h.age ?? 7);
   u.onstart = () => h.onStart?.();
   u.onend = () => h.onEnd?.();
   u.onerror = () => h.onEnd?.();
@@ -26,17 +41,7 @@ export async function speak(text: string, h: Handlers = {}) {
   stopSpeaking();
   const mine = token;
   try {
-    let url = cache.get(text);
-    if (!url) {
-      const res = await fetch("/api/speech", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: text.slice(0, 800) }),
-      });
-      if (!res.ok) throw new Error(String(res.status));
-      url = URL.createObjectURL(await res.blob());
-      cache.set(text, url);
-    }
+    const url = await preloadSpeech(text, h.age ?? 7);
     if (mine !== token) return;
     const audio = new Audio(url);
     current = audio;
