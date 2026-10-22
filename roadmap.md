@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- [ ] October 22 23:49: both paywall actions use exactly “Unlock [child’s name]’s safe trial”.
 
 - [ ] October 22 23:47: center Search placeholder and give older kids a prominent initial composer; replace abstract thinking with contextual whale motion.
 - [ ] October 22 23:47: living blue ocean-inspired atmosphere and meaningful transitions across onboarding/Create/Trail; retain whale identity, add optional navigation sounds and reduced-motion support.

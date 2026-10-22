@@ -1,0 +1,3 @@
+/** Natural speech pace by actual age, independently of reading-band complexity. */
+export function voiceRate(age: number) { return age <= 6 ? 0.88 : age <= 9 ? 0.94 : 1; }
+export function voicePace(age: number) { return age <= 6 ? 'slowly and clearly, with short pauses between sentences, for a child aged four to six' : age <= 9 ? 'at a relaxed conversational pace, clearly, for a child aged seven to nine' : 'at a natural unhurried conversational pace for a child aged ten to twelve'; }
