@@ -76,7 +76,7 @@ function OnboardingLayout() {
     };
   }, [pathname, ready, preview]);
 
-  return <div data-navigation={direction} className="onboarding-theme onboarding-shell">{ready ? <><AmbientDepth /><div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
+  return <div data-navigation={direction} className="onboarding-theme onboarding-shell">{ready ? <><AmbientDepth quiet /><div className="onboarding-flow"><Outlet /></div></> : <div className="min-h-[100svh] bg-background" />}</div>;
 }
 
 /* Fixed onboarding skeleton: back, 4-segment chapter bar, title slot, pinned button. */

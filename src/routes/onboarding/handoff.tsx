@@ -38,7 +38,7 @@ function HandoffPage() {
 
   return (
     <div className="bg-gradient-hello min-h-screen">
-      <AmbientDepth />
+      <AmbientDepth quiet />
       <main className="relative mx-auto flex min-h-screen w-full max-w-md flex-col items-center justify-center px-5 pb-32 text-center">
         <div className="setup-reveal"><FloatingWhale pose="celebrate" size={280} /></div>
         <h1 className="text-title mt-8 text-foreground">{name}’s space is ready.</h1>

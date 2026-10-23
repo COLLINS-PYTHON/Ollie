@@ -15,7 +15,7 @@ function PaywallPage() {
  const kidNames=familyKids().map(k=>String(k.profile['name']??'').trim()).filter(Boolean);
  const name=kidNames.length?kidNames.join(' and '):onboardingState.name.trim()||'your child';
  return <div className="trial-invitation relative bg-background">
- <AmbientDepth /><div className="paywall-underlay relative mx-auto flex w-full max-w-md flex-col px-5 pt-4">
+ <AmbientDepth quiet /><div className="paywall-underlay relative mx-auto flex w-full max-w-md flex-col px-5 pt-4">
  <Button variant="control" size="icon" aria-label="Back" onClick={()=>router.history.back()}><ChevronLeft /></Button>
         <div className="trial-whale-story"><div className="trial-orbit trial-orbit-a"><LessonArt categoryId="space" topicId="moon-phases" title="Explore the Moon" animated={false}/></div><div className="trial-orbit trial-orbit-b"><LessonArt categoryId="ocean" topicId="sea-turtles" title="Discover sea turtles" animated={false}/></div><FloatingWhale pose="celebrate" size={240}/></div>
         <h1 className="text-title mt-8 text-center text-foreground">We want you and {name} to try Ollie for free!</h1>
