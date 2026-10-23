@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Now
-- [ ] Verify perceptible live motion rather than static screenshots: inspect welcome/background/deck/transitions/Create/Trail and correct invisible or excessively subtle movement.
+- [ ] Motion visibility: strengthened background bubbles, welcome drift, deck life, Create book movement and directional transitions; live compact welcome frames visibly change, build passed. Full transition/Create/Trail motion review remains.
 - [x] Correct mascot overuse: removed decorative whales from routine setup/Trail and duplicate Create whale; thought bubbles now opt in only for actual thinking/creating.
 - [ ] Reconcile every item in the user's long design request with verified completion; artwork sequences and real-device immediate audio remain unverified/incomplete.
 - [x] October 23: reviewed all 21 content/entry pages, 11 parent dialogs, lesson content and quiz on 768×1024 and 1024×768; no horizontal overflow or runtime errors. Widened kid pages, account forms, parent/creation sheets and lesson tracks; enlarged touch controls. Real iPad keyboard, Safari/audio policy and authenticated recovery states still need device checks.
