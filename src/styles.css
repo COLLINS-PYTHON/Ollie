@@ -1404,3 +1404,25 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
   .discovery-session .lesson-stage-enter { gap:12px; padding-block:16px; }
   .discovery-session .slide-tint > div:last-child { padding-bottom:20px; }
 }
+
+/* Perceptible movement: scenery lives at the edges, reading and controls stay still. */
+@media(prefers-reduced-motion:no-preference) {
+  .ambient-mote { border-width:1.5px; border-color:color-mix(in oklab,var(--primary) 40%,transparent); background:color-mix(in oklab,var(--card) 12%,transparent); }
+  .ambient-mote-a { width:20px; height:20px; --mote-time:15s; animation-delay:-4s; }
+  .ambient-mote-b { width:12px; height:12px; --mote-time:12s; animation-delay:-8s; }
+  .ambient-mote-c { width:24px; height:24px; --mote-time:18s; animation-delay:-11s; }
+  .ambient-mote-d { width:16px; height:16px; --mote-time:14s; animation-delay:-3s; }
+  .ambient-shaft { animation-duration:9s; }
+  .ambient-shaft-b { animation-duration:12s; }
+  .onboarding-content { animation-duration:380ms; }
+  .onboarding-shell { --step-offset:48px; }
+  .onboarding-shell[data-navigation=back] { --step-offset:-48px; }
+  .discovery-preview-card .discovery-scene { animation:deck-scene-life 5s ease-in-out infinite; }
+  .discovery-preview-card[data-position="1"] .discovery-scene { animation-delay:-1.5s; }
+  .discovery-preview-card[data-position="2"] .discovery-scene { animation-delay:-3s; }
+  .create-artwork img { animation:studio-book-enter 400ms var(--ease-enter) both,studio-book-life 5s ease-in-out 400ms infinite; }
+  .trail-canopy { animation-duration:6s; }
+  .trail-flight { animation-duration:8s; }
+}
+@keyframes deck-scene-life { 50% { transform:translateY(-5px) rotate(.7deg); } }
+@keyframes studio-book-life { 50% { transform:translateY(-8px) rotate(-1.5deg); } }

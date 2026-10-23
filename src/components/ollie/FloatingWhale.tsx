@@ -15,9 +15,9 @@ export function FloatingWhale({ pose = 'curious', size = 220, className = '', th
     if (!el || prefersReducedMotion()) return;
     const lift = (t: number) => wave(t, 3.6);
     return loopClock(t => {
-      const y = lift(t) * 0.045 * size + wave(t, 1.3) * 0.005 * size; // drift plus moving hold
-      const pitch = lagged(lift, t, 0.18) * -1.8;
-      const sway = wave(t, 7.2, 1) * 0.02 * size;
+      const y = lift(t) * 0.065 * size + wave(t, 1.3) * 0.005 * size; // readable drift plus moving hold
+      const pitch = lagged(lift, t, 0.18) * -3;
+      const sway = wave(t, 7.2, 1) * 0.035 * size;
       const leap = pose === 'celebrate' ? bell((t % 4) / 1.4) * -0.08 * size : 0;
       el.style.setProperty('--wy', `${(y + leap).toFixed(2)}px`);
       el.style.setProperty('--wx', `${sway.toFixed(2)}px`);
