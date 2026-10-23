@@ -407,6 +407,14 @@
   from { opacity: 0; transform: scale(0); }
   to { opacity: 1; transform: scale(1); }
 }
+@utility picture-reveal {
+  animation: picture-reveal 700ms var(--ease-enter) both;
+}
+@keyframes picture-reveal {
+  from { opacity: 0; filter: blur(28px); transform: scale(1.04); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) { .picture-reveal { animation: none; filter: none; } }
 @utility caret {
   animation: caret 900ms steps(1) infinite;
 }
