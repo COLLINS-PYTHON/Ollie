@@ -1538,3 +1538,8 @@ html[data-step-direction=back] { --page-travel:-90px; }
   .trail-glow { animation:none; stroke-dashoffset:0; }
   .trail-arrive,.trail-next,.trail-next svg,.create-builder > div,.create-typing > div,.create-choice.border-primary,.picture-keepsake,.create-artwork img { animation:none; }
 }
+
+/* Parent Dashboard wayfinding: a soft ring draws the eye to the shield. */
+.parent-hint { animation: parent-hint-ring 2.4s var(--ease-out, ease-out) infinite; }
+@keyframes parent-hint-ring { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 35%, transparent); } 50% { box-shadow: 0 0 0 8px color-mix(in oklab, var(--primary) 0%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .parent-hint { animation: none; } }

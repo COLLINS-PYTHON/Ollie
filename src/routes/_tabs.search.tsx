@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { speak as naturalSpeak } from "@/lib/speak";
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
@@ -294,6 +295,9 @@ function SearchChat() {
                     </Button>
                   </div>
                   {m.illustrationId && <AnswerArt id={m.illustrationId} />}
+                  {m.tier && m.tier !== "ok" && (
+                    <Link to="/parent" className="mb-1 text-label text-muted-foreground underline underline-offset-2">Grown-ups: see this in the Parent Dashboard</Link>
+                  )}
                   {(!m.tier || m.tier === "ok") && (
                     <div className="mb-1 flex flex-wrap gap-1" role="group" aria-label="React to this answer">
                       {REACTIONS.map((r) => {

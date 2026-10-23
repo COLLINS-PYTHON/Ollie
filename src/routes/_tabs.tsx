@@ -13,6 +13,7 @@ import { resolveAppEntry } from "@/lib/app-entry";
 import { pushAll } from "@/lib/cloud-sync";
 import { KidSwitcher } from "@/components/ollie/KidSwitcher";
 import { activeKidId } from "@/lib/kid-storage";
+import { ParentIcon } from "@/components/ollie/ParentIcon";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -20,19 +21,17 @@ export const Route = createFileRoute("/_tabs")({
   component: TabsLayout,
 });
 
-function ParentIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3 4.5 6v5.5c0 4.4 3.1 8.2 7.5 9.5 4.4-1.3 7.5-5.1 7.5-9.5V6L12 3Z" />
-      <circle cx="12" cy="10.5" r="2.2" />
-      <path d="M8.3 16c.8-1.5 2.1-2.3 3.7-2.3s2.9.8 3.7 2.3" />
-    </svg>
-  );
-}
-
 function TabsLayout() {
   const [kidVersion, setKidVersion] = useState(0);
   const [chooseKid, setChooseKid] = useState(false);
+  const [parentHint, setParentHint] = useState(false);
+  useEffect(() => {
+    // Label the parent button for the first three app opens, then icon only.
+    try {
+      const seen = Number(localStorage.getItem("ollie-parent-hint-v1") || 0);
+      if (seen < 3) { setParentHint(true); localStorage.setItem("ollie-parent-hint-v1", String(seen + 1)); }
+    } catch { /* storage unavailable */ }
+  }, []);
   const [ready, setReady] = useState(false);
   const [takeover, setTakeover] = useState(false);
   const review = useSlideshowReview();
@@ -122,9 +121,10 @@ function TabsLayout() {
         <Link
           to="/parent"
           aria-label="Parent Dashboard"
-          className="frosted flex size-10 items-center justify-center rounded-pill text-muted-foreground shadow-card transition-transform duration-tap active:scale-95"
+          className={`frosted flex h-10 items-center justify-center gap-1.5 rounded-pill text-muted-foreground shadow-card transition-transform duration-tap active:scale-95 ${parentHint ? "parent-hint px-3.5" : "w-10"}`}
         >
           <ParentIcon />
+          {parentHint && <span className="text-label">Parents</span>}
         </Link>
       </div>
       {ready && <><div className="kid-identity z-30"><Button variant="ghost" className="h-10 max-w-full truncate rounded-pill text-support" onClick={() => setChooseKid(v => !v)} aria-expanded={chooseKid}>{child.name}</Button></div>{chooseKid && <div className="absolute inset-x-5 top-16 z-40 mx-auto max-w-md rounded-card border border-border bg-card p-3 shadow-sheet"><KidSwitcher /></div>}<div key={activeKidId()} className="contents"><Outlet /></div></>}
