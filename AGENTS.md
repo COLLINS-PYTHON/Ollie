@@ -32,7 +32,7 @@
 - Use bounded tablet page/sheet/lesson tracks and separate Search navigation/composer tracks. Why: readable iPad layouts and unobstructed typing.
 - Keep Search's iMessage transcript and transport when polishing layout. Why: presentation fixes must preserve conversations.
 - Orbs use CrispOrb at actual size and device resolution (max 4x); pre-optimize thinking-orbs/engine. Search voice reuses breathing/listening states in Button. Why: crisp, consistent artwork and unchanged speech transport.
-- Failed module loads refresh once per cooldown; retry refreshes to discard stale chunks safely.
+- Failed module loads refresh once per cooldown.
 - Cloud deletion traverses picture folders and propagates errors, pausing local sync. Why: incomplete deletion must not show success.
 
 - child-interactions centralizes tested voice age and starter rules; swipes never bypass open quizzes. Why: consistent safe navigation.
@@ -40,3 +40,4 @@
 - Read-aloud goes through src/lib/speak.ts with actual age pacing, deduplicated bounded preloads and browser fallback. Why: pace follows age rather than reading difficulty, without duplicate voice charges.
 - Shared lessons teach one topic at a time; daily cached choices rebuild current content locally without advancing selection. Why: library improvements reach old selections without rewriting cloud progress.
 - Cookie purchase availability is shared through picture-store; preview purchase controls never award credits. Why: a parent PIN is permission, not evidence of payment.
+- AI models must be zero-retention on the called endpoint (ai-retention.test.js). Why: privacy promises no training.
