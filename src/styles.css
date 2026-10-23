@@ -1543,3 +1543,27 @@ html[data-step-direction=back] { --page-travel:-90px; }
 .parent-hint { animation: parent-hint-ring 2.4s var(--ease-out, ease-out) infinite; }
 @keyframes parent-hint-ring { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 35%, transparent); } 50% { box-shadow: 0 0 0 8px color-mix(in oklab, var(--primary) 0%, transparent); } }
 @media (prefers-reduced-motion: reduce) { .parent-hint { animation: none; } }
+
+/* Realistic rising bubbles: wobble side to side, stretch slightly, rise faster. */
+.ambient-depth .ambient-mote-e, .ambient-depth .ambient-mote-f, .ambient-depth .ambient-mote-g, .ambient-depth .ambient-mote-h { display:none; }
+@media (prefers-reduced-motion: no-preference) {
+  .ambient-depth .ambient-mote { border-color:color-mix(in oklab,var(--primary) 34%,transparent); animation-name:bubble-rise; animation-timing-function:cubic-bezier(.45,.05,.55,.95); }
+  .ambient-depth .ambient-mote-a { left:8%;  --mote-time:11s; animation-delay:-2s; }
+  .ambient-depth .ambient-mote-b { left:28%; --mote-time:9s;  animation-delay:-6s; }
+  .ambient-depth .ambient-mote-c { left:62%; --mote-time:13s; animation-delay:-9s; }
+  .ambient-depth .ambient-mote-d { left:84%; --mote-time:10s; animation-delay:-1s; }
+  .ambient-quiet .ambient-mote-e, .ambient-quiet .ambient-mote-f, .ambient-quiet .ambient-mote-g, .ambient-quiet .ambient-mote-h { display:block; }
+  .ambient-depth .ambient-mote-e { left:18%; width:10px; height:10px; --mote-time:7s;  animation-delay:-3s; }
+  .ambient-depth .ambient-mote-f { left:46%; width:18px; height:19px; --mote-time:12s; animation-delay:-7s; }
+  .ambient-depth .ambient-mote-g { left:74%; width:8px;  height:8px;  --mote-time:6s;  animation-delay:-4s; }
+  .ambient-depth .ambient-mote-h { left:92%; width:14px; height:14px; --mote-time:9s;  animation-delay:-5s; }
+}
+@keyframes bubble-rise {
+  0%   { transform:translate3d(0,0,0) scale(.85,.9); opacity:0; }
+  8%   { opacity:.8; }
+  20%  { transform:translate3d(10px,-18vh,0) scale(1.04,.96); }
+  40%  { transform:translate3d(-8px,-36vh,0) scale(.96,1.05); }
+  60%  { transform:translate3d(12px,-54vh,0) scale(1.05,.95); }
+  80%  { transform:translate3d(-6px,-72vh,0) scale(.97,1.04); opacity:.65; }
+  100% { transform:translate3d(6px,-92vh,0) scale(1.08); opacity:0; }
+}
