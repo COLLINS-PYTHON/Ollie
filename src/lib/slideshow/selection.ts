@@ -1,6 +1,7 @@
 import type { Band } from './types';
 import type { Day, Slide } from './library';
 import { TOPIC_CONTEXT } from './topic-context';
+import { TOPIC_TEACHING } from './topic-teaching';
 
 export const BAG_SIZE = 12;
 export type BagState = { currentBag: string[]; bagPosition: number; progress: Record<string, number>; selectedDay?: string; selected?: unknown };
@@ -35,15 +36,15 @@ export function lessonSlides(subs: Slide['sub'][], band: Band): Slide[] {
   const topic = subs[0]; if (!topic) return [];
   const context = TOPIC_CONTEXT[topic.id]; if (!context) return [{kind:'content',sub:topic},{kind:'quiz',sub:topic}];
   const same = (text:string) => ({ '4-6':text,'7-9':text,'10-12':text });
+  const teaching = TOPIC_TEACHING[topic.id]; if (!teaching) return [{kind:'content',sub:topic},{kind:'quiz',sub:topic}];
   const short = (text:string) => text.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim() ?? text;
   const titles = ['Notice','How it works','A closer look','One more discovery'];
-  const facts = context.insights.map((insight,index): Slide => ({kind:'content',scene:index,sub:{...topic,title:titles[index] ?? topic.title,caption:{'4-6':index === 0 ? topic.caption['4-6'] : short(insight),'7-9':short(insight),'10-12':insight}}}));
-  const questions = context.insights.map((insight,index): Slide => {
-    const correct = index === 0 ? context.options[0] ?? '' : short(insight);
-    const distractors = index === 0 ? context.options.slice(1) : context.options.slice(1);
-    const options=[correct,...distractors]; const answer=index%3;
-    if (answer !== 0) { const value=options[answer]; if (value !== undefined) { options[answer]=correct;options[0]=value; } }
-    return {kind:'quiz',scene:index,sub:{...topic,quiz:{q:same(index===0 ? context.question : `Which detail is true about ${topic.title.toLowerCase()}?`),options,answer,hint:same('Think about the explanation you just explored.'),why:same(band==='10-12' ? insight : short(insight))}}};
+  const facts = context.insights.map((insight,index): Slide => ({kind:'content',scene:index,sub:{...topic,title:titles[index] ?? topic.title,caption:{'4-6':teaching.young[index] ?? short(insight),'7-9':teaching.middle[index] ?? short(insight),'10-12':insight}}}));
+  const questions = teaching.questions.map((question,index): Slide => {
+    const options=[...question.options]; const answer=index%3; const correct=options[question.answer] ?? '';
+    options.splice(question.answer,1); options.splice(answer,0,correct);
+    const insight=context.insights[index] ?? '';
+    return {kind:'quiz',scene:index,sub:{...topic,quiz:{q:same(question.q),options,answer,hint:same(question.hint),why:{'4-6':teaching.young[index] ?? insight,'7-9':teaching.middle[index] ?? insight,'10-12':insight}}}};
   });
   const slides = [...facts,...questions];
   if (band !== '4-6') {

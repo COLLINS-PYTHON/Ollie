@@ -26,4 +26,5 @@ test('every category has four distinct single-topic lessons', () => {
     expect(new Set(ids).size).toBe(4);
   }
 });
-test('older Moon quiz actually answers the phases question', () => { const quiz=buildDay('space',0,'10-12').slides.find(s=>s.kind==='quiz').sub.quiz; expect(quiz.options[quiz.answer]).toBe('Our changing view of its sunlit half'); });
+test('older Moon quiz actually answers the phases question', () => { const quiz=buildDay('space',0,'10-12').slides.find(s=>s.kind==='quiz').sub.quiz; expect(quiz.options[quiz.answer]).toBe('Our view of its sunlit half changes'); });
+test('each lesson asks four different questions', () => { for (const category of CATEGORY_IDS) for (let index=0;index<4;index++) { const qs=buildDay(category,index,'7-9').slides.filter(s=>s.kind==='quiz').map(s=>s.sub.quiz.q['7-9']); expect(new Set(qs).size).toBe(4); } });

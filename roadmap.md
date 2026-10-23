@@ -1,16 +1,16 @@
 # Roadmap
 
 ## Now
-- [ ] October 22 23:49: both paywall actions use exactly “Unlock [child’s name]’s safe trial”.
+- [x] October 22 23:49: both paywall actions use exactly “Unlock [child’s name]’s safe trial”.
 
-- [ ] October 22 23:47: center Search placeholder and give older kids a prominent initial composer; replace abstract thinking with contextual whale motion.
-- [ ] October 22 23:47: living blue ocean-inspired atmosphere and meaningful transitions across onboarding/Create/Trail; retain whale identity, add optional navigation sounds and reduced-motion support.
-- [ ] October 22 23:47: topic-led multi-page lessons with age-specific context, multiple lessons per interest, crisp matte topic images rather than category reuse, improved health cover, three-card interactive Discovery preview.
-- [ ] October 22 23:47: age-paced speech and preloaded immediate onboarding audio with truthful autoplay fallback.
-- [ ] October 22 23:47: shorten privacy without weakening consent; warm excited trial invitation, subtle payment assurance glow, whale prepaywall animation, expanded real feature value and clear trial timeline.
-- [ ] October 22 23:47: verify generated pictures, lesson progression, onboarding and tab layouts at compact phone and desktop sizes; preserve rewards, privacy and billing limitations.
+- [x] October 22 23:47: center Search placeholder and give older kids a prominent initial composer; replace abstract thinking with contextual whale motion.
+- [x] October 22 23:47: living blue ocean-inspired atmosphere and meaningful transitions across onboarding/Create/Trail; retain whale identity, add optional navigation sounds and reduced-motion support.
+- [x] October 22 23:47: topic-led multi-page lessons with age-specific context, multiple lessons per interest, crisp matte topic images rather than category reuse, improved health cover, three-card interactive Discovery preview.
+- [x] October 22 23:47: age-paced speech and preloaded immediate onboarding audio with truthful autoplay fallback.
+- [x] October 22 23:47: shorten privacy without weakening consent; warm excited trial invitation, subtle payment assurance glow, whale prepaywall animation, expanded real feature value and clear trial timeline.
+- [x] October 22 23:47: verify generated pictures, lesson progression, onboarding and tab layouts at compact phone and desktop sizes; preserve rewards, privacy and billing limitations.
 
-- [ ] October 22 00:38: replace Daily Discovery geometric artwork with topic-specific beige-book-style matte illustrations across preview/playback/Trail, and loosen lesson layout and transitions while preserving content, quizzes and rewards.
+- [x] October 22 00:38: replace Daily Discovery geometric artwork with topic-specific beige-book-style matte illustrations across preview/playback/Trail, and loosen lesson layout and transitions while preserving content, quizzes and rewards.
 
 - [x] October 22 00:34: adapted directional setup transitions, stable Create mode selection and one-shot lesson entrance; grouped iMessage bubbles and added contextual whale breathing/dream bubbles without replacing Ollie throughout. Saved local chat, Create selections, Trail review and reduced-motion checks passed; signed-in cloud checks blocked by unavailable matching test identity.
 - [x] October 22 00:36 clarification: independently inspected all six panels at 4fps, 27 samples per panel. Habit dashboard: retain records, reject XP/disintegration. Drink builder: borrow stable selection, reject invented generation progress. Finance: success only after real save, reject swipe-only confirmation. Welcome: stable controls and finite entrance, not camera zoom as navigation. Path: quiet lesson entrance, not decorative locks. Job cards: focused selection, no endless swiping. Sampling establishes sequence, not frame-exact easing; optional preview sheets/card decks were not added.
@@ -105,3 +105,4 @@
 - [ ] Remove screen-time "boundaries" screen or rebuild it
 
 - [ ] Whale: no blowhole spray; cartoon thought/dream bubbles float above his head
+- Reminder/report delivery and real billing remain unconnected; optional neural voice autoplay can still be blocked by browser policy.
