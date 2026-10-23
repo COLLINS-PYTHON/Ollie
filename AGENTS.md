@@ -29,7 +29,7 @@
 - Parent setting sheets use the shared portalled Vaul drawer outside the animated page. Why: a transformed page must not trap fixed dialogs below the viewport.
 - Onboarding's explicit preview search parameter is retained between its steps and bypasses the returning-family redirect without clearing saved data. Why: existing families can review setup while ordinary entry continues to skip it.
 - Parent-facing safety illustrations use the shared Embla carousel in SafetyExamples, with literal locked responses and clearly labelled example flags. Why: parents can inspect multiple sensitive-topic outcomes without live searches or fabricated progress.
-- Search reserves a separate navigation dock beneath its composer; the app uses dynamic viewport sizing and a wider shared tablet frame. Why: tabs never cover messages or typing, and available screen space stays useful across devices.
+- Use bounded tablet page/sheet/lesson tracks and separate Search navigation/composer tracks. Why: readable iPad layouts and unobstructed typing.
 - Keep Search's iMessage transcript and transport when polishing layout. Why: presentation fixes must preserve conversations.
 - Orbs use CrispOrb at actual size and device resolution (max 4x); pre-optimize thinking-orbs/engine. Search voice reuses breathing/listening states in Button. Why: crisp, consistent artwork and unchanged speech transport.
 - Failed module loads refresh once per cooldown; retry refreshes to discard stale chunks safely.

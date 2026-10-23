@@ -1365,6 +1365,16 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .discovery-session[data-band="4-6"] button { min-height:60px; }
 @media(min-width:768px) {
   .account-page,.parent-pin { max-width:560px; padding-inline:40px; }
+  .account-page { min-height:100dvh; }
+  .tabs-shell .kid-identity { max-width:180px; }
+  .tabs-shell .kid-identity button,.tabs-shell .parent-access a { min-width:48px; min-height:48px; }
+  .search-screen [aria-label="Hear this answer"],.search-screen [aria-label="React to this answer"] button { min-width:48px; min-height:48px; }
+  .onboarding-header > button,.parent-sheet button[aria-label="Close"] { width:48px; height:48px; }
+  .onboarding-shell .onboarding-flow > div > main,.onboarding-shell .onboarding-flow > div > .onboarding-frame { max-width:640px; }
+  .trial-plans-page { max-width:640px; }
+  .onboarding-theme .onboarding-content > h1 { font-size:30px; line-height:38px; }
+  .parent-sheet { padding-bottom:max(32px,env(safe-area-inset-bottom)); }
+  .trail-screen .trail-node,.trail-screen .trail-unvisited { width:80px; height:80px; }
   .parent-dashboard { max-width:720px; padding:28px 40px 48px; }
   .parent-sheet { max-width:640px; padding-inline:32px; padding-bottom:32px; }
   .parent-sheet input,.parent-sheet button:not([role="switch"]) { min-height:48px; }

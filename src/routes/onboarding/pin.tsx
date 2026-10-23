@@ -44,7 +44,7 @@ function PinPage() {
           ))}
         </div>
         <p className="text-support mt-3 h-5 text-center text-muted-foreground">{error ? "Those didn't match. Try again." : done ? "PIN set." : ""}</p>
-        <div className="mx-auto mt-3 grid max-w-64 grid-cols-3 gap-3">
+        <div className="setup-pin-grid mx-auto mt-3 grid max-w-64 grid-cols-3 gap-3">
           {["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "del"].map((k) =>
             k === "" ? <span key="blank" /> : (
               <Button variant="control"
