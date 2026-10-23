@@ -116,3 +116,4 @@
 - [ ] Whale: no blowhole spray; cartoon thought/dream bubbles float above his head
 - Reminder/report delivery and real billing remain unconnected; optional neural voice autoplay can still be blocked by browser policy.
 - [x] Record when each kid first uses Search and Create (triedSearch/triedImage)
+- [x] Livelier, more realistic background bubbles; denser on quiet screens
