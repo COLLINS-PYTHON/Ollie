@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 - MCP server lives in src/lib/mcp (public, no auth; tools use hardcoded data only) — user explicitly chose public access; never add service-role access there.
 - Design tokens (Ollie colors, radii card/control/pill, shadow-card/sheet, duration-tap/element/reveal, text-title/body/support/label/button) live in src/styles.css; components use only these. Why: every screen follows the spec from one source.
-- Shared controls use Button variants; onboarding content remounts by pathname with step-direction motion, stable header/action and one entrance. WhaleRest is contextual artwork only. Why: coherent motion without resetting setup or silently replacing identity.
+- Shared controls use Button variants; onboarding uses directional route view transitions with stable header/action, not duplicate entrances. Why: visible flow preserves setup and character identity.
 - Tab screens live under `_tabs`; `/` resolves completed saved/signed-in profiles to Search and unfinished setup to its resume step; onboarding redirects completed families to Search. Why: returning families never repeat setup and child screens hydrate their name before rendering.
 - Slideshow packs are shared, band-keyed and never generated per viewer. Why: reusable lessons and matching quiz answers keep costs low.
 - The slideshow takes over the screen from the `_tabs` layout until the day is marked done in `src/lib/slideshow-store.ts`; screens never render it inline. Why: the spec requires the daily lesson to be finished before anything else.
@@ -20,7 +20,7 @@
 - The parent PIN is only stored as a SHA-256 hash (pinHash); check it with checkPin. Why: spec requires PINs never be stored readable.
 - Building is an immediate settings summary, not a fake timed generator; custom lessons remain persisted separately when available. Why: setup never pretends background generation happened.
 - Signed-in devices live in the `devices` table; remote log out sets `revoked`, and that device wipes itself on its next sync. Why: no server push in v1.
-- LessonArt uses the topic-art registry and topic-sequences for previews, playback and Trail; unknown topics show no unrelated category cover. Why: topic identity and artwork must match everywhere.
+- LessonArt shares topic/scene registries across preview/playback/Trail; never substitute unrelated covers. Playback uses tablet art/reading columns and stacked phone tracks. Why: artwork matches teaching and layouts fit devices.
 - Prices derive from subscription-prices, yearly equivalent divides by 12. Why: consistent labels.
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
 - Chase uses direct H.264 src, muted/defaultMuted inline autoplay, readiness/gesture retries and reduced-motion pause. Why: reliable phone playback without controls.
