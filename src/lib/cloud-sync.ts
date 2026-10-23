@@ -120,7 +120,7 @@ export async function pullAll() {
     const profile = { ...setup, onboardingComplete: setup['onboardingComplete'] !== false,
       name: child.name, age: child.age, readingLevel: child.reading_level, interests: child.interests,
       tone: child.reply_tone, limitMinutes: child.screen_time_limit_minutes, slideshowReset: child.slideshow_reset_time,
-      parentName: acc?.name ?? '', email: acc?.email ?? user.email ?? '', pin: '', pinHash: acc?.pin_hash ?? '',
+      parentName: acc?.name ?? '', email: acc?.email ?? user.email ?? '', pin: '', pinHash: acc?.pin_hash || onboardingState.pinHash || '',
       weeklyEmail: acc?.weekly_email_opt_in ?? null, settings: { soundOn: acc?.sound_enabled ?? true, retentionDays: child.chat_retention_setting },
     };
     const progress = (child.progress ?? {}) as Record<string, unknown>;

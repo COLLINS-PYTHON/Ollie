@@ -23,7 +23,7 @@ import {
   type Balance,
   type Picture,
 } from "@/lib/picture-store";
-import { onboardingState } from "@/lib/onboarding-store";
+import { onboardingState, saveProfile } from "@/lib/onboarding-store";
 import { uploadPicture } from "@/lib/cloud-sync";
 import { childName, pageMeta } from "@/lib/meta";
 import sketchbook from "@/assets/create-sketchbook.png";
@@ -166,6 +166,7 @@ function CreateScreen() {
       });
       const pic: Picture = { id: `p-${Date.now()}`, idea: text, dataUrl: finalUrl, createdAt: Date.now() };
       await savePicture(pic).catch(() => {});
+      if (!onboardingState.triedImage) { onboardingState.triedImage = true; saveProfile(); }
       void uploadPicture(pic).catch(() => {});
       setPictures((prev) => [pic, ...prev]);
       setIdea("");

@@ -39,7 +39,6 @@ export const Route = createFileRoute("/parent")({
 });
 
 /* Unlocked once per app session so moving between tabs doesn't re-ask. */
-let unlocked = false;
 
 const SUPPORT_EMAIL = "support@ollie.app";
 const DAY = 86_400_000;
@@ -261,17 +260,17 @@ function ParentDashboard() {
   const [slidePrefs, setSlidePrefs] = useState<SlideshowPrefs>({ enabled: true, resetTime: "07:00", resetMode: "24h" });
 
   useEffect(() => {
-    if (!onboardingState.name) loadProfile();
+    if (!onboardingState.name || !hasPin()) loadProfile();
     setChat(loadChat());
     setBalance(loadBalance());
     setUsedMin(minutesToday());
     setSlidePrefs(prefs());
-    setUnlocked(unlocked);
     setReady(true);
   }, []);
 
   if (!ready) return <main className="min-h-screen bg-card" />;
-  if (!isUnlocked) return <PinGate onUnlock={() => { unlocked = true; setUnlocked(true); }} />;
+  // The PIN is asked every time the dashboard opens; no unlock carries over.
+  if (!isUnlocked) return <PinGate onUnlock={() => setUnlocked(true)} />;
 
   const child = onboardingState.name || "your child";
   const parent = onboardingState.parentName.trim();

@@ -30,7 +30,7 @@ const REACTIONS: { id: Reaction; label: string }[] = [
   { id: "funny", label: "Funny" },
   { id: "knew", label: "I knew that" },
 ];
-import { onboardingState } from "@/lib/onboarding-store";
+import { onboardingState, saveProfile } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
 import ollie from "@/assets/whale-curious.png";
 import { FloatingWhale } from "@/components/ollie/FloatingWhale";
@@ -131,6 +131,7 @@ function SearchChat() {
   const send = async (text = input) => {
     const question = text.trim();
     if (!question || busy) return;
+    if (!onboardingState.triedSearch) { onboardingState.triedSearch = true; saveProfile(); }
     setInput("");
     const userMsg: ChatMessage = {
       id: `s-${Date.now()}`,
