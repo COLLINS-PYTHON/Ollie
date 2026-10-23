@@ -1501,3 +1501,32 @@ html[data-step-direction=back] { --page-travel:-90px; }
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) { animation:none!important; }
   .lesson-picture { animation:none; }
 }
+
+/* Trail + Create motion pass (Oct 23) */
+.trail-glow { stroke-dasharray: 2400; stroke-dashoffset: 2400; animation: trail-draw 1.6s var(--ease-enter) 200ms forwards, trail-glow-breathe 4s ease-in-out 1.8s infinite; }
+@keyframes trail-draw { to { stroke-dashoffset: 0; } }
+@keyframes trail-glow-breathe { 50% { filter: drop-shadow(0 0 14px color-mix(in oklab,var(--primary) 45%,transparent)); } }
+.trail-arrive { animation: trail-stop-in 520ms cubic-bezier(.34,1.4,.64,1) both; animation-delay: calc(var(--i,0) * 90ms + 150ms); }
+@keyframes trail-stop-in { from { opacity:0; translate:0 18px; scale:.7; } to { opacity:1; translate:0 0; scale:1; } }
+.trail-next { animation: trail-next-bob 2.6s ease-in-out infinite; }
+.trail-next svg { animation: trail-rocket 2.6s ease-in-out infinite; }
+@keyframes trail-next-bob { 50% { translate:0 -6px; box-shadow:0 10px 26px color-mix(in oklab,var(--primary) 30%,transparent); } }
+@keyframes trail-rocket { 50% { rotate:-8deg; } }
+.trail-keepsake:hover, .trail-keepsake:focus-visible { rotate:-3deg; scale:1.06; }
+.trail-keepsake { transition: rotate var(--duration-element) var(--ease-enter), scale var(--duration-element) var(--ease-enter); }
+.create-builder > div, .create-typing > div { animation: trail-stop-in 420ms var(--ease-enter) both; }
+.create-builder > div:nth-child(2) { animation-delay: 80ms; } .create-builder > div:nth-child(3) { animation-delay: 160ms; } .create-builder > div:nth-child(4) { animation-delay: 240ms; }
+.create-choice { transition: scale 150ms var(--ease-enter), background-color 150ms, border-color 150ms; }
+.create-choice:active { scale:.92; }
+.create-choice.border-primary { animation: choice-pop 300ms cubic-bezier(.34,1.6,.64,1); }
+@keyframes choice-pop { 40% { scale:1.12; } }
+.picture-keepsake { transform-origin: 50% -6px; animation: fridge-swing 6s ease-in-out infinite; }
+.picture-keepsake:nth-child(2n) { animation-delay:-2s; animation-duration:7s; }
+.picture-keepsake:nth-child(3n) { animation-delay:-4s; }
+@keyframes fridge-swing { 0%,100% { rotate:0deg; } 50% { rotate:1.6deg; } }
+.create-artwork img { animation: studio-book-enter var(--duration-reveal) var(--ease-enter) both, studio-book-float 5s ease-in-out 600ms infinite; }
+@keyframes studio-book-float { 50% { translate:0 -7px; rotate:-1.5deg; } }
+@media (prefers-reduced-motion: reduce) {
+  .trail-glow { animation:none; stroke-dashoffset:0; }
+  .trail-arrive,.trail-next,.trail-next svg,.create-builder > div,.create-typing > div,.create-choice.border-primary,.picture-keepsake,.create-artwork img { animation:none; }
+}
