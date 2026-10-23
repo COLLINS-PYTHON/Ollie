@@ -6,6 +6,6 @@ export function LessonArt({ categoryId, topicId = '', title, className = '', ani
  const sequence = TOPIC_SEQUENCES[topicId];
  const image = sequence?.[scene % sequence.length] ?? TOPIC_ART[topicId] ?? (!topicId ? CATEGORY_COVERS[categoryId] : undefined);
  return <div role="img" aria-label={title} className={`discovery-scene ${animated ? 'discovery-living' : 'discovery-still'} ${className}`}>
- {image ? <img src={image} alt="" width={1024} height={1024} loading="eager" decoding="async" className="aspect-square w-full object-cover" /> : <div className="lesson-art-unavailable"><BookOpen aria-hidden="true"/></div>}
+  {image ? <img key={image} src={image} alt="" width={1024} height={1024} loading="eager" decoding="async" className="lesson-picture aspect-square w-full object-cover" /> : <div className="lesson-art-unavailable"><BookOpen aria-hidden="true"/></div>}
  </div>;
 }

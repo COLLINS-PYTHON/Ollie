@@ -28,6 +28,19 @@ function OnboardingLayout() {
   const stepIndex = ONBOARDING_STEPS.findIndex(step => step === pathname || step + '/' === pathname);
   const direction = stepIndex < previousStep.current ? 'back' : 'forward';
   useEffect(() => { previousStep.current = stepIndex; }, [stepIndex]);
+  useEffect(() => {
+    document.documentElement.dataset.onboardingMotion = 'true';
+    return () => { delete document.documentElement.dataset.onboardingMotion; delete document.documentElement.dataset.stepDirection; };
+  }, []);
+  useEffect(() => {
+    const unsubscribe = router.subscribe('onBeforeNavigate', ({ fromLocation, toLocation }) => {
+      const from = ONBOARDING_STEPS.findIndex(step => step === fromLocation?.pathname.replace(/\/$/, ''));
+      const to = ONBOARDING_STEPS.findIndex(step => step === toLocation.pathname.replace(/\/$/, ''));
+      document.documentElement.dataset.stepDirection = to < from ? 'back' : 'forward';
+      bubbleSound();
+    });
+    return unsubscribe;
+  }, [router]);
 
   useEffect(() => {
     let active = true;
