@@ -14,8 +14,8 @@ function PaywallPage() {
  const navigate=useNavigate(); const router=useRouter();
  const kidNames=familyKids().map(k=>String(k.profile['name']??'').trim()).filter(Boolean);
  const name=kidNames.length?kidNames.join(' and '):onboardingState.name.trim()||'your child';
- return <div className="relative min-h-screen bg-background">
- <AmbientDepth /><div className="paywall-underlay relative mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-32 pt-4">
+ return <div className="trial-invitation relative bg-background">
+ <AmbientDepth /><div className="paywall-underlay relative mx-auto flex w-full max-w-md flex-col px-5 pt-4">
  <Button variant="control" size="icon" aria-label="Back" onClick={()=>router.history.back()}><ChevronLeft /></Button>
         <div className="trial-whale-story"><div className="trial-orbit trial-orbit-a"><LessonArt categoryId="space" topicId="moon-phases" title="Explore the Moon" animated={false}/></div><div className="trial-orbit trial-orbit-b"><LessonArt categoryId="ocean" topicId="sea-turtles" title="Discover sea turtles" animated={false}/></div><FloatingWhale pose="celebrate" size={240}/></div>
         <h1 className="text-title mt-8 text-center text-foreground">We want you and {name} to try Ollie for free!</h1>
@@ -27,7 +27,7 @@ function PaywallPage() {
         <p className="text-support mt-5 text-center text-muted-foreground">Answers that fit their age, topic lessons that build understanding, and a little space to create.</p>
         <p className="text-support mt-4 flex items-center justify-center gap-2 text-muted-foreground"><Bell className="size-4 shrink-0" />7 days to explore. Cancel before your first charge.</p>
         <p className="text-label mt-1 text-center text-muted-foreground">Trial reminders will be available when delivery is connected.</p>
- </div><div className="onboarding-action onboarding-cta-fade fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5 pt-5 pb-5">
+ </div><div className="trial-invitation-action onboarding-action onboarding-cta-fade mx-auto w-full max-w-md px-5 pt-5 pb-5">
  <Button variant="onboarding" size="onboarding" onClick={()=>navigate({to:'/onboarding/plans'})}>Unlock {name}’s safe trial</Button>
  </div></div>;
 }

@@ -45,7 +45,7 @@ function Proof() {
   const nextTab = TABS.find(t => !seen.has(t.id));
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="onboarding-proof min-h-screen bg-background">
       <OnboardingSkeleton chapter={3} title={`Here’s Ollie, made for ${name}`} cta={nextTab ? `Next: ${nextTab.label}` : 'Continue'} onContinue={() => nextTab ? open(nextTab.id) : navigate({ to: '/onboarding/pin' })}>
         <div className="mb-5 grid grid-cols-3 gap-2" role="tablist" aria-label="Ollie examples">
           {TABS.map(({ id, label, icon: Icon }) => (

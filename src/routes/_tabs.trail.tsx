@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { LockKeyhole, Pause, Rocket } from "lucide-react";
 import { INTERESTS } from "@/lib/interests";
-import { FloatingWhale } from "@/components/ollie/FloatingWhale";
 import { AmbientDepth } from "@/components/ollie/AmbientDepth";
 import { LessonArt } from "@/components/ollie/LessonArt";
 import { buildDay } from "@/lib/slideshow/library";
@@ -40,7 +39,7 @@ function Trail() {
   const height = (points.at(-1)?.y ?? 0) + 190;
   const path = trailCurve(points);
   return <main className="trail-screen screen-enter mx-auto min-h-[100svh] w-full max-w-md bg-background px-6 pb-32 pt-20">
-    <AmbientDepth /><div className="trail-guide"><FloatingWhale size={150}/></div><h1 className="text-title text-foreground">Your Discovery Trail</h1>
+    <AmbientDepth /><h1 className="text-title text-foreground">Your Discovery Trail</h1>
     <div className="trail-summary mt-5 flex items-center gap-3 pb-4">
       <Jar filled={filled} />
       <div className="min-w-0"><p className="text-body font-bold text-foreground">{filled} of {JAR_EVERY} learning days</p><p className="text-support mt-1 text-muted-foreground">{JAR_BONUS} bonus picture cookies</p></div>

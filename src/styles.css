@@ -1168,6 +1168,40 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .deck-controls { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:6px; }
 .hear-highlight { background:var(--card); box-shadow:var(--elev-card); animation:trial-emphasis 4s ease-in-out infinite; }
 .trial-whale-story { position:relative; height:215px; display:flex; align-items:center; justify-content:center; margin:22px auto 0; max-width:370px; }
+.trial-invitation { min-height:100dvh; display:flex; flex-direction:column; }
+.trial-invitation .paywall-underlay { flex:1; padding-bottom:20px; }
+.trial-invitation-action { position:sticky; bottom:0; flex-shrink:0; padding-bottom:max(20px,env(safe-area-inset-bottom)); }
+@media(min-width:768px) {
+  .tabs-shell :is(.search-screen,.create-studio,.trail-screen) { max-width:var(--app-frame-width); }
+  .tabs-shell :is(.create-studio,.trail-screen) { padding-inline:40px; }
+  .tabs-shell .search-screen { padding-inline:0; }
+  .search-welcome > p { max-width:400px; }
+  .search-starters { max-width:520px; }
+  .onboarding-shell .onboarding-flow > div > .onboarding-frame { max-width:640px; }
+  .onboarding-shell .onboarding-action { max-width:640px; }
+  .trial-invitation .paywall-underlay { max-width:600px; }
+  .trial-invitation-action { max-width:600px; }
+  .trial-invitation .trial-whale-story { height:280px; width:100%; max-width:450px; margin-top:32px; }
+  .trial-invitation .trial-whale-story .floating-whale { width:310px !important; height:155px !important; }
+  .trial-invitation .trial-orbit { width:112px; height:112px; }
+  .trial-invitation h1 { max-width:520px; margin-inline:auto; }
+  .trial-plans-page { max-width:640px; }
+  .discovery-deck { max-width:450px; height:330px; }
+  .onboarding-step-body .proof-transcript { max-width:520px; margin-inline:auto; }
+  .lesson-stage-enter .discovery-scene { width:min(100%,420px,38dvh); }
+  .lesson-copy { max-width:540px; font-size:24px; line-height:34px; }
+  .create-modes button,.create-starter { min-height:52px; }
+  .app-tabbar > div { max-width:520px; }
+}
+@media(min-width:768px) and (max-height:850px) {
+  .trial-invitation .trial-whale-story { height:185px; margin-top:16px; }
+  .onboarding-content { padding-top:28px; }
+}
+@media(max-height:650px) {
+  .trial-invitation .trial-whale-story { height:155px; margin-top:12px; }
+  .trial-invitation h1 { margin-top:16px; }
+  .trial-invitation .trial-whale-story .floating-whale { max-height:155px; }
+}
 .trial-orbit { width:86px; height:86px; position:absolute; top:25px; animation:trial-card-drift 6s ease-in-out infinite; }
 .trial-orbit .discovery-scene { border-radius:var(--radius-control); box-shadow:var(--elev-card); }
 .trial-orbit-a { left:5px; rotate:-10deg; }.trial-orbit-b { right:4px; top:90px; rotate:10deg; animation-delay:-3s; }
@@ -1324,3 +1358,71 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .flag-pop { animation:flag-pop 420ms cubic-bezier(.2,.8,.2,1) both; }
 @keyframes flag-pop { from { opacity:0; transform:translateY(8px) scale(.96); } to { opacity:1; transform:none; } }
 @media(prefers-reduced-motion:reduce) { .thought-dot,.thought-cloud,.thought-cloud svg,.reveal-stagger > *,.flag-pop { animation:none; opacity:1; } }
+
+/* Tablet reading tracks stay generous without stretching quizzes across the screen. */
+.discovery-session > .slide-tint { min-height:0; }
+.lesson-toolbar > p { min-width:0; overflow-wrap:anywhere; }
+.discovery-session[data-band="4-6"] button { min-height:60px; }
+@media(min-width:768px) {
+  .account-page,.parent-pin { max-width:560px; padding-inline:40px; }
+  .account-page { min-height:100dvh; }
+  .tabs-shell .kid-identity { max-width:180px; }
+  .tabs-shell .kid-identity button,.tabs-shell .parent-access a { min-width:48px; min-height:48px; }
+  .search-screen [aria-label="Hear this answer"],.search-screen [aria-label="React to this answer"] button { min-width:48px; min-height:48px; }
+  .onboarding-header > button,.parent-sheet button[aria-label="Close"] { width:48px; height:48px; }
+  .onboarding-shell .onboarding-flow > div > main,.onboarding-shell .onboarding-flow > div > .onboarding-frame { max-width:640px; }
+  .trial-plans-page { max-width:640px; }
+  .onboarding-theme .onboarding-content > h1 { font-size:30px; line-height:38px; }
+  .parent-sheet { padding-bottom:max(32px,env(safe-area-inset-bottom)); }
+  .trail-screen .trail-node,.trail-screen .trail-unvisited { width:80px; height:80px; }
+  .setup-pin-grid { max-width:288px; }
+  .setup-pin-grid button { min-height:64px; }
+  .create-sheet { max-width:640px; padding-inline:32px; padding-bottom:max(32px,env(safe-area-inset-bottom)); }
+  .create-sheet button { min-height:48px; }
+  .bedtime-screen > p { max-width:540px; font-size:28px; line-height:36px; }
+  .bedtime-screen > a { max-width:540px; min-height:48px; display:flex; align-items:center; }
+  .parent-dashboard { max-width:720px; padding:28px 40px 48px; }
+  .parent-sheet { max-width:640px; padding-inline:32px; padding-bottom:32px; }
+  .parent-sheet input,.parent-sheet button:not([role="switch"]) { min-height:48px; }
+  .discovery-session > .slide-tint { width:100%; max-width:720px; margin-inline:auto; }
+  .discovery-session .lesson-toolbar { padding-top:32px; }
+  .discovery-session .lesson-stage-enter > .text-title { max-width:600px; font-size:26px; line-height:34px; }
+  .discovery-session .lesson-stage-enter > div { width:100%; max-width:600px; margin-inline:auto; }
+  .discovery-session .lesson-copy { max-width:560px; font-size:24px; line-height:34px; }
+  .discovery-session button { min-height:56px; }
+  .discovery-session .lesson-stage-enter .discovery-scene { width:min(100%,420px,38dvh); }
+  .discovery-session .slide-tint > .discovery-scene { max-width:380px; }
+  .discovery-session .slide-tint > h1 { max-width:540px; }
+}
+@media(min-width:768px) and (max-height:850px) {
+  .onboarding-proof .onboarding-content { padding-top:22px; }
+  .onboarding-proof .onboarding-step-body { margin-top:18px; }
+  .onboarding-proof .discovery-deck { height:220px; max-width:350px; }
+  .onboarding-proof [role="tablist"] { margin-bottom:12px; }
+  .onboarding-proof .reveal-stagger { --spacing:3px; }
+  .discovery-session .lesson-toolbar { padding-top:20px; }
+  .discovery-session .lesson-stage-enter { gap:12px; padding-block:16px; }
+  .discovery-session .slide-tint > div:last-child { padding-bottom:20px; }
+}
+
+/* Perceptible movement: scenery lives at the edges, reading and controls stay still. */
+@media(prefers-reduced-motion:no-preference) {
+  .ambient-mote { border-width:1.5px; border-color:color-mix(in oklab,var(--primary) 40%,transparent); background:color-mix(in oklab,var(--card) 12%,transparent); }
+  .ambient-mote-a { width:20px; height:20px; --mote-time:15s; animation-delay:-4s; }
+  .ambient-mote-b { width:12px; height:12px; --mote-time:12s; animation-delay:-8s; }
+  .ambient-mote-c { width:24px; height:24px; --mote-time:18s; animation-delay:-11s; }
+  .ambient-mote-d { width:16px; height:16px; --mote-time:14s; animation-delay:-3s; }
+  .ambient-shaft { animation-duration:9s; }
+  .ambient-shaft-b { animation-duration:12s; }
+  .onboarding-content { animation-duration:380ms; }
+  .onboarding-shell { --step-offset:48px; }
+  .onboarding-shell[data-navigation=back] { --step-offset:-48px; }
+  .discovery-preview-card .discovery-scene { animation:deck-scene-life 5s ease-in-out infinite; }
+  .discovery-preview-card[data-position="1"] .discovery-scene { animation-delay:-1.5s; }
+  .discovery-preview-card[data-position="2"] .discovery-scene { animation-delay:-3s; }
+  .create-artwork img { animation:studio-book-enter 400ms var(--ease-enter) both,studio-book-life 5s ease-in-out 400ms infinite; }
+  .trail-canopy { animation-duration:6s; }
+  .trail-flight { animation-duration:8s; }
+}
+@keyframes deck-scene-life { 50% { transform:translateY(-5px) rotate(.7deg); } }
+@keyframes studio-book-life { 50% { transform:translateY(-8px) rotate(-1.5deg); } }

@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Mic, Sparkles, X, Shapes, Keyboard, Rocket, BookOpen, Leaf } from "lucide-react";
 import { WhaleThinking } from "@/components/ollie/WhaleThinking";
-import { FloatingWhale } from "@/components/ollie/FloatingWhale";
 import { AmbientDepth } from "@/components/ollie/AmbientDepth";
 import { bubbleSound } from "@/lib/bubble-sound";
 import { Button } from "@/components/ui/button";
@@ -229,7 +228,7 @@ function CreateScreen() {
         </Button>
       </div>
 
-      <div className="create-artwork create-whale-scene" aria-hidden="true"><img src={sketchbook} alt="" width={1024} height={768} /><FloatingWhale size={110}/></div>
+      <div className="create-artwork" aria-hidden="true"><img src={sketchbook} alt="" width={1024} height={768} /></div>
       <section className="create-workbench mt-5 pb-6">
         <div data-mode={mode} className="create-modes mb-3 flex gap-1 rounded-pill bg-surface p-1">
           {(["builder", "type"] as const).map((m) => (
@@ -394,7 +393,7 @@ function CreateScreen() {
 function Overlay({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
   return (
     <Drawer open shouldScaleBackground={false} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DrawerContent aria-describedby={undefined} className="mx-auto max-h-[85dvh] w-full max-w-md bg-card px-5 pb-6 shadow-sheet">
+      <DrawerContent aria-describedby={undefined} className="create-sheet mx-auto max-h-[85dvh] w-full max-w-md bg-card px-5 pb-6 shadow-sheet">
         <div className="mb-4 flex items-center justify-between">
           <DrawerTitle className="text-body font-bold">{title}</DrawerTitle>
           <Button variant="control" size="icon" aria-label="Close" onClick={onClose}><X /></Button>

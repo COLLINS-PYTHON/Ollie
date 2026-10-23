@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import whaleCurious from '@/assets/whale-curious.png';
 import whaleCelebrate from '@/assets/whale-celebrate.png';
 import { AmbientDepth } from "@/components/ollie/AmbientDepth";
-import { FloatingWhale } from "@/components/ollie/FloatingWhale";
 import { bubbleSound } from "@/lib/bubble-sound";
 import { ONBOARDING_ANSWER } from '@/lib/onboarding-answer';
 import { preloadSpeech } from "@/lib/speak";
@@ -87,7 +86,6 @@ export function OnboardingSkeleton({
   void chapter;
   const currentStep = Math.max(0, ONBOARDING_STEPS.findIndex(s => s === pathname || s + '/' === pathname));
   const progress = (currentStep + 1) / ONBOARDING_STEPS.length;
-  const companion = ["/onboarding", "/onboarding/reading", "/onboarding/interests", "/onboarding/pin"].includes(pathname);
   const touch = useRef<{ x: number; y: number } | null>(null);
   return (
     <div className="onboarding-frame mx-auto flex min-h-[100svh] w-full max-w-md flex-col overflow-hidden"
@@ -119,7 +117,6 @@ export function OnboardingSkeleton({
       <main key={pathname} className="onboarding-content flex min-h-0 flex-1 flex-col px-6 pb-32 pt-9">
         <h1 className="text-title mx-auto w-full max-w-sm text-center text-foreground">{title}</h1>
         <div className="onboarding-step-body mt-7 flex-1">{children}</div>
-        {companion && <div className="setup-whale-companion"><FloatingWhale size={100}/></div>}
       </main>
 
       <div

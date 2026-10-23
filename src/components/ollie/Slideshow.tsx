@@ -154,7 +154,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
 
   if (phase === "intro") {
     return (
-      <div className="discovery-open fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
+      <div data-band={child.band} className="discovery-session discovery-open fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
         <div className="slide-tint flex flex-1 flex-col items-center justify-center gap-5 px-7 text-center">
           <LessonArt categoryId={day.categoryId} topicId={slides[0]?.sub.id ?? ""} title={day.label} className="w-full max-w-[320px]" />
           <p className="text-label uppercase tracking-wide text-muted-foreground">{review ? "Discovery review" : "Today's Discovery"}</p>
@@ -185,7 +185,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
 
   if (phase === "done") {
     return (
-      <div className="fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
+      <div data-band={child.band} className="discovery-session fixed inset-0 z-50 flex flex-col bg-card" style={tint}>
         <div className="slide-tint relative flex flex-1 flex-col items-center justify-center gap-5 px-7 text-center">
           <div className={`glow-burst absolute size-56 rounded-pill bg-gradient-to-b ${tile} opacity-25`} />
           <FloatingWhale pose="celebrate" size={200}/>
@@ -229,11 +229,11 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-card" style={tint}
+    <div data-band={child.band} className="discovery-session fixed inset-0 z-50 flex flex-col bg-card" style={tint}
       onTouchStart={(event) => { const target = event.target; if (target instanceof Element && target.closest("button")) return; const point = event.touches[0]; if (point) touch.current = { x: point.clientX, y: point.clientY }; }}
       onTouchEnd={(event) => { const start = touch.current; touch.current = null; const end = event.changedTouches[0]; if (!start || !end) return; const dx = end.clientX - start.x, dy = end.clientY - start.y; if (dx < -70 && Math.abs(dx) > Math.abs(dy) * 1.5 && canSwipeLesson(current.kind, status)) advance(); }}>
       <div className="slide-tint flex flex-1 flex-col">
-        <div className="flex items-center justify-between px-5 pt-12">
+        <div className="lesson-toolbar grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 pt-12">
           <p className="text-label uppercase tracking-wide text-muted-foreground">{day.label}</p>
           <div className="flex items-center gap-2">
             {parentSettings.soundOn && (
