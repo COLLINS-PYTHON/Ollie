@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Flag, ShieldCheck } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import whale from "@/assets/whale-curious.png";
+import { OllieChatHeader } from "@/components/ollie/OllieChatHeader";
 
 // Parent-facing illustrations, not live conversations or flags. Responses match locked safety copy.
 const EXAMPLES = [
@@ -40,9 +40,8 @@ export function SafetyExamples({ name, onSelect, nextRef }: { name: string; onSe
           {EXAMPLES.map((example, i) => (
             <CarouselItem key={example.title} className="basis-[94%] sm:basis-full" aria-label={example.title} aria-hidden={selected !== i}>
               <article className="safety-preview overflow-hidden rounded-card border border-border bg-card shadow-card">
-                <header className="flex items-center justify-center gap-2 border-b border-border px-4 py-3">
-                  <img src={whale} alt="" width={48} height={48} className="size-12 object-contain" />
-                  <p className="text-support font-bold text-foreground">Ollie</p>
+                <header className="flex flex-col items-center gap-1 border-b border-border px-4 py-2.5">
+                  <OllieChatHeader />
                 </header>
                 <div className="safety-conversation flex flex-col gap-3 p-4">
                   <p className="max-w-[86%] self-end rounded-control rounded-br-sm bg-primary px-3.5 py-2.5 text-support text-primary-foreground">{example.question}</p>
