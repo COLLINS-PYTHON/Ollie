@@ -1375,6 +1375,12 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
   .onboarding-theme .onboarding-content > h1 { font-size:30px; line-height:38px; }
   .parent-sheet { padding-bottom:max(32px,env(safe-area-inset-bottom)); }
   .trail-screen .trail-node,.trail-screen .trail-unvisited { width:80px; height:80px; }
+  .setup-pin-grid { max-width:288px; }
+  .setup-pin-grid button { min-height:64px; }
+  .create-sheet { max-width:640px; padding-inline:32px; padding-bottom:max(32px,env(safe-area-inset-bottom)); }
+  .create-sheet button { min-height:48px; }
+  .bedtime-screen > p { max-width:540px; font-size:28px; line-height:36px; }
+  .bedtime-screen > a { max-width:540px; min-height:48px; display:flex; align-items:center; }
   .parent-dashboard { max-width:720px; padding:28px 40px 48px; }
   .parent-sheet { max-width:640px; padding-inline:32px; padding-bottom:32px; }
   .parent-sheet input,.parent-sheet button:not([role="switch"]) { min-height:48px; }
@@ -1389,6 +1395,11 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
   .discovery-session .slide-tint > h1 { max-width:540px; }
 }
 @media(min-width:768px) and (max-height:850px) {
+  .onboarding-proof .onboarding-content { padding-top:22px; }
+  .onboarding-proof .onboarding-step-body { margin-top:18px; }
+  .onboarding-proof .discovery-deck { height:220px; max-width:350px; }
+  .onboarding-proof [role="tablist"] { margin-bottom:12px; }
+  .onboarding-proof .reveal-stagger { --spacing:3px; }
   .discovery-session .lesson-toolbar { padding-top:20px; }
   .discovery-session .lesson-stage-enter { gap:12px; padding-block:16px; }
   .discovery-session .slide-tint > div:last-child { padding-bottom:20px; }

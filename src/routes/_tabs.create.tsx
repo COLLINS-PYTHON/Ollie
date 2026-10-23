@@ -394,7 +394,7 @@ function CreateScreen() {
 function Overlay({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
   return (
     <Drawer open shouldScaleBackground={false} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DrawerContent aria-describedby={undefined} className="mx-auto max-h-[85dvh] w-full max-w-md bg-card px-5 pb-6 shadow-sheet">
+      <DrawerContent aria-describedby={undefined} className="create-sheet mx-auto max-h-[85dvh] w-full max-w-md bg-card px-5 pb-6 shadow-sheet">
         <div className="mb-4 flex items-center justify-between">
           <DrawerTitle className="text-body font-bold">{title}</DrawerTitle>
           <Button variant="control" size="icon" aria-label="Close" onClick={onClose}><X /></Button>

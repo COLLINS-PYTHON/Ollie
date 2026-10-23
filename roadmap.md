@@ -2,7 +2,7 @@
 
 ## Now
 - [ ] Reconcile every item in the user's long design request with verified completion; artwork sequences and real-device immediate audio remain unverified/incomplete.
-- [ ] October 23: review every content page and dialog on iPad portrait/landscape, especially kid-facing Search/Create/Trail/lessons; maintain engaging artwork, readable text and reachable controls. Initial onboarding/tab fit checks passed; full page inventory and dialog checks pending.
+- [x] October 23: reviewed all 21 content/entry pages, 11 parent dialogs, lesson content and quiz on 768×1024 and 1024×768; no horizontal overflow or runtime errors. Widened kid pages, account forms, parent/creation sheets and lesson tracks; enlarged touch controls. Real iPad keyboard, Safari/audio policy and authenticated recovery states still need device checks.
 - [ ] October 23: correct compact trial spacing, review scene accuracy and narration playback, verify deletion restart and prioritize server safeguards.
 - [x] October 22 23:49: both paywall actions use exactly “Unlock [child’s name]’s safe trial”.
 
