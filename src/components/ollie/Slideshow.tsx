@@ -16,6 +16,7 @@ import { Volume2, VolumeX } from "lucide-react";
 import { LessonArt } from "@/components/ollie/LessonArt";
 import { canSwipeLesson } from "@/lib/child-interactions";
 import { Button } from "@/components/ui/button";
+import { LessonExplore } from './LessonExplore';
 
 export type SlideshowChild = { name: string; age: number; band: Band; interests: string[]; needsReadAloud: boolean };
 
@@ -255,6 +256,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
         <div key={`${current.kind}-${index}`} className="lesson-stage-enter lesson-editorial" data-kind={current.kind}>
           <div className={`lesson-visual ${current.kind === 'quiz' ? 'quiz-visual' : ''}`}>
             {day.image && index === 0 ? <img src={day.image} alt="" className="lesson-custom-picture" /> : <LessonArt categoryId={day.categoryId} topicId={current.sub.id} title={day.label} scene={current.scene ?? 0} animated={current.kind === 'content'} />}
+            {current.kind === 'content' && !day.image && <LessonExplore categoryId={day.categoryId} topicId={current.sub.id} scene={current.scene ?? 0} title={day.label}/ >}
           </div>
           <div className="lesson-reading">
             <p className="lesson-eyebrow text-label text-primary">{current.kind === 'content' ? `Discover · ${index + 1} / ${slides.length}` : `Check your discovery · ${quizNumber} / ${slides.filter(s => s.kind === 'quiz').length}`}</p>

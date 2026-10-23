@@ -1463,6 +1463,13 @@ html[data-step-direction=back] { --page-travel:-90px; }
 .lesson-heading { font-size:24px; line-height:31px; font-weight:750; text-wrap:balance; }
 .discovery-session .lesson-reading .lesson-copy { font-size:19px; line-height:29px; font-weight:500; max-width:none; }
 .lesson-custom-picture { width:100%; max-width:420px; aspect-ratio:1; object-fit:cover; border-radius:var(--radius-card); }
+.discovery-session .lesson-visual { flex-direction:column; gap:12px; }
+.lesson-explore-action { min-height:44px; color:var(--primary); gap:8px; }
+.lesson-explore-action svg { width:18px; height:18px; }
+.lesson-explore-sheet { z-index:70; max-width:650px; max-height:92dvh; overflow-y:auto; border-radius:var(--radius-card); width:calc(100% - 24px); }
+.lesson-explore-sheet .discovery-scene { width:100%; max-width:480px; margin:auto; }
+.lesson-observation { display:flex; gap:10px; padding:14px; background:var(--surface); border-radius:var(--radius-control); font-size:16px; line-height:24px; }
+.lesson-observation svg { flex-shrink:0; width:20px; height:20px; color:var(--accent-2); }
 .quiz-options { display:grid; gap:12px; margin-top:4px; }
 .quiz-choice { height:auto; min-height:66px; width:100%; display:flex; align-items:center; justify-content:flex-start; gap:14px; padding:14px 16px; white-space:normal; text-align:left; font-size:17px; line-height:25px; font-weight:600; border:1px solid var(--border); border-radius:var(--radius-control); background:var(--card); color:var(--foreground); box-shadow:var(--elev-card); transition:background 150ms,border-color 150ms,transform 150ms; }
 .quiz-choice:active { transform:scale(.98); }
