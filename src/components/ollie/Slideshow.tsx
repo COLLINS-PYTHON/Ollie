@@ -9,7 +9,7 @@ import { selectDailyLesson } from '@/lib/daily-lesson';
 import { JAR_BONUS, recordCompletion } from "@/lib/slideshow-store";
 import { markCustomDone } from "@/lib/custom-lesson-store";
 import { addCookies, loadBalance, saveBalance } from "@/lib/picture-store";
-import { Rocket } from "lucide-react";
+import { Rocket, ArrowRight, Check, Lightbulb } from "lucide-react";
 import { quizOptions, quizText, type Band } from "@/lib/slideshow/types";
 import { parentSettings } from "@/lib/onboarding-store";
 import { Volume2, VolumeX } from "lucide-react";
@@ -252,71 +252,30 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
           </div>
         </div>
 
-        {current.kind === "content" ? (
-          <div key={index} className="lesson-stage-enter flex flex-1 flex-col items-center justify-center gap-5 px-6 py-5 text-center">
-            {day.image && index === 0 ? (
-              <img src={day.image} alt="" className="pop-in size-56 rounded-card object-cover shadow-card" />
-            ) : (
-              <LessonArt categoryId={day.categoryId} topicId={current.sub.id} title={day.label} scene={current.scene ?? 0} className="w-full max-w-[320px]" />
-            )}
-            <p className="text-label uppercase tracking-wide text-muted-foreground">{current.sub.title}</p>
-            <p className="lesson-copy text-foreground">{current.sub.caption[child.band]}</p>
+        <div key={`${current.kind}-${index}`} className="lesson-stage-enter lesson-editorial" data-kind={current.kind}>
+          <div className={`lesson-visual ${current.kind === 'quiz' ? 'quiz-visual' : ''}`}>
+            {day.image && index === 0 ? <img src={day.image} alt="" className="lesson-custom-picture" /> : <LessonArt categoryId={day.categoryId} topicId={current.sub.id} title={day.label} scene={current.scene ?? 0} animated={current.kind === 'content'} />}
           </div>
-        ) : (
-          <div key={`quiz-${current.sub.id}`} className="lesson-stage-enter flex flex-1 flex-col justify-center gap-4 px-6 py-4">
-            <p className="text-label uppercase tracking-wide text-muted-foreground">Question {quizNumber}</p>
-            <p className="text-title max-w-[330px] text-foreground">{current.sub.quiz.q[child.band]}</p>
-
-            {status === "correct" && (
-              <p className="pop-in rounded-control bg-card px-4 py-2.5 text-body text-foreground shadow-card">{praise}</p>
-            )}
-            {hint && status === "open" && (
-              <p className="text-body text-muted-foreground">Not quite! Try again! {hint}</p>
-            )}
-            {status === "reveal" && (
-              <p className="rounded-control bg-card px-4 py-2.5 text-body text-foreground shadow-card">
-                Here is the one: {quizOptions(current.sub.quiz, child.band)[current.sub.quiz.answer]}. {quizText(current.sub.quiz.why, child.band)}
-              </p>
-            )}
-
-            <div className="flex flex-col gap-2.5">
-              {quizOptions(current.sub.quiz, child.band).map((option, i) => {
-                const isAnswer = i === current.sub.quiz.answer;
-                const chosen = picked === i;
-                const showAnswer = status === "correct" || status === "reveal";
-                return (
-                  <Button variant="ghost"
-                    key={option}
-                    type="button"
-                    disabled={status !== "open"}
-                    onClick={() => answer(i)}
-                    className={`h-auto min-h-12 justify-start whitespace-normal rounded-control px-4 py-3 text-left text-body transition-all duration-tap ${
-                      showAnswer && isAnswer
-                        ? "bg-primary text-primary-foreground ring-4 ring-primary/20"
-                        : chosen
-                          ? "bg-surface-2 text-foreground"
-                          : "bg-card text-foreground shadow-card active:scale-[0.98]"
-                    }`}
-                  >
-                    {option}
-                  </Button>
-                );
-              })}
-            </div>
-
-            {status === "reveal" && (
-              <Button variant="ghost"
-                type="button"
-                onClick={advance}
-                className="mt-1 rounded-pill bg-primary px-8 py-3 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
-              >
-                Continue
-              </Button>
-            )}
+          <div className="lesson-reading">
+            <p className="lesson-eyebrow text-label text-primary">{current.kind === 'content' ? `Discover · ${index + 1} / ${slides.length}` : `Check your discovery · ${quizNumber} / ${slides.filter(s => s.kind === 'quiz').length}`}</p>
+            <h1 className="lesson-heading text-foreground">{current.kind === 'content' ? current.sub.title : current.sub.quiz.q[child.band]}</h1>
+            {current.kind === 'content' ? <p className="lesson-copy text-foreground">{current.sub.caption[child.band]}</p> : <>
+              <div className="quiz-options">
+                {quizOptions(current.sub.quiz, child.band).map((option, i) => {
+                  const correct = i === current.sub.quiz.answer && status !== 'open';
+                  return <Button key={option} variant="ghost" type="button" disabled={status !== 'open'} onClick={() => answer(i)} className="quiz-choice" data-state={correct ? 'correct' : picked === i ? 'chosen' : 'idle'}>
+                    <span className="quiz-choice-marker" aria-hidden="true">{correct ? <Check/> : String.fromCharCode(65 + i)}</span><span>{option}</span>
+                  </Button>;
+                })}
+              </div>
+              {status === 'correct' && <p role="status" className="quiz-feedback pop-in"><Check/>{praise}</p>}
+              {hint && status === 'open' && <p role="status" className="quiz-feedback"><Lightbulb/>{hint}</p>}
+              {status === 'reveal' && <><p role="status" className="quiz-feedback">{quizOptions(current.sub.quiz, child.band)[current.sub.quiz.answer]}. {quizText(current.sub.quiz.why, child.band)}</p><Button onClick={advance} className="w-full rounded-pill">Continue<ArrowRight/></Button></>}
+            </>}
           </div>
-        )}
+        </div>
 
-        <div className="flex flex-col gap-4 px-6 pb-10 pt-3">
+        <div className="lesson-footer flex flex-col gap-4 px-6 pb-10 pt-3">
           {dots}
           {current.kind === "content" && (
             <Button variant="ghost"
@@ -324,7 +283,7 @@ export function SlideshowTakeover({ child, onClose, review }: { child: Slideshow
               onClick={advance}
               className="h-12 rounded-pill bg-primary px-10 py-3.5 text-button text-primary-foreground transition-transform duration-tap active:scale-95"
             >
-              Next
+              Next<ArrowRight className="size-5"/>
             </Button>
           )}
         </div>
