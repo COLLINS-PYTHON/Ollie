@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { BookOpen, Star } from 'lucide-react';
+import { Atom, Palette } from 'lucide-react';
 import curious from '@/assets/whale-curious.png';
 import celebrate from '@/assets/whale-celebrate.png';
 import { bell, lagged, loopClock, prefersReducedMotion, wave } from '@/lib/motion';
@@ -8,7 +8,7 @@ type Pose = 'curious' | 'celebrate';
 const ART: Record<Pose, string> = { curious, celebrate };
 
 /** Floating sky whale: drift, lagged pitch, breathing shadow and mist on one clock. */
-export function FloatingWhale({ pose = 'curious', size = 220, className = '' }: { pose?: Pose; size?: number; className?: string }) {
+export function FloatingWhale({ pose = 'curious', size = 220, className = '', thought }: { pose?: Pose; size?: number; className?: string; thought?: 'science' | 'creative' }) {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = root.current;
@@ -33,10 +33,10 @@ export function FloatingWhale({ pose = 'curious', size = 220, className = '' }: 
         <img src={ART[pose]} alt="" width={1200} height={550} draggable={false} />
       </div>
       {/* Cartoon thought bubble floating above his head, drifting on its own. */}
-      <span className="whale-thought" aria-hidden="true">
+      {thought && <span className="whale-thought" aria-hidden="true">
         <span className="thought-dot dot-1" /><span className="thought-dot dot-2" />
-        <span className="thought-cloud">{pose === 'celebrate' ? <Star /> : <BookOpen />}</span>
-      </span>
+        <span className="thought-cloud">{thought === 'creative' ? <Palette /> : <Atom />}</span>
+      </span>}
     </div>
   );
 }
