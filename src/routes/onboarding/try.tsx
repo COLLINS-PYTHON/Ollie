@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import { Volume2, MessageCircle, Sparkles, ShieldCheck, Check, ArrowRight } from 'lucide-react';
+import { Volume2, MessageCircle, Sparkles, ShieldCheck, Check, ArrowRight, Wand2 } from 'lucide-react';
 import { OnboardingSkeleton } from '../onboarding';
 import { Button } from '@/components/ui/button';
 import { LessonArt } from '@/components/ollie/LessonArt';
@@ -14,17 +14,19 @@ import { bubbleSound } from '@/lib/bubble-sound';
 import { pageMeta } from '@/lib/meta';
 import { ONBOARDING_ANSWER } from '@/lib/onboarding-answer';
 import whale from '@/assets/whale-curious.png';
+import samplePicture from '@/assets/create-sample.jpg';
 
 export const Route = createFileRoute('/onboarding/try')({
   head: () => pageMeta('See Ollie at work', 'A Daily Discovery, a real answer and safety in action, made for your child.'),
   component: Proof,
 });
 
-type Tab = 'discover' | 'ask' | 'safety';
+type Tab = 'discover' | 'ask' | 'safety' | 'create';
 const TABS: { id: Tab; label: string; icon: typeof Sparkles }[] = [
   { id: 'discover', label: 'Discover', icon: Sparkles },
   { id: 'ask', label: 'Ask', icon: MessageCircle },
   { id: 'safety', label: 'Safety', icon: ShieldCheck },
+  { id: 'create', label: 'Create', icon: Wand2 },
 ];
 
 /* One value-proof screen replaces four static slides: parents tap through instead of reading. */
@@ -47,7 +49,7 @@ function Proof() {
   return (
     <div className="onboarding-proof min-h-screen bg-background">
       <OnboardingSkeleton chapter={3} title={`Here’s Ollie, made for ${name}`} cta={nextTab ? `Next: ${nextTab.label}` : 'Continue'} onContinue={() => nextTab ? open(nextTab.id) : navigate({ to: '/onboarding/pin' })}>
-        <div className="mb-5 grid grid-cols-3 gap-2" role="tablist" aria-label="Ollie examples">
+        <div className="mb-5 grid grid-cols-4 gap-1.5" role="tablist" aria-label="Ollie examples">
           {TABS.map(({ id, label, icon: Icon }) => (
             <Button key={id} role="tab" variant="option" aria-selected={tab === id} aria-pressed={tab === id} className="h-12 rounded-pill" onClick={() => open(id)}>
               <Icon />{label}{seen.has(id) && tab !== id && <Check className="size-3 text-primary" />}
@@ -89,8 +91,20 @@ function Proof() {
             <SafetyExamples name={name} />
             <p className="text-support text-muted-foreground">Ollie cannot know what is happening offline or replace a trusted adult in an urgent situation.</p>
           </>}
+
+          {tab === 'create' && <>
+            <p className="text-label text-muted-foreground">EXAMPLE · PAINTED BY OLLIE</p>
+            <div className="proof-transcript">
+              <p className="max-w-[82%] self-end rounded-control rounded-br-sm bg-primary px-4 py-3 text-body text-primary-foreground">A whale astronaut floating past Saturn</p>
+              <div className="relative mt-4 w-full">
+                <span className="fridge-magnet absolute -top-2 left-1/2 z-10 size-4 -translate-x-1/2 rounded-full bg-cat-space" />
+                <img src={samplePicture} alt="A whale astronaut floating past Saturn, painted by Ollie" width={1024} height={1024} loading="lazy" className="picture-reveal aspect-square w-full rounded-card object-cover shadow-card" />
+              </div>
+            </div>
+            <p className="text-support text-muted-foreground">Kids say or type an idea, Ollie paints it, and it hangs on their fridge. Ten fresh pictures every morning.</p>
+          </>}
         </div>
-        {nextTab && <p className="mt-4 flex items-center justify-center gap-1 text-support text-muted-foreground">Tap through all three<ArrowRight className="size-3" /></p>}
+        {nextTab && <p className="mt-4 flex items-center justify-center gap-1 text-support text-muted-foreground">Tap through all {TABS.length} examples<ArrowRight className="size-3" /></p>}
       </OnboardingSkeleton>
     </div>
   );
