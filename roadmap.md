@@ -1,6 +1,9 @@
 # Roadmap
 
 ## Now
+- [ ] Lesson clarification: individual pictures explain each teaching point; include simple tap-to-explore interaction, not just different category covers.
+- [ ] October 23: give background bubbles realistic highlights/depth and verify audible optional sounds on requested onboarding and lesson navigation.
+- [ ] October 23: rebuild lesson/quiz presentation and clearer scene-matched pictures; add genuine flowing onboarding page transitions and tighten wording without weakening consent. Renewed request: make onboarding movement visibly playful, not just brief entrances.
 - [ ] Motion visibility: strengthened background bubbles, welcome drift, deck life, Create book movement and directional transitions; live compact welcome frames visibly change, build passed. Full transition/Create/Trail motion review remains.
 - [x] Correct mascot overuse: removed decorative whales from routine setup/Trail and duplicate Create whale; thought bubbles now opt in only for actual thinking/creating.
 - [ ] Reconcile every item in the user's long design request with verified completion; artwork sequences and real-device immediate audio remain unverified/incomplete.
