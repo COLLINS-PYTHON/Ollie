@@ -20,6 +20,7 @@ export const Route = createFileRoute("/onboarding")({
 
 function OnboardingLayout() {
   const navigate = useNavigate();
+  const router = useRouter();
   const [ready, setReady] = useState(false);
   const { preview } = Route.useSearch();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
@@ -29,14 +30,14 @@ function OnboardingLayout() {
   const direction = stepIndex < previousStep.current ? 'back' : 'forward';
   useEffect(() => { previousStep.current = stepIndex; }, [stepIndex]);
   useEffect(() => {
-    document.documentElement.dataset.onboardingMotion = 'true';
-    return () => { delete document.documentElement.dataset.onboardingMotion; delete document.documentElement.dataset.stepDirection; };
+    document.documentElement.dataset['onboardingMotion'] = 'true';
+    return () => { delete document.documentElement.dataset['onboardingMotion']; delete document.documentElement.dataset['stepDirection']; };
   }, []);
   useEffect(() => {
     const unsubscribe = router.subscribe('onBeforeNavigate', ({ fromLocation, toLocation }) => {
       const from = ONBOARDING_STEPS.findIndex(step => step === fromLocation?.pathname.replace(/\/$/, ''));
       const to = ONBOARDING_STEPS.findIndex(step => step === toLocation.pathname.replace(/\/$/, ''));
-      document.documentElement.dataset.stepDirection = to < from ? 'back' : 'forward';
+      document.documentElement.dataset['stepDirection'] = to < from ? 'back' : 'forward';
       bubbleSound();
     });
     return unsubscribe;
