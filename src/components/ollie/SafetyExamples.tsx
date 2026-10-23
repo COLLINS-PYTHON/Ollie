@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Flag, ShieldCheck } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import ollie from "@/assets/ollie.png";
+import whale from "@/assets/whale-curious.png";
 
 // Parent-facing illustrations, not live conversations or flags. Responses match locked safety copy.
 const EXAMPLES = [
@@ -41,7 +41,7 @@ export function SafetyExamples({ name, onSelect, nextRef }: { name: string; onSe
             <CarouselItem key={example.title} className="basis-[94%] sm:basis-full" aria-label={example.title} aria-hidden={selected !== i}>
               <article className="safety-preview overflow-hidden rounded-card border border-border bg-card shadow-card">
                 <header className="flex items-center justify-center gap-2 border-b border-border px-4 py-3">
-                  <img src={ollie} alt="" width={34} height={34} className="size-9 rounded-pill bg-surface object-cover" />
+                  <img src={whale} alt="" width={48} height={48} className="size-12 object-contain" />
                   <p className="text-support font-bold text-foreground">Ollie</p>
                 </header>
                 <div className="safety-conversation flex flex-col gap-3 p-4">
