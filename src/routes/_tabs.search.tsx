@@ -33,7 +33,7 @@ const REACTIONS: { id: Reaction; label: string }[] = [
 ];
 import { onboardingState, saveProfile } from "@/lib/onboarding-store";
 import { childName, pageMeta } from "@/lib/meta";
-import ollie from "@/assets/whale-curious.png";
+import { OllieChatHeader } from "@/components/ollie/OllieChatHeader";
 import { FloatingWhale } from "@/components/ollie/FloatingWhale";
 import { AmbientDepth } from "@/components/ollie/AmbientDepth";
 import { Button } from "@/components/ui/button";
@@ -246,14 +246,7 @@ function SearchChat() {
       {welcome && <AmbientDepth />}
       {/* iMessage-style header: centered round photo with name underneath */}
       <header className="search-header frosted relative z-10 flex flex-col items-center gap-1 pb-2.5 pt-12">
-        <img
-          src={ollie}
-          alt="Ollie"
-          className={`size-10 rounded-full bg-surface object-contain p-0.5 ${listening ? "ollie-avatar-listening" : avatarNod ? "ollie-avatar-nod" : ""}`}
-          width={40}
-          height={40}
-        />
-        <p className="text-body font-bold text-foreground">Ollie</p>
+        <OllieChatHeader avatarClassName={listening ? "ollie-avatar-listening" : avatarNod ? "ollie-avatar-nod" : ""} />
       </header>
 
       <div ref={listRef} className="search-transcript relative z-10 min-h-0 flex-1 overflow-y-auto px-3 py-4">

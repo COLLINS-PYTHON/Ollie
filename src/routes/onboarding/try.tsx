@@ -13,7 +13,7 @@ import { DiscoveryDeck } from '@/components/ollie/DiscoveryDeck';
 import { bubbleSound } from '@/lib/bubble-sound';
 import { pageMeta } from '@/lib/meta';
 import { ONBOARDING_ANSWER } from '@/lib/onboarding-answer';
-import whale from '@/assets/whale-curious.png';
+import { OllieChatHeader } from '@/components/ollie/OllieChatHeader';
 import samplePicture from '@/assets/create-sample.jpg';
 
 export const Route = createFileRoute('/onboarding/try')({
@@ -76,7 +76,7 @@ function Proof() {
           {tab === 'ask' && <>
             <p className="text-label text-muted-foreground">EXAMPLE · MADE FOR {name.toUpperCase()}</p>
             <div className="proof-transcript">
-              <header className="mb-5 flex flex-col items-center gap-1"><img src={whale} alt="Ollie" width={48} height={48} className="size-12 object-contain" /><span className="text-support font-bold">Ollie</span></header>
+              <header className="mb-5 flex flex-col items-center gap-1"><OllieChatHeader /></header>
               <div className="flex flex-col gap-4">
                 <p className="max-w-[82%] self-end rounded-control rounded-br-sm bg-primary px-4 py-3 text-body text-primary-foreground">Why does the Moon glow?</p>
                 <p className="flag-pop max-w-[90%] self-start rounded-control rounded-bl-sm bg-secondary px-4 py-3 text-body text-foreground" style={{ animationDelay: '500ms' }}>{answer}</p>
