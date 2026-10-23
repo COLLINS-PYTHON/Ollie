@@ -62,7 +62,7 @@ function Trail() {
           const Icon = category?.icon ?? Rocket;
           const point = points[i];
           if (!point) return null;
-          return <li key={done?.completion.id ?? `node-${i}`} className="trail-arrive absolute flex w-32 -translate-x-1/2 flex-col items-center text-center" style={{ left: `${point.x / 340 * 100}%`, top: point.y - 32 }}>
+          return <li key={done?.completion.id ?? `node-${i}`} className="trail-arrive absolute flex w-32 -translate-x-1/2 flex-col items-center text-center" style={{ left: `${point.x / 340 * 100}%`, top: point.y - 32, ["--i" as string]: i }}>
             {node.jar ? <><Jar filled={filled} /><p className="text-support font-bold text-foreground">+{JAR_BONUS} cookies</p></> : <>
               {done ? (
                 <Button variant="ghost"
