@@ -24,9 +24,9 @@ export const Route = createFileRoute('/onboarding/try')({
 type Tab = 'discover' | 'ask' | 'safety' | 'create';
 const TABS: { id: Tab; label: string; icon: typeof Sparkles }[] = [
   { id: 'discover', label: 'Discover', icon: Sparkles },
+  { id: 'create', label: 'Create', icon: Wand2 },
   { id: 'ask', label: 'Ask', icon: MessageCircle },
   { id: 'safety', label: 'Safety', icon: ShieldCheck },
-  { id: 'create', label: 'Create', icon: Wand2 },
 ];
 
 /* One value-proof screen replaces four static slides: parents tap through instead of reading. */
