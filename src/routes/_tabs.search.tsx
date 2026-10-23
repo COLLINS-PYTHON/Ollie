@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUp, Keyboard, Mic, Volume2 } from "lucide-react";
 import { starterInterests, voiceFirst } from "@/lib/child-interactions";
+import { stopSpeaking } from "@/lib/speak";
+import { WhaleThinking } from "@/components/ollie/WhaleThinking";
 import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { askOllie } from "@/lib/search.functions";
 import { LessonCover } from "@/components/ollie/LessonCover";
@@ -55,7 +57,7 @@ function getRecognition(): (new () => RecognitionLike) | null {
 }
 
 function speak(text: string) {
-  void naturalSpeak(text);
+  void naturalSpeak(text, { age: onboardingState.age });
 }
 
 function childProfile() {
@@ -97,6 +99,7 @@ function SearchChat() {
     return () => {
       if (nodTimerRef.current) window.clearTimeout(nodTimerRef.current);
       recognitionRef.current?.stop();
+      stopSpeaking();
     };
   }, []);
 
@@ -237,7 +240,7 @@ function SearchChat() {
   };
 
   return (
-    <main className="search-screen screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-card">
+    <main data-welcome={welcome} data-older={child.age >= 8} className="search-screen screen-enter relative mx-auto flex h-screen w-full max-w-md flex-col overflow-hidden bg-card">
       {welcome && <AmbientDepth />}
       {/* iMessage-style header: centered round photo with name underneath */}
       <header className="search-header frosted relative z-10 flex flex-col items-center gap-1 pb-2.5 pt-12">
@@ -315,7 +318,7 @@ function SearchChat() {
         )}
         {busy && (
           <div className="mt-3 flex self-start px-2 py-2" role="status" aria-label="Ollie is writing an answer">
-            <CrispOrb state="composing" size={80} aria-label="Ollie is writing an answer" />
+            <WhaleThinking size={100} />
           </div>
         )}
       </div>
@@ -331,8 +334,8 @@ function SearchChat() {
           {voiceSupported && <Button variant="ghost" size="icon" type="button" aria-label="Hold to talk to Ollie" aria-pressed={listening} {...voiceHold} disabled={busy} className="voice-orb-control relative size-12 touch-none select-none shrink-0 rounded-pill p-0 hover:bg-transparent">
             <span aria-hidden="true"><CrispOrb state={listening ? "listening" : "breathing"} size={48} aria-label="Voice orb" /></span><Mic aria-hidden="true" className="pointer-events-none absolute size-4 text-primary" />
           </Button>}
-          <div className="flex min-w-0 flex-1 items-end gap-2 rounded-pill border border-border bg-card px-4 py-2">
-            <textarea ref={inputRef} rows={1} value={input} onChange={(e) => { setInput(e.target.value); e.target.style.height = "auto"; e.target.style.height = `${Math.min(96, e.target.scrollHeight)}px`; }} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void send(); } }} placeholder={listening ? "Listening…" : "Ask Ollie anything"} aria-label="Ask Ollie anything" className="max-h-24 min-h-6 min-w-0 flex-1 resize-none bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground" />
+          <div className="flex min-w-0 flex-1 items-center gap-2 rounded-pill border border-border bg-card px-4 py-2">
+            <textarea ref={inputRef} rows={1} value={input} onChange={(e) => { setInput(e.target.value); e.target.style.height = "auto"; e.target.style.height = `${Math.min(96, e.target.scrollHeight)}px`; }} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void send(); } }} placeholder={listening ? "Listening…" : "Ask Ollie anything"} aria-label="Ask Ollie anything" className={`max-h-24 min-h-6 min-w-0 flex-1 resize-none ${!input ? "text-center" : "text-left"} bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground`} />
             <Button size="icon" type="button" aria-label="Send question" onClick={() => void send()} disabled={!canSend} className="size-8 shrink-0 rounded-pill bg-primary text-primary-foreground disabled:bg-surface-2 disabled:text-muted-foreground"><ArrowUp className="size-4" strokeWidth={2.5} /></Button>
           </div>
         </div>}

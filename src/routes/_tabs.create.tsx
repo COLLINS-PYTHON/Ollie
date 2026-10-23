@@ -1,8 +1,11 @@
-import { speak as naturalSpeak } from "@/lib/speak";
+import { speak as naturalSpeak, stopSpeaking } from "@/lib/speak";
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Mic, Sparkles, X, Shapes, Keyboard, Rocket, BookOpen, Leaf } from "lucide-react";
-import { CrispOrb } from "@/components/ollie/CrispOrb";
+import { WhaleThinking } from "@/components/ollie/WhaleThinking";
+import { FloatingWhale } from "@/components/ollie/FloatingWhale";
+import { AmbientDepth } from "@/components/ollie/AmbientDepth";
+import { bubbleSound } from "@/lib/bubble-sound";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { preparePicture } from "@/lib/picture.functions";
@@ -72,7 +75,7 @@ function getRecognition(): (new () => RecognitionLike) | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 function speak(text: string) {
-  void naturalSpeak(text);
+  void naturalSpeak(text, { age: onboardingState.age });
 }
 
 type Popup = null | "low" | "last" | "out" | "jars";
@@ -116,6 +119,7 @@ function CreateScreen() {
     heldRef.current = false;
     const rec = recRef.current;
     if (rec) { rec.onresult = null; rec.onend = null; try { rec.stop(); } catch { /* already ended */ } }
+    stopSpeaking();
   }, []);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -212,7 +216,7 @@ function CreateScreen() {
 
   return (
     <main className="screen-enter relative mx-auto min-h-screen w-full max-w-md create-studio bg-card px-5 pb-32 pt-16">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+      <AmbientDepth /><div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
         <h1 className="text-title text-foreground">Create</h1>
         <Button variant="ghost"
           type="button"
@@ -225,14 +229,14 @@ function CreateScreen() {
         </Button>
       </div>
 
-      <div className="create-artwork" aria-hidden="true"><img src={sketchbook} alt="" width={1024} height={768} /></div>
+      <div className="create-artwork create-whale-scene" aria-hidden="true"><img src={sketchbook} alt="" width={1024} height={768} /><FloatingWhale size={110}/></div>
       <section className="create-workbench mt-5 pb-6">
         <div data-mode={mode} className="create-modes mb-3 flex gap-1 rounded-pill bg-surface p-1">
           {(["builder", "type"] as const).map((m) => (
             <Button variant="ghost"
               key={m}
               type="button"
-              onClick={() => setMode(m)}
+              onClick={() => { bubbleSound(); setMode(m); }}
               aria-pressed={mode === m}
               className={`flex-1 rounded-pill py-1.5 text-label font-semibold transition-colors duration-tap ${mode === m ? "bg-card text-foreground shadow-card" : "text-muted-foreground"}`}
             >
@@ -257,7 +261,7 @@ function CreateScreen() {
                         onClick={() => {
                           const next = { ...pick, [row]: c };
                           setPick(next);
-                          speak(c);
+                          bubbleSound(); speak(c);
                         }}
                         className={`create-choice rounded-pill border px-3 py-1.5 text-label transition-colors duration-tap ${on ? "border-primary bg-secondary text-primary" : "border-surface-2 bg-card text-foreground"}`}
                       >
@@ -335,12 +339,12 @@ function CreateScreen() {
             />
           ) : busy ? (
             <div className="flex min-h-44 w-full items-center justify-center">
-              <CrispOrb state="shaping" size={112} aria-label="Ollie is painting" />
+              <WhaleThinking size={140} painting />
             </div>
           ) : null}
           {busy && (
             <div className="flex items-center gap-2">
-              {preview && <CrispOrb state="shaping" size={80} aria-label="Ollie is painting" />}
+              {preview && <WhaleThinking size={90} painting />}
               <span className="text-support text-muted-foreground">Ollie is painting</span>
             </div>
           )}
