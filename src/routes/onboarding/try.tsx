@@ -37,7 +37,7 @@ function Proof() {
   const band = effectiveBand(onboardingState.age, onboardingState.readingLevel ?? 'stories');
   const [lessonIndex,setLessonIndex] = useState(0);
   const day = buildDay(onboardingState.interests[0] ?? 'space', lessonIndex, band);
-  const sub = day?.slides[0]?.sub;
+  const sub = day?.slides.find(slide => slide.kind === 'quiz')?.sub;
   const answer = ONBOARDING_ANSWER[band];
   useEffect(() => { void preloadSpeech(answer, onboardingState.age).catch(() => {}); }, [answer]);
   useEffect(() => { if (tab === 'ask') void speak(answer, { age: onboardingState.age }); return () => stopSpeaking(); }, [tab, answer]);

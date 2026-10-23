@@ -28,6 +28,6 @@ function PaywallPage() {
         <p className="text-support mt-4 flex items-center justify-center gap-2 text-muted-foreground"><Bell className="size-4 shrink-0" />7 days to explore. Cancel before your first charge.</p>
         <p className="text-label mt-1 text-center text-muted-foreground">Trial reminders will be available when delivery is connected.</p>
  </div><div className="onboarding-action onboarding-cta-fade fixed inset-x-0 bottom-0 mx-auto w-full max-w-md px-5 pt-5 pb-5">
- <Button variant="onboarding" size="onboarding" onClick={()=>navigate({to:'/onboarding/plans'})}>Unlock {name}'s safe trial</Button>
+ <Button variant="onboarding" size="onboarding" onClick={()=>navigate({to:'/onboarding/plans'})}>Unlock {name}’s safe trial</Button>
  </div></div>;
 }

@@ -1,5 +1,6 @@
 /* Natural read-aloud with the browser voice as an offline fallback. */
 import { voiceRate } from './voice-pacing';
+import { parentSettings } from './onboarding-store';
 type Handlers = { onStart?: () => void; onEnd?: () => void; rate?: number; age?: number };
 
 let current: HTMLAudioElement | null = null;
@@ -37,7 +38,7 @@ function browserSpeak(text: string, h: Handlers) {
 }
 
 export async function speak(text: string, h: Handlers = {}) {
-  if (typeof window === "undefined" || !text.trim()) return;
+  if (typeof window === "undefined" || !text.trim() || !parentSettings.soundOn) return;
   stopSpeaking();
   const mine = token;
   try {

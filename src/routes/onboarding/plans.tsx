@@ -32,7 +32,7 @@ function Plans(){
  return <><main className="trial-plans-page">
  <Button variant="control" size="icon" aria-label="Back to trial introduction" onClick={()=>router.history.back()}><ChevronLeft /></Button>
  <div className="trial-plans-body screen-enter">
- <h1 className="pw-title text-center">Start {name}'s safe trial</h1>
+ <h1 className="pw-title text-center">Unlock {name}’s safe trial</h1>
  <p className="text-support mt-2 text-center text-muted-foreground">7 days free, then your plan. Cancel anytime before.</p>
  <div role="radiogroup" aria-label="Choose a plan" className="trial-plan-grid">
  {(['yearly','monthly'] as const).map(p=><Button key={p} variant="ghost" role="radio" aria-checked={plan===p} onClick={()=>{setPlan(p);onboardingState.plan=p;}} className="trial-plan-card">
@@ -48,7 +48,7 @@ function Plans(){
  <p className="pw-fine mt-3 text-center text-muted-foreground">*Reminder and report delivery are not connected yet.</p><ul className="trial-feature-list mt-6 space-y-3">{valueLines.map(l=><li key={l} className="flex items-start gap-3 text-support"><span className="pw-tick"><Check /></span><span>{l}</span></li>)}</ul>
  </div>
  <footer className="pw-footer">
- <Button variant="onboarding" size="onboarding" onClick={()=>{onboardingState.plan=plan;setAskReminder(true);}}>Unlock {name}'s safe trial</Button>
+ <Button variant="onboarding" size="onboarding" onClick={()=>{onboardingState.plan=plan;setAskReminder(true);}}>Unlock {name}’s safe trial</Button>
  <p className="pw-fine mt-2 text-center text-muted-foreground">Free for 7 days, then {PRICES[plan]}. Renews automatically until canceled. Cancel anytime in Settings at least 24 hours before the trial ends. Billing is not connected yet in this preview.</p>
  <div className="pw-fine flex items-center justify-center gap-3 text-muted-foreground"><Button variant="link" className="pw-fine h-8 px-0 text-muted-foreground" disabled>Restore Purchases</Button><a href="/terms" className="underline">Terms</a><a href="/privacy" className="underline">Privacy</a></div>
  </footer></main>

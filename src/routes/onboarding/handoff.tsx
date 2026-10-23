@@ -30,7 +30,7 @@ function HandoffPage() {
       const line = custom && !custom.done
         ? `Hi ${name}! I'm Ollie. I made a lesson just for you, all about ${custom.lesson.title}.`
         : `Hi ${name}! I'm Ollie. Let's learn something fun.`;
-      void speak(line);
+      void speak(line, { age: onboardingState.age });
     }
     navigate({ to: "/search" });
   }
