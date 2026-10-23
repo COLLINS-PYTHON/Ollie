@@ -32,7 +32,8 @@
 - Search reserves a separate navigation dock beneath its composer; the app uses dynamic viewport sizing and a wider shared tablet frame. Why: tabs never cover messages or typing, and available screen space stays useful across devices.
 - Keep Search's iMessage transcript and transport when polishing layout. Why: presentation fixes must preserve conversations.
 - Orbs use CrispOrb at actual size and device resolution (max 4x); pre-optimize thinking-orbs/engine. Search voice reuses breathing/listening states in Button. Why: crisp, consistent artwork and unchanged speech transport.
-- Failed module loads refresh once per cooldown; retry refreshes. Why: discard stale chunks without loops or data loss.
+- Failed module loads refresh once per cooldown; retry refreshes to discard stale chunks safely.
+- Cloud deletion traverses picture folders and propagates errors, pausing local sync. Why: incomplete deletion must not show success.
 
 - child-interactions centralizes tested voice age and starter rules; swipes never bypass open quizzes. Why: consistent safe navigation.
 - ONBOARDING_STEPS defines the household/value-proof flow and accurate progress; only kid calibration repeats, PIN precedes paywall, account and preferred parent name follow. Why: setup preserves the parent's payment and identity boundaries.

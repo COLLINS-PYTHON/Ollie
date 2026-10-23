@@ -17,7 +17,7 @@ import {
   resetOnboardingState,
 } from "@/lib/onboarding-store";
 import { loadChat, saveChat, type ChatMessage } from "@/lib/chat-store";
-import { COOKIE_PURCHASES_AVAILABLE, cookiesLeft, JARS, loadBalance, type Balance } from "@/lib/picture-store";
+import { COOKIE_PURCHASES_AVAILABLE, cookiesLeft, deleteLocalPictures, JARS, loadBalance, type Balance } from "@/lib/picture-store";
 import { completions, prefs, setPrefs, streakDays, type SlideshowPrefs } from "@/lib/slideshow-store";
 import { minutesToday } from "@/lib/usage-store";
 import { SUBSCRIPTION_PRICES } from "@/lib/subscription-prices";
@@ -92,7 +92,7 @@ const ICONS = {
 function Sheet({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
     <Drawer open onOpenChange={(open) => { if (!open) onClose(); }} shouldScaleBackground={false}>
-      <DrawerContent aria-describedby={undefined} className="mx-auto max-h-[85svh] w-full max-w-md bg-card px-5 pb-8 shadow-sheet">
+      <DrawerContent aria-describedby={undefined} className="parent-sheet mx-auto max-h-[85svh] w-full max-w-md bg-card px-5 pb-8 shadow-sheet">
         <div className="mb-4 flex items-center justify-between">
           <DrawerTitle className="text-body font-bold text-foreground">{title}</DrawerTitle>
           <Button variant="control" size="icon" type="button" aria-label="Close" onClick={onClose} className="size-9 rounded-pill bg-surface text-muted-foreground">
@@ -205,7 +205,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
   const title = creating ? (first ? "Enter it once more" : "Create a parent PIN") : "Enter your parent PIN";
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-card px-5 pt-4">
+    <main className="parent-pin mx-auto flex min-h-screen w-full max-w-md flex-col bg-card px-5 pt-4">
       <Link to="/search" aria-label="Back" className="flex size-10 items-center justify-center rounded-pill bg-surface text-foreground">
         <ChevronLeft className="size-5" />
       </Link>
@@ -636,16 +636,24 @@ function SupportSheet({ onClose }: { onClose: () => void }) {
 
 function DeleteSheet({ child, onClose }: { child: string; onClose: () => void }) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
   const wipe = async () => {
-    await deleteCloudData().catch(() => undefined);
+    if (busy) return;
+    setBusy(true); setError('');
+    try {
+    await deleteCloudData();
+    await deleteLocalPictures(familyKids().map(kid => kid.id));
     clearFamilyStorage();
     sessionStorage.removeItem("ollie-onboarding-draft-v1");
     ["ollie-onboarding-draft-v1", "ollie-onboarding-step-v1", "ollie-profile-v1"].forEach((k) => localStorage.removeItem(k));
-    indexedDB.deleteDatabase("ollie-pictures");
     resetOnboardingState();
     setStep(3);
     // Hard reload discards every in-memory store and starts setup from the first screen.
     setTimeout(() => window.location.replace("/onboarding/fact"), 1200);
+    } catch {
+      setError('Deletion could not be completed. Some saved data may remain. Please retry.');
+    } finally { setBusy(false); }
   };
   return (
     <Sheet title="Delete my data" onClose={step === 3 ? () => window.location.replace("/onboarding/fact") : onClose}>
@@ -666,11 +674,12 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
         <>
           <p className="text-body font-bold text-foreground">This is permanent.</p>
           <p className="mt-1 text-support text-muted-foreground">Once deleted, none of it can be brought back.</p>
-          <Button variant="ghost" type="button" onClick={wipe} className="mt-5 w-full rounded-pill bg-destructive py-3 text-button text-primary-foreground">Delete everything</Button>
-          <Button variant="ghost" type="button" onClick={onClose} className="mt-2 w-full py-3 text-button text-muted-foreground">Keep my data</Button>
+          {error && <p role="alert" className="mt-3 text-support text-destructive">{error}</p>}
+          <Button variant="ghost" type="button" onClick={wipe} disabled={busy} className="mt-5 w-full rounded-pill bg-destructive py-3 text-button text-primary-foreground">{busy ? 'Deleting…' : 'Delete everything'}</Button>
+          <Button variant="ghost" type="button" onClick={onClose} disabled={busy} className="mt-2 w-full py-3 text-button text-muted-foreground">Keep my data</Button>
         </>
       )}
-      {step === 3 && <p className="text-body text-foreground">Everything has been deleted. Starting fresh…</p>}
+      {step === 3 && <p className="text-body text-foreground">Saved family data deleted. Starting fresh…</p>}
     </Sheet>
   );
 }

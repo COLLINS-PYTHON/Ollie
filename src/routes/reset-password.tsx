@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { pullAll } from "@/lib/cloud-sync";
 import { pageMeta } from "@/lib/meta";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/reset-password")({
   head: () => pageMeta("Set a new password", "Choose a new password for your Ollie parent account."),
@@ -34,7 +35,7 @@ function ResetPage() {
   const ok = password.length >= 8 && !busy;
   return (
     <div className="bg-gradient-name min-h-screen">
-      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-8 pt-16">
+      <main className="account-page mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-8 pt-16">
         <h1 className="text-title text-foreground">Set a new password</h1>
         {!ready ? (
           <p className="text-support mt-3 text-muted-foreground">Open this page from the link in your email.</p>
@@ -43,9 +44,9 @@ function ResetPage() {
             <input className={`${field} mt-6`} type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="New password (8 or more characters)" aria-label="New password" />
             {error && <p role="alert" className="mt-3 text-support text-destructive">{error}</p>}
             <div className="flex-1" />
-            <button type="button" disabled={!ok} onClick={save} className={`text-button mt-6 h-14 w-full rounded-pill shadow-card ${ok ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}>
+            <Button variant="ghost" type="button" disabled={!ok} onClick={save} className={`text-button mt-6 h-14 w-full rounded-pill shadow-card ${ok ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}>
               {busy ? "Saving" : "Save password"}
-            </button>
+            </Button>
           </>
         )}
       </main>

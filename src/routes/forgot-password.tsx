@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pageMeta } from "@/lib/meta";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/forgot-password")({
   head: () => pageMeta("Reset your password", "Get a link to set a new password for your Ollie parent account."),
@@ -26,7 +27,7 @@ function ForgotPage() {
 
   return (
     <div className="bg-gradient-name min-h-screen">
-      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-8 pt-4">
+      <main className="account-page mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-8 pt-4">
         <Link to="/login" aria-label="Back" className="flex size-10 items-center justify-center rounded-pill bg-card text-foreground shadow-card">
           <ChevronLeft className="size-5" />
         </Link>
@@ -40,9 +41,9 @@ function ForgotPage() {
             <p className="text-support mt-2 text-muted-foreground">We'll email you a link to set a new one.</p>
             <input className={`${field} mt-6`} type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" aria-label="Email" />
             <div className="flex-1" />
-            <button type="button" disabled={!ok} onClick={send} className={`text-button mt-6 h-14 w-full rounded-pill shadow-card ${ok ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}>
+            <Button variant="ghost" type="button" disabled={!ok} onClick={send} className={`text-button mt-6 h-14 w-full rounded-pill shadow-card ${ok ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}>
               {busy ? "Sending" : "Send link"}
-            </button>
+            </Button>
           </>
         )}
       </main>

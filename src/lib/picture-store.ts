@@ -19,7 +19,7 @@ function openDb(id = activeKidId()): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(id === 'first' ? 'ollie-pictures' : `ollie-pictures-${id}`, 1);
     req.onupgradeneeded = () => req.result.createObjectStore(STORE, { keyPath: "id" });
-    req.onsuccess = () => resolve(req.result);
+    req.onsuccess = () => { req.result.onversionchange = () => req.result.close(); resolve(req.result); };
     req.onerror = () => reject(req.error);
   });
 }
@@ -28,8 +28,8 @@ export async function loadPictures(id = activeKidId()): Promise<Picture[]> {
   const db = await openDb(id);
   return new Promise((resolve, reject) => {
     const req = db.transaction(STORE).objectStore(STORE).getAll();
-    req.onsuccess = () => resolve((req.result as Picture[]).sort((a, b) => b.createdAt - a.createdAt));
-    req.onerror = () => reject(req.error);
+    req.onsuccess = () => { db.close(); resolve((req.result as Picture[]).sort((a, b) => b.createdAt - a.createdAt)); };
+    req.onerror = () => { db.close(); reject(req.error); };
   });
 }
 
@@ -38,8 +38,17 @@ export async function savePicture(p: Picture, id = activeKidId()): Promise<void>
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE, "readwrite");
     tx.objectStore(STORE).put(p);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
+    tx.oncomplete = () => { db.close(); resolve(); };
+    tx.onerror = () => { db.close(); reject(tx.error); };
+  });
+}
+
+export async function deleteLocalPictures(ids: string[]): Promise<void> {
+  for (const id of ids) await new Promise<void>((resolve, reject) => {
+    const request = indexedDB.deleteDatabase(id === 'first' ? 'ollie-pictures' : `ollie-pictures-${id}`);
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(new Error('Could not clear saved pictures.'));
+    request.onblocked = () => reject(new Error('Close other Ollie tabs and retry deletion.'));
   });
 }
 

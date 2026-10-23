@@ -1168,6 +1168,40 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .deck-controls { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:6px; }
 .hear-highlight { background:var(--card); box-shadow:var(--elev-card); animation:trial-emphasis 4s ease-in-out infinite; }
 .trial-whale-story { position:relative; height:215px; display:flex; align-items:center; justify-content:center; margin:22px auto 0; max-width:370px; }
+.trial-invitation { min-height:100dvh; display:flex; flex-direction:column; }
+.trial-invitation .paywall-underlay { flex:1; padding-bottom:20px; }
+.trial-invitation-action { position:sticky; bottom:0; flex-shrink:0; padding-bottom:max(20px,env(safe-area-inset-bottom)); }
+@media(min-width:768px) {
+  .tabs-shell :is(.search-screen,.create-studio,.trail-screen) { max-width:var(--app-frame-width); }
+  .tabs-shell :is(.create-studio,.trail-screen) { padding-inline:40px; }
+  .tabs-shell .search-screen { padding-inline:0; }
+  .search-welcome > p { max-width:400px; }
+  .search-starters { max-width:520px; }
+  .onboarding-shell .onboarding-flow > div > .onboarding-frame { max-width:640px; }
+  .onboarding-shell .onboarding-action { max-width:640px; }
+  .trial-invitation .paywall-underlay { max-width:600px; }
+  .trial-invitation-action { max-width:600px; }
+  .trial-invitation .trial-whale-story { height:280px; width:100%; max-width:450px; margin-top:32px; }
+  .trial-invitation .trial-whale-story .floating-whale { width:310px !important; height:155px !important; }
+  .trial-invitation .trial-orbit { width:112px; height:112px; }
+  .trial-invitation h1 { max-width:520px; margin-inline:auto; }
+  .trial-plans-page { max-width:640px; }
+  .discovery-deck { max-width:450px; height:330px; }
+  .onboarding-step-body .proof-transcript { max-width:520px; margin-inline:auto; }
+  .lesson-stage-enter .discovery-scene { width:min(100%,420px,38dvh); }
+  .lesson-copy { max-width:540px; font-size:24px; line-height:34px; }
+  .create-modes button,.create-starter { min-height:52px; }
+  .app-tabbar > div { max-width:520px; }
+}
+@media(min-width:768px) and (max-height:850px) {
+  .trial-invitation .trial-whale-story { height:185px; margin-top:16px; }
+  .onboarding-content { padding-top:28px; }
+}
+@media(max-height:650px) {
+  .trial-invitation .trial-whale-story { height:155px; margin-top:12px; }
+  .trial-invitation h1 { margin-top:16px; }
+  .trial-invitation .trial-whale-story .floating-whale { max-height:155px; }
+}
 .trial-orbit { width:86px; height:86px; position:absolute; top:25px; animation:trial-card-drift 6s ease-in-out infinite; }
 .trial-orbit .discovery-scene { border-radius:var(--radius-control); box-shadow:var(--elev-card); }
 .trial-orbit-a { left:5px; rotate:-10deg; }.trial-orbit-b { right:4px; top:90px; rotate:10deg; animation-delay:-3s; }
@@ -1324,3 +1358,28 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .flag-pop { animation:flag-pop 420ms cubic-bezier(.2,.8,.2,1) both; }
 @keyframes flag-pop { from { opacity:0; transform:translateY(8px) scale(.96); } to { opacity:1; transform:none; } }
 @media(prefers-reduced-motion:reduce) { .thought-dot,.thought-cloud,.thought-cloud svg,.reveal-stagger > *,.flag-pop { animation:none; opacity:1; } }
+
+/* Tablet reading tracks stay generous without stretching quizzes across the screen. */
+.discovery-session > .slide-tint { min-height:0; }
+.lesson-toolbar > p { min-width:0; overflow-wrap:anywhere; }
+.discovery-session[data-band="4-6"] button { min-height:60px; }
+@media(min-width:768px) {
+  .account-page,.parent-pin { max-width:560px; padding-inline:40px; }
+  .parent-dashboard { max-width:720px; padding:28px 40px 48px; }
+  .parent-sheet { max-width:640px; padding-inline:32px; padding-bottom:32px; }
+  .parent-sheet input,.parent-sheet button:not([role="switch"]) { min-height:48px; }
+  .discovery-session > .slide-tint { width:100%; max-width:720px; margin-inline:auto; }
+  .discovery-session .lesson-toolbar { padding-top:32px; }
+  .discovery-session .lesson-stage-enter > .text-title { max-width:600px; font-size:26px; line-height:34px; }
+  .discovery-session .lesson-stage-enter > div { width:100%; max-width:600px; margin-inline:auto; }
+  .discovery-session .lesson-copy { max-width:560px; font-size:24px; line-height:34px; }
+  .discovery-session button { min-height:56px; }
+  .discovery-session .lesson-stage-enter .discovery-scene { width:min(100%,420px,38dvh); }
+  .discovery-session .slide-tint > .discovery-scene { max-width:380px; }
+  .discovery-session .slide-tint > h1 { max-width:540px; }
+}
+@media(min-width:768px) and (max-height:850px) {
+  .discovery-session .lesson-toolbar { padding-top:20px; }
+  .discovery-session .lesson-stage-enter { gap:12px; padding-block:16px; }
+  .discovery-session .slide-tint > div:last-child { padding-bottom:20px; }
+}

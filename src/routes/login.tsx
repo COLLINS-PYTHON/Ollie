@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { clearFails, lockedSeconds, LOGIN_LOCK, pullAll, recordFail } from "@/lib/cloud-sync";
 import { pageMeta } from "@/lib/meta";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/login")({
   head: () => pageMeta("Log in", "Log in to your Ollie parent account on this device."),
@@ -59,7 +60,7 @@ function LoginPage() {
 
   return (
     <div className="bg-gradient-name min-h-screen">
-      <main className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-8 pt-4">
+      <main className="account-page mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-8 pt-4">
         <Link to="/onboarding/fact" aria-label="Back" className="flex size-10 items-center justify-center rounded-pill bg-card text-foreground shadow-card">
           <ChevronLeft className="size-5" />
         </Link>
@@ -73,18 +74,18 @@ function LoginPage() {
         {error && <p role="alert" className="mt-3 text-support text-destructive">{error}</p>}
         <div className="my-5 flex items-center gap-3 text-muted-foreground"><span className="h-px flex-1 bg-border" /><span className="text-support">or</span><span className="h-px flex-1 bg-border" /></div>
         <div className="flex flex-col gap-3">
-          <button type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-foreground text-background shadow-card">Continue with Apple</button>
-          <button type="button" onClick={() => social("google")} className="text-button h-14 rounded-pill bg-card text-foreground shadow-card">Continue with Google</button>
+          <Button variant="ghost" type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-foreground text-background shadow-card">Continue with Apple</Button>
+          <Button variant="ghost" type="button" onClick={() => social("google")} className="text-button h-14 rounded-pill bg-card text-foreground shadow-card">Continue with Google</Button>
         </div>
         <div className="flex-1" />
-        <button
+        <Button variant="ghost"
           type="button"
           disabled={!ok}
           onClick={login}
           className={`text-button mt-6 h-14 w-full rounded-pill shadow-card transition-all duration-element ${ok ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground"}`}
         >
           {busy ? "Logging in" : "Log in"}
-        </button>
+        </Button>
       </main>
     </div>
   );
