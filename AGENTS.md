@@ -40,3 +40,4 @@
 - Read-aloud goes through src/lib/speak.ts with actual age pacing, deduplicated bounded preloads and browser fallback. Why: pace follows age rather than reading difficulty, without duplicate voice charges.
 - Shared lessons teach one topic at a time; daily cached choices rebuild current content locally without advancing selection. Why: library improvements reach old selections without rewriting cloud progress.
 - Cookie purchase availability is shared through picture-store; preview purchase controls never award credits. Why: a parent PIN is permission, not evidence of payment.
+- AI calls use only models whose gateway endpoint reports zero data retention; check /v1/models data_retention_by_surface before adding or changing a model. Why: privacy copy promises no provider retention or training.
