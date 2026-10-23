@@ -58,7 +58,8 @@ function TabsLayout() {
       age: onboardingState.age || 7,
       band: effectiveBand(onboardingState.age || 7, onboardingState.readingLevel ?? "stories"),
       interests: onboardingState.interests,
-      needsReadAloud: onboardingState.readingLevel === "none" || onboardingState.readingLevel === "sounding",
+      // Voice-first lessons (auto narration) are for younger kids only; older kids tap to hear.
+      needsReadAloud: (onboardingState.age || 7) < 8,
     });
     setTakeover(slideshowDue());
     setReady(true);
