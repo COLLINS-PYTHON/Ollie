@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Now
-- [ ] October 23 09:45: onboarding value proof now demonstrates picture-making (Create tab with matte sample art), ordered Discover → Create → Ask → Safety so it is not last; verify positioning and picture crispness at phone and iPad sizes.
+- [x] October 23 09:45: onboarding value proof now demonstrates picture-making (Create tab with matte sample art), ordered Discover → Create → Ask → Safety so it is not last. Verified at 390×600, 768×1024 and 1024×768: four tabs unclipped, no horizontal overflow, no page errors, picture crisp (1024px source), and on the short phone the full picture plus caption are reachable above the button after a small scroll.
 - [ ] Lesson clarification: individual pictures explain each teaching point; include simple tap-to-explore interaction, not just different category covers.
 - [ ] October 23: give background bubbles realistic highlights/depth and verify audible optional sounds on requested onboarding and lesson navigation.
 - [ ] October 23: rebuild lesson/quiz presentation and clearer scene-matched pictures; add genuine flowing onboarding page transitions and tighten wording without weakening consent. Renewed request: make onboarding movement visibly playful, not just brief entrances.
