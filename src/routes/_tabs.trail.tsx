@@ -78,9 +78,10 @@ function Trail() {
                   {paused ? <Pause className="size-5 text-muted-foreground" /> : node.day === cycleStart + filled + 1 ? <Rocket className="size-7 text-primary" /> : <LockKeyhole className="size-5 text-muted-foreground/60" />}
                 </div>
               )}
-              <p className="trail-stop-label text-support mt-2 font-bold text-foreground">{paused ? "Paused" : `Day ${done?.learningDay ?? node.day}`}</p>
-              {done && <p className="trail-stop-label text-label mt-1 text-muted-foreground">{done.completion.label}</p>}
-              {done && <p className="trail-stop-label text-label mt-0.5 font-bold text-primary">Review</p>}
+              <div className="relative z-10 mt-2 flex flex-col items-center rounded-control bg-card/95 px-2.5 py-1 shadow-card">
+                <p className="text-support font-bold text-foreground">{paused ? "Paused" : `Day ${done?.learningDay ?? node.day}`}</p>
+                {done && <p className="text-label font-bold text-primary">Review</p>}
+              </div>
             </>}
           </li>;
         })}
