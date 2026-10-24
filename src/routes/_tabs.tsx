@@ -26,11 +26,8 @@ function TabsLayout() {
   const [chooseKid, setChooseKid] = useState(false);
   const [parentHint, setParentHint] = useState(false);
   useEffect(() => {
-    // Label the parent button for the first three app opens, then icon only.
-    try {
-      const seen = Number(localStorage.getItem("ollie-parent-hint-v1") || 0);
-      if (seen < 3) { setParentHint(true); localStorage.setItem("ollie-parent-hint-v1", String(seen + 1)); }
-    } catch { /* storage unavailable */ }
+    // Label and glow the parent button until a parent first unlocks the dashboard.
+    try { setParentHint(localStorage.getItem("ollie-parent-unlocked-v1") !== "1"); } catch { /* storage unavailable */ }
   }, []);
   const [ready, setReady] = useState(false);
   const [takeover, setTakeover] = useState(false);

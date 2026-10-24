@@ -185,7 +185,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
       if (!creating) {
         const wait = lockedSeconds(PIN_LOCK);
         if (wait) { setError(`Too many tries. Wait ${wait} seconds.`); setPin(""); return; }
-        if (await checkPin(next)) { clearFails(PIN_LOCK); onUnlock(); }
+        if (await checkPin(next)) { clearFails(PIN_LOCK); try { localStorage.setItem("ollie-parent-unlocked-v1", "1"); } catch { /* storage unavailable */ } onUnlock(); }
         else {
           const locked = recordFail(PIN_LOCK);
           setError(locked ? `Too many tries. Wait ${locked} seconds.` : "That PIN didn't match. Try again.");

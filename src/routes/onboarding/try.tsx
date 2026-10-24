@@ -51,8 +51,9 @@ function Proof() {
       <OnboardingSkeleton chapter={3} title={`Here’s Ollie, made for ${name}`} cta={nextTab ? `Next: ${nextTab.label}` : 'Continue'} onContinue={() => nextTab ? open(nextTab.id) : navigate({ to: '/onboarding/pin' })}>
         <div className="mb-5 grid grid-cols-4 gap-1.5" role="tablist" aria-label="Ollie examples">
           {TABS.map(({ id, label, icon: Icon }) => (
-            <Button key={id} role="tab" variant="option" aria-selected={tab === id} aria-pressed={tab === id} className="h-12 rounded-pill" onClick={() => open(id)}>
-              <Icon />{label}{seen.has(id) && tab !== id && <Check className="size-3 text-primary" />}
+            <Button key={id} role="tab" variant="option" aria-selected={tab === id} aria-pressed={tab === id} className="relative h-14 min-w-0 flex-col gap-0.5 overflow-visible rounded-control px-1 text-label" onClick={() => open(id)}>
+              <Icon className="size-4 shrink-0" /><span className="truncate">{label}</span>
+              {seen.has(id) && tab !== id && <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-primary text-primary-foreground"><Check className="size-2.5" strokeWidth={3} /></span>}
             </Button>
           ))}
         </div>
