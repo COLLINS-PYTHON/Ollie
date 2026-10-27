@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { callModel, parseJson } from "./ai-text.server";
 
@@ -30,6 +31,7 @@ export type CustomLesson = z.infer<typeof lessonSchema>;
 /* A parent-typed topic can't be pre-built, so this one lesson is written live
    during the "Building" finale. */
 export const generateCustomLesson = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((data) => schema.parse(data))
   .handler(async ({ data }) => {
     const apiKey = process.env["LOVABLE_API_KEY"];

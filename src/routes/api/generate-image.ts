@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { requireUser } from "@/lib/route-auth.server";
 import { generateImage, imageSettings } from "@/lib/image-gateway.server";
 
 const bodySchema = z.object({
@@ -14,6 +15,8 @@ export const Route = createFileRoute("/api/generate-image")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const denied = await requireUser(request);
+        if (denied) return denied;
         const parsed = bodySchema.safeParse(await request.json().catch(() => null));
         if (!parsed.success) return new Response("Invalid request", { status: 400 });
         const apiKey = process.env["LOVABLE_API_KEY"];

@@ -1,3 +1,4 @@
+import { authHeaders } from "./auth-headers";
 import { createParser } from "eventsource-parser";
 import { flushSync } from "react-dom";
 
@@ -13,6 +14,7 @@ export async function streamImage(
   const send = (stream: boolean) => {
     signal?.throwIfAborted();
     const requestHeaders = new Headers(headers);
+    for (const [k, v] of Object.entries(await authHeaders())) requestHeaders.set(k, v);
     let body: FormData | string;
     if (input instanceof FormData) {
       const form = new FormData();

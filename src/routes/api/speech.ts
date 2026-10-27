@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
+import { requireUser } from "@/lib/route-auth.server";
 import { voicePace } from '@/lib/voice-pacing';
 
 const bodySchema = z.object({ text: z.string().trim().min(1).max(800), age: z.number().int().min(4).max(12).default(7) });
@@ -11,6 +12,8 @@ export const Route = createFileRoute("/api/speech")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const denied = await requireUser(request);
+        if (denied) return denied;
         const parsed = bodySchema.safeParse(await request.json().catch(() => null));
         if (!parsed.success) return new Response("Invalid request", { status: 400 });
         const apiKey = process.env["LOVABLE_API_KEY"];

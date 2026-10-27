@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { callModel, parseJson } from "./ai-text.server";
 
@@ -9,6 +10,7 @@ const schema = z.object({
 
 /* Layer 1: rewrite risky words into friendly alternatives before any image is attempted. */
 export const preparePicture = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((data) => schema.parse(data))
   .handler(async ({ data }) => {
     const apiKey = process.env["LOVABLE_API_KEY"];
