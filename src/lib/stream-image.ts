@@ -1,3 +1,4 @@
+import { authHeaders } from "./auth-headers";
 import { createParser } from "eventsource-parser";
 import { flushSync } from "react-dom";
 
@@ -10,9 +11,10 @@ export async function streamImage(
   signal?: AbortSignal,
   headers?: HeadersInit,
 ): Promise<void> {
-  const send = (stream: boolean) => {
+  const send = async (stream: boolean) => {
     signal?.throwIfAborted();
     const requestHeaders = new Headers(headers);
+    for (const [k, v] of Object.entries(await authHeaders())) requestHeaders.set(k, v);
     let body: FormData | string;
     if (input instanceof FormData) {
       const form = new FormData();

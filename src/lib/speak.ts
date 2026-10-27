@@ -1,3 +1,4 @@
+import { authHeaders } from './auth-headers';
 /* Natural read-aloud with the browser voice as an offline fallback. */
 import { voiceRate } from './voice-pacing';
 import { parentSettings } from './onboarding-store';
@@ -12,7 +13,7 @@ export function preloadSpeech(text: string, age = 7): Promise<string> {
   const key = `${age}:${text}`;
   const cached = cache.get(key); if (cached) return Promise.resolve(cached);
   const request = pending.get(key); if (request) return request;
-  const next = fetch('/api/speech', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text.slice(0,800), age }) }).then(async res => {
+  const next = authHeaders().then(h => fetch('/api/speech', { method: 'POST', headers: { 'Content-Type': 'application/json', ...h }, body: JSON.stringify({ text: text.slice(0,800), age }) })).then(async res => {
     if (!res.ok) throw new Error(String(res.status));
     const url = URL.createObjectURL(await res.blob()); cache.set(key,url);
     if (cache.size > 40) { const oldest = cache.keys().next().value; if (oldest) { const old = cache.get(oldest); if (old) URL.revokeObjectURL(old); cache.delete(oldest); } }
