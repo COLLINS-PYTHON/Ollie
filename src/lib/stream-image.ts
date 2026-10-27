@@ -11,7 +11,7 @@ export async function streamImage(
   signal?: AbortSignal,
   headers?: HeadersInit,
 ): Promise<void> {
-  const send = (stream: boolean) => {
+  const send = async (stream: boolean) => {
     signal?.throwIfAborted();
     const requestHeaders = new Headers(headers);
     for (const [k, v] of Object.entries(await authHeaders())) requestHeaders.set(k, v);
