@@ -23,6 +23,7 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as TabsCreateRouteImport } from './routes/_tabs.create'
 import { Route as TabsSearchRouteImport } from './routes/_tabs.search'
 import { Route as TabsTrailRouteImport } from './routes/_tabs.trail'
+import { Route as ApiDeleteAccountRouteImport } from './routes/api/delete-account'
 import { Route as ApiGenerateImageRouteImport } from './routes/api/generate-image'
 import { Route as ApiSpeechRouteImport } from './routes/api/speech'
 import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
@@ -107,6 +108,11 @@ const TabsTrailRoute = TabsTrailRouteImport.update({
   path: '/trail',
   getParentRoute: () => TabsRoute,
 } as any)
+const ApiDeleteAccountRoute = ApiDeleteAccountRouteImport.update({
+  id: '/api/delete-account',
+  path: '/api/delete-account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiGenerateImageRoute = ApiGenerateImageRouteImport.update({
   id: '/api/generate-image',
   path: '/api/generate-image',
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/create': typeof TabsCreateRoute
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
+  '/api/delete-account': typeof ApiDeleteAccountRoute
   '/api/generate-image': typeof ApiGenerateImageRoute
   '/api/speech': typeof ApiSpeechRoute
   '/onboarding/account': typeof OnboardingAccountRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/create': typeof TabsCreateRoute
   '/search': typeof TabsSearchRoute
   '/trail': typeof TabsTrailRoute
+  '/api/delete-account': typeof ApiDeleteAccountRoute
   '/api/generate-image': typeof ApiGenerateImageRoute
   '/api/speech': typeof ApiSpeechRoute
   '/onboarding/account': typeof OnboardingAccountRoute
@@ -244,6 +252,7 @@ export interface FileRoutesById {
   '/_tabs/create': typeof TabsCreateRoute
   '/_tabs/search': typeof TabsSearchRoute
   '/_tabs/trail': typeof TabsTrailRoute
+  '/api/delete-account': typeof ApiDeleteAccountRoute
   '/api/generate-image': typeof ApiGenerateImageRoute
   '/api/speech': typeof ApiSpeechRoute
   '/onboarding/account': typeof OnboardingAccountRoute
@@ -274,6 +283,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/search'
     | '/trail'
+    | '/api/delete-account'
     | '/api/generate-image'
     | '/api/speech'
     | '/onboarding/account'
@@ -301,6 +311,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/search'
     | '/trail'
+    | '/api/delete-account'
     | '/api/generate-image'
     | '/api/speech'
     | '/onboarding/account'
@@ -330,6 +341,7 @@ export interface FileRouteTypes {
     | '/_tabs/create'
     | '/_tabs/search'
     | '/_tabs/trail'
+    | '/api/delete-account'
     | '/api/generate-image'
     | '/api/speech'
     | '/onboarding/account'
@@ -357,6 +369,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   TermsRoute: typeof TermsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiDeleteAccountRoute: typeof ApiDeleteAccountRoute
   ApiGenerateImageRoute: typeof ApiGenerateImageRoute
   ApiSpeechRoute: typeof ApiSpeechRoute
 }
@@ -460,6 +473,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/trail'
       preLoaderRoute: typeof TabsTrailRouteImport
       parentRoute: typeof TabsRoute
+    }
+    '/api/delete-account': {
+      id: '/api/delete-account'
+      path: '/api/delete-account'
+      fullPath: '/api/delete-account'
+      preLoaderRoute: typeof ApiDeleteAccountRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/generate-image': {
       id: '/api/generate-image'
@@ -614,6 +634,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiDeleteAccountRoute: ApiDeleteAccountRoute,
   ApiGenerateImageRoute: ApiGenerateImageRoute,
   ApiSpeechRoute: ApiSpeechRoute,
 }
