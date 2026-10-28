@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { speak as naturalSpeak } from "@/lib/speak";
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowUp, Keyboard, Mic, Volume2 } from "lucide-react";
+import { ArrowUp, Flag, Keyboard, Mic, Volume2 } from "lucide-react";
 import { starterInterests, voiceFirst } from "@/lib/child-interactions";
 import { stopSpeaking } from "@/lib/speak";
 import { WhaleThinking } from "@/components/ollie/WhaleThinking";
@@ -285,6 +285,18 @@ function SearchChat() {
                       className="mb-0.5 flex size-9 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
                     >
                       <Volume2 className="size-3.5" />
+                    </Button>
+                    <Button variant="ghost" size="icon"
+                      type="button"
+                      aria-label="Report this answer"
+                      onClick={() => {
+                        if (!window.confirm("Report this answer as wrong or not okay? It will be removed.")) return;
+                        try { const r = JSON.parse(localStorage.getItem("ollie-reports-v1") ?? "[]"); r.push({ text: m.text, at: Date.now() }); localStorage.setItem("ollie-reports-v1", JSON.stringify(r.slice(-50))); } catch { /* storage full */ }
+                        setMessages((prev) => { const next = prev.filter((x) => x.id !== m.id); saveChat(next); return next; });
+                      }}
+                      className="mb-0.5 flex size-9 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
+                    >
+                      <Flag className="size-3.5" />
                     </Button>
                   </div>
                   {m.illustrationId && <AnswerArt id={m.illustrationId} />}
