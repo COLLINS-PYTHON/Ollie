@@ -174,7 +174,9 @@ export async function deleteCloudData() {
     await deleteStorageTree(supabase.storage.from('pictures'), uid);
     const { error } = await supabase.from("accounts").delete().eq("id", uid);
     if (error) throw error;
-    const result = await supabase.auth.signOut();
+    const gone = await fetch("/api/delete-account", { method: "POST", headers: { Authorization: `Bearer ${session.access_token}` } });
+    if (!gone.ok) throw new Error("Account login could not be deleted");
+    const result = await supabase.auth.signOut({ scope: 'local' });
     if (result.error) {
       const local = await supabase.auth.signOut({ scope: 'local' });
       if (local.error) throw local.error;
