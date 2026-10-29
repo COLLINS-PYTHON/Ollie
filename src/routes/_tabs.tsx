@@ -124,7 +124,7 @@ function TabsLayout() {
           {parentHint && <span className="text-label">Parents</span>}
         </Link>
       </div>
-      {ready && <><div className="kid-identity z-30"><Button variant="ghost" className="h-10 max-w-full truncate rounded-pill text-support" onClick={() => setChooseKid(v => !v)} aria-expanded={chooseKid}>{child.name}</Button></div>{chooseKid && <div className="absolute inset-x-5 top-16 z-40 mx-auto max-w-md rounded-card border border-border bg-card p-3 shadow-sheet"><KidSwitcher /></div>}<div key={activeKidId()} className="contents"><Outlet /></div></>}
+      {ready && <><div className="kid-identity z-30"><span className="flex h-10 max-w-full items-center truncate px-4 text-support">{child.name}</span></div><div key={activeKidId()} className="contents"><Outlet /></div></>}
       {ready && <TabBar />}
       {bedtime && !takeover && !review && <Bedtime name={child.name} />}
       {(takeover || review) && <SlideshowTakeover key={`${activeKidId()}-${review?.label ?? "daily"}`} child={child} review={review ?? undefined} onClose={() => { setTakeover(false); endReview(); }} />}
