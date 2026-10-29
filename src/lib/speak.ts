@@ -26,7 +26,7 @@ async function toStore(key: string, blob: Blob) {
 
 async function fetchClip(text: string, age: number): Promise<Blob> {
   for (let attempt = 0; ; attempt++) {
-    const res = await fetch('/api/speech', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(await authHeaders()) }, body: JSON.stringify({ text, age }) });
+    const res = await fetch('/api/speech', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(await authHeaders().catch(() => ({}))) }, body: JSON.stringify({ text, age }) });
     if (res.ok) return await res.blob();
     const retryable = res.status === 429 || res.status >= 500;
     if (!retryable || attempt >= 2) throw new Error(String(res.status));
