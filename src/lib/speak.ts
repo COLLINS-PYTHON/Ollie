@@ -1,25 +1,54 @@
 import { authHeaders } from './auth-headers';
-/* Natural read-aloud with the browser voice as an offline fallback. */
+/* Ollie's natural voice. Clips are stored permanently on the device per pace band,
+   so a line heard once always replays in the identical voice, even offline.
+   The browser voice is only a last resort after retries fail. */
 import { voiceRate } from './voice-pacing';
 import { parentSettings } from './onboarding-store';
 type Handlers = { onStart?: () => void; onEnd?: () => void; rate?: number; age?: number };
 
+const VOICE_VERSION = 'kore-v1';
+const STORE = 'ollie-voice-v1';
 let current: HTMLAudioElement | null = null;
 let token = 0;
 const cache = new Map<string, string>();
 const pending = new Map<string, Promise<string>>();
 
+/** Pace band, matching voicePace on the server. Ages in a band share one clip. */
+export function paceBand(age: number) { return age <= 6 ? 6 : age <= 9 ? 9 : 12; }
+const wait = (ms: number) => new Promise(r => setTimeout(r, ms));
+
+async function fromStore(key: string): Promise<Blob | null> {
+  try { if (typeof caches === 'undefined') return null; const hit = await (await caches.open(STORE)).match(key); return hit ? await hit.blob() : null; } catch { return null; }
+}
+async function toStore(key: string, blob: Blob) {
+  try { if (typeof caches !== 'undefined') await (await caches.open(STORE)).put(key, new Response(blob, { headers: { 'Content-Type': blob.type || 'audio/wav' } })); } catch { /* storage full or unavailable */ }
+}
+
+async function fetchClip(text: string, age: number): Promise<Blob> {
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch('/api/speech', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(await authHeaders().catch(() => ({}))) }, body: JSON.stringify({ text, age }) });
+    if (res.ok) return await res.blob();
+    const retryable = res.status === 429 || res.status >= 500;
+    if (!retryable || attempt >= 2) throw new Error(String(res.status));
+    await wait(800 * 2 ** attempt + Math.random() * 300);
+  }
+}
+
 export function preloadSpeech(text: string, age = 7): Promise<string> {
-  const key = `${age}:${text}`;
+  const band = paceBand(age);
+  const clean = text.slice(0, 800);
+  const key = `${band}:${clean}`;
   const cached = cache.get(key); if (cached) return Promise.resolve(cached);
   const request = pending.get(key); if (request) return request;
-  const next = authHeaders().then(h => fetch('/api/speech', { method: 'POST', headers: { 'Content-Type': 'application/json', ...h }, body: JSON.stringify({ text: text.slice(0,800), age }) })).then(async res => {
-    if (!res.ok) throw new Error(String(res.status));
-    const url = URL.createObjectURL(await res.blob()); cache.set(key,url);
+  const storeKey = `/voice/${VOICE_VERSION}/${band}/${encodeURIComponent(clean)}`;
+  const next = (async () => {
+    let blob = await fromStore(storeKey);
+    if (!blob) { blob = await fetchClip(clean, band); void toStore(storeKey, blob); }
+    const url = URL.createObjectURL(blob); cache.set(key, url);
     if (cache.size > 40) { const oldest = cache.keys().next().value; if (oldest) { const old = cache.get(oldest); if (old) URL.revokeObjectURL(old); cache.delete(oldest); } }
     return url;
-  }).finally(() => pending.delete(key));
-  pending.set(key,next); return next;
+  })().finally(() => pending.delete(key));
+  pending.set(key, next); return next;
 }
 
 export function stopSpeaking() {
