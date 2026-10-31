@@ -40,7 +40,7 @@ export const Route = createFileRoute("/parent")({
 
 /* Unlocked once per app session so moving between tabs doesn't re-ask. */
 
-const SUPPORT_EMAIL = "support@ollie.app";
+const SUPPORT_EMAIL = "ollie.support@gmail.com";
 const DAY = 86_400_000;
 
 /* ---------- icons: thin 1.8px line icons, one detail each ---------- */
