@@ -106,6 +106,7 @@ export async function pullAll() {
   const { data: { session } } = await supabase.auth.getSession();
   const user = session?.user;
   if (!user) return false;
+  if (await deviceRevoked(user.id)) return false;
   const [{ data: acc, error: accountError }, { data: kids, error: kidsError }] = await Promise.all([
     supabase.from('accounts').select('*').eq('id', user.id).maybeSingle(),
     supabase.from('children').select('*').eq('account_id', user.id).order('created_at').limit(2),
