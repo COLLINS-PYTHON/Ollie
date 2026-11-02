@@ -1567,3 +1567,13 @@ html[data-step-direction=back] { --page-travel:-90px; }
   80%  { transform:translate3d(-6px,-72vh,0) scale(.97,1.04); opacity:.65; }
   100% { transform:translate3d(6px,-92vh,0) scale(1.08); opacity:0; }
 }
+
+.dive-button { position:relative; animation:dive-breathe 2.4s ease-in-out infinite; }
+.dive-button::before,.dive-button::after { content:""; position:absolute; inset:0; border-radius:9999px; border:2px solid var(--primary); opacity:0; animation:dive-ripple 2.4s ease-out infinite; pointer-events:none; }
+.dive-button::after { animation-delay:1.2s; }
+.dive-button:active { transform:scale(.94); }
+@keyframes dive-breathe { 50% { transform:scale(1.04); } }
+@keyframes dive-ripple { 0% { transform:scale(1); opacity:.5; } 100% { transform:scale(1.7); opacity:0; } }
+.onboarding-action .ollie-button:not(:disabled) { animation:cta-bloom 400ms ease-out; }
+@keyframes cta-bloom { 0% { transform:scale(.96); } 60% { transform:scale(1.02); } 100% { transform:scale(1); } }
+@media (prefers-reduced-motion: reduce) { .dive-button,.dive-button::before,.dive-button::after { animation:none; } }
