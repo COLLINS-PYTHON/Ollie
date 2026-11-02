@@ -15,6 +15,24 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { isModuleLoadError, recoverModuleLoad } from "../lib/module-recovery";
 import { Button } from "@/components/ui/button";
 
+// Last-resort recovery: a failed route-chunk import can escape the router
+// boundary and blank the screen before any error component mounts. Catch it
+// globally once per cooldown (sessionStorage) so a stale dev chunk reloads
+// instead of leaving a dead page.
+if (typeof window !== "undefined") {
+  window.addEventListener("error", (event) => {
+    const candidate =
+      (event as ErrorEvent).error ??
+      (event as ErrorEvent).message ??
+      event;
+    if (isModuleLoadError(candidate) && recoverModuleLoad(candidate)) event.preventDefault();
+  });
+  window.addEventListener("unhandledrejection", (event) => {
+    const reason = (event as PromiseRejectionEvent).reason;
+    if (isModuleLoadError(reason) && recoverModuleLoad(reason)) event.preventDefault();
+  });
+}
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
