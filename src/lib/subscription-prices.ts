@@ -4,6 +4,7 @@ export const SUBSCRIPTION_PRICES = { monthly: 14.99, yearly: 99.99 };
 export type RegionPrice = { currency: string; monthly: number; yearly: number };
 
 const EU = ["AT","BE","CY","DE","EE","ES","FI","FR","GR","HR","IE","IT","LT","LU","LV","MT","NL","PT","SI","SK"];
+const US_PRICE: RegionPrice = { currency: "USD", ...SUBSCRIPTION_PRICES };
 const REGIONS: Record<string, RegionPrice> = {
   US: { currency: "USD", ...SUBSCRIPTION_PRICES },
   CA: { currency: "CAD", monthly: 14.99, yearly: 99.99 },
@@ -36,7 +37,7 @@ const REGIONS: Record<string, RegionPrice> = {
 for (const c of EU) REGIONS[c] = { currency: "EUR", monthly: 14.99, yearly: 99.99 };
 
 export function regionPrice(country?: string | null): RegionPrice {
-  return REGIONS[(country ?? "").toUpperCase()] ?? REGIONS.US;
+  return REGIONS[(country ?? "").toUpperCase()] ?? US_PRICE;
 }
 
 /** Browser-only: country from the device language setting (e.g. en-NG). */
@@ -44,7 +45,7 @@ export function detectCountry(): string {
   if (typeof navigator === "undefined") return "US";
   for (const l of navigator.languages ?? [navigator.language]) {
     const m = /[-_]([A-Za-z]{2})\b/.exec(l);
-    if (m) return m[1].toUpperCase();
+    if (m?.[1]) return m[1].toUpperCase();
   }
   return "US";
 }
@@ -55,10 +56,10 @@ export function formatPrice(amount: number, currency: string) {
 }
 
 /** Yearly saving vs 12 months, rounded down so the badge never overstates. */
-export function yearlySavingPercent(p: RegionPrice = REGIONS.US) {
+export function yearlySavingPercent(p: RegionPrice = US_PRICE) {
   return Math.floor((1 - p.yearly / (p.monthly * 12)) * 100);
 }
 
-export function yearlyMonthlyEquivalent(p: RegionPrice = REGIONS.US) {
+export function yearlyMonthlyEquivalent(p: RegionPrice = US_PRICE) {
   return Math.floor((p.yearly / 12) * 100) / 100;
 }
