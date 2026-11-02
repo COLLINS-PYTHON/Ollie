@@ -6,13 +6,17 @@ import { pageMeta } from '@/lib/meta';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/ui/drawer';
 import { familyKids } from '@/lib/family-store';
-import { SUBSCRIPTION_PRICES, yearlyMonthlyEquivalent } from '@/lib/subscription-prices';
+import { detectCountry, formatPrice, regionPrice, yearlyMonthlyEquivalent, yearlySavingPercent, type RegionPrice } from '@/lib/subscription-prices';
+import { useEffect } from 'react';
 export const Route=createFileRoute('/onboarding/plans')({head:()=>pageMeta('Choose your family plan','Compare Ollie yearly and monthly plans, trial checkpoints and renewal terms.'),component:Plans});
-const PRICES={monthly:`$${SUBSCRIPTION_PRICES.monthly.toFixed(2)} per month`,yearly:`$${SUBSCRIPTION_PRICES.yearly.toFixed(2)} per year`};
 function Plans(){
  const navigate=useNavigate(); const router=useRouter();
  const names=familyKids().map(k=>String(k.profile['name']??'').trim()).filter(Boolean);
  const name=names.length?names.join(' and '):onboardingState.name.trim()||'your child';
+  const [rp, setRp] = useState<RegionPrice>(regionPrice('US'));
+  useEffect(() => { const r = new URLSearchParams(window.location.search).get('region'); if (r) setRp(regionPrice(r === 'auto' ? detectCountry() : r)); }, []);
+  const fmt = (n: number) => formatPrice(n, rp.currency);
+  const PRICES = { monthly: `${fmt(rp.monthly)} per month`, yearly: `${fmt(rp.yearly)} per year` };
   const [plan, setPlan] = useState<"monthly" | "yearly">("yearly");
   const [askReminder, setAskReminder] = useState(false);
   const [permissionNote, setPermissionNote] = useState('');
@@ -37,9 +41,9 @@ function Plans(){
  <div role="radiogroup" aria-label="Choose a plan" className="trial-plan-grid">
  {(['yearly','monthly'] as const).map(p=><Button key={p} variant="ghost" role="radio" aria-checked={plan===p} onClick={()=>{setPlan(p);onboardingState.plan=p;}} className="trial-plan-card">
  <span className="text-button capitalize">{p}</span><span className="pw-radio" aria-hidden="true">{plan===p&&<Check />}</span>
- <span className="trial-plan-price">${SUBSCRIPTION_PRICES[p].toFixed(2)}</span>
+ <span className="trial-plan-price">{fmt(rp[p])}</span>
  <span className="text-support text-muted-foreground">per {p==='yearly'?'year':'month'}</span>
- {p==='yearly'?<><span className="trial-plan-equivalent">≈ ${yearlyMonthlyEquivalent()}/month</span><span className="pw-chip">Save 40%</span></>:<span className="trial-plan-equivalent">Billed monthly after trial</span>}
+ {p==='yearly'?<><span className="trial-plan-equivalent">≈ {fmt(yearlyMonthlyEquivalent(rp))}/month</span><span className="pw-chip">Save {yearlySavingPercent(rp)}%</span></>:<span className="trial-plan-equivalent">Billed monthly after trial</span>}
  </Button>)}
  </div>
  <ol className="pw-timeline mt-7" aria-label="How your trial works">
