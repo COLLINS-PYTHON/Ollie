@@ -14,7 +14,7 @@ function Plans(){
  const names=familyKids().map(k=>String(k.profile['name']??'').trim()).filter(Boolean);
  const name=names.length?names.join(' and '):onboardingState.name.trim()||'your child';
   const [rp, setRp] = useState<RegionPrice>(regionPrice('US'));
-  useEffect(() => { setRp(regionPrice(detectCountry())); }, []);
+  useEffect(() => { const r = new URLSearchParams(window.location.search).get('region'); if (r) setRp(regionPrice(r === 'auto' ? detectCountry() : r)); }, []);
   const fmt = (n: number) => formatPrice(n, rp.currency);
   const PRICES = { monthly: `${fmt(rp.monthly)} per month`, yearly: `${fmt(rp.yearly)} per year` };
   const [plan, setPlan] = useState<"monthly" | "yearly">("yearly");
