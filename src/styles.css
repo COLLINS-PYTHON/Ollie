@@ -1261,9 +1261,41 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .paywall-discovery-video.is-compact { max-height:100px; }
 
 :root { --action-ink: oklch(0.985 0.004 250); --action-fill: var(--brand); --action-shadow: 0 5px 12px -8px color-mix(in oklab,var(--brand) 35%,transparent); }
-.onboarding-primary-action { background:var(--action-fill); color:var(--action-ink); font-size:16px;line-height:22px;font-weight:650;box-shadow:var(--action-shadow);border:1px solid color-mix(in oklab,var(--brand) 90%,var(--navy)); }
-.onboarding-primary-action:hover { background:color-mix(in oklab,var(--action-fill) 94%,var(--navy)); color:var(--action-ink); }
-.onboarding-primary-action:disabled { color:var(--muted-foreground); }
+.onboarding-primary-action {
+  background-color:var(--action-fill);
+  /* Water-glass: specular sheen on top, subtle depth below. */
+  background-image:
+    linear-gradient(180deg,
+      color-mix(in oklab, white 30%, transparent) 0%,
+      color-mix(in oklab, white 10%, transparent) 34%,
+      transparent 60%,
+      color-mix(in oklab, var(--navy) 14%, transparent) 100%);
+  color:var(--action-ink);
+  font-size:16px;line-height:22px;font-weight:650;
+  border:1px solid color-mix(in oklab,var(--brand) 90%,var(--navy));
+  box-shadow:
+    var(--action-shadow),
+    inset 0 1.5px 0 color-mix(in oklab, white 48%, transparent),
+    inset 0 -2px 6px color-mix(in oklab, var(--navy) 14%, transparent);
+}
+.onboarding-primary-action:hover {
+  background-color:color-mix(in oklab,var(--action-fill) 94%,var(--navy));
+  box-shadow:
+    0 7px 16px -8px color-mix(in oklab,var(--brand) 45%,transparent),
+    inset 0 1.5px 0 color-mix(in oklab, white 58%, transparent),
+    inset 0 -2px 6px color-mix(in oklab, var(--navy) 14%, transparent);
+}
+.onboarding-primary-action:active {
+  box-shadow:
+    0 2px 5px -3px color-mix(in oklab,var(--brand) 30%,transparent),
+    inset 0 1px 0 color-mix(in oklab, white 40%, transparent),
+    inset 0 3px 8px color-mix(in oklab, var(--navy) 22%, transparent);
+}
+.onboarding-primary-action:disabled {
+  background-image:none;
+  box-shadow:none;
+  color:var(--muted-foreground);
+}
 .onboarding-primary-action svg { color:inherit; }
 .plan-monthly-subtext { font-size:12px;line-height:17px;font-weight:500;opacity:.85; }
 
