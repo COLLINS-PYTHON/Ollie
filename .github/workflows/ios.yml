@@ -1,0 +1,98 @@
+# Builds and uploads the Ollie iOS shell to App Store Connect (TestFlight).
+# Runs on GitHub's free macOS runners. First run: `npx cap add ios` creates the
+# native project from capacitor.config.ts; later runs only sync.
+#
+# Required repository secrets:
+#   APP_STORE_CONNECT_ISSUER_ID   App Store Connect API issuer id
+#   APP_STORE_CONNECT_KEY_ID      App Store Connect API key id
+#   APP_STORE_CONNECT_P8          .p8 key file contents (Base64 or raw)
+#   BUILD_CERTIFICATE_BASE64      Distribution .p12 certificate (Base64)
+#   P12_PASSWORD                  .p12 password
+#   KEYCHAIN_PASSWORD             any strong password for the CI keychain
+#   PROVISIONING_PROFILE_BASE64   App Store provisioning profile (Base64)
+name: iOS build
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "ios-v*"
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create web asset placeholder
+        # The shell loads the live published site from capacitor.config.ts, so
+        # Capacitor only needs webDir to exist for cap sync.
+        run: |
+          mkdir -p dist
+          echo '<!doctype html><html><body></body></html>' > dist/index.html
+
+      - name: Add and sync iOS project
+        run: |
+          npx cap add ios || true
+          npx cap sync ios
+
+      - name: Install the App Store Connect API key
+        run: echo "${{ secrets.APP_STORE_CONNECT_P8 }}" | base64 --decode > AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8
+
+      - name: Import signing certificate
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          p12-password: ${{ secrets.P12_PASSWORD }}
+
+      - name: Install provisioning profile
+        run: |
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          echo "${{ secrets.PROVISIONING_PROFILE_BASE64 }}" | base64 --decode > $PP_PATH
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          UUID=$(/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< "$(security cms -D -i $PP_PATH)")
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$UUID.mobileprovision
+
+      - name: Archive
+        run: |
+          xcodebuild archive \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -archivePath $RUNNER_TEMP/Ollie.xcarchive \
+            -destination "generic/platform=iOS" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM="${{ secrets.DEVELOPMENT_TEAM_ID }}" \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            PROVISIONING_PROFILE_SPECIFIER=""
+
+      - name: Export and upload to TestFlight
+        run: |
+          cat > $RUNNER_TEMP/ExportOptions.plist <<'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>teamID</key><string>${{ secrets.DEVELOPMENT_TEAM_ID }}</string>
+            <key>uploadSymbols</key><true/>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath $RUNNER_TEMP/Ollie.xcarchive \
+            -exportOptionsPlist $RUNNER_TEMP/ExportOptions.plist \
+            -exportPath $RUNNER_TEMP/export \
+            -authenticationKeyPath $RUNNER_TEMP/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8 \
+            -authenticationKeyID ${{ secrets.APP_STORE_CONNECT_KEY_ID }} \
+            -authenticationKeyIssuerID ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }} \
+            || xcrun altool --upload-app -f $RUNNER_TEMP/export/*.ipa \
+              -u "" --api-key-file $RUNNER_TEMP/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8
+        env:
+          API_PRIVATE_KEYS_DIR: ${{ runner.temp }}
