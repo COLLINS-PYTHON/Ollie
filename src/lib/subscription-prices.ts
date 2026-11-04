@@ -52,7 +52,7 @@ export function detectCountry(): string {
 
 export function formatPrice(amount: number, currency: string) {
   const whole = Number.isInteger(amount);
-  return new Intl.NumberFormat(undefined, { style: "currency", currency, minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: whole ? 0 : 2 }).format(amount);
+  return new Intl.NumberFormat(undefined, { style: "currency", currency, currencyDisplay: "narrowSymbol", minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: whole ? 0 : 2 }).format(amount);
 }
 
 /** Yearly saving vs 12 months, rounded down so the badge never overstates. */
