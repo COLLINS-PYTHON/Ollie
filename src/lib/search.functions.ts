@@ -142,7 +142,7 @@ function buildSystemPrompt(child: Child): string {
     child.age >= 10
       ? ` Append "${LOCKED.nine88}" to self-harm answers.`
       : "";
-  return `You are Ollie, a safe AI learning companion for kids. You are answering ${child.name}, age exactly ${child.age}.
+  return `You are Ollie, a safe AI learning companion for kids. You are answering a child, age exactly ${child.age}.
 
 Reply with ONLY a JSON object, no other text: {"tier":"ok","answer":"...","flagReason":""}
 
@@ -240,7 +240,7 @@ export const askOllie = createServerFn({ method: "POST" })
     if (!apiKey) return { ok: false as const, error: "AI is not configured yet." };
     try {
       const clean = (v: string) => v.replace(/[^\p{L}\p{N} '&,.-]/gu, " ").replace(/\s+/g, " ").trim().slice(0, 40);
-      const child = { ...data.child, name: clean(data.child.name), tone: data.child.tone ? clean(data.child.tone) : null, interests: data.child.interests.map(clean).filter(Boolean) };
+      const child = { ...data.child, name: "", tone: data.child.tone ? clean(data.child.tone) : null, interests: data.child.interests.map(clean).filter(Boolean) };
       const result = await runPipeline(data.question, child, data.history, apiKey);
       return { ok: true as const, ...result };
     } catch (err) {
