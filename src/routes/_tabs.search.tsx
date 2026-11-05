@@ -147,7 +147,7 @@ function SearchChat() {
       const res = await askOllie({
         data: {
           question,
-          child,
+          child: { ...child, name: "" },
           history: next.slice(-8).map((m) => ({
             role: m.role === "sent" ? ("user" as const) : ("assistant" as const),
             text: m.text,
