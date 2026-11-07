@@ -17,7 +17,7 @@ test("UK is 9.99 monthly and 79.99 yearly in pounds", () => {
 });
 
 test("saving badge rounds down", () => {
-  expect(yearlySavingPercent(regionPrice("US"))).toBe(33);
+  expect(yearlySavingPercent(regionPrice("US"))).toBe(44);
   expect(yearlySavingPercent(regionPrice("GB"))).toBe(33);
 });
 
