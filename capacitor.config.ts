@@ -5,13 +5,12 @@ import type { CapacitorConfig } from "@capacitor/cli";
 // iOS without a new store build. If we later move to a fully bundled build,
 // remove `server.url` and set up a static SPA output in `webDir`.
 const config: CapacitorConfig = {
-  // TODO: replace with the Bundle ID registered on the Apple Developer account.
   appId: "com.ollie.learning",
   appName: "Ollie",
-  webDir: "dist",
+  webDir: "native-shell",
   server: {
     url: "https://start-forge-engine.lovable.app",
-    allowNavigation: ["*.lovable.app"],
+    errorPath: "offline.html",
     androidScheme: "https",
   },
   ios: {
