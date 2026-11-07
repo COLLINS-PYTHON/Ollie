@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       accounts: {
         Row: {
+          ai_consent: boolean
           created_at: string
           email: string
           id: string
@@ -26,6 +27,7 @@ export type Database = {
           weekly_email_opt_in: boolean
         }
         Insert: {
+          ai_consent?: boolean
           created_at?: string
           email?: string
           id: string
@@ -36,6 +38,7 @@ export type Database = {
           weekly_email_opt_in?: boolean
         }
         Update: {
+          ai_consent?: boolean
           created_at?: string
           email?: string
           id?: string
@@ -184,6 +187,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      content_reports: {
+        Row: {
+          account_id: string
+          answer: string
+          created_at: string
+          id: string
+          message_id: string
+          question: string
+          reason: string
+        }
+        Insert: {
+          account_id: string
+          answer: string
+          created_at?: string
+          id?: string
+          message_id: string
+          question?: string
+          reason?: string
+        }
+        Update: {
+          account_id?: string
+          answer?: string
+          created_at?: string
+          id?: string
+          message_id?: string
+          question?: string
+          reason?: string
+        }
+        Relationships: []
       }
       devices: {
         Row: {
