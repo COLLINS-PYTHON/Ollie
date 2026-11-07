@@ -81,7 +81,7 @@ function LoginPage() {
         {error && <p role="alert" className="mt-3 text-support text-destructive">{error}</p>}
         <div className="my-5 flex items-center gap-3 text-muted-foreground"><span className="h-px flex-1 bg-border" /><span className="text-support">or</span><span className="h-px flex-1 bg-border" /></div>
         <div className="flex flex-col gap-3">
-          <Button variant="ghost" type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-foreground text-background shadow-card">Continue with Apple</Button>
+          <Button variant="ghost" type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-apple-button text-apple-button-text shadow-card font-[system-ui] text-[24px]">Continue with Apple</Button>
           <Button variant="ghost" type="button" onClick={() => social("google")} className="text-button h-14 rounded-pill bg-card text-foreground shadow-card">Continue with Google</Button>
         </div>
         <div className="flex-1" />

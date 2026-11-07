@@ -1,10 +1,13 @@
 # Roadmap
 
 ## Now
-- [ ] Remove onboarding click sounds; preserve optional lesson audio and narration.
-- [ ] Support iPhone and iPad: universal iOS device family, bounded tablet layouts, safe areas and portrait/landscape browser checks; native hardware verification waits for a signed build.
-- [ ] iOS is the launch target: prepare the native shell and GitHub signing/upload workflow; a signed iPhone build requires the owner's Apple credentials and macOS runner.
-- [ ] App Store Tier 1: native purchase/restore and verified access, truthful paywall/support, cloud answer reports, EULA/renewal disclosures, iOS voice/permissions, safe outgoing links and offline recovery. External RevenueCat/Apple credentials and physical-device tests remain Tier 2 dependencies.
+- [ ] Connect RevenueCat Apple public/secret keys, premium entitlement, monthly/yearly products and restore ownership settings. Blocker: account owner configuration. AI requests deliberately fail closed until configured.
+- [ ] Run signed TestFlight purchases, restore, deletion, Apple sign-in, native voice and offline first-launch on iPhone/iPad. Blocker: Apple signing assets, real devices and authorized test account.
+- [ ] Optional direct native Apple auth: configure native bundle audience and revocation client secret, then enable APPLE_NATIVE_AUTH_ENABLED. Default stays managed Apple OAuth and managed revocation until configured.
+- [x] Remove onboarding click sounds; preserve optional lesson audio and narration.
+- [x] Support iPhone and iPad browser layouts and universal build configuration: universal iOS device family, bounded tablet layouts, safe areas and portrait/landscape browser checks; native hardware verification waits for a signed build.
+- [x] iOS is the launch target: prepare the native shell and GitHub signing/upload workflow; a signed iPhone build requires the owner's Apple credentials and macOS runner.
+- [x] App Store Tier 1 code prepared, not submission-certified: native purchase/restore and verified access, truthful paywall/support, cloud answer reports, EULA/renewal disclosures, iOS voice/permissions, safe outgoing links and offline recovery. External RevenueCat/Apple credentials and physical-device tests remain Tier 2 dependencies.
 - [x] October 23 09:45: onboarding value proof now demonstrates picture-making (Create tab with matte sample art), ordered Discover → Create → Ask → Safety so it is not last. Verified at 390×600, 768×1024 and 1024×768: four tabs unclipped, no horizontal overflow, no page errors, picture crisp (1024px source), and on the short phone the full picture plus caption are reachable above the button after a small scroll.
 - [ ] Lesson clarification: individual pictures explain each teaching point; include simple tap-to-explore interaction, not just different category covers.
 - [ ] October 23: give background bubbles realistic highlights/depth and verify audible optional sounds on requested onboarding and lesson navigation.
