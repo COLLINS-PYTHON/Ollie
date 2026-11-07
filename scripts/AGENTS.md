@@ -1,0 +1,3 @@
+- Native preparation keeps the hosted TanStack application and a bundled offline recovery screen; server functions cannot run in a static iOS bundle.
+- Generate iOS permissions, privacy manifest, Apple entitlement, universal device family and versions repeatably after Capacitor sync; regenerated projects must preserve review-critical settings.
+- Use manual Apple signing and GitHub macOS archives; Linux/browser checks never establish native purchase, microphone or TestFlight readiness.
