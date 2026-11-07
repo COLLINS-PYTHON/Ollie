@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- [x] Add and verify readable SSR homepage content, preserving automatic app entry; isolate native Apple sign-in from SSR to address the published loading failure. Publish and public rescan remain required.
 - [ ] Insert approved 1024×1024 icon into the native asset catalog. Blocker: prior standalone icon is absent from this checkout; no replacement artwork generated.
 - [ ] Connect RevenueCat Apple public/secret keys, premium entitlement, monthly/yearly products and restore ownership settings. Blocker: account owner configuration. AI requests deliberately fail closed until configured.
 - [ ] Run signed TestFlight purchases, restore, deletion, Apple sign-in, native voice and offline first-launch on iPhone/iPad. Blocker: Apple signing assets, real devices and authorized test account.

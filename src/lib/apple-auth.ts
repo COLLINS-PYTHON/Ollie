@@ -2,14 +2,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { isNative } from './native';
 import { appleAuthConfig, revokeNativeApple } from './apple.functions';
 import { lovable } from '@/integrations/lovable';
-async function authorize() {
+import { createClientOnlyFn } from '@tanstack/react-start';
+const authorize = createClientOnlyFn(async () => {
  const rawNonce = crypto.randomUUID();
  const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(rawNonce));
  const nonce = [...new Uint8Array(hash)].map(byte => byte.toString(16).padStart(2, '0')).join('');
  const { SignInWithApple } = await import('@capacitor-community/apple-sign-in');
  const { response } = await SignInWithApple.authorize({ clientId: 'com.ollie.learning', redirectURI: window.location.origin, scopes: 'email', state: crypto.randomUUID(), nonce });
  return { response, rawNonce };
-}
+});
 export async function nativeAppleSignIn() {
  if (!(await appleAuthConfig()).native) {
   const result = await lovable.auth.signInWithOAuth('apple', { redirect_uri: window.location.href });
