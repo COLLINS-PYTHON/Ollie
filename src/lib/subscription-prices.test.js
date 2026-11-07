@@ -12,13 +12,13 @@ test("Canada, Australia and EU keep 14.99/99.99 in local currency", () => {
   expect(regionPrice("FR")).toEqual({ currency: "EUR", monthly: 14.99, yearly: 99.99 });
 });
 
-test("UK is 11.99 monthly and 79.99 yearly in pounds", () => {
-  expect(regionPrice("GB")).toEqual({ currency: "GBP", monthly: 11.99, yearly: 79.99 });
+test("UK is 9.99 monthly and 79.99 yearly in pounds", () => {
+  expect(regionPrice("GB")).toEqual({ currency: "GBP", monthly: 9.99, yearly: 79.99 });
 });
 
 test("saving badge rounds down", () => {
-  expect(yearlySavingPercent(regionPrice("US"))).toBe(44);
-  expect(yearlySavingPercent(regionPrice("GB"))).toBe(44);
+  expect(yearlySavingPercent(regionPrice("US"))).toBe(33);
+  expect(yearlySavingPercent(regionPrice("GB"))).toBe(33);
 });
 
 test("unknown countries fall back to US", () => {
