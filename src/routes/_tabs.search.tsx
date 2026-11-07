@@ -7,6 +7,8 @@ import { starterInterests, voiceFirst } from "@/lib/child-interactions";
 import { stopSpeaking } from "@/lib/speak";
 import { WhaleThinking } from "@/components/ollie/WhaleThinking";
 import { CrispOrb } from "@/components/ollie/CrispOrb";
+import { getRecognition, type RecognitionLike } from "@/lib/voice-input";
+import { reportAnswer } from "@/lib/reports.functions";
 import { askOllie } from "@/lib/search.functions";
 import { LessonCover } from "@/components/ollie/LessonCover";
 import { findIllustration, illustrationById } from "@/lib/slideshow/illustration";
@@ -38,25 +40,6 @@ import { FloatingWhale } from "@/components/ollie/FloatingWhale";
 import { AmbientDepth } from "@/components/ollie/AmbientDepth";
 import { Button } from "@/components/ui/button";
 
-type RecognitionLike = {
-  lang: string;
-  interimResults: boolean;
-  maxAlternatives: number;
-  start(): void;
-  stop(): void;
-  onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
-  onend: (() => void) | null;
-};
-
-function getRecognition(): (new () => RecognitionLike) | null {
-  if (typeof window === "undefined") return null;
-  const w = window as unknown as {
-    SpeechRecognition?: new () => RecognitionLike;
-    webkitSpeechRecognition?: new () => RecognitionLike;
-  };
-  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
-}
-
 function speak(text: string) {
   void naturalSpeak(text, { age: onboardingState.age });
 }
@@ -76,6 +59,8 @@ function SearchChat() {
   const [loaded, setLoaded] = useState(false);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [reporting, setReporting] = useState<string | null>(null);
+  const [notice, setNotice] = useState("");
   const [listening, setListening] = useState(false);
   const [avatarNod, setAvatarNod] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
@@ -147,7 +132,7 @@ function SearchChat() {
       const res = await askOllie({
         data: {
           question,
-          child: { ...child, name: "" },
+          child: { age: child.age, readingLevel: child.readingLevel, tone: child.tone, interests: child.interests },
           history: next.slice(-8).map((m) => ({
             role: m.role === "sent" ? ("user" as const) : ("assistant" as const),
             text: m.text,
@@ -197,6 +182,7 @@ function SearchChat() {
         const transcript = e.results?.[0]?.[0]?.transcript ?? "";
         if (transcript) setInput(transcript);
       };
+      rec.onerror = (event) => { setNotice(event.error); setListening(false); };
       rec.onend = () => { recognitionRef.current = null; setListening(false); };
       recognitionRef.current = rec;
       rec.start();
@@ -289,10 +275,17 @@ function SearchChat() {
                     <Button variant="ghost" size="icon"
                       type="button"
                       aria-label="Report this answer"
-                      onClick={() => {
-                        if (!window.confirm("Report this answer as wrong or not okay? It will be removed.")) return;
-                        try { const r = JSON.parse(localStorage.getItem("ollie-reports-v1") ?? "[]"); r.push({ text: m.text, at: Date.now() }); localStorage.setItem("ollie-reports-v1", JSON.stringify(r.slice(-50))); } catch { /* storage full */ }
-                        setMessages((prev) => { const next = prev.filter((x) => x.id !== m.id); saveChat(next); return next; });
+                      disabled={reporting !== null}
+                      onClick={async () => {
+                        if (!window.confirm("Send this answer to the Ollie team for review and remove it from this chat?")) return;
+                        setReporting(m.id); setNotice("");
+                        const question = [...messages.slice(0, index)].reverse().find(x => x.role === "sent")?.text ?? "";
+                        try {
+                          await reportAnswer({ data: { messageId: m.id, answer: m.text, question: question.slice(0, 500) } });
+                          setMessages(prev => prev.filter(x => x.id !== m.id));
+                          setNotice("Report sent to the Ollie team.");
+                        } catch { setNotice("The report could not be sent. Please retry when connected and signed in."); }
+                        finally { setReporting(null); }
                       }}
                       className="mb-0.5 flex size-9 shrink-0 items-center justify-center rounded-pill text-muted-foreground transition-colors duration-tap hover:text-primary"
                     >
@@ -334,6 +327,7 @@ function SearchChat() {
       </div>
 
       <div className="search-composer relative z-10 px-3 pt-2">
+        {notice && <p role="status" className="mb-2 text-support text-muted-foreground">{notice}</p>}
         {expandedVoice ? <div className="flex items-center justify-center gap-4 pb-2">
           <Button variant="ghost" size="icon" aria-label="Hold to talk to Ollie" aria-pressed={listening} {...voiceHold} disabled={busy} className="voice-orb-control relative size-20 touch-none select-none shrink-0 rounded-pill p-0 hover:bg-transparent active:scale-95">
             <span aria-hidden="true"><CrispOrb state="listening" size={80} aria-label="Voice orb" /></span>

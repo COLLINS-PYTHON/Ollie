@@ -17,10 +17,11 @@ import {
   resetOnboardingState,
 } from "@/lib/onboarding-store";
 import { loadChat, saveChat, type ChatMessage } from "@/lib/chat-store";
-import { COOKIE_PURCHASES_AVAILABLE, cookiesLeft, deleteLocalPictures, JARS, loadBalance, type Balance } from "@/lib/picture-store";
+import { cookiesLeft, deleteLocalPictures, loadBalance, type Balance } from "@/lib/picture-store";
 import { completions, prefs, setPrefs, streakDays, type SlideshowPrefs } from "@/lib/slideshow-store";
 import { minutesToday } from "@/lib/usage-store";
-import { SUBSCRIPTION_PRICES } from "@/lib/subscription-prices";
+import { restorePurchases, purchaseError } from "@/lib/purchases";
+import { openParentLink } from "@/lib/external-links";
 import { INTERESTS } from "@/lib/interests";
 import { checkPin, clearFails, deleteCloudData, deviceKey, listDevices, revokeDevice, signOutHere, type DeviceRow, hasPin, lockedSeconds, PIN_LOCK, pushAll, recordFail, sealPin } from "@/lib/cloud-sync";
 
@@ -350,13 +351,13 @@ function ParentDashboard() {
         <ChevronRight className="size-5 text-destructive" strokeWidth={1.8} />
       </Button>
 
-      <p className="mt-2 text-support text-muted-foreground">Flags are available here. Automatic alerts are not connected yet.</p>
+      <p className="mt-2 text-support text-muted-foreground">Review sensitive searches here in the Parent Dashboard.</p>
 
       {/* Weekly report */}
       <div className="scalloped bg-gradient-wash mt-4 rounded-card p-5">
         <p className="text-label uppercase tracking-wide text-muted-foreground">This week</p>
         <p className="mt-1 text-body font-bold text-foreground">{child}'s weekly report</p>
-        <p className="mt-1 text-support text-muted-foreground">Based on activity available on this device. Email reports are not connected yet.</p>
+        <p className="mt-1 text-support text-muted-foreground">Based on activity available on this device.</p>
         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
           {[
             { v: String(weekLessons.length), l: "Discoveries" },
@@ -401,7 +402,7 @@ function ParentDashboard() {
 
       <Section title="Account">
         <Row icon={ICONS.jar} color="text-gold" label="Cookie jars" value={`${balance ? cookiesLeft(balance) : 0} picture cookies left today`} onClick={() => setSheet("jar")} />
-        <Row icon={ICONS.subscription} color="text-accent-1" label="Subscription" value={`Plan selected, ${onboardingState.plan === "monthly" ? "Monthly" : "Yearly"} plan`} onClick={() => setSheet("subscription")} />
+        <Row icon={ICONS.subscription} color="text-accent-1" label="Subscription" value="Manage or restore your Apple subscription" onClick={() => setSheet("subscription")} />
         <Row icon={ICONS.interests} color="text-accent-3" label={`${child}'s interests`} value={interestLabels.join(", ") || "None picked yet"} onClick={() => setSheet("interests")} />
       </Section>
 
@@ -414,10 +415,10 @@ function ParentDashboard() {
       </Section>
 
       <Section title="Support">
-        <Row icon={ICONS.support} color="text-accent-2" label="Ask us anything" value="Chat with the Ollie team" onClick={() => setSheet("support")} />
+        <Row icon={ICONS.support} color="text-accent-2" label="Ask us anything" value="Contact the Ollie team by email" onClick={() => setSheet("support")} />
       </Section>
       <p className="mt-3 px-1 text-support text-muted-foreground">
-        Or email us at <a href={`mailto:${SUPPORT_EMAIL}`} className="font-bold text-primary">{SUPPORT_EMAIL}</a>
+        Or email us at <Button variant="link" className="h-auto p-0" onClick={() => void openParentLink(`mailto:${SUPPORT_EMAIL}`)}>{SUPPORT_EMAIL}</Button>
       </p>
 
       <div className="mt-5 rounded-card border border-surface-2 bg-surface p-5 text-center">
@@ -528,20 +529,7 @@ function ParentDashboard() {
         <Sheet title="Cookie jars" onClose={() => setSheet(null)}>
           <p className="text-body text-foreground">{cookiesLeft(balance)} picture cookies left today</p>
           <p className="text-support text-muted-foreground">10 free each day, plus {balance.jarCookies} earned or saved.</p>
-          <div className="mt-4 flex flex-col gap-2.5">
-            {JARS.map((j) => (
-              <Button variant="ghost"
-                key={j.id}
-                type="button"
-                disabled={!COOKIE_PURCHASES_AVAILABLE}
-                className="flex items-center justify-between rounded-control border border-surface-2 px-4 py-3"
-              >
-                <span className="text-body text-foreground">{j.count} cookies</span>
-                <span className="text-button text-primary">{j.price}</span>
-              </Button>
-            ))}
-          </div>
-          <p className="mt-3 text-label text-muted-foreground">Extra cookie purchases are not available yet. Nothing will be charged.</p>
+
         </Sheet>
       )}
 
@@ -549,11 +537,11 @@ function ParentDashboard() {
 
       {sheet === "subscription" && (
         <Sheet title="Subscription" onClose={() => setSheet(null)}>
-          <p className="text-body text-foreground">{onboardingState.plan === "monthly" ? `Monthly, $${SUBSCRIPTION_PRICES.monthly.toFixed(2)} a month` : `Yearly, $${SUBSCRIPTION_PRICES.yearly.toFixed(2)} a year`}</p>
-          <p className="text-support text-muted-foreground">Payments are not connected yet. No subscription has been started and nothing has been charged.</p>
+          <p className="text-support text-muted-foreground">Apple shows your current plan, renewal date and purchase history in your subscription settings.</p>
           <div className="mt-4 flex flex-col gap-2.5">
-            <Button type="button" disabled className="rounded-pill bg-primary py-3 text-button text-primary-foreground">Manage subscription</Button>
+            <Button type="button" onClick={() => void openParentLink("https://apps.apple.com/account/subscriptions")} className="rounded-pill py-3">Manage subscription</Button>
             <RestoreButton />
+            <Link to="/onboarding/plans" className="text-support text-primary">View Ollie plans</Link>
           </div>
         </Sheet>
       )}
@@ -595,42 +583,15 @@ function ParentDashboard() {
 
 function RestoreButton() {
   const [msg, setMsg] = useState("");
-  return (
-    <>
-      <Button type="button" variant="control" onClick={() => setMsg("Purchases cannot be checked until payments are connected.")} className="rounded-pill border border-surface-2 py-3 text-button text-foreground">
-        Restore Purchases
-      </Button>
-      {msg && <p className="text-support text-muted-foreground" role="status">{msg}</p>}
-    </>
-  );
+  const [busy, setBusy] = useState(false);
+  return <><Button type="button" variant="control" disabled={busy} onClick={async () => {
+    setBusy(true); setMsg("");
+    try { setMsg(await restorePurchases() ? "Your subscription has been restored." : "No active subscription was found for this Apple account."); }
+    catch (error) { setMsg(purchaseError(error)); } finally { setBusy(false); }
+  }} className="rounded-pill border border-surface-2 py-3">{busy ? "Checking purchases…" : "Restore Purchases"}</Button>{msg && <p role="status" className="text-support text-muted-foreground">{msg}</p>}</>;
 }
-
 function SupportSheet({ onClose }: { onClose: () => void }) {
-  const [text, setText] = useState("");
-  const [sent, setSent] = useState<string[]>([]);
-  return (
-    <Sheet title="Ask us anything" onClose={onClose}>
-      <div className="flex min-h-40 flex-col gap-2">
-        <p className="max-w-[80%] self-start rounded-[18px] rounded-bl-[4px] bg-surface-2 px-4 py-2.5 text-body text-foreground">
-          Support chat is not connected yet. You can contact the Ollie team by email.
-        </p>
-        {sent.map((s, i) => (
-          <p key={i} className="max-w-[75%] self-end rounded-[18px] rounded-br-[4px] bg-primary px-4 py-2.5 text-body text-primary-foreground">{s}</p>
-        ))}
-        {sent.length > 0 && (
-          <p className="text-label text-muted-foreground">This message has not been sent. Please use the email link below.</p>
-        )}
-      </div>
-      <form
-        className="mt-4 flex gap-2"
-        onSubmit={(e) => { e.preventDefault(); if (text.trim()) { setSent([...sent, text.trim()]); setText(""); } }}
-      >
-        <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Type your question" className="flex-1 rounded-pill border border-surface-2 px-4 py-2.5 text-body text-foreground" />
-        <Button variant="ghost" type="submit" disabled={!text.trim()} className="rounded-pill bg-primary px-5 text-button text-primary-foreground disabled:bg-surface-2">Send</Button>
-      </form>
-      <a href={`mailto:${SUPPORT_EMAIL}`} className="mt-4 block text-support font-bold text-primary">Email {SUPPORT_EMAIL}</a>
-    </Sheet>
-  );
+  return <Sheet title="Contact Ollie" onClose={onClose}><p className="text-support text-muted-foreground">Send questions or safety concerns to our support team.</p><Button variant="link" className="mt-4 h-auto whitespace-normal p-0" onClick={() => void openParentLink(`mailto:${SUPPORT_EMAIL}`)}>Email {SUPPORT_EMAIL}</Button></Sheet>;
 }
 
 function DeleteSheet({ child, onClose }: { child: string; onClose: () => void }) {
@@ -662,10 +623,10 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
           <ul className="mt-2 list-disc pl-5 text-body text-foreground">
             <li>All of {child}'s chat history</li>
             <li>Every picture {child} made</li>
-            <li>Voice recordings</li>
+            <li>Submitted answer reports</li>
             <li>{child}'s profile</li>
           </ul>
-          <p className="mt-3 text-support text-muted-foreground">Billing records are kept separately, with nothing that identifies {child}, because the law requires them for tax.</p>
+          <p className="mt-3 text-support text-muted-foreground">Deleting your account does not cancel an Apple subscription. Cancel it separately in your Apple subscription settings.</p>
           <Button variant="ghost" type="button" onClick={() => setStep(2)} className="mt-5 w-full rounded-pill border border-destructive py-3 text-button text-destructive">Continue</Button>
         </>
       )}

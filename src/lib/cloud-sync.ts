@@ -61,6 +61,7 @@ export async function pushAll() {
       id: user.id,
       name: s.parentName || (user.user_metadata?.["full_name"] as string | undefined) || "",
       email: user.email ?? s.email,
+      ai_consent: s.aiConsent === true,
       pin_hash: s.pinHash || null,
       sound_enabled: parentSettings.soundOn,
       weekly_email_opt_in: !!s.weeklyEmail,
@@ -122,6 +123,7 @@ export async function pullAll() {
       name: child.name, age: child.age, readingLevel: child.reading_level, interests: child.interests,
       tone: child.reply_tone, limitMinutes: child.screen_time_limit_minutes, slideshowReset: child.slideshow_reset_time,
       parentName: acc?.name ?? '', email: acc?.email ?? user.email ?? '', pin: '', pinHash: acc?.pin_hash || onboardingState.pinHash || '',
+      aiConsent: acc?.ai_consent === true,
       weeklyEmail: acc?.weekly_email_opt_in ?? null, settings: { soundOn: acc?.sound_enabled ?? true, retentionDays: child.chat_retention_setting },
     };
     const progress = (child.progress ?? {}) as Record<string, unknown>;
@@ -172,9 +174,6 @@ export async function deleteCloudData() {
   if (!session) { deleting = false; return; }
   const uid = session.user.id;
   try {
-    await deleteStorageTree(supabase.storage.from('pictures'), uid);
-    const { error } = await supabase.from("accounts").delete().eq("id", uid);
-    if (error) throw error;
     const gone = await fetch("/api/delete-account", { method: "POST", headers: { Authorization: `Bearer ${session.access_token}` } });
     if (!gone.ok) throw new Error("Account login could not be deleted");
     const result = await supabase.auth.signOut({ scope: 'local' });

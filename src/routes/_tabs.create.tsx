@@ -8,11 +8,10 @@ import { bubbleSound } from "@/lib/bubble-sound";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { preparePicture } from "@/lib/picture.functions";
+import { getRecognition, type RecognitionLike } from "@/lib/voice-input";
 import { streamImage } from "@/lib/stream-image";
 import {
   FREE_PER_DAY,
-  COOKIE_PURCHASES_AVAILABLE,
-  JARS,
   cookiesLeft,
   loadBalance,
   loadPictures,
@@ -60,19 +59,6 @@ const BUILDER = {
 const MAGNETS = ["bg-cat-space", "bg-cat-ocean", "bg-cat-dinos", "bg-cat-art", "bg-cat-weather", "bg-cat-reading"];
 const TILTS = ["-rotate-2", "rotate-1", "rotate-2", "-rotate-1"];
 
-type RecognitionLike = {
-  lang: string;
-  interimResults: boolean;
-  start(): void;
-  stop(): void;
-  onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
-  onend: (() => void) | null;
-};
-function getRecognition(): (new () => RecognitionLike) | null {
-  if (typeof window === "undefined") return null;
-  const w = window as unknown as { SpeechRecognition?: new () => RecognitionLike; webkitSpeechRecognition?: new () => RecognitionLike };
-  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
-}
 function speak(text: string) {
   void naturalSpeak(text, { age: onboardingState.age });
 }
@@ -194,6 +180,7 @@ function CreateScreen() {
         const t = e.results?.[0]?.[0]?.transcript ?? "";
         if (t) setIdea(t);
       };
+      rec.onerror = event => { setMessage(event.error); setListening(false); };
       rec.onend = () => { if (recRef.current === rec) { heldRef.current = false; recRef.current = null; setListening(false); } };
       recRef.current = rec;
       rec.start();
@@ -415,12 +402,7 @@ function PopupBody({ popup, name, left, onGetMore, onClose }: {
   if (popup === "jars") return <div>
     <p className="text-body font-bold">{name}'s picture cookies</p>
     <p className="mt-2 text-support text-muted-foreground">{left} left today. You get 10 fresh picture cookies every morning, plus any earned on your Trail.</p>
-    <p className="mt-4 text-support text-muted-foreground">Extra cookie purchases are not available yet. Nothing will be charged.</p>
-    <div className="mt-4 grid grid-cols-2 gap-3">
-      {JARS.map(jar => <Button variant="option" key={jar.id} disabled={!COOKIE_PURCHASES_AVAILABLE} className="h-auto flex-col whitespace-normal p-4">
-        <CookieJar className="size-12" /><span className="text-body">{jar.label}</span><span className="text-support">{jar.count} pictures</span><span className="text-label">{jar.price}</span>
-      </Button>)}
-    </div>
+
   </div>;
   const out = popup === "out";
   return <div className="text-center">

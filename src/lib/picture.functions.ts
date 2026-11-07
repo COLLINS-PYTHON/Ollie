@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { requireLearningAccess } from "./access.server";
 import { callModel, parseJson } from "./ai-text.server";
 
 const schema = z.object({
@@ -12,7 +13,8 @@ const schema = z.object({
 export const preparePicture = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) => schema.parse(data))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await requireLearningAccess(context.supabase, context.userId, process.env["REVENUECAT_SECRET_KEY"]);
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) return { ok: false as const, blocked: false, error: "AI is not configured yet." };
     const system = `You are the safety layer for Ollie, a picture maker for a ${data.age}-year-old child.

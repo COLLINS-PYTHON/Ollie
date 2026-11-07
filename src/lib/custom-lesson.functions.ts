@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { requireLearningAccess } from "./access.server";
 import { callModel, parseJson } from "./ai-text.server";
 
 const schema = z.object({
@@ -33,7 +34,8 @@ export type CustomLesson = z.infer<typeof lessonSchema>;
 export const generateCustomLesson = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) => schema.parse(data))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await requireLearningAccess(context.supabase, context.userId, process.env["REVENUECAT_SECRET_KEY"]);
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) return { ok: false as const };
     const words = data.band === "4-6" ? "very short, simple words, one sentence per slide" : data.band === "7-9" ? "short sentences, one or two per slide" : "two clear, interesting sentences per slide";
