@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- [ ] App Store Tier 1: native purchase/restore and verified access, truthful paywall/support, cloud answer reports, EULA/renewal disclosures, iOS voice/permissions, safe outgoing links and offline recovery. External RevenueCat/Apple credentials and physical-device tests remain Tier 2 dependencies.
 - [x] October 23 09:45: onboarding value proof now demonstrates picture-making (Create tab with matte sample art), ordered Discover → Create → Ask → Safety so it is not last. Verified at 390×600, 768×1024 and 1024×768: four tabs unclipped, no horizontal overflow, no page errors, picture crisp (1024px source), and on the short phone the full picture plus caption are reachable above the button after a small scroll.
 - [ ] Lesson clarification: individual pictures explain each teaching point; include simple tap-to-explore interaction, not just different category covers.
 - [ ] October 23: give background bubbles realistic highlights/depth and verify audible optional sounds on requested onboarding and lesson navigation.
