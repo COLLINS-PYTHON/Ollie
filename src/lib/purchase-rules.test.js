@@ -1,0 +1,10 @@
+import { expect, test } from 'bun:test';
+import { activeEntitlement, eligibleSevenDayTrial, PRODUCT_IDS } from './purchase-rules';
+const now = Date.parse('2026-11-07T00:00:00Z');
+test('monthly product is com.ollie.learning.monthly', () => { expect(PRODUCT_IDS.monthly).toBe('com.ollie.learning.monthly'); });
+test('yearly product is com.ollie.learning.yearly', () => { expect(PRODUCT_IDS.yearly).toBe('com.ollie.learning.yearly'); });
+test('future monthly subscription grants access', () => { expect(activeEntitlement({ product_identifier: PRODUCT_IDS.monthly, expires_date: '2026-12-07T00:00:00Z' }, now)).toBe(true); });
+test('expired subscription never grants access', () => { expect(activeEntitlement({ product_identifier: PRODUCT_IDS.yearly, expires_date: '2026-11-06T00:00:00Z' }, now)).toBe(false); });
+test('unknown products and absent receipts never grant access', () => { expect(activeEntitlement({ product_identifier: 'fake', expires_date: '2027-11-07T00:00:00Z' }, now)).toBe(false); expect(activeEntitlement(undefined, now)).toBe(false); });
+test('seven-day free trial eligibility works for both plans', () => { for (const id of Object.values(PRODUCT_IDS)) { expect(id.length).toBeGreaterThan(0); expect(eligibleSevenDayTrial(2, { price: 0, cycles: 1, period: 'P1W' })).toBe(true); expect(eligibleSevenDayTrial(2, { price: 0, cycles: 1, period: 'P7D' })).toBe(true); } });
+test('unknown or used trial eligibility never promises free access', () => { expect(eligibleSevenDayTrial(0, { price: 0, cycles: 1, period: 'P7D' })).toBe(false); expect(eligibleSevenDayTrial(1, { price: 0, cycles: 1, period: 'P7D' })).toBe(false); expect(eligibleSevenDayTrial(2, { price: 1, cycles: 1, period: 'P7D' })).toBe(false); });

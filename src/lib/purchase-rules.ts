@@ -4,3 +4,6 @@ export function activeEntitlement(entitlement: { expires_date?: string | null; p
   if (!entitlement || !Object.values(PRODUCT_IDS).some(id => id === entitlement.product_identifier)) return false;
   return typeof entitlement.expires_date === 'string' && Date.parse(entitlement.expires_date) > now;
 }
+export function eligibleSevenDayTrial(status: number | undefined, intro: { price: number; cycles: number; period: string } | null | undefined) {
+  return status === 2 && intro?.price === 0 && intro.cycles === 1 && ['P7D', 'P1W'].includes(intro.period);
+}

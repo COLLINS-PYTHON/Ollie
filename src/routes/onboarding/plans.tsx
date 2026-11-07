@@ -9,6 +9,7 @@ import { familyKids } from '@/lib/family-store';
 import { detectCountry, formatPrice, regionPrice, yearlyMonthlyEquivalent, yearlySavingPercent, type RegionPrice } from '@/lib/subscription-prices';
 import { isNative } from '@/lib/native';
 import { loadPlans, purchaseSDK, purchasePlan, restorePurchases, purchaseError } from '@/lib/purchases';
+import { eligibleSevenDayTrial } from '@/lib/purchase-rules';
 export const Route = createFileRoute('/onboarding/plans')({ head: () => pageMeta('Choose your family plan', 'Compare Ollie monthly and yearly subscriptions and renewal terms.'), component: Plans });
 function Plans() {
  const navigate = useNavigate(); const router = useRouter();
@@ -29,7 +30,7 @@ function Plans() {
    const sdk = await purchaseSDK();
    const ids = Object.values(plans).flatMap(p => p ? [p.product.identifier] : []);
    const result = await sdk.checkTrialOrIntroductoryPriceEligibility({ productIdentifiers: ids });
-   setEligible(Object.fromEntries(Object.entries(plans).map(([key, p]) => [key, !!p && result[p.product.identifier]?.status === 2 && p.product.introPrice?.price === 0 && p.product.introPrice.cycles === 1 && (p.product.introPrice.period === 'P1W' || p.product.introPrice.period === 'P7D')])));
+   setEligible(Object.fromEntries(Object.entries(plans).map(([key, p]) => [key, !!p && eligibleSevenDayTrial(result[p.product.identifier]?.status, p.product.introPrice)])));
   }).catch(error => setNotice(purchaseError(error)));
  }, []);
  const fmt = (n: number) => formatPrice(n, rp.currency);
