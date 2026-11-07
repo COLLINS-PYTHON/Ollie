@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- [ ] Remove onboarding click sounds; preserve optional lesson audio and narration.
 - [ ] Support iPhone and iPad: universal iOS device family, bounded tablet layouts, safe areas and portrait/landscape browser checks; native hardware verification waits for a signed build.
 - [ ] iOS is the launch target: prepare the native shell and GitHub signing/upload workflow; a signed iPhone build requires the owner's Apple credentials and macOS runner.
 - [ ] App Store Tier 1: native purchase/restore and verified access, truthful paywall/support, cloud answer reports, EULA/renewal disclosures, iOS voice/permissions, safe outgoing links and offline recovery. External RevenueCat/Apple credentials and physical-device tests remain Tier 2 dependencies.
