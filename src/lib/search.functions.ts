@@ -18,7 +18,6 @@ const LOCKED = {
 const schema = z.object({
   question: z.string().min(1).max(500),
   child: z.object({
-    name: z.string().max(40).optional(),
     age: z.number().int().min(4).max(12),
     readingLevel: z.enum(["none", "sounding", "stories", "chapters"]),
     tone: z.string().max(60).nullable(),
