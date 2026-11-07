@@ -9,7 +9,7 @@ const REGIONS: Record<string, RegionPrice> = {
   US: { currency: "USD", ...SUBSCRIPTION_PRICES },
   CA: { currency: "CAD", monthly: 14.99, yearly: 99.99 },
   AU: { currency: "AUD", monthly: 14.99, yearly: 99.99 },
-  GB: { currency: "GBP", monthly: 11.99, yearly: 79.99 },
+  GB: { currency: "GBP", monthly: 9.99, yearly: 79.99 },
   NZ: { currency: "NZD", monthly: 16.99, yearly: 114.99 },
   CH: { currency: "CHF", monthly: 13.99, yearly: 94.99 },
   SE: { currency: "SEK", monthly: 149, yearly: 999 },
