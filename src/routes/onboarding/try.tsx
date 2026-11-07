@@ -10,7 +10,6 @@ import { buildDay, effectiveBand } from '@/lib/slideshow/library';
 import { quizOptions } from '@/lib/slideshow/types';
 import { speak, preloadSpeech, stopSpeaking } from '@/lib/speak';
 import { DiscoveryDeck } from '@/components/ollie/DiscoveryDeck';
-import { bubbleSound } from '@/lib/bubble-sound';
 import { pageMeta } from '@/lib/meta';
 import { ONBOARDING_ANSWER } from '@/lib/onboarding-answer';
 import { OllieChatHeader } from '@/components/ollie/OllieChatHeader';
@@ -43,7 +42,7 @@ function Proof() {
   const answer = ONBOARDING_ANSWER[band];
   useEffect(() => { void preloadSpeech(answer, onboardingState.age).catch(() => {}); }, [answer]);
   useEffect(() => { if (tab === 'ask') void speak(answer, { age: onboardingState.age }); return () => stopSpeaking(); }, [tab, answer]);
-  const open = (t: Tab) => { bubbleSound(); setTab(t); setSeen(s => new Set(s).add(t)); };
+  const open = (t: Tab) => { setTab(t); setSeen(s => new Set(s).add(t)); };
   const nextTab = TABS.find(t => !seen.has(t.id));
 
   return (

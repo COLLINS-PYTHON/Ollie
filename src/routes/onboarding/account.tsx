@@ -4,9 +4,12 @@ import { OnboardingSkeleton } from "../onboarding";
 import { loadProfile, onboardingState, saveProfile } from "@/lib/onboarding-store";
 import { pushAll } from "@/lib/cloud-sync";
 import { supabase } from "@/integrations/supabase/client";
+import { nativeAppleSignIn } from "@/lib/apple-auth";
 import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { pageMeta } from "@/lib/meta";
+import { isNative } from '@/lib/native';
+import { refreshPurchases } from '@/lib/purchases';
 
 export const Route = createFileRoute("/onboarding/account")({
   head: () => pageMeta("Create your account", "Create your parent account to finish setting up Ollie."),
@@ -31,6 +34,10 @@ function AccountPage() {
       if (!data.session) return;
       if (!onboardingState.name) loadProfile();
       await pushAll();
+      if (isNative()) {
+        try { if (!await refreshPurchases()) { await navigate({ to: '/onboarding/plans' }); return; } }
+        catch { setError('Your subscription could not be verified. Restore purchases and retry.'); return; }
+      }
       navigate({ to: "/onboarding/handoff" });
     });
   }, [navigate]);
@@ -61,6 +68,11 @@ function AccountPage() {
     
     onboardingState.parentName = parentName.trim();
     saveProfile();
+    if (provider === "apple" && isNative()) {
+      try { if (!await nativeAppleSignIn()) return; await pushAll(); if (!await refreshPurchases()) { await navigate({ to: "/onboarding/plans" }); return; } await navigate({ to: "/onboarding/handoff" }); }
+      catch (error) { setError(error instanceof Error ? error.message : "Apple sign-in could not be completed."); }
+      return;
+    }
     const res = await lovable.auth.signInWithOAuth(provider, { redirect_uri: `${window.location.origin}/onboarding/account` });
     if (res.error) return setError("That sign-in didn't work. Please try again.");
     if (res.redirected) return;
@@ -91,7 +103,7 @@ function AccountPage() {
           <>
             <div className="my-5 flex items-center gap-3 text-muted-foreground"><span className="h-px flex-1 bg-border" /><span className="text-support">or</span><span className="h-px flex-1 bg-border" /></div>
             <div className="flex flex-col gap-3">
-              <Button variant="option" type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-foreground text-background shadow-card">Continue with Apple</Button>
+              <Button variant="option" type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-apple-button text-apple-button-text shadow-card font-[system-ui] text-[24px]">Continue with Apple</Button>
               <Button variant="option" type="button" onClick={() => social("google")} className="text-button h-14 rounded-pill bg-card text-foreground shadow-card">Continue with Google</Button>
             </div>
           </>

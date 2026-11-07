@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { requireLearningAccess } from "./access.server";
 
 const MODEL = "openai/gpt-6-luna";
 const GATEWAY = "https://ai.gateway.lovable.dev/v1/responses";
@@ -17,7 +18,6 @@ const LOCKED = {
 const schema = z.object({
   question: z.string().min(1).max(500),
   child: z.object({
-    name: z.string().max(40),
     age: z.number().int().min(4).max(12),
     readingLevel: z.enum(["none", "sounding", "stories", "chapters"]),
     tone: z.string().max(60).nullable(),
@@ -142,7 +142,7 @@ function buildSystemPrompt(child: Child): string {
     child.age >= 10
       ? ` Append "${LOCKED.nine88}" to self-harm answers.`
       : "";
-  return `You are Ollie, a safe AI learning companion for kids. You are answering a child, age exactly ${child.age}.
+  return `You are Ollie, a safe AI learning assistant for kids. You are answering a child, age exactly ${child.age}.
 
 Reply with ONLY a JSON object, no other text: {"tier":"ok","answer":"...","flagReason":""}
 
@@ -235,7 +235,8 @@ async function runPipeline(question: string, child: Child, history: { role: "use
 export const askOllie = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data) => schema.parse(data))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await requireLearningAccess(context.supabase, context.userId, process.env["REVENUECAT_SECRET_KEY"]);
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) return { ok: false as const, error: "AI is not configured yet." };
     try {

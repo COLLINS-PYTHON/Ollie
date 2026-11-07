@@ -1,98 +1,102 @@
-# Builds and uploads the Ollie iOS shell to App Store Connect (TestFlight).
-# Runs on GitHub's free macOS runners. First run: `npx cap add ios` creates the
-# native project from capacitor.config.ts; later runs only sync.
-#
-# Required repository secrets:
-#   APP_STORE_CONNECT_ISSUER_ID   App Store Connect API issuer id
-#   APP_STORE_CONNECT_KEY_ID      App Store Connect API key id
-#   APP_STORE_CONNECT_P8          .p8 key file contents (Base64 or raw)
-#   BUILD_CERTIFICATE_BASE64      Distribution .p12 certificate (Base64)
-#   P12_PASSWORD                  .p12 password
-#   KEYCHAIN_PASSWORD             any strong password for the CI keychain
-#   PROVISIONING_PROFILE_BASE64   App Store provisioning profile (Base64)
 name: iOS build
-
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: App version
+        default: '1.0.0'
+        required: true
   push:
-    tags:
-      - "ios-v*"
-
+    tags: ['ios-v*']
+permissions:
+  contents: read
 jobs:
   build:
     runs-on: macos-15
+    env:
+      IOS_VERSION: ${{ inputs.version || '1.0.0' }}
+      IOS_BUILD_NUMBER: ${{ github.run_number }}
+      DEVELOPMENT_TEAM_ID: ${{ secrets.DEVELOPMENT_TEAM_ID }}
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
-          cache: npm
-
+          bun-version: '1.4.4'
       - name: Install dependencies
-        run: npm install
-
-      - name: Create web asset placeholder
-        # The shell loads the live published site from capacitor.config.ts, so
-        # Capacitor only needs webDir to exist for cap sync.
+        run: bun install --frozen-lockfile
+      - name: Check signing configuration
+        env:
+          ISSUER: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          KEY: ${{ secrets.APP_STORE_CONNECT_P8 }}
+          CERT: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          PASS: ${{ secrets.P12_PASSWORD }}
+          PROFILE: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
         run: |
-          mkdir -p dist
-          echo '<!doctype html><html><body></body></html>' > dist/index.html
-
-      - name: Add and sync iOS project
+          for name in ISSUER KEY_ID KEY CERT PASS PROFILE DEVELOPMENT_TEAM_ID; do
+            test -n "${!name}" || { echo "Missing signing secret: $name"; exit 1; }
+          done
+      - name: Prepare offline shell and iOS project
         run: |
-          npx cap add ios || true
-          npx cap sync ios
-
-      - name: Install the App Store Connect API key
-        run: echo "${{ secrets.APP_STORE_CONNECT_P8 }}" | base64 --decode > AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8
-
+          node scripts/prepare-native.mjs
+          if [ ! -d ios/App ]; then bunx cap add ios --packagemanager CocoaPods; fi
+          bunx cap sync ios
+          python3 scripts/configure-ios.py
+          ruby scripts/configure-ios.rb
       - name: Import signing certificate
         uses: apple-actions/import-codesign-certs@v3
         with:
           p12-file-base64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           p12-password: ${{ secrets.P12_PASSWORD }}
-
-      - name: Install provisioning profile
-        run: |
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-          echo "${{ secrets.PROVISIONING_PROFILE_BASE64 }}" | base64 --decode > $PP_PATH
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          UUID=$(/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< "$(security cms -D -i $PP_PATH)")
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$UUID.mobileprovision
-
-      - name: Archive
-        run: |
-          xcodebuild archive \
-            -workspace ios/App/App.xcworkspace \
-            -scheme App \
-            -configuration Release \
-            -archivePath $RUNNER_TEMP/Ollie.xcarchive \
-            -destination "generic/platform=iOS" \
-            CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM="${{ secrets.DEVELOPMENT_TEAM_ID }}" \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            PROVISIONING_PROFILE_SPECIFIER=""
-
-      - name: Export and upload to TestFlight
-        run: |
-          cat > $RUNNER_TEMP/ExportOptions.plist <<'EOF'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0"><dict>
-            <key>method</key><string>app-store-connect</string>
-            <key>teamID</key><string>${{ secrets.DEVELOPMENT_TEAM_ID }}</string>
-            <key>uploadSymbols</key><true/>
-          </dict></plist>
-          EOF
-          xcodebuild -exportArchive \
-            -archivePath $RUNNER_TEMP/Ollie.xcarchive \
-            -exportOptionsPlist $RUNNER_TEMP/ExportOptions.plist \
-            -exportPath $RUNNER_TEMP/export \
-            -authenticationKeyPath $RUNNER_TEMP/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8 \
-            -authenticationKeyID ${{ secrets.APP_STORE_CONNECT_KEY_ID }} \
-            -authenticationKeyIssuerID ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }} \
-            || xcrun altool --upload-app -f $RUNNER_TEMP/export/*.ipa \
-              -u "" --api-key-file $RUNNER_TEMP/AuthKey_${{ secrets.APP_STORE_CONNECT_KEY_ID }}.p8
+      - name: Install provisioning profile and API key
         env:
-          API_PRIVATE_KEYS_DIR: ${{ runner.temp }}
+          PROFILE: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
+          API_KEY: ${{ secrets.APP_STORE_CONNECT_P8 }}
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+        run: |
+          python3 - <<'PY'
+          import base64, os, pathlib, subprocess, plistlib
+          temp = pathlib.Path(os.environ['RUNNER_TEMP'])
+          profile = temp / 'ollie.mobileprovision'
+          profile.write_bytes(base64.b64decode(os.environ['PROFILE']))
+          parsed = plistlib.loads(subprocess.check_output(['security','cms','-D','-i',str(profile)]))
+          bundle = parsed['Entitlements']['application-identifier']
+          if not bundle.endswith('.com.ollie.learning'): raise SystemExit('Profile bundle ID does not match Ollie')
+          dest = pathlib.Path.home() / 'Library/MobileDevice/Provisioning Profiles'
+          dest.mkdir(parents=True, exist_ok=True)
+          (dest/(parsed['UUID']+'.mobileprovision')).write_bytes(profile.read_bytes())
+          with open(os.environ['GITHUB_ENV'],'a') as f: f.write('PROFILE_NAME='+parsed['Name']+'\n')
+          key = os.environ['API_KEY'].strip()
+          raw = key.encode() if key.startswith('-----BEGIN') else base64.b64decode(key)
+          (temp/('AuthKey_'+os.environ['KEY_ID']+'.p8')).write_bytes(raw)
+          PY
+      - name: Archive universal iOS app
+        run: |
+          xcodebuild archive -workspace ios/App/App.xcworkspace -scheme App -configuration Release \
+            -archivePath "$RUNNER_TEMP/Ollie.xcarchive" -destination 'generic/platform=iOS' \
+            CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM_ID" \
+            CODE_SIGN_IDENTITY='Apple Distribution' PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME"
+      - name: Export and upload to TestFlight
+        env:
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          ISSUER: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          python3 - <<'PY'
+          import os, plistlib
+          with open(os.environ['RUNNER_TEMP']+'/ExportOptions.plist','wb') as f:
+            plistlib.dump({'method':'app-store-connect','destination':'upload','teamID':os.environ['DEVELOPMENT_TEAM_ID'],'signingStyle':'manual','provisioningProfiles':{'com.ollie.learning':os.environ['PROFILE_NAME']},'uploadSymbols':True}, f)
+          PY
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Ollie.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/export" \
+            -authenticationKeyPath "$RUNNER_TEMP/AuthKey_$KEY_ID.p8" \
+            -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER"
+      - name: Save archive for debugging
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ollie-iOS-archive
+          path: ${{ runner.temp }}/Ollie.xcarchive
+          retention-days: 3
+      - name: Remove signing files
+        if: always()
+        run: rm -f "$RUNNER_TEMP"/AuthKey_*.p8 "$RUNNER_TEMP"/ollie.mobileprovision

@@ -22,11 +22,11 @@ function PaywallPage() {
         <p className="text-support mt-3 text-center text-muted-foreground">Made just for {name}.</p>
         <div className="payment-assurance relative mx-auto mt-5 flex items-center gap-2 rounded-pill bg-card px-5 py-3 shadow-card">
           <Check className="relative size-5 text-success" strokeWidth={2.2} />
-          <span className="text-button relative text-foreground">No Payment Due Now</span>
+          <span className="text-button relative text-foreground">7-day trial for eligible families</span>
         </div>
         <p className="text-support mt-5 text-center text-muted-foreground">Answers that fit their age, topic lessons that build understanding, and a little space to create.</p>
         <p className="text-support mt-4 flex items-center justify-center gap-2 text-muted-foreground"><Bell className="size-4 shrink-0" />7 days to explore. You can cancel at anytime before your first charge.</p>
-        <p className="text-label mt-1 text-center text-muted-foreground">Trial reminders will be available when delivery is connected.</p>
+
  </div><div className="trial-invitation-action onboarding-action onboarding-cta-fade mx-auto w-full max-w-md px-5 pt-5 pb-5">
  <Button variant="onboarding" size="onboarding" onClick={()=>navigate({to:'/onboarding/plans'})}>Unlock {name}’s safe trial</Button>
  </div></div>;

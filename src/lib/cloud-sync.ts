@@ -5,7 +5,7 @@ import type { Json } from "@/integrations/supabase/types";
 import { onboardingState, parentSettings, saveProfile } from "./onboarding-store";
 import { readFamily, FAMILY_KEY, ACTIVE_KID_KEY, activeKidId, readKidValue, writeKidValue, clearFamilyStorage } from "./kid-storage";
 import { loadPictures, savePicture, type Picture } from "./picture-store";
-import { deleteStorageTree } from './delete-storage';
+import { disconnectNativeApple } from './apple-auth';
 
 const PROGRESS_KEYS = ["ollie-chat-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-daily-selection-v1", "ollie-custom-lesson-v1"];
 const PROFILE_KEY = "ollie-profile-v1";
@@ -61,6 +61,7 @@ export async function pushAll() {
       id: user.id,
       name: s.parentName || (user.user_metadata?.["full_name"] as string | undefined) || "",
       email: user.email ?? s.email,
+      ai_consent: s.aiConsent === true,
       pin_hash: s.pinHash || null,
       sound_enabled: parentSettings.soundOn,
       weekly_email_opt_in: !!s.weeklyEmail,
@@ -122,6 +123,7 @@ export async function pullAll() {
       name: child.name, age: child.age, readingLevel: child.reading_level, interests: child.interests,
       tone: child.reply_tone, limitMinutes: child.screen_time_limit_minutes, slideshowReset: child.slideshow_reset_time,
       parentName: acc?.name ?? '', email: acc?.email ?? user.email ?? '', pin: '', pinHash: acc?.pin_hash || onboardingState.pinHash || '',
+      aiConsent: acc?.ai_consent === true,
       weeklyEmail: acc?.weekly_email_opt_in ?? null, settings: { soundOn: acc?.sound_enabled ?? true, retentionDays: child.chat_retention_setting },
     };
     const progress = (child.progress ?? {}) as Record<string, unknown>;
@@ -170,11 +172,9 @@ export async function deleteCloudData() {
   while (pushing) await new Promise(resolve => setTimeout(resolve, 50));
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) { deleting = false; return; }
-  const uid = session.user.id;
+  const appleLinked = session.user.identities?.some(identity => identity.provider === 'apple') === true;
   try {
-    await deleteStorageTree(supabase.storage.from('pictures'), uid);
-    const { error } = await supabase.from("accounts").delete().eq("id", uid);
-    if (error) throw error;
+    await disconnectNativeApple();
     const gone = await fetch("/api/delete-account", { method: "POST", headers: { Authorization: `Bearer ${session.access_token}` } });
     if (!gone.ok) throw new Error("Account login could not be deleted");
     const result = await supabase.auth.signOut({ scope: 'local' });
@@ -182,6 +182,7 @@ export async function deleteCloudData() {
       const local = await supabase.auth.signOut({ scope: 'local' });
       if (local.error) throw local.error;
     }
+    return appleLinked;
   } finally {
     deleting = false;
   }

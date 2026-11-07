@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { nativeAppleSignIn } from "@/lib/apple-auth";
+import { isNative } from "@/lib/native";
 import { lovable } from "@/integrations/lovable";
 import { clearFails, lockedSeconds, LOGIN_LOCK, pullAll, recordFail } from "@/lib/cloud-sync";
 import { pageMeta } from "@/lib/meta";
@@ -49,6 +51,11 @@ function LoginPage() {
 
   async function social(provider: "google" | "apple") {
     setError("");
+    if (provider === "apple" && isNative()) {
+      try { if (await nativeAppleSignIn()) await enter(); }
+      catch (error) { setError(error instanceof Error ? error.message : "Apple sign-in could not be completed."); }
+      return;
+    }
     const res = await lovable.auth.signInWithOAuth(provider, { redirect_uri: `${window.location.origin}/login` });
     if (res.error) return setError("That sign-in didn't work. Please try again.");
     if (res.redirected) return;
@@ -74,7 +81,7 @@ function LoginPage() {
         {error && <p role="alert" className="mt-3 text-support text-destructive">{error}</p>}
         <div className="my-5 flex items-center gap-3 text-muted-foreground"><span className="h-px flex-1 bg-border" /><span className="text-support">or</span><span className="h-px flex-1 bg-border" /></div>
         <div className="flex flex-col gap-3">
-          <Button variant="ghost" type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-foreground text-background shadow-card">Continue with Apple</Button>
+          <Button variant="ghost" type="button" onClick={() => social("apple")} className="text-button h-14 rounded-pill bg-apple-button text-apple-button-text shadow-card font-[system-ui] text-[24px]">Continue with Apple</Button>
           <Button variant="ghost" type="button" onClick={() => social("google")} className="text-button h-14 rounded-pill bg-card text-foreground shadow-card">Continue with Google</Button>
         </div>
         <div className="flex-1" />

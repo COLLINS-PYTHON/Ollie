@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import whaleCurious from '@/assets/whale-curious.png';
 import whaleCelebrate from '@/assets/whale-celebrate.png';
 import { AmbientDepth } from "@/components/ollie/AmbientDepth";
-import { bubbleSound } from "@/lib/bubble-sound";
 import { ONBOARDING_ANSWER } from '@/lib/onboarding-answer';
 import { preloadSpeech } from "@/lib/speak";
 
@@ -38,7 +37,6 @@ function OnboardingLayout() {
       const from = ONBOARDING_STEPS.findIndex(step => step === fromLocation?.pathname.replace(/\/$/, ''));
       const to = ONBOARDING_STEPS.findIndex(step => step === toLocation.pathname.replace(/\/$/, ''));
       document.documentElement.dataset['stepDirection'] = to < from ? 'back' : 'forward';
-      bubbleSound();
     });
     return unsubscribe;
   }, [router]);
@@ -140,7 +138,7 @@ export function OnboardingSkeleton({
         <Button variant="onboarding" size="onboarding"
           type="button"
           disabled={ctaDisabled}
-          onClick={() => { bubbleSound(); onContinue?.(); }}
+          onClick={() => onContinue?.()}
           className="text-button h-14 w-full rounded-pill bg-primary text-primary-foreground shadow-card transition-all duration-tap active:scale-[0.98] disabled:bg-surface-2 disabled:text-muted-foreground disabled:shadow-none"
         >
           {cta}

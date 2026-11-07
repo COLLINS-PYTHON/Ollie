@@ -1,70 +1,75 @@
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router';
-import { useState } from 'react';
-import { Bell, Check, ChevronLeft, LockKeyholeOpen } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import type { PurchasesPackage } from '@revenuecat/purchases-capacitor';
+import { Check, ChevronLeft, LockKeyholeOpen } from 'lucide-react';
 import { onboardingState } from '@/lib/onboarding-store';
 import { pageMeta } from '@/lib/meta';
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/ui/drawer';
 import { familyKids } from '@/lib/family-store';
 import { detectCountry, formatPrice, regionPrice, yearlyMonthlyEquivalent, yearlySavingPercent, type RegionPrice } from '@/lib/subscription-prices';
-import { useEffect } from 'react';
-export const Route=createFileRoute('/onboarding/plans')({head:()=>pageMeta('Choose your family plan','Compare Ollie yearly and monthly plans, trial checkpoints and renewal terms.'),component:Plans});
-function Plans(){
- const navigate=useNavigate(); const router=useRouter();
- const names=familyKids().map(k=>String(k.profile['name']??'').trim()).filter(Boolean);
- const name=names.length?names.join(' and '):onboardingState.name.trim()||'your child';
-  const [rp, setRp] = useState<RegionPrice>(regionPrice('US'));
-  useEffect(() => { const r = new URLSearchParams(window.location.search).get('region'); if (r) setRp(regionPrice(r === 'auto' ? detectCountry() : r)); }, []);
-  const fmt = (n: number) => formatPrice(n, rp.currency);
-  const PRICES = { monthly: `${fmt(rp.monthly)} per month`, yearly: `${fmt(rp.yearly)} per year` };
-  const [plan, setPlan] = useState<"monthly" | "yearly">("yearly");
-  const [askReminder, setAskReminder] = useState(false);
-  const [permissionNote, setPermissionNote] = useState('');
-  function dismissReminder() { setAskReminder(false); void navigate({ to: '/onboarding/account' }); }
-  async function allowReminder() {
-    if (window.top !== window.self) { setPermissionNote('Open Ollie in its own tab to allow notifications. You can continue without them.'); return; }
-    if (!('Notification' in window)) { setPermissionNote('Notifications are not available in this browser. On iPhone, add Ollie to your Home Screen first.'); return; }
-    try {
-      const permission = await Notification.requestPermission();
-      localStorage.setItem('ollie-trial-reminder-permission', permission);
-      setPermissionNote(permission === 'granted' ? 'Permission allowed. Trial reminders will be available once notification delivery is connected.' : 'No problem. You can continue without a reminder.');
-    } catch { setPermissionNote('Notifications could not be enabled here. You can continue without them.'); }
-  }
-  const valueLines = [`Age-tailored answers, with voice and typing`, "Daily topic lessons, quick quizzes and Trail replay", "Creative picture-making and a saved picture fridge", "Natural read-aloud at a comfortable pace", "Parent PIN, screen-time controls and sensitive-search context", "One plan covers two separate learning spaces"];
-
-
- return <><main className="trial-plans-page">
- <Button variant="control" size="icon" aria-label="Back to trial introduction" onClick={()=>router.history.back()}><ChevronLeft /></Button>
- <div className="trial-plans-body screen-enter">
- <h1 className="pw-title text-center">Unlock {name}’s safe trial</h1>
- <p className="text-support mt-2 text-center text-muted-foreground">7 days free, then your plan. Cancel anytime before.</p>
- <div role="radiogroup" aria-label="Choose a plan" className="trial-plan-grid">
- {(['yearly','monthly'] as const).map(p=><Button key={p} variant="ghost" role="radio" aria-checked={plan===p} onClick={()=>{setPlan(p);onboardingState.plan=p;}} className="trial-plan-card">
- <span className="text-button capitalize">{p}</span><span className="pw-radio" aria-hidden="true">{plan===p&&<Check />}</span>
- <span className="trial-plan-price">{fmt(rp[p])}</span>
- <span className="text-support text-muted-foreground">per {p==='yearly'?'year':'month'}</span>
- {p==='yearly'?<><span className="trial-plan-equivalent">≈ {fmt(yearlyMonthlyEquivalent(rp))}/month</span><span className="pw-chip">Save {yearlySavingPercent(rp)}%</span></>:<span className="trial-plan-equivalent">Billed monthly after trial</span>}
- </Button>)}
- </div>
- <ol className="pw-timeline mt-7" aria-label="How your trial works">
- {[{icon:LockKeyholeOpen,when:'Today',what:'Full access, $0'},{icon:Bell,when:'Day 5',what:'Reminder + report*'},{icon:Check,when:'Day 7',what:'First charge'}].map(({icon:Icon,when,what})=><li key={when}><span className="pw-dot"><Icon /></span><b>{when}</b><span>{what}</span></li>)}
- </ol>
- <p className="pw-fine mt-3 text-center text-muted-foreground">*Reminder and report delivery are not connected yet.</p><ul className="trial-feature-list mt-6 space-y-3">{valueLines.map(l=><li key={l} className="flex items-start gap-3 text-support"><span className="pw-tick"><Check /></span><span>{l}</span></li>)}</ul>
- </div>
- <footer className="pw-footer">
- <Button variant="onboarding" size="onboarding" onClick={()=>{onboardingState.plan=plan;setAskReminder(true);}}>Unlock {name}’s safe trial</Button>
- <p className="pw-fine mt-2 text-center text-muted-foreground">Free for 7 days, then {PRICES[plan]}. Renews automatically until canceled. Cancel anytime in Settings at least 24 hours before the trial ends. Billing is not connected yet in this preview.</p>
- <div className="pw-fine flex items-center justify-center gap-3 text-muted-foreground"><Button variant="link" className="pw-fine h-8 px-0 text-muted-foreground" disabled>Restore Purchases</Button><a href="/terms" className="underline">Terms</a><a href="/privacy" className="underline">Privacy</a></div>
- </footer></main>
-    <Drawer open={askReminder} onOpenChange={(open) => { if (!open) dismissReminder(); }} shouldScaleBackground={false}>
-      <DrawerContent className="onboarding-theme trial-reminder-sheet mx-auto max-w-md px-6 pb-6">
-        <Bell className="mx-auto mb-4 size-8 text-primary" />
-        <DrawerTitle className="text-title text-center">Should we remind you before your trial ends?</DrawerTitle>
-        <DrawerDescription className="text-support mt-3 text-center">On day 5 we'll remind you before your trial ends and share {name}'s learning report so far. Reminder delivery is not available yet.</DrawerDescription>
-        {permissionNote && <p role="status" className="text-support mt-4 text-center text-muted-foreground">{permissionNote}</p>}
-        <Button variant="onboarding" className="mt-6 h-14 rounded-pill" onClick={() => permissionNote ? dismissReminder() : void allowReminder()}>{permissionNote ? 'Continue' : 'Allow notifications'}</Button>
-        {!permissionNote && <Button variant="ghost" className="mt-2 h-12 rounded-pill" onClick={dismissReminder}>Not now</Button>}
-      </DrawerContent>
-    </Drawer>
-</>;
+import { isNative } from '@/lib/native';
+import { loadPlans, purchaseSDK, purchasePlan, restorePurchases, purchaseError } from '@/lib/purchases';
+import { eligibleSevenDayTrial } from '@/lib/purchase-rules';
+export const Route = createFileRoute('/onboarding/plans')({ head: () => pageMeta('Choose your family plan', 'Compare Ollie monthly and yearly subscriptions and renewal terms.'), component: Plans });
+function Plans() {
+ const navigate = useNavigate(); const router = useRouter();
+ const names = familyKids().map(k => String(k.profile['name'] ?? '').trim()).filter(Boolean);
+ const name = names.length ? names.join(' and ') : onboardingState.name.trim() || 'your child';
+ const [rp, setRp] = useState<RegionPrice>(regionPrice('US'));
+ const [native, setNative] = useState(false);
+ const [packages, setPackages] = useState<Partial<Record<'monthly' | 'yearly', PurchasesPackage | undefined>>>({});
+ const [eligible, setEligible] = useState<Record<string, boolean>>({});
+ const [plan, setPlan] = useState<'monthly' | 'yearly'>('yearly');
+ const [busy, setBusy] = useState(false); const [notice, setNotice] = useState('');
+ useEffect(() => {
+  const nativeApp = isNative(); setNative(nativeApp);
+  const r = new URLSearchParams(window.location.search).get('region'); if (r) setRp(regionPrice(r === 'auto' ? detectCountry() : r));
+  if (!nativeApp) return;
+  void loadPlans().then(async plans => {
+   setPackages(plans);
+   const sdk = await purchaseSDK();
+   const ids = Object.values(plans).flatMap(p => p ? [p.product.identifier] : []);
+   const result = await sdk.checkTrialOrIntroductoryPriceEligibility({ productIdentifiers: ids });
+   setEligible(Object.fromEntries(Object.entries(plans).map(([key, p]) => [key, !!p && eligibleSevenDayTrial(result[p.product.identifier]?.status, p.product.introPrice)])));
+  }).catch(error => setNotice(purchaseError(error)));
+ }, []);
+ const fmt = (n: number) => formatPrice(n, rp.currency);
+ const chosen = packages[plan];
+ const trial = native ? eligible[plan] === true : true;
+ const price = (p: 'monthly' | 'yearly') => native ? packages[p]?.product.priceString ?? 'Loading…' : fmt(rp[p]);
+ const actual = packages.yearly && packages.monthly ? { ...rp, yearly: packages.yearly.product.price, monthly: packages.monthly.product.price, currency: packages.yearly.product.currencyCode } : rp;
+ const action = trial ? `Unlock ${name}’s safe trial` : `Continue with ${plan}`;
+ async function buy() {
+  onboardingState.plan = plan;
+  if (!native) { await navigate({ to: '/onboarding/account' }); return; }
+  if (!chosen) { setNotice('Subscriptions are currently unavailable. Please retry later.'); return; }
+  setBusy(true); setNotice('');
+  try { await purchasePlan(chosen); await navigate({ to: '/onboarding/account' }); }
+  catch (error) { setNotice(purchaseError(error)); } finally { setBusy(false); }
+ }
+ return <main className="trial-plans-page">
+  <Button variant="control" size="icon" aria-label="Back to trial introduction" onClick={() => router.history.back()}><ChevronLeft /></Button>
+  <div className="trial-plans-body screen-enter">
+   <h1 className="pw-title text-center">{trial ? `Unlock ${name}’s safe trial` : 'Choose your Ollie plan'}</h1>
+   <p className="text-support mt-2 text-center text-muted-foreground">{trial ? '7 days free for eligible new subscribers, then your plan.' : 'Apple confirms your price before you subscribe.'}</p>
+   <div role="radiogroup" aria-label="Choose a plan" className="trial-plan-grid">
+    {(['yearly', 'monthly'] as const).map(p => <Button key={p} variant="ghost" role="radio" aria-checked={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }} className="trial-plan-card">
+     <span className="text-button capitalize">{p}</span><span className="pw-radio" aria-hidden="true">{plan === p && <Check />}</span>
+     <span className="trial-plan-price">{price(p)}</span><span className="text-support text-muted-foreground">per {p === 'yearly' ? 'year' : 'month'}</span>
+     {p === 'yearly' && (!native || packages.yearly && packages.monthly) ? <><span className="trial-plan-equivalent">≈ {formatPrice(yearlyMonthlyEquivalent(actual), actual.currency)}/month</span><span className="pw-chip">Save {yearlySavingPercent(actual)}%</span></> : <span className="trial-plan-equivalent">{eligible[p] ? `7 days free, then billed ${p}` : `Billed ${p}`}</span>}
+    </Button>)}
+   </div>
+   {trial && <ol className="pw-timeline mt-7" aria-label="How your trial works">{[{ icon: LockKeyholeOpen, when: 'Today', what: 'Full trial access' }, { icon: Check, when: 'Day 7', what: 'First charge' }].map(({ icon: Icon, when, what }) => <li key={when}><span className="pw-dot"><Icon /></span><b>{when}</b><span>{what}</span></li>)}</ol>}
+   <ul className="trial-feature-list mt-6 space-y-3">{['Age-tailored answers, with voice and typing', 'Daily topic lessons, quick quizzes and Trail replay', 'Creative picture-making and a saved picture fridge', 'Natural read-aloud at a comfortable pace', 'Parent PIN, screen-time controls and sensitive-search context', 'One plan covers two separate learning spaces'].map(line => <li key={line} className="flex items-start gap-3 text-support"><span className="pw-tick"><Check /></span><span>{line}</span></li>)}</ul>
+  </div>
+  <footer className="pw-footer">
+   {notice && <p role="status" className="mb-3 text-support text-muted-foreground">{notice}</p>}
+   <Button variant="onboarding" size="onboarding" disabled={busy || native && !chosen} onClick={() => void buy()}>{busy ? 'Waiting for Apple…' : native ? action : 'Continue setup'}</Button>
+   <p className="pw-fine mt-2 text-center text-muted-foreground">{trial ? 'Free for 7 days for eligible new subscribers, then ' : ''}{price(plan)} per {plan === 'yearly' ? 'year' : 'month'}. Renews automatically until canceled. Cancel in Apple subscription settings at least 24 hours before renewal. {native ? 'Apple confirms trial eligibility and price.' : 'Apple subscriptions are purchased in the iPhone or iPad app. Continuing setup does not start a subscription.'}</p>
+   <div className="pw-fine flex flex-wrap items-center justify-center gap-3 text-muted-foreground">
+    <Button variant="link" disabled={busy} className="pw-fine h-8 px-0 text-muted-foreground" onClick={async () => { setBusy(true); try { const restored = await restorePurchases(); setNotice(restored ? 'Purchases restored.' : 'No active subscription was found.'); if (restored) await navigate({ to: '/onboarding/account' }); } catch (error) { setNotice(purchaseError(error)); } finally { setBusy(false); } }}>Restore Purchases</Button>
+    <a href="/terms" className="underline">Terms</a><a href="/privacy" className="underline">Privacy</a>
+   </div>
+  </footer>
+ </main>;
 }

@@ -1,17 +1,16 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 // Ollie native iOS shell.
-// The WebView loads the live published web app, so every publish here reaches
-// iOS without a new store build. If we later move to a fully bundled build,
-// remove `server.url` and set up a static SPA output in `webDir`.
+// The hosted TanStack app keeps its server functions. A bundled offline page
+// provides recovery when first launch cannot connect; this is not offline AI.
+// Native capability or substantial app changes still require store review.
 const config: CapacitorConfig = {
-  // TODO: replace with the Bundle ID registered on the Apple Developer account.
   appId: "com.ollie.learning",
   appName: "Ollie",
-  webDir: "dist",
+  webDir: "native-shell",
   server: {
     url: "https://start-forge-engine.lovable.app",
-    allowNavigation: ["*.lovable.app"],
+    errorPath: "offline.html",
     androidScheme: "https",
   },
   ios: {
