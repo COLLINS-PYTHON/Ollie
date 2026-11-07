@@ -30,7 +30,7 @@ export async function purchaseSDK() {
 }
 export async function loadPlans() {
   const sdk = await purchaseSDK();
-  const { offerings } = await sdk.getOfferings();
+  const offerings = await sdk.getOfferings();
   return Object.fromEntries(Object.entries(PRODUCT_IDS).map(([plan, id]) => [plan, offerings.current?.availablePackages.find(p => p.product.identifier === id)])) as Record<'monthly' | 'yearly', PurchasesPackage | undefined>;
 }
 export async function refreshPurchases() { const sdk = await purchaseSDK(); update((await sdk.getCustomerInfo()).customerInfo); return (await checkSubscription()).active; }

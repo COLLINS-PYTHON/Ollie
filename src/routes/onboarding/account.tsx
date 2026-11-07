@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { pageMeta } from "@/lib/meta";
+import { isNative } from '@/lib/native';
+import { refreshPurchases } from '@/lib/purchases';
 
 export const Route = createFileRoute("/onboarding/account")({
   head: () => pageMeta("Create your account", "Create your parent account to finish setting up Ollie."),
@@ -31,6 +33,10 @@ function AccountPage() {
       if (!data.session) return;
       if (!onboardingState.name) loadProfile();
       await pushAll();
+      if (isNative()) {
+        try { if (!await refreshPurchases()) { await navigate({ to: '/onboarding/plans' }); return; } }
+        catch { setError('Your subscription could not be verified. Restore purchases and retry.'); return; }
+      }
       navigate({ to: "/onboarding/handoff" });
     });
   }, [navigate]);

@@ -16,7 +16,7 @@ function Plans() {
  const name = names.length ? names.join(' and ') : onboardingState.name.trim() || 'your child';
  const [rp, setRp] = useState<RegionPrice>(regionPrice('US'));
  const [native, setNative] = useState(false);
- const [packages, setPackages] = useState<Partial<Record<'monthly' | 'yearly', PurchasesPackage>>>({});
+ const [packages, setPackages] = useState<Partial<Record<'monthly' | 'yearly', PurchasesPackage | undefined>>>({});
  const [eligible, setEligible] = useState<Record<string, boolean>>({});
  const [plan, setPlan] = useState<'monthly' | 'yearly'>('yearly');
  const [busy, setBusy] = useState(false); const [notice, setNotice] = useState('');
@@ -29,7 +29,7 @@ function Plans() {
    const sdk = await purchaseSDK();
    const ids = Object.values(plans).flatMap(p => p ? [p.product.identifier] : []);
    const result = await sdk.checkTrialOrIntroductoryPriceEligibility({ productIdentifiers: ids });
-   setEligible(Object.fromEntries(Object.entries(plans).map(([key, p]) => [key, !!p && result[p.product.identifier]?.status === 2 && p.product.introPrice?.price === 0 && p.product.introPrice.periodNumberOfUnits === 7 && p.product.introPrice.periodUnit === 'DAY'])));
+   setEligible(Object.fromEntries(Object.entries(plans).map(([key, p]) => [key, !!p && result[p.product.identifier]?.status === 2 && p.product.introPrice?.price === 0 && p.product.introPrice.cycles === 1 && (p.product.introPrice.period === 'P1W' || p.product.introPrice.period === 'P7D')])));
   }).catch(error => setNotice(purchaseError(error)));
  }, []);
  const fmt = (n: number) => formatPrice(n, rp.currency);

@@ -8,7 +8,7 @@ export type RecognitionLike = {
 };
 class NativeRecognition implements RecognitionLike {
   lang = 'en-US'; interimResults = false; maxAlternatives = 1;
-  onresult: RecognitionLike['onresult'] = null; onend: RecognitionLike['onend'] = null; onerror: RecognitionLike['onerror'] = null;
+  onresult: RecognitionLike['onresult'] = null; onend: RecognitionLike['onend'] = null; onerror: ((event: { error: string }) => void) | null = null;
   private stopped = false;
   private handles: { remove(): Promise<void> }[] = [];
   start() { this.stopped = false; void this.listen(); }
