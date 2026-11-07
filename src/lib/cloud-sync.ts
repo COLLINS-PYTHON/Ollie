@@ -172,7 +172,7 @@ export async function deleteCloudData() {
   while (pushing) await new Promise(resolve => setTimeout(resolve, 50));
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) { deleting = false; return; }
-  const uid = session.user.id;
+  const appleLinked = session.user.identities?.some(identity => identity.provider === 'apple') === true;
   try {
     await disconnectNativeApple();
     const gone = await fetch("/api/delete-account", { method: "POST", headers: { Authorization: `Bearer ${session.access_token}` } });
@@ -182,6 +182,7 @@ export async function deleteCloudData() {
       const local = await supabase.auth.signOut({ scope: 'local' });
       if (local.error) throw local.error;
     }
+    return appleLinked;
   } finally {
     deleting = false;
   }

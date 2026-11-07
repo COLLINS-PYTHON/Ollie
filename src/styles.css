@@ -87,6 +87,8 @@
   --color-ring: var(--ring);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
+  --color-apple-button: var(--apple-button);
+  --color-apple-button-text: var(--apple-button-text);
 
   /* Shadows */
   --shadow-card: var(--elev-card);
@@ -102,6 +104,8 @@
 }
 
 :root {
+  --apple-button: #000000;
+  --apple-button-text: #ffffff;
   --sky: oklch(0.61 0.075 254);
   --sky-mist: oklch(0.95 0.023 244);
   --navy: #0e1538;
@@ -1328,7 +1332,7 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .pw-footer { padding-bottom:max(10px,env(safe-area-inset-bottom)); border-top:1px solid color-mix(in oklab,var(--border) 60%,transparent); background:var(--card); }
 .pw-fine { font-size:12px; line-height:16px; }
 .trial-plans-page { background:var(--onboarding-wash); display:flex; flex-direction:column; min-height:100dvh; max-width:560px; margin:auto; padding:20px 24px 0; }
-.trial-plans-body { flex:1; padding:24px 0; }
+.trial-plans-body { flex:1; padding:24px 0; scroll-margin-bottom:260px; }
 .trial-plan-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:24px; }
 .trial-plan-card { position:relative; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; white-space:normal; height:auto; min-height:188px; padding:20px 16px; border:1px solid var(--border); border-radius:var(--radius-card); background:var(--card); box-shadow:var(--elev-card); color:var(--foreground); }
 .onboarding-theme .trial-plan-card[aria-checked=true] { background:color-mix(in oklab,var(--primary) 8%,var(--card)); border-color:color-mix(in oklab,var(--primary) 45%,var(--card)); }

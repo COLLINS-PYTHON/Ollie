@@ -52,7 +52,7 @@ function LoginPage() {
   async function social(provider: "google" | "apple") {
     setError("");
     if (provider === "apple" && isNative()) {
-      try { await nativeAppleSignIn(); await enter(); }
+      try { if (await nativeAppleSignIn()) await enter(); }
       catch (error) { setError(error instanceof Error ? error.message : "Apple sign-in could not be completed."); }
       return;
     }

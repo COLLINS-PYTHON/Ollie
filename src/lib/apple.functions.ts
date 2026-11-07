@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { z } from 'zod';
+export const appleAuthConfig = createServerFn({ method: 'GET' }).handler(async () => ({ native: process.env['APPLE_NATIVE_AUTH_ENABLED'] === 'true' }));
 export const revokeNativeApple = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth])
  .inputValidator(input => z.object({ code: z.string().min(1).max(4096) }).parse(input))
  .handler(async ({ data, context }) => {

@@ -598,19 +598,22 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [appleLinked, setAppleLinked] = useState(false);
   const wipe = async () => {
     if (busy) return;
     setBusy(true); setError('');
     try {
-    await deleteCloudData();
+    const linked = await deleteCloudData();
+    setAppleLinked(linked === true);
     await deleteLocalPictures(familyKids().map(kid => kid.id));
     clearFamilyStorage();
     sessionStorage.removeItem("ollie-onboarding-draft-v1");
     ["ollie-onboarding-draft-v1", "ollie-onboarding-step-v1", "ollie-profile-v1"].forEach((k) => localStorage.removeItem(k));
     resetOnboardingState();
+    if (typeof caches !== 'undefined') await caches.delete('ollie-voice-v1');
     setStep(3);
     // Hard reload discards every in-memory store and starts setup from the first screen.
-    setTimeout(() => window.location.replace("/onboarding/fact"), 1200);
+    if (!linked) setTimeout(() => window.location.replace("/onboarding/fact"), 1200);
     } catch {
       setError('Deletion could not be completed. Some saved data may remain. Please retry.');
     } finally { setBusy(false); }
@@ -639,7 +642,7 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
           <Button variant="ghost" type="button" onClick={onClose} disabled={busy} className="mt-2 w-full py-3 text-button text-muted-foreground">Keep my data</Button>
         </>
       )}
-      {step === 3 && <p className="text-body text-foreground">Saved family data deleted. Starting fresh…</p>}
+      {step === 3 && <><p className="text-body text-foreground">Your Ollie account and saved family data have been deleted.</p>{appleLinked && <><p className="mt-3 text-support text-muted-foreground">Disconnect Apple authorization to finish removing Ollie's access.</p><Button variant="control" className="mt-4 w-full" onClick={() => void import('@/lib/apple-auth').then(({ openAppleDisconnect }) => openAppleDisconnect())}>Disconnect Apple</Button></>}<Button variant="link" className="mt-3 w-full" onClick={() => window.location.replace('/onboarding/fact')}>Start fresh</Button></>}
     </Sheet>
   );
 }

@@ -56,7 +56,7 @@ function Plans() {
     {(['yearly', 'monthly'] as const).map(p => <Button key={p} variant="ghost" role="radio" aria-checked={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }} className="trial-plan-card">
      <span className="text-button capitalize">{p}</span><span className="pw-radio" aria-hidden="true">{plan === p && <Check />}</span>
      <span className="trial-plan-price">{price(p)}</span><span className="text-support text-muted-foreground">per {p === 'yearly' ? 'year' : 'month'}</span>
-     {p === 'yearly' && (!native || packages.yearly && packages.monthly) ? <><span className="trial-plan-equivalent">≈ {formatPrice(yearlyMonthlyEquivalent(actual), actual.currency)}/month</span><span className="pw-chip">Save {yearlySavingPercent(actual)}%</span></> : <span className="trial-plan-equivalent">{eligible[p] ? '7 days free, then billed monthly' : 'Billed monthly'}</span>}
+     {p === 'yearly' && (!native || packages.yearly && packages.monthly) ? <><span className="trial-plan-equivalent">≈ {formatPrice(yearlyMonthlyEquivalent(actual), actual.currency)}/month</span><span className="pw-chip">Save {yearlySavingPercent(actual)}%</span></> : <span className="trial-plan-equivalent">{eligible[p] ? `7 days free, then billed ${p}` : `Billed ${p}`}</span>}
     </Button>)}
    </div>
    {trial && <ol className="pw-timeline mt-7" aria-label="How your trial works">{[{ icon: LockKeyholeOpen, when: 'Today', what: 'Full trial access' }, { icon: Check, when: 'Day 7', what: 'First charge' }].map(({ icon: Icon, when, what }) => <li key={when}><span className="pw-dot"><Icon /></span><b>{when}</b><span>{what}</span></li>)}</ol>}

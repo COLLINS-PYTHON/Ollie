@@ -69,7 +69,7 @@ function AccountPage() {
     onboardingState.parentName = parentName.trim();
     saveProfile();
     if (provider === "apple" && isNative()) {
-      try { await nativeAppleSignIn(); await pushAll(); if (!await refreshPurchases()) { await navigate({ to: "/onboarding/plans" }); return; } await navigate({ to: "/onboarding/handoff" }); }
+      try { if (!await nativeAppleSignIn()) return; await pushAll(); if (!await refreshPurchases()) { await navigate({ to: "/onboarding/plans" }); return; } await navigate({ to: "/onboarding/handoff" }); }
       catch (error) { setError(error instanceof Error ? error.message : "Apple sign-in could not be completed."); }
       return;
     }
