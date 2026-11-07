@@ -5,7 +5,7 @@ import type { Json } from "@/integrations/supabase/types";
 import { onboardingState, parentSettings, saveProfile } from "./onboarding-store";
 import { readFamily, FAMILY_KEY, ACTIVE_KID_KEY, activeKidId, readKidValue, writeKidValue, clearFamilyStorage } from "./kid-storage";
 import { loadPictures, savePicture, type Picture } from "./picture-store";
-import { deleteStorageTree } from './delete-storage';
+import { disconnectNativeApple } from './apple-auth';
 
 const PROGRESS_KEYS = ["ollie-chat-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-daily-selection-v1", "ollie-custom-lesson-v1"];
 const PROFILE_KEY = "ollie-profile-v1";
@@ -174,6 +174,7 @@ export async function deleteCloudData() {
   if (!session) { deleting = false; return; }
   const uid = session.user.id;
   try {
+    await disconnectNativeApple();
     const gone = await fetch("/api/delete-account", { method: "POST", headers: { Authorization: `Bearer ${session.access_token}` } });
     if (!gone.ok) throw new Error("Account login could not be deleted");
     const result = await supabase.auth.signOut({ scope: 'local' });

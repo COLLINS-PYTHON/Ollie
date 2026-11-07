@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { nativeAppleSignIn } from "@/lib/apple-auth";
+import { isNative } from "@/lib/native";
 import { lovable } from "@/integrations/lovable";
 import { clearFails, lockedSeconds, LOGIN_LOCK, pullAll, recordFail } from "@/lib/cloud-sync";
 import { pageMeta } from "@/lib/meta";
@@ -49,6 +51,11 @@ function LoginPage() {
 
   async function social(provider: "google" | "apple") {
     setError("");
+    if (provider === "apple" && isNative()) {
+      try { await nativeAppleSignIn(); await enter(); }
+      catch (error) { setError(error instanceof Error ? error.message : "Apple sign-in could not be completed."); }
+      return;
+    }
     const res = await lovable.auth.signInWithOAuth(provider, { redirect_uri: `${window.location.origin}/login` });
     if (res.error) return setError("That sign-in didn't work. Please try again.");
     if (res.redirected) return;

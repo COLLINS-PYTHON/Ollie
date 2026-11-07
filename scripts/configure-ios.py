@@ -19,3 +19,6 @@ manifest = {'NSPrivacyTracking': False, 'NSPrivacyTrackingDomains': [], 'NSPriva
  {'NSPrivacyAccessedAPIType':'NSPrivacyAccessedAPICategoryUserDefaults','NSPrivacyAccessedAPITypeReasons':['CA92.1']},
 ]}
 with (app/'PrivacyInfo.xcprivacy').open('wb') as f: plistlib.dump(manifest, f)
+
+entitlements = {'com.apple.developer.applesignin': ['Default']}
+with (app/'App.entitlements').open('wb') as f: plistlib.dump(entitlements, f)
