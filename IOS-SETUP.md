@@ -4,7 +4,7 @@ Code is prepared, not App Store certified. Browser checks passed at 390×844, 76
 
 ## RevenueCat
 1. Create an iOS app with bundle ID `com.ollie.learning` and connect the account owner's App Store Connect credentials.
-2. Import `com.ollie.learning.monthly` and `com.ollie.learning.yearly`; both belong to the same Apple subscription group and have a 7-day introductory trial for eligible accounts.
+2. Import `com.ollie.monthly` and `com.ollie.learning.yearly`; both belong to the same Apple subscription group and have a 7-day introductory trial for eligible accounts.
 3. Attach both products to entitlement **`premium`**. Put their monthly and annual packages in the current offering.
 4. Configure restore/transfer behavior for the parent-account model. Purchases before signup use an anonymous identifier; the app calls `logIn` with the authenticated parent UUID afterward. Test linking and restoring across devices/accounts. Never treat a local flag as proof of payment.
 5. Add Cloud secrets `REVENUECAT_APPLE_PUBLIC_KEY` (the iOS `appl_` SDK key) and `REVENUECAT_SECRET_KEY` (a server API key allowed to read subscribers). Publish afterward.
