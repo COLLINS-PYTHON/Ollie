@@ -4,11 +4,17 @@ import { supabase } from '@/integrations/supabase/client';
 import { billingConfig, checkSubscription } from './billing.functions';
 import { ENTITLEMENT, PRODUCT_IDS } from './purchase-rules';
 import { isNative } from './native';
+import { setNotificationTrial } from './notifications';
 let initialized: Promise<void> | null = null;
 let identity: string | null = null;
 let active = false;
 const listeners = new Set<() => void>();
-function update(info: CustomerInfo) { active = info.entitlements.active[ENTITLEMENT]?.isActive === true; listeners.forEach(fn => fn()); }
+function update(info: CustomerInfo) {
+  const entitlement = info.entitlements.active[ENTITLEMENT];
+  active = entitlement?.isActive === true;
+  setNotificationTrial(active && entitlement?.periodType === 'TRIAL' && entitlement.expirationDate ? { endsAt: Date.parse(entitlement.expirationDate), renews: entitlement.willRenew } : null);
+  listeners.forEach(fn => fn());
+}
 export function usePremium() { return useSyncExternalStore(fn => { listeners.add(fn); return () => { listeners.delete(fn); }; }, () => active, () => false); }
 export async function purchaseSDK() {
   if (!isNative()) throw new Error('Subscriptions are purchased in the Ollie iPhone or iPad app.');

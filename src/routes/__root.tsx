@@ -16,6 +16,7 @@ import { isModuleLoadError, recoverModuleLoad } from "../lib/module-recovery";
 import { Button } from "@/components/ui/button";
 import "@/lib/native";
 import { ConnectionStatus } from "@/components/ollie/ConnectionStatus";
+import { NotificationLifecycle } from '@/components/ollie/NotificationLifecycle';
 
 // Last-resort recovery: a failed route-chunk import can escape the router
 // boundary and blank the screen before any error component mounts. Catch it
@@ -159,6 +160,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <ConnectionStatus />
+      <NotificationLifecycle />
     </QueryClientProvider>
   );
 }

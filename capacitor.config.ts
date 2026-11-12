@@ -18,6 +18,7 @@ const config: CapacitorConfig = {
     contentInset: "always",
     backgroundColor: "#F2F4FC",
   },
+  plugins: { LocalNotifications: { presentationOptions: [] } },
 };
 
 export default config;

@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Check, ChevronLeft, ChevronRight, Clock, Delete, Flame, Image as ImageIcon, X } from "lucide-react";
+import { Bell, Check, ChevronLeft, ChevronRight, Clock, Delete, Flame, Image as ImageIcon, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { KidSwitcher } from "@/components/ollie/KidSwitcher";
+import { NotificationControls } from '@/components/ollie/NotificationControls';
+import { clearReminders } from '@/lib/notifications';
 import { familyKids, addKid, switchKid } from "@/lib/family-store";
 import { clearFamilyStorage } from "@/lib/kid-storage";
 import { Button } from "@/components/ui/button";
@@ -238,7 +240,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
 }
 
 /* ---------- dashboard ---------- */
-type SheetId = null | "flagged" | "screen" | "slideshow" | "history" | "tone" | "jar" | "subscription" | "interests" | "support" | "delete" | "devices" | "kids";
+type SheetId = null | "notifications" | "flagged" | "screen" | "slideshow" | "history" | "tone" | "jar" | "subscription" | "interests" | "support" | "delete" | "devices" | "kids";
 
 function greeting() {
   const h = new Date().getHours();
@@ -383,6 +385,7 @@ function ParentDashboard() {
       </div>
 
       <Section title="Controls">
+        <Row icon={<Bell className="size-[22px]" strokeWidth={1.8} />} color="text-accent-2" label="Notifications" value="Quiet reminders on this device" onClick={() => setSheet('notifications')} />
         <Row icon={ICONS.screen} color="text-accent-1" label="Screen time" value={`${formatMinutes(onboardingState.limitMinutes)} a day, Search and Create only`} onClick={() => setSheet("screen")} />
         <Row icon={ICONS.slideshow} color="text-accent-4" label="Discovery settings" value={!slidePrefs.enabled ? "Off" : slidePrefs.resetMode === "24h" ? "On, new lesson 24 hours after the last" : `On, new lesson every day at ${formatClock(slidePrefs.resetTime)}`} onClick={() => setSheet("slideshow")} />
         <Row icon={ICONS.history} color="text-accent-2" label="Chat history" value={`Kept for ${retentionLabel}`} onClick={() => setSheet("history")} />
@@ -449,6 +452,7 @@ function ParentDashboard() {
         </Sheet>
       )}
 
+      {sheet === 'notifications' && <Sheet title="Notifications" onClose={() => setSheet(null)}><NotificationControls /></Sheet>}
       {sheet === "screen" && (
         <Sheet title="Screen time" onClose={() => setSheet(null)}>
           <p className="text-support text-muted-foreground">Daily limit for Search and Create. The daily slideshow never counts toward it.</p>
@@ -604,6 +608,7 @@ function DeleteSheet({ child, onClose }: { child: string; onClose: () => void })
     setBusy(true); setError('');
     try {
     const linked = await deleteCloudData();
+    await clearReminders();
     setAppleLinked(linked === true);
     await deleteLocalPictures(familyKids().map(kid => kid.id));
     clearFamilyStorage();

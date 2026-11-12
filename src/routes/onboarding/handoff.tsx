@@ -10,6 +10,7 @@ import { FloatingWhale } from "@/components/ollie/FloatingWhale";
 import { AmbientDepth } from "@/components/ollie/AmbientDepth";
 import { ParentIcon } from "@/components/ollie/ParentIcon";
 import { Button } from "@/components/ui/button";
+import { refreshRemindersQuietly } from '@/lib/notifications';
 
 export const Route = createFileRoute("/onboarding/handoff")({
   head: () => pageMeta("Hand the phone over", "Setup is done. Time to hand the phone to your child."),
@@ -23,6 +24,7 @@ function HandoffPage() {
 
   function start() {
     completeOnboarding();
+    refreshRemindersQuietly();
     void pushAll();
     // Pre-readers hear Ollie say hello before their first lesson opens.
     const lvl = onboardingState.readingLevel;

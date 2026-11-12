@@ -10,6 +10,8 @@ import { detectCountry, formatPrice, regionPrice, yearlyMonthlyEquivalent, yearl
 import { isNative } from '@/lib/native';
 import { loadPlans, purchaseSDK, purchasePlan, restorePurchases, purchaseError } from '@/lib/purchases';
 import { eligibleSevenDayTrial } from '@/lib/purchase-rules';
+import { NotificationControls } from '@/components/ollie/NotificationControls';
+import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 export const Route = createFileRoute('/onboarding/plans')({ head: () => pageMeta('Choose your family plan', 'Compare Ollie monthly and yearly subscriptions and renewal terms.'), component: Plans });
 function Plans() {
  const navigate = useNavigate(); const router = useRouter();
@@ -21,6 +23,7 @@ function Plans() {
  const [eligible, setEligible] = useState<Record<string, boolean>>({});
  const [plan, setPlan] = useState<'monthly' | 'yearly'>('yearly');
  const [busy, setBusy] = useState(false); const [notice, setNotice] = useState('');
+ const [reminderOpen, setReminderOpen] = useState(false);
  useEffect(() => {
   const nativeApp = isNative(); setNative(nativeApp);
   const r = new URLSearchParams(window.location.search).get('region'); if (r) setRp(regionPrice(r === 'auto' ? detectCountry() : r));
@@ -44,10 +47,16 @@ function Plans() {
   if (!native) { await navigate({ to: '/onboarding/account' }); return; }
   if (!chosen) { setNotice('Subscriptions are currently unavailable. Please retry later.'); return; }
   setBusy(true); setNotice('');
-  try { await purchasePlan(chosen); await navigate({ to: '/onboarding/account' }); }
+  try { await purchasePlan(chosen); setReminderOpen(true); }
   catch (error) { setNotice(purchaseError(error)); } finally { setBusy(false); }
  }
  return <main className="trial-plans-page">
+  <Drawer open={reminderOpen} shouldScaleBackground={false} onOpenChange={open => { setReminderOpen(open); if (!open) void navigate({ to: '/onboarding/account' }); }}>
+   <DrawerContent aria-describedby={undefined} className="parent-sheet mx-auto max-h-[85svh] w-full max-w-md bg-card px-5 pb-8 shadow-sheet">
+    <DrawerTitle className="mb-4 text-body font-bold">A gentle reminder?</DrawerTitle>
+    <div className="overflow-y-auto"><NotificationControls onboarding onDone={() => { setReminderOpen(false); void navigate({ to: '/onboarding/account' }); }} /></div>
+   </DrawerContent>
+  </Drawer>
   <Button variant="control" size="icon" aria-label="Back to trial introduction" onClick={() => router.history.back()}><ChevronLeft /></Button>
   <div className="trial-plans-body screen-enter">
    <h1 className="pw-title text-center">{trial ? `Unlock ${name}’s safe trial` : 'Choose your Ollie plan'}</h1>

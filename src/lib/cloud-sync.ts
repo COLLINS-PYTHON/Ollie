@@ -6,6 +6,7 @@ import { onboardingState, parentSettings, saveProfile } from "./onboarding-store
 import { readFamily, FAMILY_KEY, ACTIVE_KID_KEY, activeKidId, readKidValue, writeKidValue, clearFamilyStorage } from "./kid-storage";
 import { loadPictures, savePicture, type Picture } from "./picture-store";
 import { disconnectNativeApple } from './apple-auth';
+import { clearReminders } from './notifications';
 
 const PROGRESS_KEYS = ["ollie-chat-v1", "ollie-slideshow-v1", "ollie-usage-v1", "ollie-cookies-v1", "ollie-daily-selection-v1", "ollie-custom-lesson-v1"];
 const PROFILE_KEY = "ollie-profile-v1";
@@ -231,6 +232,7 @@ async function registerDevice(userId: string) {
 async function deviceRevoked(userId: string) {
   const { data } = await supabase.from("devices").select("id, revoked").eq("account_id", userId).eq("device_key", deviceKey()).maybeSingle();
   if (!data?.revoked) return false;
+  await clearReminders();
   await supabase.from("devices").delete().eq("id", data.id);
   await supabase.auth.signOut();
   clearFamilyStorage();
@@ -250,6 +252,7 @@ export async function revokeDevice(id: string) {
   await supabase.from("devices").update({ revoked: true }).eq("id", id);
 }
 export async function signOutHere() {
+  await clearReminders();
   const { data: { session } } = await supabase.auth.getSession();
   if (session) await supabase.from("devices").delete().eq("account_id", session.user.id).eq("device_key", deviceKey());
   await supabase.auth.signOut();

@@ -1,5 +1,6 @@
 import { readKidValue, writeKidValue, activeKidId } from "./kid-storage";
 import type { Band } from "./slideshow/types";
+import { refreshRemindersQuietly } from './notifications';
 
 /* Device-only until accounts exist. A completion is what unlocks the next
    slideshow: a new one becomes available exactly 24 hours after the last
@@ -47,6 +48,7 @@ function read(): State {
 
 function write(s: State) {
   writeKidValue(KEY, JSON.stringify(s));
+  refreshRemindersQuietly();
 }
 
 export function completions(): Completion[] {

@@ -41,3 +41,4 @@
 - Shared lessons teach one topic at a time; daily cached choices rebuild current content locally without advancing selection. Why: library improvements reach old selections without rewriting cloud progress.
 - Cookie purchase availability is shared through picture-store; preview purchase controls never award credits. Why: a parent PIN is permission, not evidence of payment.
 - AI models must be zero-retention on the called endpoint (ai-retention.test.js). Why: privacy promises no training.
+- Reminders use opt-in local iOS schedules and receipt trial dates. Why: quiet, accurate alerts.
