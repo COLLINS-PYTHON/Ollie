@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import type { PurchasesPackage } from '@revenuecat/purchases-capacitor';
-import { Check, ChevronLeft, LockKeyholeOpen } from 'lucide-react';
+import { Bell, Check, ChevronLeft, LockKeyholeOpen } from 'lucide-react';
 import { onboardingState } from '@/lib/onboarding-store';
 import { pageMeta } from '@/lib/meta';
 import { Button } from '@/components/ui/button';
@@ -44,7 +44,7 @@ function Plans() {
  const action = trial ? `Unlock ${name}’s safe trial` : `Continue with ${plan}`;
  async function buy() {
   onboardingState.plan = plan;
-  if (!native) { await navigate({ to: '/onboarding/account' }); return; }
+  if (!native) { setReminderOpen(true); return; }
   if (!chosen) { setNotice('Subscriptions are currently unavailable. Please retry later.'); return; }
   setBusy(true); setNotice('');
   try { await purchasePlan(chosen); setReminderOpen(true); }
@@ -65,10 +65,10 @@ function Plans() {
     {(['yearly', 'monthly'] as const).map(p => <Button key={p} variant="ghost" role="radio" aria-checked={plan === p} onClick={() => { setPlan(p); onboardingState.plan = p; }} className="trial-plan-card">
      <span className="text-button capitalize">{p}</span><span className="pw-radio" aria-hidden="true">{plan === p && <Check />}</span>
      <span className="trial-plan-price">{price(p)}</span><span className="text-support text-muted-foreground">per {p === 'yearly' ? 'year' : 'month'}</span>
-     {p === 'yearly' && (!native || packages.yearly && packages.monthly) ? <><span className="trial-plan-equivalent">≈ {formatPrice(yearlyMonthlyEquivalent(actual), actual.currency)}/month</span><span className="pw-chip">Save {yearlySavingPercent(actual)}%</span></> : <span className="trial-plan-equivalent">{eligible[p] ? `7 days free, then billed ${p}` : `Billed ${p}`}</span>}
+     {p === 'yearly' && (!native || packages.yearly && packages.monthly) ? <><span className="trial-plan-equivalent">≈ {formatPrice(yearlyMonthlyEquivalent(actual), actual.currency)}/month</span><span className="pw-chip">Save {yearlySavingPercent(actual)}%</span></> : <span className="trial-plan-equivalent">{(native ? eligible[p] : true) ? `7 days free, then billed ${p}` : `Billed ${p}`}</span>}
     </Button>)}
    </div>
-   {trial && <ol className="pw-timeline mt-7" aria-label="How your trial works">{[{ icon: LockKeyholeOpen, when: 'Today', what: 'Full trial access' }, { icon: Check, when: 'Day 7', what: 'First charge' }].map(({ icon: Icon, when, what }) => <li key={when}><span className="pw-dot"><Icon /></span><b>{when}</b><span>{what}</span></li>)}</ol>}
+   {trial && <ol className="pw-timeline mt-7" aria-label="How your trial works">{[{ icon: LockKeyholeOpen, when: 'Today', what: 'Full trial access' }, { icon: Bell, when: 'Day 5', what: 'Gentle reminder' }, { icon: Check, when: 'Day 7', what: 'First charge' }].map(({ icon: Icon, when, what }) => <li key={when}><span className="pw-dot"><Icon /></span><b>{when}</b><span>{what}</span></li>)}</ol>}
    <ul className="trial-feature-list mt-6 space-y-3">{['Age-tailored answers, with voice and typing', 'Daily topic lessons, quick quizzes and Trail replay', 'Creative picture-making and a saved picture fridge', 'Natural read-aloud at a comfortable pace', 'Parent PIN, screen-time controls and sensitive-search context', 'One plan covers two separate learning spaces'].map(line => <li key={line} className="flex items-start gap-3 text-support"><span className="pw-tick"><Check /></span><span>{line}</span></li>)}</ul>
   </div>
   <footer className="pw-footer">
