@@ -826,7 +826,6 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .onboarding-theme .chapter-fill { transition: width 250ms var(--ease-enter); }
 @media (min-width: 768px) {
   .tabs-shell > main { padding-inline: 36px; }
-  .search-screen { border-inline: 1px solid var(--border); }
   .search-transcript { padding-inline: 28px; }
   .search-composer { padding-inline: 28px; }
   .search-header { padding-top: 24px; padding-bottom: 16px; }
@@ -1112,7 +1111,13 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .picture-keepsake:hover { transform:translateY(-4px) rotate(0); }
 .picture-keepsake img { border-radius:var(--radius-sm); }
 .fridge-magnet { box-shadow:var(--elev-card); border:2px solid var(--card); }
-.trail-screen { background:var(--trail-wash); }
+.trail-screen { background:transparent; }
+/* Search and Create fill the device with their own surface. */
+.tabs-shell.tabs-search, .tabs-shell:has(.create-studio) { background:var(--card); }
+.tabs-search .app-tabbar { inset-inline:0; }
+.tabs-shell .search-screen { max-width:none !important; }
+/* Wash fills the whole device, not just the centred reading column. */
+.tabs-shell:has(.trail-screen) { background:var(--trail-wash); background-attachment:fixed; min-height:100dvh; }
 .trail-summary { align-items:center; border-bottom:1px solid color-mix(in oklab,var(--accent-2) 15%,var(--card)); }
 .trail-summary > svg { width:78px; height:90px; }
 .trail-world { margin-top:32px; }
