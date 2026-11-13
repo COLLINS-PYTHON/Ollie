@@ -131,3 +131,5 @@
 - [x] Record when each kid first uses Search and Create (triedSearch/triedImage)
 - [x] Livelier, more realistic background bubbles; denser on quiet screens
 - [x] Restore paywall and button wording that changed
+- [x] Icon background made white (v4)
+- [ ] Rebuild iPhone screenshots with Dynamic Island and seamless panels (needs recapture; awaiting go-ahead)
