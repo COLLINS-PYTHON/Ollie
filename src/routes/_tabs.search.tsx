@@ -10,6 +10,7 @@ import { CrispOrb } from "@/components/ollie/CrispOrb";
 import { getRecognition, type RecognitionLike } from "@/lib/voice-input";
 import { reportAnswer } from "@/lib/reports.functions";
 import { askOllie } from "@/lib/search.functions";
+import { learningError } from "@/lib/learning-errors";
 import { LessonCover } from "@/components/ollie/LessonCover";
 import { findIllustration, illustrationById } from "@/lib/slideshow/illustration";
 import { loadChat, saveChat, type ChatMessage, type Reaction } from "@/lib/chat-store";
@@ -117,6 +118,7 @@ function SearchChat() {
   const send = async (text = input) => {
     const question = text.trim();
     if (!question || busy) return;
+    setNotice("");
     if (!onboardingState.triedSearch) { onboardingState.triedSearch = true; saveProfile(); }
     setInput("");
     const userMsg: ChatMessage = {
@@ -139,10 +141,15 @@ function SearchChat() {
           })),
         },
       });
+      if (!res.ok) {
+        setNotice(res.error);
+        setInput(question);
+        return;
+      }
       const reply: ChatMessage = {
         id: `r-${Date.now()}`,
         role: "received",
-        text: res.ok ? res.answer : res.error,
+        text: res.answer,
         createdAt: Date.now(),
         ...(res.ok && res.tier ? { tier: res.tier } : {}),
         ...(res.ok && res.flagReason ? { flagReason: res.flagReason } : {}),
@@ -154,17 +161,9 @@ function SearchChat() {
       }
       setMessages((prev) => [...prev, reply]);
       nodAvatar();
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `r-${Date.now()}`,
-          role: "received",
-          text: "I'm having a little trouble right now. Please try again in a moment.",
-          createdAt: Date.now(),
-        },
-      ]);
-      nodAvatar();
+    } catch (error) {
+      setNotice(learningError(error));
+      setInput(question);
     } finally {
       setBusy(false);
     }

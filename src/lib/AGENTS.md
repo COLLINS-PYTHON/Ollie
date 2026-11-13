@@ -1,0 +1,1 @@
+- Learning failures stay in composer notices with the question preserved, never in assistant history; why: unavailable access must not masquerade as an AI answer.

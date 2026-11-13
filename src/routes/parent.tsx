@@ -207,7 +207,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
   const title = creating ? (first ? "Enter it once more" : "Create a parent PIN") : "Enter your parent PIN";
 
   return (
-    <main className="parent-pin mx-auto flex min-h-screen w-full max-w-md flex-col bg-card px-5 pt-4">
+    <main className="parent-pin mx-auto flex min-h-screen w-full max-w-md flex-col bg-background px-5 pt-4">
       <Link to="/search" aria-label="Back" className="flex size-10 items-center justify-center rounded-pill bg-surface text-foreground">
         <ChevronLeft className="size-5" />
       </Link>
@@ -227,7 +227,7 @@ function PinGate({ onUnlock }: { onUnlock: () => void }) {
                 type="button"
                 aria-label={k === "del" ? "Delete digit" : k}
                 onClick={() => (k === "del" ? setPin(pin.slice(0, -1)) : press(k))}
-                className="flex size-[72px] items-center justify-center rounded-pill bg-surface text-title text-foreground active:scale-95"
+                className="flex size-[72px] items-center justify-center rounded-pill bg-card text-title text-foreground active:scale-95"
               >
                 {k === "del" ? <Delete className="size-5" /> : k}
               </Button>

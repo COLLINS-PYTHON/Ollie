@@ -1,10 +1,12 @@
 # Roadmap
 
 ## Now
+- [x] Rebuilt six connected screenshots per device with exact artwork, Geist, enlarged UI cutouts and varied tilted layouts; chat uses a labelled built-in example and both lesson captures show real sea-turtle review screens. Preserved raw captures for economical revisions.
+- [x] Replaced concealed chat failures with truthful composer notices and preserved input; packaged approved light icon repeatably; corrected iPad PIN white strip. Phone/iPad PIN and signed-out error flows verified, 21 rule tests and icon test pass. Real AI answering still blocked by missing RevenueCat keys; authenticated check blocked by unavailable matching test identity.
 - [x] Add opt-in quiet iOS lesson reminders and verified trial-ending notice, parent timing/toggles, completion/logout cleanup and tests. Seventeen tests pass; parent controls checked at phone/iPad sizes. Delivery and purchase-to-permission flow still require a signed TestFlight build.
 - [ ] Verify iOS notification permission, silent delivery, tap destinations and cancellation on iPhone/iPad. Blocker: signed native build and configured RevenueCat trial.
 - [x] Add and verify readable SSR homepage content, preserving automatic app entry; isolate native Apple sign-in from SSR to address the published loading failure. Publish and public rescan remain required.
-- [ ] Insert approved 1024×1024 icon into the native asset catalog. Blocker: prior standalone icon is absent from this checkout; no replacement artwork generated.
+- [x] Insert approved light 1024×1024 icon into the generated native asset catalog after sync; exact pixels and universal catalog tested without Xcode.
 - [ ] Connect RevenueCat Apple public/secret keys, premium entitlement, monthly/yearly products and restore ownership settings. Blocker: account owner configuration. AI requests deliberately fail closed until configured.
 - [ ] Run signed TestFlight purchases, restore, deletion, Apple sign-in, native voice and offline first-launch on iPhone/iPad. Blocker: Apple signing assets, real devices and authorized test account.
 - [ ] Optional direct native Apple auth: configure native bundle audience and revocation client secret, then enable APPLE_NATIVE_AUTH_ENABLED. Default stays managed Apple OAuth and managed revocation until configured.

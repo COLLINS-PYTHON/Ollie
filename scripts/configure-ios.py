@@ -1,5 +1,6 @@
 """Apply repeatable iOS permissions and universal-device configuration after cap sync."""
 import os, plistlib
+import json, shutil, struct
 from pathlib import Path
 app = Path('ios/App/App')
 plist = app / 'Info.plist'
@@ -22,3 +23,16 @@ with (app/'PrivacyInfo.xcprivacy').open('wb') as f: plistlib.dump(manifest, f)
 
 entitlements = {'com.apple.developer.applesignin': ['Default']}
 with (app/'App.entitlements').open('wb') as f: plistlib.dump(entitlements, f)
+
+# Preserve the approved original pixels; never generate a replacement at build time.
+icon = Path('native-shell/ollie-app-icon.png')
+header = icon.read_bytes()[:33]
+if header[:8] != b'\x89PNG\r\n\x1a\n' or struct.unpack('>II', header[16:24]) != (1024, 1024) or header[25] != 2:
+ raise SystemExit('App icon must be a 1024 x 1024 opaque RGB PNG')
+catalog = app / 'Assets.xcassets' / 'AppIcon.appiconset'
+catalog.mkdir(parents=True, exist_ok=True)
+shutil.copyfile(icon, catalog / 'AppIcon-1024.png')
+(catalog / 'Contents.json').write_text(json.dumps({
+ 'images': [{'filename': 'AppIcon-1024.png', 'idiom': 'universal', 'platform': 'ios', 'size': '1024x1024'}],
+ 'info': {'author': 'xcode', 'version': 1}
+}, indent=2))
