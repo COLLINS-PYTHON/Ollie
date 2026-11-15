@@ -1,6 +1,8 @@
 # Roadmap
 
 ## Now
+- [ ] User asked what remains to be built or cleaned up; answered with build blockers and cleanup candidates (stale roadmap items, old screenshot versions, unused draft template).
+- [ ] User asked for the fastest way to connect RevenueCat now; provided the key-creation walkthrough.
 - [x] Refreshed iPhone/iPad Trail screenshots with full-width real captures; preserved connected backgrounds and Dynamic Island frames. Delivered v6 with approved white icon, twelve screenshots and inspected ZIP.
 - [x] Removed the Trail's inset scenery canvas; animated landscape reaches both edges on phone and iPad without stretched trees.
 - [x] Reviewed sibling page canvases; user confirmed other screens are fine, so leave them unchanged. Shorten the trial invitation label to “7 day free trial”; preserve Apple eligibility and renewal disclosures on plans and terms.
