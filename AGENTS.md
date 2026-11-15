@@ -24,7 +24,7 @@
 - Prices derive from subscription-prices, yearly equivalent divides by 12. Why: consistent labels.
 - Onboarding theme overrides are scoped to its parent layout, and mascot artwork preloads there with entrance motion on a separate wrapper. Why: onboarding restyling never changes chat or dashboard colors and entrance/idle transforms do not compete.
 - Chase uses direct H.264 src, muted/defaultMuted inline autoplay, readiness/gesture retries and reduced-motion pause. Why: reliable phone playback without controls.
-- Trail scenery separates full-viewport SVG meadows from bounded, unclipped landmarks/path; seasonal art never changes progress. Why: scenery reaches screen edges without stretching landmarks or changing rewards.
+- Trail scenery uses full-width meadows and width-aware landmarks; seasonal art never changes progress. Why: scenery reaches screen edges without stretching landmarks or changing rewards.
 - Paywall intro navigates to the separate plans route with side-by-side prices and a pinned footer; only reminder permission uses Vaul. PaywallDiscoveryVideo retains muted inline retries and reduced-motion pause. Why: two distinct pages preserve trial proof and readable pricing.
 - Parent setting sheets use the shared portalled Vaul drawer outside the animated page. Why: a transformed page must not trap fixed dialogs below the viewport.
 - Onboarding's explicit preview search parameter is retained between its steps and bypasses the returning-family redirect without clearing saved data. Why: existing families can review setup while ordinary entry continues to skip it.

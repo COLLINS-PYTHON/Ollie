@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- [x] Removed the Trail's inset scenery canvas; animated landscape reaches both edges on phone and iPad without stretched trees.
 - [x] Reviewed sibling page canvases; user confirmed other screens are fine, so leave them unchanged. Shorten the trial invitation label to “7 day free trial”; preserve Apple eligibility and renewal disclosures on plans and terms.
 - [x] Fix clipped Trail scenery with full-width meadow layers and unclipped foreground artwork; verified at 390×564 and 768×1024 with no horizontal overflow and the final jar reachable above navigation.
 - [x] Rebuilt six connected screenshots per device with exact artwork, Geist, enlarged UI cutouts and varied tilted layouts; chat uses a labelled built-in example and both lesson captures show real sea-turtle review screens. Preserved raw captures for economical revisions.

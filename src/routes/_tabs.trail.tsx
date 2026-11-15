@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { LockKeyhole, Pause, Rocket } from "lucide-react";
 import { INTERESTS } from "@/lib/interests";
@@ -28,6 +28,16 @@ function Trail() {
   const [stops, setStops] = useState<TrailStop[]>([]);
   const [filled, setFilled] = useState(0);
   const [season, setSeason] = useState<TrailSeason>("summer");
+  const world = useRef<HTMLDivElement>(null);
+  const [worldWidth, setWorldWidth] = useState(340);
+  useEffect(() => {
+    const element = world.current;
+    if (!element) return;
+    const observer = new ResizeObserver(() => setWorldWidth(element.clientWidth));
+    observer.observe(element);
+    setWorldWidth(element.clientWidth);
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => { setStops(trailStops()); setFilled(jarProgress()); setSeason(trailSeason(new Date())); }, []);
   const learningDays = stops.filter((s) => s.kind === "done").length;
   const cycleStart = Math.floor(learningDays / JAR_EVERY) * JAR_EVERY;
@@ -45,8 +55,8 @@ function Trail() {
       <div className="min-w-0"><p className="text-body font-bold text-foreground">{filled} of {JAR_EVERY} learning days</p><p className="text-support mt-1 text-muted-foreground">{JAR_BONUS} bonus picture cookies</p></div>
     </div>
     {learningDays === 0 && <p className="text-body mt-5 text-center text-muted-foreground">Your first Discovery starts your Trail.</p>}
-    <div className="trail-world relative mx-auto mt-7 w-full max-w-[340px]" style={{ height }} data-season={season}>
-      <TrailLandscape height={height} season={season} />
+    <div ref={world} className="trail-world relative mt-7" style={{ height }} data-season={season}>
+      <TrailLandscape height={height} season={season} width={worldWidth} />
       <svg viewBox={`0 0 340 ${height}`} preserveAspectRatio="none" aria-hidden className="absolute inset-0 h-full w-full overflow-visible">
         <path d={path} className="trail-path-bed" />
         <path d={path} className="trail-path trail-path-future" />

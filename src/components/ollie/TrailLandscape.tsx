@@ -39,8 +39,9 @@ function Tree({ x, y, snow, christmas }: { x: number; y: number; snow: boolean; 
   </g>;
 }
 
-export function TrailLandscape({ height, season }: { height: number; season: TrailSeason }) {
+export function TrailLandscape({ height, season, width = 340 }: { height: number; season: TrailSeason; width?: number }) {
   const snow = season === "winter" || season === "christmas";
+  const x = (position: number) => 44 + (position - 24) / 278 * Math.max(0, width - 88);
   return <>
     <svg viewBox={`0 0 340 ${height}`} preserveAspectRatio="none" className={`trail-meadows trail-season-${season}`} aria-hidden="true">
       {Array.from({ length: Math.ceil(height / 310) }, (_, i) => {
@@ -48,19 +49,19 @@ export function TrailLandscape({ height, season }: { height: number; season: Tra
         return <path key={i} d={`M-20 ${y + 110}Q100 ${y + 25} 215 ${y + 117}T370 ${y + 86}V${y + 198}Q170 ${y + 126}-20 ${y + 195}Z`} className="trail-meadow" />;
       })}
     </svg>
-    <svg viewBox={`0 0 340 ${height}`} preserveAspectRatio="none" className={`trail-landscape trail-season-${season} absolute inset-0 h-full w-full`} aria-hidden="true">
+    <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" className={`trail-landscape trail-season-${season} absolute inset-0 h-full w-full`} aria-hidden="true">
     {Array.from({ length: Math.ceil(height / 310) }, (_, i) => {
       const y = i * 310 + 110;
       return <g key={i} className="trail-landmark">
-        <g transform={`translate(0 ${i % 3 * 9})`}><Tree x={i % 2 ? 291 : 38} y={y + 38} snow={snow} christmas={season === "christmas"} /></g>
-        {i % 3 === 1 ? <g transform={`translate(${i % 2 ? 27 : 301} ${y + 175})`}>
+        <g transform={`translate(0 ${i % 3 * 9})`}><Tree x={x(i % 2 ? 291 : 38)} y={y + 38} snow={snow} christmas={season === "christmas"} /></g>
+        {i % 3 === 1 ? <g transform={`translate(${x(i % 2 ? 27 : 301)} ${y + 175})`}>
           {snow ? <><ellipse cy="13" rx="25" ry="6" className="trail-ground-shadow" /><circle r="18" className="trail-snow-cap" /><circle cy="-26" r="12" className="trail-snow-cap" /><path d="M-13-21h26m-9-7h8" className="trail-ribbon" /><circle cx="-4" cy="-29" r="1.5" className="fill-foreground" /><circle cx="4" cy="-29" r="1.5" className="fill-foreground" /></> : <><ellipse rx="27" ry="16" className="trail-pond" /><path d="M-16 0q15-6 30 0m-20 5h12" className="trail-stone-shine" /><path d="M-9-18q0-12 12-12-1 13-12 12" className="trail-leaf" /></>}
-        </g> : <Tree x={i % 2 ? 24 : 302} y={y + 185} snow={snow} christmas={false} />}
-        <g transform={`translate(${i % 2 ? 48 : 285} ${y + 97})`}>
+        </g> : <Tree x={x(i % 2 ? 24 : 302)} y={y + 185} snow={snow} christmas={false} />}
+        <g transform={`translate(${x(i % 2 ? 48 : 285)} ${y + 97})`}>
           <ellipse rx="22" ry="9" className="trail-stone" /><path d="M-14-2q12-9 25 0" className="trail-stone-shine" />
           {!snow && <g className="trail-botanical"><path d="M0-4q-9-24 2-37M0-15q-21-4-18-18 18 0 18 18m2-9q18-7 18-21-20 3-18 21" className="trail-leaf" />{season === "spring" && <circle cx="3" cy="-42" r="7" className="fill-accent-3" />}</g>}
         </g>
-        {snow ? Array.from({ length: 4 }, (_, j) => <circle key={j} cx={25 + j * 83} cy={y - 80 + j % 3 * 28} r={j % 2 ? 2 : 3} className={`trail-snowfall trail-snow-${j % 3}`} />) : i===0 ? <g transform={`translate(281 ${y - 28})`}>
+        {snow ? Array.from({ length: 4 }, (_, j) => <circle key={j} cx={x(25 + j * 83)} cy={y - 80 + j % 3 * 28} r={j % 2 ? 2 : 3} className={`trail-snowfall trail-snow-${j % 3}`} />) : i===0 ? <g transform={`translate(${x(281)} ${y - 28})`}>
           <g className="trail-flight"><path d="M0 0C-21-23-22 8 0 8C22 8 21-23 0 0Z" className="trail-wings fill-accent-3" /><path d="M0-3v13" className="trail-fine-line" /></g>
         </g> : null}
       </g>;
