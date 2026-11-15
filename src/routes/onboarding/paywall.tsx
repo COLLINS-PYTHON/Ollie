@@ -22,7 +22,7 @@ function PaywallPage() {
         <p className="text-support mt-3 text-center text-muted-foreground">Made just for {name}.</p>
         <div className="payment-assurance relative mx-auto mt-5 flex items-center gap-2 rounded-pill bg-card px-5 py-3 shadow-card">
           <Check className="relative size-5 text-success" strokeWidth={2.2} />
-          <span className="text-button relative text-foreground">7-day trial for eligible families</span>
+          <span className="text-button relative text-foreground">7 day free trial</span>
         </div>
         <p className="text-support mt-5 text-center text-muted-foreground">Answers that fit their age, topic lessons that build understanding, and a little space to create.</p>
         <p className="text-support mt-4 flex items-center justify-center gap-2 text-muted-foreground"><Bell className="size-4 shrink-0" />7 days to explore. You can cancel at anytime before your first charge.</p>
