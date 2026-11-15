@@ -591,7 +591,8 @@
   --trail-path-bed: color-mix(in oklab, var(--brand) 7%, var(--card));
 }
 .trail-world { isolation: isolate; }
-.trail-landscape { pointer-events: none; overflow: hidden; }
+.trail-landscape { pointer-events: none; overflow: visible; }
+.trail-meadows { position:absolute; top:0; left:calc(50% - 50vw); width:100vw; height:100%; pointer-events:none; opacity:.78; }
 .trail-season-autumn { --trail-tree: var(--accent-4); --trail-tree-light: color-mix(in oklab,var(--accent-4) 42%,var(--card)); }
 .trail-season-winter,.trail-season-christmas { --trail-meadow: var(--surface-2); }
 .trail-meadow { fill: var(--trail-meadow); }
@@ -1231,7 +1232,7 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .trail-guide { position:absolute !important; right:20px; top:134px; width:94px; pointer-events:none; opacity:.9; }
 .trail-guide .floating-whale { max-width:94px; }
 .trail-guide .whale-thought { display:none; }
-.trail-screen { position:relative; overflow-x:clip; }
+.tabs-shell .trail-screen { position:relative; overflow-x:clip; max-width:none; padding-bottom:calc(var(--app-dock-height) + 48px); }
 .lesson-art-unavailable { aspect-ratio:1; display:grid; place-items:center; color:var(--primary); }.lesson-art-unavailable svg { width:64px; height:64px; }
 .lesson-copy { font-size:21px; line-height:29px; font-weight:600; max-width:460px; text-wrap:pretty; }
 .lesson-stage-enter { animation-duration:450ms; }

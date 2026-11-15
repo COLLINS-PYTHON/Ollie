@@ -47,7 +47,7 @@ function Trail() {
     {learningDays === 0 && <p className="text-body mt-5 text-center text-muted-foreground">Your first Discovery starts your Trail.</p>}
     <div className="trail-world relative mx-auto mt-7 w-full max-w-[340px]" style={{ height }} data-season={season}>
       <TrailLandscape height={height} season={season} />
-      <svg viewBox={`0 0 340 ${height}`} aria-hidden className="absolute inset-0 h-full w-full overflow-visible">
+      <svg viewBox={`0 0 340 ${height}`} preserveAspectRatio="none" aria-hidden className="absolute inset-0 h-full w-full overflow-visible">
         <path d={path} className="trail-path-bed" />
         <path d={path} className="trail-path trail-path-future" />
         {cycle.length > 0 && <path d={trailCurve(points.slice(0, Math.min(cycle.length + 1, points.length)))} className="trail-path trail-glow" />}

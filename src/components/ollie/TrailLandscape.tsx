@@ -41,11 +41,17 @@ function Tree({ x, y, snow, christmas }: { x: number; y: number; snow: boolean; 
 
 export function TrailLandscape({ height, season }: { height: number; season: TrailSeason }) {
   const snow = season === "winter" || season === "christmas";
-  return <svg viewBox={`0 0 340 ${height}`} className={`trail-landscape trail-season-${season} absolute inset-0 h-full w-full`} aria-hidden="true">
+  return <>
+    <svg viewBox={`0 0 340 ${height}`} preserveAspectRatio="none" className={`trail-meadows trail-season-${season}`} aria-hidden="true">
+      {Array.from({ length: Math.ceil(height / 310) }, (_, i) => {
+        const y = i * 310 + 110;
+        return <path key={i} d={`M-20 ${y + 110}Q100 ${y + 25} 215 ${y + 117}T370 ${y + 86}V${y + 198}Q170 ${y + 126}-20 ${y + 195}Z`} className="trail-meadow" />;
+      })}
+    </svg>
+    <svg viewBox={`0 0 340 ${height}`} preserveAspectRatio="none" className={`trail-landscape trail-season-${season} absolute inset-0 h-full w-full`} aria-hidden="true">
     {Array.from({ length: Math.ceil(height / 310) }, (_, i) => {
       const y = i * 310 + 110;
       return <g key={i} className="trail-landmark">
-        <path d={`M-20 ${y + 110}Q100 ${y + 25} 215 ${y + 117}T370 ${y + 86}V${y + 198}Q170 ${y + 126}-20 ${y + 195}Z`} className="trail-meadow" />
         <g transform={`translate(0 ${i % 3 * 9})`}><Tree x={i % 2 ? 291 : 38} y={y + 38} snow={snow} christmas={season === "christmas"} /></g>
         {i % 3 === 1 ? <g transform={`translate(${i % 2 ? 27 : 301} ${y + 175})`}>
           {snow ? <><ellipse cy="13" rx="25" ry="6" className="trail-ground-shadow" /><circle r="18" className="trail-snow-cap" /><circle cy="-26" r="12" className="trail-snow-cap" /><path d="M-13-21h26m-9-7h8" className="trail-ribbon" /><circle cx="-4" cy="-29" r="1.5" className="fill-foreground" /><circle cx="4" cy="-29" r="1.5" className="fill-foreground" /></> : <><ellipse rx="27" ry="16" className="trail-pond" /><path d="M-16 0q15-6 30 0m-20 5h12" className="trail-stone-shine" /><path d="M-9-18q0-12 12-12-1 13-12 12" className="trail-leaf" /></>}
@@ -59,5 +65,6 @@ export function TrailLandscape({ height, season }: { height: number; season: Tra
         </g> : null}
       </g>;
     })}
-  </svg>;
+    </svg>
+  </>;
 }

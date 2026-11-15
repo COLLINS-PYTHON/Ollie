@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Now
+- [x] Fix clipped Trail scenery with full-width meadow layers and unclipped foreground artwork; verified at 390×564 and 768×1024 with no horizontal overflow and the final jar reachable above navigation.
 - [x] Rebuilt six connected screenshots per device with exact artwork, Geist, enlarged UI cutouts and varied tilted layouts; chat uses a labelled built-in example and both lesson captures show real sea-turtle review screens. Preserved raw captures for economical revisions.
 - [x] Replaced concealed chat failures with truthful composer notices and preserved input; packaged approved light icon repeatably; corrected iPad PIN white strip. Phone/iPad PIN and signed-out error flows verified, 21 rule tests and icon test pass. Real AI answering still blocked by missing RevenueCat keys; authenticated check blocked by unavailable matching test identity.
 - [x] Add opt-in quiet iOS lesson reminders and verified trial-ending notice, parent timing/toggles, completion/logout cleanup and tests. Seventeen tests pass; parent controls checked at phone/iPad sizes. Delivery and purchase-to-permission flow still require a signed TestFlight build.
